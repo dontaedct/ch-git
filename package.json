@@ -19,7 +19,9 @@
     "rename:import": "tsx scripts/rename.ts import",
     "rename:route": "tsx scripts/rename.ts route",
     "rename:table": "tsx scripts/rename.ts table",
-    "watch:renames": "tsx scripts/watch-renames.ts"
+    "watch:renames": "tsx scripts/watch-renames.ts",
+    "policy:enforce": "tsx scripts/policy-enforcer.ts",
+    "policy:build": "tsx scripts/policy-enforcer.ts --build"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

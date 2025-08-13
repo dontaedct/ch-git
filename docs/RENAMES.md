@@ -28,6 +28,12 @@ Never rename or move files/symbols/routes/tables directly. Use these commands so
 
   (Updates src/registry/tables.ts; follow-up SQL migration may be required.)
 
+## Convenience Scripts
+
+- `npm run safe`: Runs doctor and CI checks in sequence (npm run doctor && npm run ci)
+
+- `npm run rename:safe -- OLD NEW`: Runs rename:symbol followed by safety checks
+
 ## Required steps (each rename)
 
 1) Run the appropriate command above.  

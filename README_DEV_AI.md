@@ -1,0 +1,3 @@
+- Start any new AI chat by pasting the Master Prompt (see /docs/AI_RULES.md).
+- Then open /AI_ENTRYPOINT.md and follow the 10-line checklist.
+- Use only rename scripts; run npm run doctor && npm run ci before committing.

@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Apple-inspired design system */
+:root {
+  --bg: hsl(0 0% 98%);
+  --surface: hsl(0 0% 100%);
+  --surface-secondary: hsl(0 0% 96%);
+  --border: hsl(0 0% 90%);
+  --border-focus: hsl(210 100% 50%);
+  --text: hsl(0 0% 15%);
+  --subtext: hsl(0 0% 45%);
+  --accent: hsl(210 100% 50%);
+  --accent-hover: hsl(210 100% 45%);
+  --success: hsl(142 76% 36%);
+  --error: hsl(0 84% 60%);
+}
+
+html, body, #__next {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  @apply antialiased;
+  font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+}
+
+/* Page container helpers */
+.container-page {
+  @apply container max-w-4xl mx-auto px-6;
+}
+
+/* Apple-style card with subtle shadows */
+.card {
+  background: var(--surface);
+  @apply rounded-2xl border-0 shadow-lg;
+  box-shadow: 
+    0 1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(20px);
+}
+
+.card-hover {
+  @apply transition-all duration-300 ease-out;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 10px 25px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Apple-style inputs */
+.input {
+  @apply bg-white border-2 rounded-xl px-4 py-3 outline-none transition-all duration-200;
+  border-color: var(--border);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.input:focus {
+  @apply ring-0;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input::placeholder {
+  color: var(--subtext);
+}
+
+/* Apple-style buttons */
+.btn {
+  @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-medium transition-all duration-200;
+  color: white;
+  background: var(--accent);
+  font-size: 16px;
+  line-height: 1.5;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  @apply opacity-50 cursor-not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Ghost button = text only */
+.btn-ghost {
+  @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200;
+  color: var(--accent);
+  background: transparent;
+}
+
+.btn-ghost:hover {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Apple-style typography */
+.text-display {
+  @apply text-4xl font-bold tracking-tight;
+  color: var(--text);
+}
+
+.text-headline {
+  @apply text-2xl font-semibold tracking-tight;
+  color: var(--text);
+}
+
+.text-body {
+  @apply text-base leading-relaxed;
+  color: var(--text);
+}
+
+.text-caption {
+  @apply text-sm leading-relaxed;
+  color: var(--subtext);
+}
+
+/* Frosted glass effect */
+.frosted-glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Subtle animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Focus states */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--subtext);
+}

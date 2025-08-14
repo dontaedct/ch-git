@@ -1,0 +1,71 @@
+{
+  "autoBackup": true,
+  "backupInterval": 300000,
+  "maxBackups": 10,
+  "healthCheckInterval": 60000,
+  "gitAutoCommit": true,
+  "gitAutoPush": false,
+  "notifications": true,
+  "criticalThresholds": {
+    "typescriptErrors": 10,
+    "eslintViolations": 5,
+    "uncommittedFiles": 20
+  },
+  "integrations": {
+    "existingScripts": {
+      "doctor": "npm run doctor",
+      "doctor:fix": "npm run doctor:fix",
+      "lint": "npm run lint",
+      "lint:fix": "npm run lint:fix",
+      "safe": "npm run safe",
+      "ci": "npm run ci"
+    },
+    "autoRecovery": {
+      "typescript": true,
+      "eslint": true,
+      "git": true,
+      "security": true
+    }
+  },
+  "backup": {
+    "includePatterns": [
+      "app/**/*",
+      "components/**/*",
+      "lib/**/*",
+      "hooks/**/*",
+      "data/**/*",
+      "docs/**/*",
+      "scripts/**/*",
+      "*.json",
+      "*.ts",
+      "*.tsx",
+      "*.js",
+      "*.jsx",
+      "*.md",
+      "*.css",
+      "*.html"
+    ],
+    "excludePatterns": [
+      "node_modules/**/*",
+      ".git/**/*",
+      ".next/**/*",
+      "dist/**/*",
+      "build/**/*",
+      ".guardian-backups/**/*",
+      ".guardian-temp/**/*",
+      "*.log",
+      ".env*"
+    ]
+  },
+  "monitoring": {
+    "fileWatcher": true,
+    "gitWatcher": true,
+    "healthWatcher": true,
+    "securityWatcher": true
+  },
+  "notifications": {
+    "console": true,
+    "logFile": true,
+    "criticalAlerts": true
+  }
+}

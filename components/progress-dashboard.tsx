@@ -27,7 +27,12 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
         .eq('id', clientId)
         .single()
 
-      if (clientData) setClient(clientData)
+      if (clientData) {
+        // Type guard to ensure this is a Client
+        if (typeof clientData === 'object' && clientData && 'id' in clientData && 'coach_id' in clientData) {
+          setClient(clientData as Client)
+        }
+      }
 
       // Load weekly plan
       const { data: planData } = await supabase
@@ -39,7 +44,9 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
         .limit(1)
         .single()
 
-      if (planData) setWeeklyPlan(planData)
+      if (planData && typeof planData === 'object' && 'id' in planData && 'coach_id' in planData) {
+        setWeeklyPlan(planData as WeeklyPlan)
+      }
 
       // Load check-ins
       const { data: checkInData } = await supabase
@@ -49,7 +56,11 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
         .order('check_in_date', { ascending: false })
         .limit(30)
 
-      if (checkInData) setCheckIns(checkInData)
+      if (checkInData && Array.isArray(checkInData) && checkInData.every(item => 
+        item && typeof item === 'object' && 'id' in item && 'coach_id' in item
+      )) {
+        setCheckIns(checkInData as CheckIn[])
+      }
 
       // Load progress metrics
       const { data: metricsData } = await supabase
@@ -59,7 +70,11 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
         .order('metric_date', { ascending: true })
         .limit(60)
 
-      if (metricsData) setProgressMetrics(metricsData)
+      if (metricsData && Array.isArray(metricsData) && metricsData.every(item => 
+        item && typeof item === 'object' && 'id' in item && 'coach_id' in item
+      )) {
+        setProgressMetrics(metricsData as ProgressMetric[])
+      }
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
         console.error('Failed to load client data:', err)
@@ -85,50 +100,47 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
     return <div className="p-8 text-center text-gray-500">Client not found</div>
   }
 
-  // Calculate metrics
-  const compliancePercentage = weeklyPlan 
+  // Calculate metrics with proper null checks
+  const compliancePercentage = weeklyPlan?.tasks && weeklyPlan.tasks.length > 0
     ? Math.round((weeklyPlan.tasks.filter(t => t.completed).length / weeklyPlan.tasks.length) * 100)
     : 0
 
   const totalCheckIns = checkIns.length
   const averageMood = checkIns.length > 0 
-    ? Math.round(checkIns.reduce((sum, c) => sum + c.mood_rating, 0) / checkIns.length)
+    ? Math.round(checkIns.reduce((sum, c) => sum + (c.mood_rating ?? 0), 0) / checkIns.length)
     : 0
-  // averageEnergy is calculated but not currently displayed in the UI
-  // const averageEnergy = checkIns.length > 0
-  //   ? Math.round(checkIns.reduce((sum, c) => sum + c.energy_level, 0) / checkIns.length)
-  //   : 0
 
   // Calculate streak
   const streak = checkIns.length > 0 ? 
     checkIns.filter((checkIn, index) => {
       if (index === 0) return true
       if (index - 1 >= 0 && index - 1 < checkIns.length) {
-        const currentDate = new Date(checkIn.check_in_date)
+        const currentDate = new Date(checkIn.check_in_date ?? '')
         const prevCheckIn = checkIns[index - 1]
         if (!prevCheckIn) return false
-        const prevDate = new Date(prevCheckIn.check_in_date)
+        const prevDate = new Date(prevCheckIn.check_in_date ?? '')
         const diffDays = Math.floor((currentDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24))
         return diffDays === 1
       }
       return false
     }).length : 0
 
-  // Prepare chart data
+  // Prepare chart data with null checks
   const weightChartData = progressMetrics
-    .filter(m => m.weight_kg)
+    .filter(m => m.weight_kg && m.metric_date)
     .map(m => ({
-      date: new Date(m.metric_date).toLocaleDateString(),
-      weight: m.weight_kg,
-      bodyFat: m.body_fat_percentage
+      date: new Date(m.metric_date!).toLocaleDateString(),
+      weight: m.weight_kg!,
+      bodyFat: m.body_fat_percentage ?? 0
     }))
 
   const checkInChartData = checkIns
+    .filter(c => c.check_in_date && c.mood_rating !== null && c.energy_level !== null)
     .slice(-14) // Last 14 days
     .map(c => ({
-      date: new Date(c.check_in_date).toLocaleDateString(),
-      mood: c.mood_rating,
-      energy: c.energy_level
+      date: new Date(c.check_in_date!).toLocaleDateString(),
+      mood: c.mood_rating!,
+      energy: c.energy_level!
     }))
 
   return (
@@ -138,7 +150,7 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-semibold text-gray-900">
-              {client.first_name} {client.last_name}
+              {client.first_name ?? client.full_name} {client.last_name ?? ''}
             </h2>
             <p className="text-gray-600">{client.email}</p>
           </div>
@@ -229,51 +241,67 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
         <div className="card p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Current Weekly Plan</h3>
           <div className="space-y-4">
-            <div>
-              <h4 className="font-medium text-gray-900 mb-2">Goals</h4>
-              <div className="flex flex-wrap gap-2">
-                {weeklyPlan.goals.map((goal, index) => (
-                  <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                    {goal}
-                  </span>
-                ))}
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-medium text-gray-900 mb-3">Task Completion</h4>
-              <div className="space-y-3">
-                {weeklyPlan.tasks.map((task) => (
-                  <div key={task.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <div className={`w-5 h-5 rounded-lg flex items-center justify-center ${
-                      task.completed ? 'bg-green-500 text-white' : 'bg-gray-200'
-                    }`}>
-                      {task.completed && (
-                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <span className={`font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
-                        {task.title}
-                      </span>
-                      {task.description && (
-                        <p className="text-sm text-gray-600 mt-1">{task.description}</p>
-                      )}
-                    </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      task.category === 'workout' ? 'bg-red-100 text-red-800' :
-                      task.category === 'nutrition' ? 'bg-green-100 text-green-800' :
-                      task.category === 'mindfulness' ? 'bg-purple-100 text-purple-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {task.category}
+            {/* Goals Section */}
+            {weeklyPlan.goals && weeklyPlan.goals.length > 0 ? (
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">Goals</h4>
+                <div className="flex flex-wrap gap-2">
+                  {weeklyPlan.goals.map((goal, index) => (
+                    <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                      {goal.title}
                     </span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div>
+                <h4 className="font-medium text-gray-900 mb-2">Goals</h4>
+                <p className="text-gray-500 text-sm">No goals set for this week</p>
+              </div>
+            )}
+            
+            {/* Tasks Section */}
+            {weeklyPlan.tasks && weeklyPlan.tasks.length > 0 ? (
+              <div>
+                <h4 className="font-medium text-gray-900 mb-3">Task Completion</h4>
+                <div className="space-y-3">
+                  {weeklyPlan.tasks.map((task) => (
+                    <div key={task.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <div className={`w-5 h-5 rounded-lg flex items-center justify-center ${
+                        task.completed ? 'bg-green-500 text-white' : 'bg-gray-200'
+                      }`}>
+                        {task.completed && (
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <span className={`font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+                          {task.title}
+                        </span>
+                        {task.description && (
+                          <p className="text-sm text-gray-600 mt-1">{task.description}</p>
+                        )}
+                      </div>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        task.category === 'workout' ? 'bg-red-100 text-red-800' :
+                        task.category === 'nutrition' ? 'bg-green-100 text-green-800' :
+                        task.category === 'mindfulness' ? 'bg-purple-100 text-purple-800' :
+                        'bg-gray-100 text-gray-800'
+                      }`}>
+                        {task.category}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h4 className="font-medium text-gray-900 mb-3">Task Completion</h4>
+                <p className="text-gray-500 text-sm">No tasks assigned for this week</p>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -287,16 +315,16 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
               <div key={checkIn.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-sm text-gray-500">
-                    {new Date(checkIn.check_in_date).toLocaleDateString()}
+                    {checkIn.check_in_date ? new Date(checkIn.check_in_date).toLocaleDateString() : 'No date'}
                   </span>
                   <div className="flex items-center gap-4 text-sm">
                     <span className="flex items-center gap-1">
                       <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
-                      Mood: {checkIn.mood_rating}/5
+                      Mood: {checkIn.mood_rating ?? 'N/A'}/5
                     </span>
                     <span className="flex items-center gap-1">
                       <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                      Energy: {checkIn.energy_level}/5
+                      Energy: {checkIn.energy_level ?? 'N/A'}/5
                     </span>
                   </div>
                 </div>

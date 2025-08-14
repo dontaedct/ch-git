@@ -1,13 +1,9 @@
 "use server";
 import { createServiceRoleSupabase } from "@/lib/supabase/server";
-import { z } from "zod";
-
 import { intakeSchema, intakeFormSchema } from "@/lib/validation";
 import { sendConfirmationEmail } from "@/lib/email";
-import { toIntakeInsert } from "@/lib/mappers/intake";
 import { normalizePhone } from "@/lib/validation";
 import { splitName } from "@/lib/utils/splitName";
-import { sanitizeText } from "@/lib/sanitize";
 import type { CreateClientIntakeParams } from "@/lib/supabase/rpc-types";
 
 type Result = Promise<{ ok: true } | { ok: false; error: string }>;
@@ -30,17 +26,17 @@ export async function createClientIntake(formData: FormData): Result {
     if (parsedForm.phone) {
       try {
         normalizedPhone = normalizePhone(parsedForm.phone);
-      } catch (error) {
+      } catch {
         return { ok: false, error: "Invalid phone number format" };
       }
     }
 
     // Execute all database operations atomically
     const params: CreateClientIntakeParams = {
-      p_coach_id: parsed.coach_id,
+      p_coach_id: "default-coach-id", // TODO: Get from environment or config
       p_email: parsed.email,
-      p_first_name: splitName(parsed.name).first_name,
-      p_last_name: splitName(parsed.name).last_name,
+      p_first_name: splitName(parsed.full_name).first_name,
+      p_last_name: splitName(parsed.full_name).last_name ?? "", // Provide safe default
       p_phone: normalizedPhone
     };
     
@@ -56,14 +52,14 @@ export async function createClientIntake(formData: FormData): Result {
         to: parsed.email, 
         session: { title: "Welcome", starts_at: new Date().toISOString() } 
       });
-    } catch (emailError) {
-      console.warn('Failed to send welcome email:', emailError);
+    } catch {
+      console.warn('Failed to send welcome email');
       // Don't fail the entire operation if email fails
     }
 
     return { ok: true };
-  } catch (e: unknown) {
-    const errorMessage = e instanceof Error ? e.message : 'Unknown error occurred';
+  } catch {
+    const errorMessage = 'Unknown error occurred';
     return { ok: false, error: errorMessage ?? "intake failed" };
   }
 }

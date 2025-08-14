@@ -1,3 +1,5 @@
+import '@app/globals.tailwind.css';
+
 export const metadata = { title: "Coach Hub (dev)", description: "Dev shell" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

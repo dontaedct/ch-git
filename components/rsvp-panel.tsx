@@ -57,7 +57,7 @@ export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
         ...prev[clientId],
         notes,
         client_id: clientId,
-        status: prev[clientId]?.status || 'pending'
+        status: prev[clientId]?.status ?? 'pending'
       }
     }))
   }
@@ -204,7 +204,7 @@ export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
                     
                     <div className="flex items-center gap-3">
                       <Select
-                        value={localRSVPs[client.id]?.status || 'pending'}
+                        value={localRSVPs[client.id]?.status ?? 'pending'}
                         onValueChange={(value: RSVPRecord['status']) => handleStatusChange(client.id, value)}
                       >
                         <SelectTrigger className="w-32">
@@ -217,8 +217,8 @@ export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
                         </SelectContent>
                       </Select>
                       
-                      <div className={`px-2 py-1 rounded-full text-xs border ${getStatusColor(localRSVPs[client.id]?.status || 'pending')}`}>
-                        {getStatusIcon(localRSVPs[client.id]?.status || 'pending')}
+                                          <div className={`px-2 py-1 rounded-full text-xs border ${getStatusColor(localRSVPs[client.id]?.status ?? 'pending')}`}>
+                      {getStatusIcon(localRSVPs[client.id]?.status ?? 'pending')}
                       </div>
                     </div>
                   </div>
@@ -231,7 +231,7 @@ export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="client-select">Select Client</Label>
-                <Select value={selectedClient || ''} onValueChange={setSelectedClient}>
+                <Select value={selectedClient ?? ''} onValueChange={setSelectedClient}>
                   <SelectTrigger>
                     <SelectValue placeholder="Choose a client to edit notes" />
                   </SelectTrigger>
@@ -252,7 +252,7 @@ export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
                   </Label>
                   <Textarea
                     id="notes"
-                    value={localRSVPs[selectedClient]?.notes || ''}
+                    value={localRSVPs[selectedClient]?.notes ?? ''}
                     onChange={(e) => handleNotesChange(selectedClient, e.target.value)}
                     placeholder="Add notes about this client's RSVP..."
                     rows={4}

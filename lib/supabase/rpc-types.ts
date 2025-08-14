@@ -11,6 +11,7 @@ export interface CreateClientIntakeParams {
 
 export interface CreateClientIntakeResult {
   // This function returns void, so no result type needed
+  _void: never;
 }
 
 // Add more RPC function types here as you create them

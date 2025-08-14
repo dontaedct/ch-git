@@ -5,17 +5,28 @@ import { useId, useMemo, useState } from "react"
 import { intakeFormSchema } from "@/lib/validation"
 import { z } from "zod"
 
-type FormState = z.infer<typeof intakeFormSchema>
-type Errors = Partial<Record<keyof FormState, string>>
+interface FormState {
+  full_name: string
+  phone: string
+  email: string
+  consent: boolean
+}
 
-export function IntakeForm({
+interface Errors {
+  full_name?: string
+  phone?: string
+  email?: string
+  consent?: string
+}
+
+export default function IntakeForm({
   onSubmitted,
 }: {
   onSubmitted?: () => void
 }) {
   const idPrefix = useId()
   const [form, setForm] = useState<FormState>({
-    name: "",
+    full_name: "",
     phone: "",
     email: "",
     consent: false,
@@ -69,17 +80,17 @@ export function IntakeForm({
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
-          <label htmlFor={`${idPrefix}-name`} className="block text-sm font-medium text-gray-800">
+          <label htmlFor={`${idPrefix}-full_name`} className="block text-sm font-medium text-gray-800">
             Full name
           </label>
           <input
-            id={`${idPrefix}-name`}
+            id={`${idPrefix}-full_name`}
             type="text"
-            value={form.name}
-            onChange={(e) => onChange("name", e.target.value)}
+            value={form.full_name}
+            onChange={(e) => onChange("full_name", e.target.value)}
             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
           />
-          {errors.name && <p className="mt-1 text-xs text-red-600">{errors.name}</p>}
+          {errors.full_name && <p className="mt-1 text-xs text-red-600">{errors.full_name}</p>}
         </div>
 
         <div>

@@ -292,7 +292,7 @@ export default function TrainerProfilePage() {
                       id="years_experience"
                       name="years_experience"
                       type="number"
-                      value={profile.years_experience || ''}
+                      value={profile.years_experience ?? ''}
                       onChange={(e) => setProfile(prev => ({ ...prev, years_experience: parseInt(e.target.value) ?? null }))}
                       min="0"
                       max="50"
@@ -309,7 +309,7 @@ export default function TrainerProfilePage() {
                       id="hourly_rate"
                       name="hourly_rate"
                       type="number"
-                      value={profile.hourly_rate || ''}
+                      value={profile.hourly_rate ?? ''}
                       onChange={(e) => setProfile(prev => ({ ...prev, hourly_rate: parseInt(e.target.value) ?? null }))}
                       min="0"
                       placeholder="75"

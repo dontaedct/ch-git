@@ -1,17 +1,17 @@
 import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient as createSSRServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { getEnv } from "@/lib/env";
 
 /** Authenticated client bound to request cookies */
-export function createServerSupabase() {
+export async function createServerSupabase() {
   const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = getEnv();
-  const cookieStore = cookies();
-  return createServerClient(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, {
+  const cookieStore = await cookies();
+  return createSSRServerClient(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, {
     cookies: {
       get: (n: string) => cookieStore.get(n)?.value,
-      set: (n: string, v: string, o: any) => cookieStore.set({ name: n, value: v, ...o }),
-      remove: (n: string, o: any) => cookieStore.set({ name: n, value: "", ...o }),
+      set: (n: string, v: string, o: { path?: string; domain?: string; maxAge?: number; secure?: boolean; httpOnly?: boolean; sameSite?: "strict" | "lax" | "none" }) => { cookieStore.set({ name: n, value: v, ...o }); return; },
+      remove: (n: string, o: { path?: string; domain?: string }) => { cookieStore.set({ name: n, value: "", ...o }); return; },
     },
   });
 }

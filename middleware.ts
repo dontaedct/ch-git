@@ -8,7 +8,7 @@ export function middleware(req: Request) {
   const url = new URL(req.url);
   if (!url.pathname.startsWith("/api/")) return NextResponse.next();
 
-  const ip = (req.headers.get("x-forwarded-for") || "local").split(",")[0].trim();
+  const ip = (req.headers.get("x-forwarded-for") ?? "local").split(",")[0]?.trim() ?? "local";
   const now = Date.now();
   const slot = store.get(ip) ?? { count: 0, ts: now };
   if (now - slot.ts > WINDOW) { slot.count = 0; slot.ts = now; }
@@ -21,3 +21,5 @@ export function middleware(req: Request) {
 }
 
 export const config = { matcher: "/api/:path*" };
+
+

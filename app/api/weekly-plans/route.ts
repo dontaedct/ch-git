@@ -1,18 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase/server";
 import { requireUser } from "@/lib/auth/guard";
-import { ok, fail } from "@/lib/errors";
+import { ok, fail, asResponse } from "@/lib/errors";
 import { withSentry } from "@/lib/sentry-wrapper";
 import { paginationSchema } from "@/lib/validation";
-import { applyPagination } from "@/lib/utils";
-import { WeeklyPlan } from "@/lib/supabase/types";
+
 
 export const revalidate = 60;
 
 async function GETHandler(req: NextRequest) {
   try {
-    const user = await requireUser();
-    const supabase = await createServerClient();
+    const { user, supabase } = await requireUser();
 
     // Parse and validate pagination parameters
     const { searchParams } = new URL(req.url);
@@ -31,24 +28,31 @@ async function GETHandler(req: NextRequest) {
       .eq("coach_id", user.id)
       .order("week_start_date", { ascending: false });
 
+    // Get total count first
+    const { count: totalCount } = await supabase
+      .from("weekly_plans")
+      .select("*", { count: "exact", head: true })
+      .eq("coach_id", user.id);
+
     // Apply pagination
-    const { data, total } = await applyPagination<WeeklyPlan>(
-      baseQuery,
-      validatedPage,
-      validatedPageSize
-    );
+    const offset = (validatedPage - 1) * validatedPageSize;
+    const { data, error } = await baseQuery
+      .select("*")
+      .range(offset, offset + validatedPageSize - 1);
+
+    if (error) throw error;
 
     return NextResponse.json(ok({
-      data,
+      data: data ?? [],
       page: validatedPage,
       pageSize: validatedPageSize,
-      total,
+      total: totalCount ?? 0,
     }));
   } catch (error) {
     if (error instanceof Error) {
-      return fail(error.message, "VALIDATION_ERROR", 400);
+      return asResponse(fail(error.message, "VALIDATION_ERROR"), 400);
     }
-    return fail("Internal server error", "INTERNAL_ERROR", 500);
+    return asResponse(fail("Internal server error", "INTERNAL_ERROR"), 500);
   }
 }
 

@@ -115,7 +115,7 @@ export default function SessionList({
           mode="create"
           onSubmit={async (formData) => {
             if (process.env.NODE_ENV !== "production") {
-              console.log('Creating session:', formData)
+              console.warn('Creating session:', formData)
             }
           }}
         />
@@ -130,7 +130,7 @@ export default function SessionList({
                 <div className="space-y-1 min-w-0 flex-1">
                   <CardTitle className="text-base sm:text-lg truncate">{session.title}</CardTitle>
                   <CardDescription className="line-clamp-2 text-sm">
-                    {session.description || 'No description provided'}
+                    {session.description ?? 'No description provided'}
                   </CardDescription>
                 </div>
                 <Badge className={`${getStatusColor(session)} ml-2 flex-shrink-0`}>
@@ -149,7 +149,7 @@ export default function SessionList({
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Clock className="w-4 h-4" />
-                  <span>{formatDuration(session.duration_minutes)}</span>
+                  <span>{session.duration_minutes ? formatDuration(session.duration_minutes) : 'Duration TBD'}</span>
                 </div>
                 
                 {session.location && (
@@ -212,7 +212,7 @@ export default function SessionList({
           onSubmit={async (formData) => {
             if (onEditSession) {
               if (process.env.NODE_ENV !== "production") {
-                console.log('Editing session:', formData)
+                console.warn('Editing session:', formData)
               }
             }
             setEditingSession(null)

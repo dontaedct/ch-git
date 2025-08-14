@@ -3,7 +3,7 @@ import { ok, fail } from "@/lib/errors";
 
 export async function GET() {
   try {
-    const supabase = createServerSupabase();
+    const supabase = await createServerSupabase();
     const { error } = await supabase.from("sessions").select("id").limit(1);
     const db = !error;
     return Response.json(ok({
@@ -14,7 +14,7 @@ export async function GET() {
       },
       db,
     }));
-  } catch (e) {
+  } catch {
     return Response.json(fail("health failed"), { status: 500 });
   }
 }

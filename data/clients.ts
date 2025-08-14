@@ -4,6 +4,7 @@ export const clients: Client[] = [
   {
     id: '1',
     coach_id: 'coach-1',
+    full_name: 'John Doe',
     email: 'john.doe@example.com',
     first_name: 'John',
     last_name: 'Doe',
@@ -16,6 +17,7 @@ export const clients: Client[] = [
   {
     id: '2',
     coach_id: 'coach-1',
+    full_name: 'Jane Smith',
     email: 'jane.smith@example.com',
     first_name: 'Jane',
     last_name: 'Smith',
@@ -28,6 +30,7 @@ export const clients: Client[] = [
   {
     id: '3',
     coach_id: 'coach-1',
+    full_name: 'Mike Johnson',
     email: 'mike.johnson@example.com',
     first_name: 'Mike',
     last_name: 'Johnson',

@@ -1,0 +1,22 @@
+{
+  "ok": true,
+  "artifacts": [
+    {
+      "type": "git",
+      "ok": true,
+      "path": "C:\\Users\\Dontae-PC\\my-app\\.backups\\2025-08-14\\003227\\repo.bundle"
+    },
+    {
+      "type": "project",
+      "ok": true,
+      "path": "C:\\Users\\Dontae-PC\\my-app\\.backups\\2025-08-14\\003227\\project.zip"
+    },
+    {
+      "type": "db",
+      "ok": false,
+      "reason": "No SUPABASE_DB_URL provided"
+    }
+  ],
+  "startedAt": "2025-08-14T04:32:27.504Z",
+  "finishedAt": "2025-08-14T04:32:32.525Z"
+}

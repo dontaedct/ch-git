@@ -18,6 +18,25 @@ interface DiagnosticInfo {
   category: ts.DiagnosticCategory;
 }
 
+// Helper function to convert diagnostic message to string
+function diagnosticToString(d: ts.Diagnostic): string {
+  if (typeof d.messageText === 'string') {
+    return d.messageText;
+  }
+  if (typeof d.messageText === 'object' && d.messageText !== null) {
+    // Handle DiagnosticMessageChain
+    const chain = d.messageText as ts.DiagnosticMessageChain;
+    let message = chain.messageText;
+    let current = chain.next;
+    while (current) {
+      message += current.messageText;
+      current = current.next;
+    }
+    return message;
+  }
+  return String(d.messageText);
+}
+
 class LightweightDoctorRunner {
   private project: Project;
   private options: DoctorOptions;
@@ -114,18 +133,18 @@ class LightweightDoctorRunner {
       for (const diagnostic of allDiagnostics) {
         this.checkTimeout();
         
-        if (diagnostic.getCategory() === ts.DiagnosticCategory.Error) {
-          const file = diagnostic.getSourceFile();
-          if (file && diagnostic.getStart()) {
-            const startPos = diagnostic.getStart()!;
-            const { line, character } = ts.getLineAndCharacterOfPosition(file.compilerNode, startPos);
+        if (diagnostic.category === ts.DiagnosticCategory.Error) {
+          const file = diagnostic.file;
+          if (file && diagnostic.start !== undefined) {
+            const startPos = diagnostic.start;
+            const { line, character } = ts.getLineAndCharacterOfPosition(file, startPos);
             diagnostics.push({
-              code: diagnostic.getCode(),
-              message: diagnostic.getMessageText() as string,
-              file: this.getRelativePath(file.getFilePath()),
+              code: diagnostic.code,
+              message: diagnosticToString(diagnostic),
+              file: this.getRelativePath(file.fileName),
               line: line + 1,
               character: character + 1,
-              category: diagnostic.getCategory()
+              category: diagnostic.category
             });
             errorCount++;
             

@@ -1,426 +1,220 @@
 #!/usr/bin/env node
 
 /**
- * 🛡️ GUARDIAN - Automated Safety System
+ * 🛡️ GUARDIAN - Real Restorable Backup System
  * 
- * This system provides comprehensive protection against:
- * - Data corruption
- * - Code loss
- * - Security vulnerabilities
- * - Type system breakdowns
- * - Import failures
- * - Uncommitted work
+ * This system provides comprehensive, restorable backups:
+ * - Git bundle of the repo
+ * - Zipped snapshot of project (excluding node_modules, .next, etc.)
+ * - Optional Supabase DB dump if SUPABASE_DB_URL is provided
  * 
- * Follows universal header rules perfectly and integrates with existing systems
+ * Backups live under ".backups/YYYY-MM-DD/HHmmss/"
+ * Follows universal header rules perfectly
  */
 
-const { execSync, spawn } = require('child_process');
+const { spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { promisify } = require('util');
 
-class Guardian {
+// Promisify fs functions
+const mkdir = promisify(fs.mkdir);
+const writeFile = promisify(fs.writeFile);
+const readdir = promisify(fs.readdir);
+const stat = promisify(fs.stat);
+
+class GuardianBackup {
   constructor() {
     this.projectRoot = process.cwd();
-    this.backupDir = path.join(this.projectRoot, '.guardian-backups');
-    this.logFile = path.join(this.projectRoot, '.guardian.log');
-    this.configFile = path.join(this.projectRoot, '.guardian.config.json');
-    this.ensureBackupDir();
-    this.loadConfig();
+    this.backupsDir = path.join(this.projectRoot, '.backups');
+    this.metaDir = path.join(this.backupsDir, 'meta');
+    this.isRunning = false;
+    this.watchInterval = null;
   }
 
-  ensureBackupDir() {
-    if (!fs.existsSync(this.backupDir)) {
-      fs.mkdirSync(this.backupDir, { recursive: true });
-    }
+  async ensureDirectories() {
+    await mkdir(this.backupsDir, { recursive: true });
+    await mkdir(this.metaDir, { recursive: true });
   }
 
-  loadConfig() {
-    if (fs.existsSync(this.configFile)) {
-      this.config = JSON.parse(fs.readFileSync(this.configFile, 'utf8'));
-    } else {
-      this.config = {
-        autoBackup: true,
-        backupInterval: 300000, // 5 minutes
-        maxBackups: 10,
-        healthCheckInterval: 60000, // 1 minute
-        gitAutoCommit: true,
-        gitAutoPush: false, // Manual approval for pushes
-        notifications: true,
-        criticalThresholds: {
-          typescriptErrors: 10,
-          eslintViolations: 5,
-          uncommittedFiles: 20
-        }
-      };
-      this.saveConfig();
-    }
+  getBackupPath() {
+    const now = new Date();
+    const date = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const time = now.toTimeString().split(' ')[0].replace(/:/g, ''); // HHmmss
+    const backupPath = path.join(this.backupsDir, date, time);
+    return { date, time, backupPath };
   }
 
-  saveConfig() {
-    fs.writeFileSync(this.configFile, JSON.stringify(this.config, null, 2));
-  }
-
-  log(message, level = 'INFO') {
-    const timestamp = new Date().toISOString();
-    const logEntry = `[${timestamp}] [${level}] ${message}\n`;
-    fs.appendFileSync(this.logFile, logEntry);
-    
-    if (this.config.notifications) {
-      console.log(`🛡️ [${level}] ${message}`);
-    }
-  }
-
-  async runCommand(command, options = {}) {
-    try {
-      const result = execSync(command, {
+  async spawnCommand(command, args, options = {}) {
+    return new Promise((resolve) => {
+      const child = spawn(command, args, {
         cwd: this.projectRoot,
-        encoding: 'utf8',
+        stdio: ['pipe', 'pipe', 'pipe'],
         ...options
       });
-      return { success: true, output: result };
-    } catch (error) {
-      return { success: false, error: error.message, output: error.stdout || '' };
-    }
+
+      let stdout = '';
+      let stderr = '';
+
+      child.stdout?.on('data', (data) => {
+        stdout += data.toString();
+      });
+
+      child.stderr?.on('data', (data) => {
+        stderr += data.toString();
+      });
+
+      child.on('close', (code) => {
+        resolve({
+          success: code === 0,
+          exitCode: code,
+          stdout,
+          stderr
+        });
+      });
+
+      child.on('error', (error) => {
+        resolve({
+          success: false,
+          exitCode: -1,
+          stdout,
+          stderr: error.message
+        });
+      });
+    });
   }
 
-  async healthCheck() {
-    this.log('Starting comprehensive health check...', 'HEALTH');
+  async createGitBundle(backupPath) {
+    console.log('📦 Creating git bundle...');
     
-    const results = {
-      git: await this.checkGitHealth(),
-      typescript: await this.checkTypeScriptHealth(),
-      eslint: await this.checkESLintHealth(),
-      dependencies: await this.checkDependenciesHealth(),
-      security: await this.checkSecurityHealth(),
-      backup: await this.checkBackupHealth()
-    };
+    const result = await this.spawnCommand('git', [
+      'bundle', 'create', 
+      path.join(backupPath, 'repo.bundle'), 
+      '--all'
+    ]);
 
-    const criticalIssues = this.analyzeHealthResults(results);
-    
-    if (criticalIssues.length > 0) {
-      this.log(`🚨 CRITICAL ISSUES DETECTED: ${criticalIssues.length}`, 'CRITICAL');
-      criticalIssues.forEach(issue => this.log(`  - ${issue}`, 'CRITICAL'));
-      
-      // Auto-recovery attempts
-      await this.attemptAutoRecovery(criticalIssues);
+    if (result.success) {
+      console.log('✅ Git bundle created successfully');
+      return { ok: true, path: path.join(backupPath, 'repo.bundle') };
     } else {
-      this.log('✅ All systems healthy!', 'HEALTH');
-    }
-
-    return results;
-  }
-
-  async checkGitHealth() {
-    const result = await this.runCommand('git status --porcelain');
-    if (!result.success) {
-      return { status: 'ERROR', message: 'Git not available', details: result.error };
-    }
-
-    const uncommittedFiles = result.output.trim().split('\n').filter(line => line.trim());
-    const uncommittedCount = uncommittedFiles.length;
-
-    // Check if we have a remote
-    const remoteResult = await this.runCommand('git remote -v');
-    const hasRemote = remoteResult.success && remoteResult.output.trim().length > 0;
-
-    return {
-      status: uncommittedCount === 0 ? 'HEALTHY' : 'WARNING',
-      uncommittedFiles: uncommittedCount,
-      hasRemote,
-      details: uncommittedFiles
-    };
-  }
-
-  async checkTypeScriptHealth() {
-    try {
-      const result = await this.runCommand('npm run doctor');
-      if (!result.success) {
-        return { status: 'ERROR', message: 'TypeScript check failed', details: result.error };
-      }
-
-      // Parse the output to count errors
-      const errorLines = result.output.split('\n').filter(line => 
-        line.includes('error') || line.includes('Error') || line.includes('ERROR')
-      );
-      const errorCount = errorLines.length;
-
-      return {
-        status: errorCount === 0 ? 'HEALTHY' : 'WARNING',
-        errorCount,
-        details: errorLines.slice(0, 5) // First 5 errors
-      };
-    } catch (error) {
-      return { status: 'ERROR', message: 'TypeScript check unavailable', details: error.message };
+      console.log(`❌ Git bundle failed: ${result.stderr}`);
+      return { ok: false, reason: result.stderr };
     }
   }
 
-  async checkESLintHealth() {
-    try {
-      const result = await this.runCommand('npm run lint');
-      if (!result.success) {
-        return { status: 'ERROR', message: 'ESLint check failed', details: result.error };
-      }
-
-      // Parse the output to count violations
-      const violationLines = result.output.split('\n').filter(line => 
-        line.includes('error') || line.includes('warning')
-      );
-      const violationCount = violationLines.length;
-
-      return {
-        status: violationCount === 0 ? 'HEALTHY' : 'WARNING',
-        violationCount,
-        details: violationLines.slice(0, 5) // First 5 violations
-      };
-    } catch (error) {
-      return { status: 'ERROR', message: 'ESLint check unavailable', details: error.message };
-    }
-  }
-
-  async checkDependenciesHealth() {
-    try {
-      const result = await this.runCommand('npm audit --audit-level=moderate');
-      const hasVulnerabilities = result.output.includes('found');
-      
-      return {
-        status: hasVulnerabilities ? 'WARNING' : 'HEALTHY',
-        hasVulnerabilities,
-        details: hasVulnerabilities ? 'Security vulnerabilities detected' : 'No security issues'
-      };
-    } catch (error) {
-      return { status: 'ERROR', message: 'Dependency check failed', details: error.message };
-    }
-  }
-
-  async checkSecurityHealth() {
-    // Check for exposed secrets
-    const sensitivePatterns = [
-      /API_KEY\s*=\s*['"][^'"]+['"]/,
-      /SECRET\s*=\s*['"][^'"]+['"]/,
-      /PASSWORD\s*=\s*['"][^'"]+['"]/,
-      /TOKEN\s*=\s*['"][^'"]+['"]/
-    ];
-
-    const filesToCheck = [
-      '.env',
-      '.env.local',
-      '.env.production',
-      'package.json',
-      'next.config.ts'
-    ];
-
-    const issues = [];
-    
-    for (const file of filesToCheck) {
-      const filePath = path.join(this.projectRoot, file);
-      if (fs.existsSync(filePath)) {
-        const content = fs.readFileSync(filePath, 'utf8');
-        for (const pattern of sensitivePatterns) {
-          if (pattern.test(content)) {
-            issues.push(`Potential secret exposure in ${file}`);
-          }
-        }
-      }
-    }
-
-    return {
-      status: issues.length === 0 ? 'HEALTHY' : 'CRITICAL',
-      issues,
-      details: issues.length === 0 ? 'No security issues detected' : `${issues.length} potential issues`
-    };
-  }
-
-  async checkBackupHealth() {
-    const backupFiles = fs.readdirSync(this.backupDir).filter(file => file.endsWith('.zip'));
-    const backupCount = backupFiles.length;
-    const lastBackup = backupFiles.length > 0 ? 
-      fs.statSync(path.join(this.backupDir, backupFiles[backupFiles.length - 1])) : null;
-
-    const hoursSinceLastBackup = lastBackup ? 
-      (Date.now() - lastBackup.mtime.getTime()) / (1000 * 60 * 60) : Infinity;
-
-    return {
-      status: hoursSinceLastBackup <= 24 ? 'HEALTHY' : 'WARNING',
-      backupCount,
-      hoursSinceLastBackup,
-      details: `Last backup: ${hoursSinceLastBackup.toFixed(1)} hours ago`
-    };
-  }
-
-  analyzeHealthResults(results) {
-    const criticalIssues = [];
-
-    // Git health analysis
-    if (results.git.status === 'ERROR') {
-      criticalIssues.push('Git system unavailable');
-    }
-    if (results.git.uncommittedFiles > this.config.criticalThresholds.uncommittedFiles) {
-      criticalIssues.push(`Too many uncommitted files: ${results.git.uncommittedFiles}`);
-    }
-    if (!results.git.hasRemote) {
-      criticalIssues.push('No remote backup configured - work at risk!');
-    }
-
-    // TypeScript health analysis
-    if (results.typescript.status === 'ERROR') {
-      criticalIssues.push('TypeScript system unavailable');
-    }
-    if (results.typescript.errorCount > this.config.criticalThresholds.typescriptErrors) {
-      criticalIssues.push(`Too many TypeScript errors: ${results.typescript.errorCount}`);
-    }
-
-    // ESLint health analysis
-    if (results.eslint.status === 'ERROR') {
-      criticalIssues.push('ESLint system unavailable');
-    }
-    if (results.eslint.violationCount > this.config.criticalThresholds.eslintViolations) {
-      criticalIssues.push(`Too many ESLint violations: ${results.eslint.violationCount}`);
-    }
-
-    // Security analysis
-    if (results.security.status === 'CRITICAL') {
-      criticalIssues.push('Security vulnerabilities detected');
-    }
-
-    // Backup analysis
-    if (results.backup.hoursSinceLastBackup > 24) {
-      criticalIssues.push('Backup is overdue');
-    }
-
-    return criticalIssues;
-  }
-
-  async attemptAutoRecovery(criticalIssues) {
-    this.log('Attempting auto-recovery...', 'RECOVERY');
-
-    for (const issue of criticalIssues) {
-      if (issue.includes('uncommitted files')) {
-        await this.autoCommit();
-      }
-      if (issue.includes('TypeScript errors')) {
-        await this.autoFixTypeScript();
-      }
-      if (issue.includes('ESLint violations')) {
-        await this.autoFixESLint();
-      }
-      if (issue.includes('No remote backup')) {
-        await this.setupRemoteBackup();
-      }
-    }
-  }
-
-  async autoCommit() {
-    if (!this.config.gitAutoCommit) return;
-
-    this.log('Auto-committing uncommitted changes...', 'RECOVERY');
+  async createProjectSnapshot(backupPath) {
+    console.log('📁 Creating project snapshot...');
     
     try {
-      await this.runCommand('git add .');
-      await this.runCommand('git commit -m "🛡️ Guardian auto-commit: emergency backup"');
-      this.log('Auto-commit successful', 'RECOVERY');
-    } catch (error) {
-      this.log(`Auto-commit failed: ${error.message}`, 'ERROR');
-    }
-  }
+      // Create a temporary directory for the snapshot
+      const tempDir = path.join(this.projectRoot, '.guardian-temp-snapshot');
+      await mkdir(tempDir, { recursive: true });
 
-  async autoFixTypeScript() {
-    this.log('Attempting TypeScript auto-fix...', 'RECOVERY');
-    
-    try {
-      const result = await this.runCommand('npm run doctor:fix');
-      if (result.success) {
-        this.log('TypeScript auto-fix successful', 'RECOVERY');
-      } else {
-        this.log(`TypeScript auto-fix failed: ${result.error}`, 'ERROR');
-      }
-    } catch (error) {
-      this.log(`TypeScript auto-fix unavailable: ${error.message}`, 'ERROR');
-    }
-  }
-
-  async autoFixESLint() {
-    this.log('Attempting ESLint auto-fix...', 'RECOVERY');
-    
-    try {
-      const result = await this.runCommand('npm run lint:fix');
-      if (result.success) {
-        this.log('ESLint auto-fix successful', 'RECOVERY');
-      } else {
-        this.log(`ESLint auto-fix failed: ${result.error}`, 'ERROR');
-      }
-    } catch (error) {
-      this.log(`ESLint auto-fix unavailable: ${error.message}`, 'ERROR');
-    }
-  }
-
-  async setupRemoteBackup() {
-    this.log('Setting up remote backup...', 'RECOVERY');
-    
-    // This would typically require user interaction, but we can prepare the commands
-    const commands = [
-      'git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git',
-      'git push -u origin master'
-    ];
-    
-    this.log('Remote backup setup commands prepared:', 'RECOVERY');
-    commands.forEach(cmd => this.log(`  ${cmd}`, 'RECOVERY'));
-    this.log('Please run these commands manually to complete setup', 'RECOVERY');
-  }
-
-  async createBackup() {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const backupName = `guardian-backup-${timestamp}.zip`;
-    const backupPath = path.join(this.backupDir, backupName);
-
-    this.log(`Creating backup: ${backupName}`, 'BACKUP');
-
-    try {
-      // Create a temporary directory for the backup
-      const tempDir = path.join(this.projectRoot, '.guardian-temp');
-      if (fs.existsSync(tempDir)) {
-        fs.rmSync(tempDir, { recursive: true });
-      }
-      fs.mkdirSync(tempDir, { recursive: true });
-
-      // Copy essential files (excluding node_modules, .git, etc.)
+      // Copy project files excluding specified directories
       const excludePatterns = [
         'node_modules',
-        '.git',
-        '.guardian-backups',
-        '.guardian-temp',
         '.next',
+        '.turbo',
+        '.vercel',
+        '.git',
+        '.backups',
+        '.guardian-temp-snapshot',
         'dist',
         'build'
       ];
 
-      this.copyDirectory(this.projectRoot, tempDir, excludePatterns);
+      await this.copyDirectory(this.projectRoot, tempDir, excludePatterns);
 
-      // Create zip file (simplified - in production you'd use a proper zip library)
-      const backupContent = JSON.stringify({
-        timestamp: new Date().toISOString(),
-        version: '1.0.0',
-        files: this.scanDirectory(tempDir),
-        health: await this.healthCheck()
-      }, null, 2);
+      // Create zip file using PowerShell Compress-Archive on Windows, zip on Unix
+      let zipResult;
+      if (process.platform === 'win32') {
+        // Use PowerShell Compress-Archive on Windows
+        const projectZipPath = path.join(backupPath, 'project.zip');
+        zipResult = await this.spawnCommand('powershell', [
+          '-Command',
+          `Compress-Archive -Path "${tempDir}\\*" -DestinationPath "${projectZipPath}" -Force`
+        ]);
+      } else {
+        // Use zip command on Unix systems
+        zipResult = await this.spawnCommand('zip', [
+          '-r', 
+          path.join(backupPath, 'project.zip'),
+          '.'
+        ], { cwd: tempDir });
+      }
 
-      fs.writeFileSync(backupPath, backupContent);
-      
       // Clean up temp directory
-      fs.rmSync(tempDir, { recursive: true });
+      await this.cleanupDirectory(tempDir);
 
-      // Manage backup retention
-      this.manageBackupRetention();
-
-      this.log(`Backup created successfully: ${backupPath}`, 'BACKUP');
-      return backupPath;
+      if (zipResult.success) {
+        console.log('✅ Project snapshot created successfully');
+        return { ok: true, path: path.join(backupPath, 'project.zip') };
+      } else {
+        console.log(`❌ Project snapshot failed: ${zipResult.stderr}`);
+        return { ok: false, reason: zipResult.stderr };
+      }
     } catch (error) {
-      this.log(`Backup failed: ${error.message}`, 'ERROR');
-      return null;
+      console.log(`❌ Project snapshot failed: ${error.message}`);
+      return { ok: false, reason: error.message };
     }
   }
 
-  copyDirectory(src, dest, excludePatterns) {
-    const items = fs.readdirSync(src);
+  async createDatabaseDump(backupPath) {
+    const dbUrl = process.env.SUPABASE_DB_URL;
+    if (!dbUrl) {
+      console.log('ℹ️ No SUPABASE_DB_URL provided, skipping database dump');
+      return { ok: false, reason: 'No SUPABASE_DB_URL provided' };
+    }
+
+    console.log('🗄️ Creating database dump...');
+    
+    // Extract connection details from URL (masked in logs)
+    const maskedUrl = dbUrl.replace(/\/\/[^:]+:[^@]+@/, '//***:***@');
+    console.log(`🔗 Connecting to database: ${maskedUrl.split('@')[1] || '***'}`);
+
+    try {
+      // Parse connection string to extract host, port, database, username
+      const url = new URL(dbUrl);
+      const host = url.hostname;
+      const port = url.port || '5432';
+      const database = url.pathname.slice(1);
+      const username = url.username;
+      
+      // Note: password is in url.password but we don't log it
+      
+      const result = await this.spawnCommand('pg_dump', [
+        '--host', host,
+        '--port', port,
+        '--username', username,
+        '--dbname', database,
+        '--no-owner',
+        '--no-privileges',
+        '--format', 'custom',
+        '--file', path.join(backupPath, 'db.dump')
+      ], {
+        env: { ...process.env, PGPASSWORD: url.password }
+      });
+
+      if (result.success) {
+        console.log('✅ Database dump created successfully');
+        return { ok: true, path: path.join(backupPath, 'db.dump') };
+      } else {
+        if (result.stderr.includes('command not found') || result.stderr.includes('pg_dump')) {
+          console.log('⚠️ pg_dump not found, skipping database dump');
+          return { ok: false, reason: 'pg_dump not found' };
+        } else {
+          console.log(`❌ Database dump failed: ${result.stderr}`);
+          return { ok: false, reason: result.stderr };
+        }
+      }
+    } catch (error) {
+      console.log(`❌ Database dump failed: ${error.message}`);
+      return { ok: false, reason: error.message };
+    }
+  }
+
+  async copyDirectory(src, dest, excludePatterns) {
+    const items = await readdir(src);
     
     for (const item of items) {
       if (excludePatterns.some(pattern => item.includes(pattern))) {
@@ -430,171 +224,245 @@ class Guardian {
       const srcPath = path.join(src, item);
       const destPath = path.join(dest, item);
       
-      if (fs.statSync(srcPath).isDirectory()) {
-        fs.mkdirSync(destPath, { recursive: true });
-        this.copyDirectory(srcPath, destPath, excludePatterns);
-      } else {
-        fs.copyFileSync(srcPath, destPath);
+      try {
+        const stats = await stat(srcPath);
+        if (stats.isDirectory()) {
+          await mkdir(destPath, { recursive: true });
+          await this.copyDirectory(srcPath, destPath, excludePatterns);
+        } else {
+          // Copy file
+          const fs = require('fs');
+          fs.copyFileSync(srcPath, destPath);
+        }
+      } catch (error) {
+        // Skip files we can't copy
+        console.log(`⚠️ Skipping ${item}: ${error.message}`);
       }
     }
   }
 
-  scanDirectory(dir) {
-    const files = [];
-    const scan = (currentDir, relativePath = '') => {
-      const items = fs.readdirSync(currentDir);
+  async cleanupDirectory(dirPath) {
+    try {
+      const fs = require('fs');
+      if (fs.existsSync(dirPath)) {
+        fs.rmSync(dirPath, { recursive: true, force: true });
+      }
+    } catch (error) {
+      console.log(`⚠️ Could not clean up ${dirPath}: ${error.message}`);
+    }
+  }
+
+  async writeMetadata(backupPath, artifacts, startedAt, finishedAt) {
+    // Consider backup successful if git and project are both working
+    // DB backup is optional and can fail without affecting overall success
+    const gitOk = artifacts.find(a => a.type === 'git')?.ok;
+    const projectOk = artifacts.find(a => a.type === 'project')?.ok;
+    const ok = gitOk && projectOk;
+    
+    const metadata = {
+      ok,
+      artifacts: artifacts.map(a => ({
+        type: a.type,
+        ok: a.ok,
+        path: a.path,
+        reason: a.reason
+      })),
+      startedAt,
+      finishedAt
+    };
+
+    const metadataPath = path.join(this.metaDir, 'last.json');
+    await writeFile(metadataPath, JSON.stringify(metadata, null, 2));
+    
+    console.log('📝 Metadata written to .backups/meta/last.json');
+    return metadata;
+  }
+
+  async createBackup() {
+    if (this.isRunning) {
+      console.log('⚠️ Backup already in progress, skipping...');
+      return;
+    }
+
+    this.isRunning = true;
+    const startedAt = new Date().toISOString();
+    
+    try {
+      console.log('🚀 Starting Guardian backup...');
       
-      for (const item of items) {
-        const fullPath = path.join(currentDir, item);
-        const relativeItemPath = path.join(relativePath, item);
-        
-        if (fs.statSync(fullPath).isDirectory()) {
-          scan(fullPath, relativeItemPath);
-        } else {
-          files.push(relativeItemPath);
-        }
+      // Ensure directories exist
+      await this.ensureDirectories();
+      
+      // Create backup directory structure
+      const { date, time, backupPath } = this.getBackupPath();
+      await mkdir(backupPath, { recursive: true });
+      
+      console.log(`📁 Backup directory: ${backupPath}`);
+      
+      // Create backups
+      const gitResult = await this.createGitBundle(backupPath);
+      const projectResult = await this.createProjectSnapshot(backupPath);
+      const dbResult = await this.createDatabaseDump(backupPath);
+      
+      const artifacts = [
+        { type: 'git', ...gitResult },
+        { type: 'project', ...projectResult },
+        { type: 'db', ...dbResult }
+      ];
+      
+      const finishedAt = new Date().toISOString();
+      
+      // Write metadata
+      const metadata = await this.writeMetadata(backupPath, artifacts, startedAt, finishedAt);
+      
+      // Summary
+      const successCount = artifacts.filter(a => a.ok).length;
+      const totalCount = artifacts.length;
+      
+      console.log(`\n🎉 Backup completed! ${successCount}/${totalCount} artifacts successful`);
+      console.log(`📁 Location: ${backupPath}`);
+      console.log(`📝 Metadata: .backups/meta/last.json`);
+      
+      if (metadata.ok) {
+        console.log('✅ All critical backups successful');
+      } else {
+        console.log('⚠️ Some backups failed, check metadata for details');
+      }
+      
+      return metadata;
+      
+    } catch (error) {
+      console.log(`❌ Backup failed: ${error.message}`);
+      const finishedAt = new Date().toISOString();
+      
+      const metadata = {
+        ok: false,
+        artifacts: [],
+        startedAt,
+        finishedAt,
+        error: error.message
+      };
+      
+      await this.writeMetadata('', [], startedAt, finishedAt);
+      return metadata;
+      
+    } finally {
+      this.isRunning = false;
+    }
+  }
+
+  async startWatching() {
+    console.log('👀 Starting watch mode - backups every 60 minutes with jitter');
+    
+    const runBackup = async () => {
+      if (!this.isRunning) {
+        await this.createBackup();
       }
     };
     
-    scan(dir);
-    return files;
+    // Initial backup
+    await runBackup();
+    
+    // Set up interval with jitter (55-65 minutes)
+    this.watchInterval = setInterval(async () => {
+      const jitter = Math.random() * 10 - 5; // -5 to +5 minutes
+      const delay = (60 + jitter) * 60 * 1000;
+      
+      setTimeout(runBackup, delay);
+    }, 60 * 60 * 1000); // Check every hour
+    
+    console.log('✅ Watch mode active');
   }
 
-  manageBackupRetention() {
-    const backupFiles = fs.readdirSync(this.backupDir)
-      .filter(file => file.endsWith('.zip'))
-      .map(file => ({
-        name: file,
-        path: path.join(this.backupDir, file),
-        stats: fs.statSync(path.join(this.backupDir, file))
-      }))
-      .sort((a, b) => b.stats.mtime.getTime() - a.stats.mtime.getTime());
-
-    // Keep only the most recent backups
-    if (backupFiles.length > this.config.maxBackups) {
-      const toDelete = backupFiles.slice(this.config.maxBackups);
-      toDelete.forEach(backup => {
-        fs.unlinkSync(backup.path);
-        this.log(`Deleted old backup: ${backup.name}`, 'CLEANUP');
-      });
+  stopWatching() {
+    if (this.watchInterval) {
+      clearInterval(this.watchInterval);
+      this.watchInterval = null;
+      console.log('⏹️ Watch mode stopped');
     }
   }
 
-  async startMonitoring() {
-    this.log('Starting Guardian monitoring system...', 'STARTUP');
-    
-    // Initial health check
-    await this.healthCheck();
-    
-    // Set up monitoring intervals
-    this.healthCheckInterval = setInterval(async () => {
-      await this.healthCheck();
-    }, this.config.healthCheckInterval);
-
-    this.backupInterval = setInterval(async () => {
-      if (this.config.autoBackup) {
-        await this.createBackup();
+  showStatus() {
+    try {
+      const metadataPath = path.join(this.metaDir, 'last.json');
+      
+      if (fs.existsSync(metadataPath)) {
+        const data = fs.readFileSync(metadataPath, 'utf8');
+        const status = JSON.parse(data);
+        
+        process.stdout.write('📊 Last Backup Status:\n');
+        process.stdout.write(JSON.stringify(status, null, 2) + '\n');
+        
+        if (status.artifacts) {
+          process.stdout.write('\n📦 Artifacts:\n');
+          status.artifacts.forEach(artifact => {
+            const icon = artifact.ok ? '✅' : '❌';
+            process.stdout.write(`  ${icon} ${artifact.type}: ${artifact.ok ? 'OK' : artifact.reason}\n`);
+          });
+        }
+      } else {
+        process.stdout.write('❌ No backup status found\n');
       }
-    }, this.config.backupInterval);
-
-    this.log('Guardian monitoring system active', 'STARTUP');
-    this.log(`Health checks every ${this.config.healthCheckInterval / 1000}s`, 'STARTUP');
-    this.log(`Auto-backups every ${this.config.backupInterval / 1000}s`, 'STARTUP');
-  }
-
-  stopMonitoring() {
-    if (this.healthCheckInterval) {
-      clearInterval(this.healthCheckInterval);
+    } catch (error) {
+      process.stdout.write(`❌ Error reading status: ${error.message}\n`);
     }
-    if (this.backupInterval) {
-      clearInterval(this.backupInterval);
-    }
-    this.log('Guardian monitoring stopped', 'SHUTDOWN');
-  }
-
-  async emergencyBackup() {
-    this.log('🚨 EMERGENCY BACKUP TRIGGERED', 'EMERGENCY');
-    
-    // Force commit all changes
-    await this.autoCommit();
-    
-    // Create immediate backup
-    const backupPath = await this.createBackup();
-    
-    // Attempt to push to remote if available
-    if (this.config.gitAutoPush) {
-      try {
-        await this.runCommand('git push');
-        this.log('Emergency backup pushed to remote', 'EMERGENCY');
-      } catch (error) {
-        this.log(`Emergency push failed: ${error.message}`, 'ERROR');
-      }
-    }
-    
-    return backupPath;
   }
 }
 
 // CLI interface
 async function main() {
-  const guardian = new Guardian();
+  const guardian = new GuardianBackup();
   
-  const command = process.argv[2];
+  const args = process.argv.slice(2);
+  const command = args[0];
   
-  switch (command) {
-    case 'start':
-      await guardian.startMonitoring();
-      // Keep the process running
-      process.on('SIGINT', () => {
-        guardian.stopMonitoring();
-        process.exit(0);
-      });
-      break;
-      
-    case 'health':
-      const results = await guardian.healthCheck();
-      console.log(JSON.stringify(results, null, 2));
-      break;
-      
-    case 'backup':
-      const backupPath = await guardian.createBackup();
-      if (backupPath) {
-        console.log(`Backup created: ${backupPath}`);
-      }
-      break;
-      
-    case 'emergency':
-      const emergencyBackupPath = await guardian.emergencyBackup();
-      if (emergencyBackupPath) {
-        console.log(`Emergency backup created: ${emergencyBackupPath}`);
-      }
-      break;
-      
-    case 'config':
-      console.log(JSON.stringify(guardian.config, null, 2));
-      break;
-      
-    default:
-      console.log(`
-🛡️ GUARDIAN - Automated Safety System
+  try {
+    switch (command) {
+      case '--once':
+        await guardian.createBackup();
+        break;
+        
+      case '--watch':
+        await guardian.startWatching();
+        
+        // Keep process running
+        process.on('SIGINT', () => {
+          guardian.stopWatching();
+          process.exit(0);
+        });
+        
+        // Keep alive
+        setInterval(() => {}, 1000);
+        break;
+        
+      case '--status':
+        await guardian.showStatus();
+        break;
+        
+      default:
+        console.log(`
+🛡️ GUARDIAN - Real Restorable Backup System
 
 Usage:
-  node scripts/guardian.js start      - Start monitoring
-  node scripts/guardian.js health     - Run health check
-  node scripts/guardian.js backup     - Create backup
-  node scripts/guardian.js emergency  - Emergency backup
-  node scripts/guardian.js config     - Show configuration
+  node scripts/guardian.js --once      - Run backup once
+  node scripts/guardian.js --watch     - Run backup every 60 minutes with jitter
+  node scripts/guardian.js --status    - Show last backup status
 
 Features:
-  ✅ Automated health monitoring
-  ✅ Auto-backup system
-  ✅ Auto-recovery attempts
-  ✅ Security vulnerability detection
-  ✅ Git health monitoring
-  ✅ TypeScript/ESLint health checks
-  ✅ Emergency backup system
-  ✅ Follows universal header rules perfectly
-      `);
+  ✅ Git bundle backup (repo.bundle)
+  ✅ Project snapshot (project.zip)
+  ✅ Optional database dump (db.dump)
+  ✅ Metadata tracking (.backups/meta/last.json)
+  ✅ Idempotent operations
+  ✅ Non-blocking child processes
+  ✅ Graceful degradation
+
+Backup Location: .backups/YYYY-MM-DD/HHmmss/
+        `);
+    }
+  } catch (error) {
+    console.error(`❌ Error: ${error.message}`);
+    process.exit(1);
   }
 }
 
@@ -602,4 +470,4 @@ if (require.main === module) {
   main().catch(console.error);
 }
 
-module.exports = Guardian;
+module.exports = GuardianBackup;

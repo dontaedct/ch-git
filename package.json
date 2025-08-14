@@ -47,8 +47,16 @@
     "guardian:backup": "node scripts/guardian.js backup",
     "guardian:emergency": "node scripts/guardian.js emergency",
     "guardian:config": "node scripts/guardian.js config",
+    "guardian:auto:pm2": "powershell -ExecutionPolicy Bypass -File scripts/guardian-pm2.ps1",
+    "guardian:auto:task": "powershell -ExecutionPolicy Bypass -File scripts/guardian-task.ps1",
+    "guardian:auto:pm2:universal": "scripts\\run-powershell.bat scripts\\guardian-pm2.ps1",
+    "guardian:auto:task:universal": "scripts\\run-powershell.bat scripts\\guardian-task.ps1",
+    "branch:protect:universal": "scripts\\run-powershell.bat scripts\\branch-protect.ps1",
     "safe:guardian": "npm run guardian:health && npm run safe",
-    "backup:auto": "npm run guardian:start"
+    "backup:auto": "npm run guardian:start",
+    "release:baseline": "powershell -ExecutionPolicy Bypass -Command \"$b=(git tag --list v0.1.0); if(-not $b){ git tag -a v0.1.0 -m 'Baseline: Guardian + CI + 0 TS errors' }; git push origin v0.1.0\"",
+    "safety:smoke": "node scripts/safety-smoke.cjs",
+    "restore:drill": "powershell -ExecutionPolicy Bypass -File scripts/restore-drill.ps1"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

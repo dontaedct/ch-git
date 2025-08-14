@@ -1,14 +1,3 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
-npm run doctor
-npm run ci
-
-# 🛡️ Guardian Safety Check
-echo "🛡️ Running Guardian safety check..."
-npm run guardian:health
-if [ $? -ne 0 ]; then
-  echo "❌ Guardian health check failed - commit blocked"
-  exit 1
-fi
-echo "✅ Guardian safety check passed"
+. "$(dirname "$0")/_/husky.sh"
+node scripts/prepush.cjs

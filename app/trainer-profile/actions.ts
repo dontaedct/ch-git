@@ -1,7 +1,6 @@
 "use server";
 
-import { createServerClient } from "@/lib/supabase/server";
-import { getUserOrFail } from "@/lib/auth/guard";
+import { createRealSupabaseClient } from "@/lib/supabase/server";
 import { sanitizeText } from "@/lib/sanitize";
 import { trainerProfileSchema } from "@/lib/validation";
 import type { Trainer } from "@/lib/supabase/types";
@@ -9,8 +8,10 @@ import type { ActionResult } from "@/lib/types";
 
 export async function createTrainerProfile(formData: FormData): ActionResult<{ id: string }> {
   try {
-    const supabase = await createServerClient();
-    const user = await getUserOrFail(supabase);
+    const supabase = await createRealSupabaseClient();
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) throw new Error("Unauthorized");
+    const user = authData.user;
     
     // Parse form data
     const specialties = formData.getAll("specialties").map(s => s.toString());
@@ -39,7 +40,10 @@ export async function createTrainerProfile(formData: FormData): ActionResult<{ i
       .single();
 
     if (error) throw error;
-    return { ok: true, data };
+    
+    // Type assertion for mock client compatibility
+    const typedData = data as { id: string };
+    return { ok: true, data: typedData };
   } catch (e: unknown) {
     const errorMessage = e instanceof Error ? e.message : 'Unknown error occurred';
     return { ok: false, error: errorMessage ?? "createTrainerProfile failed" };
@@ -48,8 +52,10 @@ export async function createTrainerProfile(formData: FormData): ActionResult<{ i
 
 export async function updateTrainerProfile(formData: FormData): ActionResult<{ id: string }> {
   try {
-    const supabase = await createServerClient();
-    const user = await getUserOrFail(supabase);
+    const supabase = await createRealSupabaseClient();
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) throw new Error("Unauthorized");
+    const user = authData.user;
     
     // Parse form data
     const specialties = formData.getAll("specialties").map(s => s.toString());
@@ -77,19 +83,25 @@ export async function updateTrainerProfile(formData: FormData): ActionResult<{ i
       throw new Error("Profile not found");
     }
 
+    // Type assertion for mock client compatibility
+    const typedExistingProfile = existingProfile as { id: string };
+
     const { data, error } = await supabase
       .from("trainers")
       .update({ 
         ...parsed, 
         updated_at: new Date().toISOString()
       })
-      .eq("id", existingProfile.id)
+      .eq("id", typedExistingProfile.id)
       .eq("user_id", user.id) // RLS security
       .select("id")
       .single();
 
     if (error) throw error;
-    return { ok: true, data };
+    
+    // Type assertion for mock client compatibility
+    const typedData = data as { id: string };
+    return { ok: true, data: typedData };
   } catch (e: unknown) {
     const errorMessage = e instanceof Error ? e.message : 'Unknown error occurred';
     return { ok: false, error: errorMessage ?? "updateTrainerProfile failed" };
@@ -98,8 +110,10 @@ export async function updateTrainerProfile(formData: FormData): ActionResult<{ i
 
 export async function getTrainerProfile(): ActionResult<Trainer | null> {
   try {
-    const supabase = await createServerClient();
-    const user = await getUserOrFail(supabase);
+    const supabase = await createRealSupabaseClient();
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) throw new Error("Unauthorized");
+    const user = authData.user;
 
     const { data, error } = await supabase
       .from("trainers")
@@ -111,7 +125,9 @@ export async function getTrainerProfile(): ActionResult<Trainer | null> {
       throw error;
     }
 
-    return { ok: true, data: data ?? null };
+    // Type assertion for mock client compatibility
+    const typedData = data as Trainer | null;
+    return { ok: true, data: typedData };
   } catch (e: unknown) {
     const errorMessage = e instanceof Error ? e.message : 'Unknown error occurred';
     return { ok: false, error: errorMessage ?? "getTrainerProfile failed" };

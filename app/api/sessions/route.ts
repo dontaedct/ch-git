@@ -1,15 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireUser } from "@/lib/auth/guard";
 import { ok, fail, asResponse } from "@/lib/errors";
 import { withSentry } from "@/lib/sentry-wrapper";
 import { paginationSchema } from "@/lib/validation";
+import { createRealSupabaseClient } from "@/lib/supabase/server";
 
-
-export const revalidate = 60;
+// Prevent prerendering - this route must be dynamic
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 async function GETHandler(req: NextRequest) {
   try {
-    const { user, supabase } = await requireUser();
+    const supabase = await createRealSupabaseClient();
+    
+    // Get user from Supabase directly
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return asResponse(fail("unauthorized", "UNAUTHORIZED"), 401);
+    }
 
     // Parse and validate pagination parameters
     const { searchParams } = new URL(req.url);

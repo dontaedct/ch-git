@@ -18,10 +18,11 @@ class DevelopmentFileWatcher {
   private isWatching = false;
   private fileStates = new Map<string, string>();
   private changeCallbacks: ((event: FileChangeEvent) => void)[] = [];
+  private routeChangeTimeout: NodeJS.Timeout | null = null;
 
   constructor() {
-    // Only enable in development
-    if (process.env.NODE_ENV === 'development') {
+    // Only enable when debug flag is set
+    if (process.env.NEXT_PUBLIC_DEBUG === '1') {
       this.init();
     }
   }
@@ -45,7 +46,7 @@ class DevelopmentFileWatcher {
       }
 
       // Listen for Next.js file changes
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NEXT_PUBLIC_DEBUG === '1') {
         this.setupNextJSFileWatching();
       }
     }
@@ -53,7 +54,7 @@ class DevelopmentFileWatcher {
 
   private setupNextJSFileWatching() {
     // Next.js development server file watching
-    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_DEBUG === '1') {
       // Monitor for route changes that might indicate file changes
       let lastPath = window.location.pathname;
       
@@ -61,9 +62,11 @@ class DevelopmentFileWatcher {
         const currentPath = window.location.pathname;
         if (currentPath !== lastPath) {
           // Route changed, check if we need to restore any auto-saved content
-          setTimeout(() => {
+          const timeoutId = setTimeout(() => {
             this.checkForRecovery();
           }, 100);
+          // Store timeout ID for cleanup
+          this.routeChangeTimeout = timeoutId;
           lastPath = currentPath;
         }
       };
@@ -88,11 +91,19 @@ class DevelopmentFileWatcher {
   }
 
   private setupAutoSave() {
-    // Set up periodic auto-save for development
-    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+    // Set up periodic auto-save when debug flag is set
+    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_DEBUG === '1') {
       setInterval(() => {
         this.forceAutoSave();
       }, 30000); // Auto-save every 30 seconds in development
+    }
+  }
+
+  // Cleanup method to prevent memory leaks
+  cleanup() {
+    if (this.routeChangeTimeout) {
+      clearTimeout(this.routeChangeTimeout);
+      this.routeChangeTimeout = null;
     }
   }
 
@@ -224,7 +235,7 @@ class DevelopmentFileWatcher {
 export const developmentFileWatcher = new DevelopmentFileWatcher();
 
 // Auto-start in development
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NEXT_PUBLIC_DEBUG === '1') {
   developmentFileWatcher.startWatching();
 }
 

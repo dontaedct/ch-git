@@ -1,0 +1,18 @@
+{
+  "security_threat:critical_threats_detected:audit_access|immediate_response|increase_monitoring": {
+    "type": "security_threat",
+    "indicators": [
+      "critical_threats_detected"
+    ],
+    "actions": [
+      "audit_access",
+      "immediate_response",
+      "increase_monitoring"
+    ],
+    "outcome": "success",
+    "confidence": 0.95,
+    "occurrences": 30,
+    "lastSeen": 1755239939408,
+    "successRate": 0.9333333333333333
+  }
+}

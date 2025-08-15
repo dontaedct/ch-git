@@ -29,10 +29,17 @@ export function AutoSaveStatus({ className, showAdvanced = false }: AutoSaveStat
   const [storageSize, setStorageSize] = useState(0);
 
   useEffect(() => {
+    let saveTimeout: NodeJS.Timeout;
+    let errorTimeout: NodeJS.Timeout;
+    
     // Listen for auto-save events
     const handleAutoSave = () => {
       setStatus('saving');
-      setTimeout(() => {
+      // Clear any existing timeout to prevent memory leaks
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+      saveTimeout = setTimeout(() => {
         setStatus('saved');
         setLastSaved(new Date());
         updateStats();
@@ -41,7 +48,11 @@ export function AutoSaveStatus({ className, showAdvanced = false }: AutoSaveStat
 
     const handleAutoSaveError = () => {
       setStatus('error');
-      setTimeout(() => setStatus('idle'), 2000);
+      // Clear any existing timeout to prevent memory leaks
+      if (errorTimeout) {
+        clearTimeout(errorTimeout);
+      }
+      errorTimeout = setTimeout(() => setStatus('idle'), 2000);
     };
 
     window.addEventListener('auto-save', handleAutoSave);
@@ -54,6 +65,14 @@ export function AutoSaveStatus({ className, showAdvanced = false }: AutoSaveStat
     const interval = setInterval(updateStats, 10000);
 
     return () => {
+      // Clear all timeouts to prevent memory leaks
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
+      }
+      if (errorTimeout) {
+        clearTimeout(errorTimeout);
+      }
+      
       window.removeEventListener('auto-save', handleAutoSave);
       window.removeEventListener('auto-save-error', handleAutoSaveError);
       clearInterval(interval);
@@ -69,7 +88,9 @@ export function AutoSaveStatus({ className, showAdvanced = false }: AutoSaveStat
   const forceSave = () => {
     autoSaveManager.forceSave();
     setStatus('saving');
-    setTimeout(() => {
+    
+    // Use a ref to track the timeout and clear it if component unmounts
+    const timeoutId = setTimeout(() => {
       setStatus('saved');
       setLastSaved(new Date());
       updateStats();
@@ -79,6 +100,9 @@ export function AutoSaveStatus({ className, showAdvanced = false }: AutoSaveStat
         variant: "default",
       });
     }, 500);
+    
+    // Store timeout ID for cleanup if needed
+    return () => clearTimeout(timeoutId);
   };
 
   const exportData = () => {

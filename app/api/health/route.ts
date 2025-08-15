@@ -1,20 +1,23 @@
-import { createServerSupabase } from "@/lib/supabase/server";
-import { ok, fail } from "@/lib/errors";
+import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const supabase = await createServerSupabase();
-    const { error } = await supabase.from("sessions").select("id").limit(1);
-    const db = !error;
-    return Response.json(ok({
-      time: new Date().toISOString(),
-      env: {
-        url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-        anon: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      },
-      db,
-    }));
+    const healthData = {
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: process.env.NODE_ENV || 'development',
+      version: process.version
+    };
+    
+    return NextResponse.json({
+      ok: true,
+      data: healthData
+    });
   } catch {
-    return Response.json(fail("health failed"), { status: 500 });
+    return NextResponse.json({
+      ok: false,
+      error: 'Health check failed'
+    }, { status: 500 });
   }
 }

@@ -1,0 +1,5 @@
+{
+  "pid": 5824,
+  "timestamp": 1755215409428,
+  "command": "C:\\nvm4w\\nodejs\\node.exe C:\\Users\\Dontae-PC\\my-app\\scripts\\automation-master.js git:status"
+}

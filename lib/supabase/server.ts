@@ -1,54 +1,47 @@
-import { cookies } from "next/headers";
-import { createServerClient as createSSRServerClient, type CookieOptions } from "@supabase/ssr";
-import { createClient } from "@supabase/supabase-js";
-import { getEnv } from "@/lib/env";
+// COMPLETELY ISOLATED Supabase client - DO NOT IMPORT IN SERVER COMPONENTS
+// This file should ONLY be imported by API routes and server actions
 
-/** Authenticated client bound to request cookies */
+// Re-export the User type for compatibility
+export type { User } from '@/lib/auth/guard'
+
+// Create a completely isolated Supabase client
+// This function is ONLY called from API routes and server actions
+export async function createIsolatedSupabaseClient() {
+  // Dynamic import to avoid bundling in server components
+  const { createClient } = await import('@supabase/supabase-js')
+
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!url || !serviceRoleKey) {
+    throw new Error('Missing Supabase environment variables (URL or Service Role Key)')
+  }
+
+  return createClient(url, serviceRoleKey, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+    }
+  })
+}
+
+// Legacy function names that now use the isolated client
+export async function createRealSupabaseClient() {
+  return createIsolatedSupabaseClient()
+}
+
+export async function createServerClient() {
+  return createIsolatedSupabaseClient()
+}
+
 export async function createServerSupabase() {
-  const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = getEnv();
-  const cookieStore = await cookies();
-  
-  return createSSRServerClient(
-    NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    {
-      cookies: {
-        get: (name: string) => cookieStore.get(name)?.value,
-        set: (name: string, value: string, options: CookieOptions) => {
-          cookieStore.set({ name, value, ...options });
-        },
-        remove: (name: string, options: CookieOptions) => {
-          cookieStore.set({ name, value: "", ...options });
-        },
-      },
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-      },
-    }
-  );
+  return createIsolatedSupabaseClient()
 }
 
-/** Back-compat alias for old imports */
-export const createServerClient = createServerSupabase;
-
-/** Service-role client (server-only) for intake/cron jobs */
-export function createServiceRoleSupabase() {
-  const { NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = getEnv();
-  if (!SUPABASE_SERVICE_ROLE_KEY) throw new Error("SUPABASE_SERVICE_ROLE_KEY missing");
-  
-  // Use direct supabase-js client for service role (no cookies needed)
-  return createClient(
-    NEXT_PUBLIC_SUPABASE_URL,
-    SUPABASE_SERVICE_ROLE_KEY,
-    {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-      },
-    }
-  );
+export async function createServiceRoleClient() {
+  return createIsolatedSupabaseClient()
 }
 
-/** Back-compat alias for old imports */
-export const createServiceRoleClient = createServiceRoleSupabase;
+export async function createServiceRoleSupabase() {
+  return createIsolatedSupabaseClient()
+}

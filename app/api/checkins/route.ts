@@ -1,10 +1,23 @@
 import { NextResponse } from 'next/server';
 import { upsertWeeklyCheckIn, getWeeklyCheckIn } from '@/data/checkins.repo';
+import { createRealSupabaseClient } from '@/lib/supabase/server';
+
+// Prevent prerendering - this route must be dynamic
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function POST(req: Request) {
   try {
+    const supabase = await createRealSupabaseClient();
+    
+    // Get user from Supabase directly
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json({ ok: false, error: 'Not authenticated' }, { status: 401 });
+    }
+    
     const body = await req.json();
-    const data = await upsertWeeklyCheckIn(body);
+    const data = await upsertWeeklyCheckIn(supabase, user, body);
     return NextResponse.json({ ok: true, data });
   } catch (err: unknown) {
     const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
@@ -14,6 +27,8 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
+    const supabase = await createRealSupabaseClient();
+    
     const { searchParams } = new URL(req.url);
     const client_id = searchParams.get('client_id');
     const date = searchParams.get('date');
@@ -23,7 +38,7 @@ export async function GET(req: Request) {
     }
     
     const checkInDate = date ? new Date(date) : new Date();
-    const data = await getWeeklyCheckIn(client_id, checkInDate);
+    const data = await getWeeklyCheckIn(supabase, client_id, checkInDate);
     
     return NextResponse.json({ ok: true, data });
   } catch (err: unknown) {

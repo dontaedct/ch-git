@@ -1,0 +1,5 @@
+[33mcommit fd044f7a48796ee49a5ad7f15c2dd996fa485b48[m
+Author: User <user@example.com>
+Date:   Tue Aug 12 22:40:05 2025 -0400
+
+    chore(rename): codemod runner for symbols/imports/routes/tables

@@ -166,10 +166,7 @@ export function useAutoSave({
       element.addEventListener('keydown', handleInput, { passive: true });
     }
 
-    
-
-
-  return () => {
+    return () => {
       element.removeEventListener('input', handleInput);
       element.removeEventListener('change', handleInput);
       if (element.isContentEditable) {

@@ -19,8 +19,8 @@ export const flags = {
   
   // Environment-specific flags
   environment: {
-    'debug-mode': process.env.NODE_ENV === 'development',
-    'beta-features': process.env.NODE_ENV === 'development',
+    'debug-mode': process.env.NEXT_PUBLIC_DEBUG === '1',
+    'beta-features': process.env.NEXT_PUBLIC_DEBUG === '1',
     'performance-monitoring': process.env.NODE_ENV === 'production',
   },
 } as const;

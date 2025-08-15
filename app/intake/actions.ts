@@ -19,7 +19,7 @@ export async function createClientIntake(formData: FormData): Result {
     const parsedForm = intakeFormSchema.parse(body);
     const parsed = intakeSchema.parse(body);
 
-    const supabase = createServiceRoleSupabase();
+    const supabase = await createServiceRoleSupabase();
 
     // Normalize phone number
     let normalizedPhone: string | null = null;
@@ -40,7 +40,8 @@ export async function createClientIntake(formData: FormData): Result {
       p_phone: normalizedPhone
     };
     
-    const { error: transactionError } = await supabase.rpc('create_client_intake', params);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error: transactionError } = await (supabase as any).rpc('create_client_intake', params);
 
     if (transactionError) {
       throw transactionError;

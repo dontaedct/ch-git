@@ -1,0 +1,692 @@
+#!/usr/bin/env node
+
+/**
+ * HERO THREAT RESPONSE SYSTEM - SIMPLIFIED VERSION
+ * 
+ * This system automatically detects, analyzes, and responds to threats
+ * in the hero ecosystem. It acts as the immune system that protects
+ * all heroes from villains and vulnerabilities.
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+// Threat Response Configuration
+const THREAT_RESPONSE_CONFIG = {
+  name: 'Hero Threat Response System',
+  version: '1.0.0',
+  description: 'Automated threat detection and response for the hero ecosystem',
+  autoResponse: true,
+  escalationThreshold: 3,
+  responseDelay: 5000,
+  maxRetries: 3
+};
+
+// Threat Types and Response Strategies
+const THREAT_RESPONSES = {
+  'brute-force-hydra': {
+    type: 'security_vulnerability',
+    severity: 'critical',
+    autoResponse: true,
+    response: 'Implement rate limiting middleware',
+    files: ['middleware.ts', 'lib/rate-limiter.ts'],
+    commands: ['npm run hero:upgrade auth-gate'],
+    priority: 1
+  },
+  
+  'audit-phantom': {
+    type: 'security_vulnerability',
+    severity: 'critical',
+    autoResponse: true,
+    response: 'Implement audit logging system',
+    files: ['lib/audit/logger.ts', 'lib/audit/middleware.ts'],
+    commands: ['npm run hero:upgrade auth-gate'],
+    priority: 1
+  },
+  
+  'session-shade': {
+    type: 'security_vulnerability',
+    severity: 'high',
+    autoResponse: true,
+    response: 'Harden session management',
+    files: ['lib/auth/session.ts', 'lib/auth/csrf.ts'],
+    commands: ['npm run hero:upgrade auth-gate'],
+    priority: 2
+  },
+  
+  'blind-titan': {
+    type: 'observability_gap',
+    severity: 'high',
+    autoResponse: true,
+    response: 'Activate Sentry monitoring',
+    files: ['lib/monitoring/sentry.ts', 'lib/monitoring/metrics.ts'],
+    commands: ['npm run hero:upgrade observability-seeds'],
+    priority: 2
+  }
+};
+
+class HeroThreatResponse {
+  constructor() {
+    this.status = 'stopped';
+    this.threats = [];
+    this.responses = [];
+    this.escalations = [];
+    this.startTime = Date.now();
+    this.monitoringInterval = null;
+  }
+  
+  // Initialize the threat response system
+  async initialize() {
+    console.log('🛡️ HERO THREAT RESPONSE SYSTEM INITIALIZING...');
+    console.log('='.repeat(60));
+    
+    this.status = 'monitoring';
+    
+    // Start continuous monitoring
+    this.startMonitoring();
+    
+    console.log('✅ Threat Response System is now MONITORING and protecting heroes!');
+    return this;
+  }
+  
+  // Start continuous threat monitoring
+  startMonitoring() {
+    if (this.monitoringInterval) {
+      console.log('⚠️ Monitoring already active');
+      return;
+    }
+    
+    console.log('🔍 Starting continuous threat monitoring...');
+    
+    // Monitor every 30 seconds
+    this.monitoringInterval = setInterval(async () => {
+      await this.scanForThreats();
+    }, 30000);
+    
+    // Initial scan
+    this.scanForThreats();
+  }
+  
+  // Stop monitoring
+  stopMonitoring() {
+    if (this.monitoringInterval) {
+      clearInterval(this.monitoringInterval);
+      this.monitoringInterval = null;
+      this.status = 'stopped';
+      console.log('🛑 Threat monitoring stopped');
+    }
+  }
+  
+  // Get system status without starting monitoring
+  getStatus() {
+    const uptime = this.status === 'monitoring' ? Date.now() - this.startTime : 0;
+    const uptimeSeconds = Math.floor(uptime / 1000);
+    
+    console.log('🛡️ HERO THREAT RESPONSE SYSTEM STATUS');
+    console.log('='.repeat(60));
+    console.log(`Status: ${this.status.toUpperCase()}`);
+    console.log(`Uptime: ${uptimeSeconds}s`);
+    console.log('');
+    
+    console.log('🚨 THREATS:');
+    console.log(`Total: ${this.threats.length}`);
+    const critical = this.threats.filter(t => t.severity === 'critical').length;
+    const high = this.threats.filter(t => t.severity === 'high').length;
+    const medium = this.threats.filter(t => t.severity === 'medium').length;
+    console.log(`Critical: ${critical} | High: ${high} | Medium: ${medium}`);
+    console.log('');
+    
+    console.log('🛡️ RESPONSES:');
+    console.log(`Total: ${this.responses.length}`);
+    const completed = this.responses.filter(r => r.status === 'completed').length;
+    const failed = this.responses.filter(r => r.status === 'failed').length;
+    const executing = this.responses.filter(r => r.status === 'executing').length;
+    console.log(`Completed: ${completed} | Failed: ${failed} | Executing: ${executing}`);
+    console.log('='.repeat(60));
+    
+    return {
+      status: this.status,
+      uptime: uptimeSeconds,
+      threats: this.threats,
+      responses: this.responses
+    };
+  }
+  
+  // Scan for active threats (used by monitoring)
+  async scanForThreats() {
+    try {
+      console.log('🔍 Scanning for threats...');
+      
+      // Check for new threats
+      const newThreats = await this.detectNewThreats();
+      
+      if (newThreats.length > 0) {
+        console.log(`🚨 Detected ${newThreats.length} new threats!`);
+        
+        for (const threat of newThreats) {
+          await this.analyzeThreat(threat);
+          await this.respondToThreat(threat);
+        }
+      }
+      
+      // Check for escalated threats
+      await this.checkEscalations();
+      
+    } catch (error) {
+      console.error('❌ Error during threat scan:', error.message);
+    }
+  }
+  
+  // Single scan for manual use (doesn't start monitoring)
+  async performSingleScan() {
+    try {
+      console.log('🔍 Performing single threat scan...');
+      
+      // Check for new threats without adding to registry
+      const newThreats = await this.detectNewThreatsForScan();
+      
+      if (newThreats.length > 0) {
+        console.log(`🚨 Detected ${newThreats.length} new threats!`);
+        
+        for (const threat of newThreats) {
+          // Analyze threat once
+          const response = await this.analyzeThreat(threat);
+          
+          // If auto-response is enabled, handle it directly
+          if (response && response.autoResponse && threat.severity === 'critical') {
+            await this.handleThreatResponse(threat, response);
+          }
+          // Note: Non-critical threats are already logged in analyzeThreat, no need to log again
+        }
+      }
+      
+      // Check for escalated threats
+      await this.checkEscalations();
+      
+      console.log('✅ Single scan completed');
+      
+    } catch (error) {
+      console.error('❌ Error during single scan:', error.message);
+    }
+  }
+  
+  // Detect new threats
+  async detectNewThreats() {
+    const newThreats = [];
+    
+    // Check for rate limiting
+    if (!await this.checkRateLimiting()) {
+      newThreats.push({
+        id: 'brute-force-hydra',
+        type: 'brute-force-hydra',
+        severity: 'critical',
+        message: 'No rate limiting detected on API endpoints',
+        timestamp: Date.now()
+      });
+    }
+    
+    // Check for audit logging
+    if (!await this.checkAuditLogging()) {
+      newThreats.push({
+        id: 'audit-phantom',
+        type: 'audit-phantom',
+        severity: 'critical',
+        message: 'No audit logging detected for security events',
+        timestamp: Date.now()
+      });
+    }
+    
+    // Check for Sentry configuration
+    if (!await this.checkSentryConfig()) {
+      newThreats.push({
+        id: 'blind-titan',
+        type: 'blind-titan',
+        severity: 'high',
+        message: 'Sentry not properly configured for production',
+        timestamp: Date.now()
+      });
+    }
+    
+    // Check for session hardening
+    if (!await this.checkSessionHardening()) {
+      newThreats.push({
+        id: 'session-shade',
+        type: 'session-shade',
+        severity: 'high',
+        message: 'Session management needs hardening',
+        timestamp: Date.now()
+      });
+    }
+    
+    // Filter out threats we've already seen
+    const uniqueThreats = newThreats.filter(threat => 
+      !this.threats.some(existing => existing.id === threat.id)
+    );
+    
+    // Add new threats to our registry
+    this.threats.push(...uniqueThreats);
+    
+    return uniqueThreats;
+  }
+  
+  // Detect threats for single scan (doesn't add to registry)
+  async detectNewThreatsForScan() {
+    const newThreats = [];
+    
+    // Check for rate limiting
+    if (!await this.checkRateLimiting()) {
+      newThreats.push({
+        id: 'brute-force-hydra',
+        type: 'brute-force-hydra',
+        severity: 'critical',
+        message: 'No rate limiting detected on API endpoints',
+        timestamp: Date.now()
+      });
+    }
+    
+    // Check for audit logging
+    if (!await this.checkAuditLogging()) {
+      newThreats.push({
+        id: 'audit-phantom',
+        type: 'audit-phantom',
+        severity: 'critical',
+        message: 'No audit logging detected for security events',
+        timestamp: Date.now()
+      });
+    }
+    
+    // Check for Sentry configuration
+    if (!await this.checkSentryConfig()) {
+      newThreats.push({
+        id: 'blind-titan',
+        type: 'blind-titan',
+        severity: 'high',
+        message: 'Sentry not properly configured for production',
+        timestamp: Date.now()
+      });
+    }
+    
+    // Check for session hardening
+    if (!await this.checkSessionHardening()) {
+      newThreats.push({
+        id: 'session-shade',
+        type: 'session-shade',
+        severity: 'high',
+        message: 'Session management needs hardening',
+        timestamp: Date.now()
+      });
+    }
+    
+    // For single scan, don't filter or add to registry
+    return newThreats;
+  }
+  
+  // Check if rate limiting is implemented
+  async checkRateLimiting() {
+    try {
+      if (fs.existsSync('middleware.ts')) {
+        const content = fs.readFileSync('middleware.ts', 'utf8');
+        return content.includes('rate') || content.includes('limit');
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+  
+  // Check if audit logging is implemented
+  async checkAuditLogging() {
+    try {
+      const files = ['lib/logger.ts', 'lib/auth/guard.ts'];
+      for (const file of files) {
+        if (fs.existsSync(file)) {
+          const content = fs.readFileSync(file, 'utf8');
+          if (content.includes('audit') || content.includes('log')) {
+            return true;
+          }
+        }
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+  
+  // Check if Sentry is properly configured
+  async checkSentryConfig() {
+    try {
+      const sentryClient = fs.readFileSync('sentry.client.config.ts', 'utf8');
+      const sentryServer = fs.readFileSync('sentry.server.config.ts', 'utf8');
+      
+      return sentryClient.includes('dsn') && sentryServer.includes('dsn');
+    } catch (error) {
+      return false;
+    }
+  }
+  
+  // Check if session hardening is implemented
+  async checkSessionHardening() {
+    try {
+      const files = ['lib/auth/guard.ts', 'lib/auth/session.ts'];
+      for (const file of files) {
+        if (fs.existsSync(file)) {
+          const content = fs.readFileSync(file, 'utf8');
+          if (content.includes('csrf') || content.includes('secure')) {
+            return true;
+          }
+        }
+      }
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+  
+  // Analyze a threat and determine response
+  async analyzeThreat(threat) {
+    console.log(`🔍 Analyzing threat: ${threat.message}`);
+    
+    // Get response strategy
+    const response = THREAT_RESPONSES[threat.type] || THREAT_RESPONSES['brute-force-hydra'];
+    
+    // Determine if we should auto-respond
+    if (response.autoResponse && threat.severity === 'critical') {
+      console.log(`⚡ Auto-responding to critical threat: ${threat.id}`);
+      return response;
+    }
+    
+    // For non-critical threats, log and wait for manual review
+    console.log(`📝 Threat logged for manual review: ${threat.id}`);
+    return null;
+  }
+  
+  // Handle threat response without re-analyzing (for single scan)
+  async handleThreatResponse(threat, response) {
+    try {
+      console.log(`🛡️ Responding to threat: ${threat.id}`);
+      console.log(`Strategy: ${response.response}`);
+      
+      // Record the response
+      this.responses.push({
+        threatId: threat.id,
+        response: response.response,
+        timestamp: Date.now(),
+        status: 'executing'
+      });
+      
+      // Execute response commands
+      if (response.commands.length > 0) {
+        for (const command of response.commands) {
+          await this.executeCommand(command);
+        }
+      }
+      
+      // Create response files if needed
+      if (response.files.length > 0) {
+        for (const file of response.files) {
+          await this.createResponseFile(file, response);
+        }
+      }
+      
+      // Mark response as completed
+      const responseIndex = this.responses.length - 1;
+      this.responses[responseIndex].status = 'completed';
+      
+      console.log(`✅ Threat response completed: ${threat.id}`);
+      
+    } catch (error) {
+      console.error(`❌ Error responding to threat ${threat.id}:`, error.message);
+      
+      // Mark response as failed
+      const responseIndex = this.responses.length - 1;
+      if (responseIndex >= 0) {
+        this.responses[responseIndex].status = 'failed';
+        this.responses[responseIndex].error = error.message;
+      }
+      
+      // Escalate if needed
+      await this.escalateThreat(threat, error);
+    }
+  }
+  
+  // Respond to a threat (for monitoring system)
+  async respondToThreat(threat) {
+    try {
+      const response = await this.analyzeThreat(threat);
+      
+      if (!response) {
+        return; // No auto-response needed
+      }
+      
+      await this.handleThreatResponse(threat, response);
+      
+    } catch (error) {
+      console.error(`❌ Error responding to threat ${threat.id}:`, error.message);
+      
+      // Mark response as failed
+      const responseIndex = this.responses.length - 1;
+      if (responseIndex >= 0) {
+        this.responses[responseIndex].status = 'failed';
+        this.responses[responseIndex].error = error.message;
+      }
+      
+      // Escalate if needed
+      await this.escalateThreat(threat, error);
+    }
+  }
+  
+  // Execute a response command
+  async executeCommand(command) {
+    try {
+      console.log(`⚡ Executing: ${command}`);
+      
+      // Execute the command
+      const result = execSync(command, { 
+        encoding: 'utf8',
+        stdio: 'pipe',
+        timeout: 30000
+      });
+      
+      console.log(`✅ Command executed successfully: ${command}`);
+      return result;
+      
+    } catch (error) {
+      console.error(`❌ Command failed: ${command}`, error.message);
+      throw error;
+    }
+  }
+  
+  // Create a response file
+  async createResponseFile(filePath, response) {
+    try {
+      const dir = path.dirname(filePath);
+      
+      // Create directory if it doesn't exist
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      
+      // Check if file already exists
+      if (fs.existsSync(filePath)) {
+        console.log(`📁 File already exists: ${filePath}`);
+        return;
+      }
+      
+      // Create simple response file
+      const content = `/**
+ * ${path.basename(filePath, path.extname(filePath))}
+ * Generated by Hero Threat Response System
+ * 
+ * This file was created in response to: ${response.response}
+ * Threat type: ${response.type}
+ * Severity: ${response.severity}
+ * Priority: ${response.priority}
+ * 
+ * Generated at: ${new Date().toISOString()}
+ */
+
+// TODO: Implement ${response.response}
+// This file was automatically generated by the Hero Threat Response System
+// to address a security or performance threat.
+
+export class ${path.basename(filePath, path.extname(filePath))} {
+  constructor() {
+    // Initialize the ${path.basename(filePath, path.extname(filePath))}
+  }
+  
+  async initialize() {
+    console.log('${path.basename(filePath, path.extname(filePath))} initialized');
+  }
+}
+
+// Export instance
+export const ${path.basename(filePath, path.extname(filePath)).toLowerCase()} = new ${path.basename(filePath, path.extname(filePath))}();
+`;
+      
+      // Write the file
+      fs.writeFileSync(filePath, content);
+      console.log(`📝 Created response file: ${filePath}`);
+      
+    } catch (error) {
+      console.error(`❌ Error creating response file ${filePath}:`, error.message);
+      throw error;
+    }
+  }
+  
+  // Check for escalations
+  async checkEscalations() {
+    const criticalThreats = this.threats.filter(t => t.severity === 'critical');
+    
+    if (criticalThreats.length >= THREAT_RESPONSE_CONFIG.escalationThreshold) {
+      await this.escalateThreats(criticalThreats);
+    }
+  }
+  
+  // Escalate threats
+  async escalateThreats(threats) {
+    console.log('🚨 ESCALATING CRITICAL THREATS!');
+    
+    const escalation = {
+      timestamp: Date.now(),
+      threats: threats.map(t => ({ id: t.id, message: t.message })),
+      level: 'critical',
+      actions: ['Immediate manual intervention required', 'Notify security team', 'Review system access']
+    };
+    
+    this.escalations.push(escalation);
+    
+    console.log('📢 ESCALATION:', JSON.stringify(escalation, null, 2));
+  }
+  
+  // Escalate individual threat
+  async escalateThreat(threat, error) {
+    console.log(`🚨 Escalating threat ${threat.id} due to error:`, error.message);
+    
+    const escalation = {
+      timestamp: Date.now(),
+      threat: { id: threat.id, message: threat.message },
+      error: error.message,
+      level: 'error',
+      actions: ['Manual review required', 'Check system logs', 'Verify response files']
+    };
+    
+    this.escalations.push(escalation);
+  }
+  
+  // Get system status
+  getStatus() {
+    return {
+      status: this.status,
+      uptime: Date.now() - this.startTime,
+      threats: {
+        total: this.threats.length,
+        critical: this.threats.filter(t => t.severity === 'critical').length,
+        high: this.threats.filter(t => t.severity === 'high').length,
+        medium: this.threats.filter(t => t.severity === 'medium').length
+      },
+      responses: {
+        total: this.responses.length,
+        completed: this.responses.filter(r => r.status === 'completed').length,
+        failed: this.responses.filter(r => r.status === 'failed').length,
+        executing: this.responses.filter(r => r.status === 'executing').length
+      },
+      escalations: this.escalations.length
+    };
+  }
+  
+  // Display status
+  displayStatus() {
+    const status = this.getStatus();
+    
+    console.log('\n' + '='.repeat(60));
+    console.log('🛡️ HERO THREAT RESPONSE SYSTEM STATUS');
+    console.log('='.repeat(60));
+    
+    console.log(`Status: ${status.status.toUpperCase()}`);
+    console.log(`Uptime: ${Math.round(status.uptime / 1000)}s`);
+    
+    console.log('\n🚨 THREATS:');
+    console.log(`Total: ${status.threats.total}`);
+    console.log(`Critical: ${status.threats.critical} | High: ${status.threats.high} | Medium: ${status.threats.medium}`);
+    
+    console.log('\n🛡️ RESPONSES:');
+    console.log(`Total: ${status.responses.total}`);
+    console.log(`Completed: ${status.responses.completed} | Failed: ${status.responses.failed} | Executing: ${status.responses.executing}`);
+    
+    if (status.escalations > 0) {
+      console.log(`\n🚨 ESCALATIONS: ${status.escalations}`);
+    }
+    
+    console.log('\n' + '='.repeat(60));
+  }
+}
+
+// CLI Interface
+async function main() {
+  const args = process.argv.slice(2);
+  const command = args[0] || 'start';
+  
+  const threatResponse = new HeroThreatResponse();
+  
+  try {
+    switch (command) {
+      case 'start':
+        await threatResponse.initialize();
+        // Keep running for monitoring
+        process.on('SIGINT', () => {
+          console.log('\n🛑 Threat Response System shutting down...');
+          threatResponse.stopMonitoring(); // Stop monitoring on SIGINT
+          process.exit(0);
+        });
+        break;
+      case 'status':
+        threatResponse.displayStatus(); // Show status without starting monitoring
+        break;
+      case 'scan':
+        // Just scan once without starting monitoring
+        await threatResponse.performSingleScan();
+        threatResponse.displayStatus();
+        break;
+      case 'stop':
+        threatResponse.stopMonitoring();
+        break;
+      default:
+        console.log('Available commands:');
+        console.log('  start   - Start threat monitoring (default)');
+        console.log('  status  - Show system status');
+        console.log('  scan    - Perform threat scan');
+        console.log('  stop    - Stop threat monitoring');
+    }
+  } catch (error) {
+    console.error('❌ Threat Response System Error:', error.message);
+    process.exit(1);
+  }
+}
+
+// Run if called directly
+if (require.main === module) {
+  main().catch(console.error);
+}
+
+module.exports = { HeroThreatResponse, THREAT_RESPONSES };

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, useRef } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
 import { Button } from '@ui/button';
 import { Badge } from '@ui/badge';
@@ -39,11 +39,13 @@ interface GuardianStatus {
   health: GuardianHealth;
 }
 
-export function GuardianDashboard() {
+function GuardianDashboardContent() {
   const [health, setHealth] = useState<GuardianHealth | null>(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const backupTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const emergencyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchHealth = async () => {
     try {
@@ -69,7 +71,9 @@ export function GuardianDashboard() {
       const response = await fetch('/api/guardian/backup', { method: 'POST' });
       if (response.ok) {
         // Refresh health data after backup
-        setTimeout(fetchHealth, 2000);
+        const timeoutId = setTimeout(fetchHealth, 2000);
+        // Store timeout ID for cleanup
+        backupTimeoutRef.current = timeoutId;
       }
     } catch (err) {
       console.error('Backup failed:', err);
@@ -81,7 +85,9 @@ export function GuardianDashboard() {
       const response = await fetch('/api/guardian/emergency', { method: 'POST' });
       if (response.ok) {
         // Refresh health data after emergency backup
-        setTimeout(fetchHealth, 2000);
+        const timeoutId = setTimeout(fetchHealth, 2000);
+        // Store timeout ID for cleanup
+        emergencyTimeoutRef.current = timeoutId;
       }
     } catch (err) {
       console.error('Emergency backup failed:', err);
@@ -93,7 +99,16 @@ export function GuardianDashboard() {
     
     // Auto-refresh every 30 seconds
     const interval = setInterval(fetchHealth, 30000);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      // Clear any pending timeouts to prevent memory leaks
+      if (backupTimeoutRef.current) {
+        clearTimeout(backupTimeoutRef.current);
+      }
+      if (emergencyTimeoutRef.current) {
+        clearTimeout(emergencyTimeoutRef.current);
+      }
+    };
   }, []);
 
   const getStatusIcon = (status: string) => {
@@ -130,15 +145,13 @@ export function GuardianDashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Shield className="h-5 w-5" />
-            Guardian Safety System
+            Guardian Health Status
           </CardTitle>
-          <CardDescription>Loading system health...</CardDescription>
+          <CardDescription>Loading system health information...</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="animate-pulse space-y-4">
-            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+          <div className="flex items-center justify-center p-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           </div>
         </CardContent>
       </Card>
@@ -381,5 +394,30 @@ export function GuardianDashboard() {
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+export function GuardianDashboard() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              Guardian Health Status
+            </CardTitle>
+            <CardDescription>Loading system health information...</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-center p-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    }>
+      <GuardianDashboardContent />
+    </Suspense>
   );
 }

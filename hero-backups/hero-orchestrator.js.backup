@@ -1,0 +1,764 @@
+#!/usr/bin/env node
+
+/**
+ * HERO ORCHESTRATOR - MASTER COMMAND CENTER
+ * 
+ * This is the central nervous system that coordinates all hero systems:
+ * - Hero System (core management)
+ * - Threat Response System (security)
+ * - Intelligence System (AI/learning)
+ * - All other heroes and automations
+ * 
+ * It provides a unified interface and orchestrates complex operations
+ * across the entire hero ecosystem.
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { spawn, execSync } = require('child_process');
+
+// Import hero systems
+const { HeroSystem } = require('./hero-system.js');
+const { HeroThreatResponse } = require('./hero-threat-response-simple.js');
+const { HeroIntelligence } = require('./hero-intelligence.js');
+
+// Orchestrator Configuration
+const ORCHESTRATOR_CONFIG = {
+  name: 'Hero Orchestrator - Master Command Center',
+  version: '1.0.0',
+  description: 'Central coordination system for all hero systems',
+  autoStart: true,
+  healthCheckInterval: 30000, // 30 seconds
+  maxConcurrentOperations: 5,
+  emergencyMode: false
+};
+
+// Operation Types
+const OPERATION_TYPES = {
+  'system_health_check': {
+    name: 'System Health Check',
+    description: 'Comprehensive health check of all hero systems',
+    duration: '2-5 minutes',
+    priority: 'high',
+    systems: ['hero', 'threat', 'intelligence']
+  },
+  
+  'threat_containment': {
+    name: 'Threat Containment',
+    description: 'Automated threat detection and response',
+    duration: '1-3 minutes',
+    priority: 'critical',
+    systems: ['threat', 'hero']
+  },
+  
+  'intelligence_optimization': {
+    name: 'Intelligence Optimization',
+    description: 'AI-powered system optimization',
+    duration: '3-7 minutes',
+    priority: 'medium',
+    systems: ['intelligence', 'hero']
+  },
+  
+  'hero_upgrade': {
+    name: 'Hero Upgrade',
+    description: 'Upgrade heroes to next tier',
+    duration: '5-15 minutes',
+    priority: 'medium',
+    systems: ['hero']
+  },
+  
+  'emergency_response': {
+    name: 'Emergency Response',
+    description: 'Critical system recovery and defense',
+    duration: '1-5 minutes',
+    priority: 'critical',
+    systems: ['threat', 'hero', 'intelligence']
+  }
+};
+
+// Hero Orchestrator Class
+class HeroOrchestrator {
+  constructor() {
+    this.status = 'initializing';
+    this.startTime = Date.now();
+    this.systems = new Map();
+    this.operations = [];
+    this.activeOperations = new Set();
+    this.emergencyMode = false;
+    this.healthStatus = {};
+    this.lastHealthCheck = 0;
+  }
+  
+  // Initialize the orchestrator
+  async initialize() {
+    console.log('🎯 HERO ORCHESTRATOR - MASTER COMMAND CENTER INITIALIZING...');
+    console.log('='.repeat(70));
+    
+    this.status = 'initializing';
+    
+    // Initialize all hero systems
+    await this.initializeSystems();
+    
+    // Start health monitoring
+    this.startHealthMonitoring();
+    
+    // Start continuous operations
+    if (ORCHESTRATOR_CONFIG.autoStart) {
+      this.startContinuousOperations();
+    }
+    
+    this.status = 'active';
+    console.log('✅ Hero Orchestrator is now ACTIVE and coordinating all systems!');
+    
+    return this;
+  }
+  
+  // Initialize all hero systems
+  async initializeSystems() {
+    console.log('🚀 Initializing hero systems...');
+    
+    try {
+      // Initialize Hero System
+      const heroSystem = new HeroSystem();
+      await heroSystem.initialize();
+      this.systems.set('hero', heroSystem);
+      console.log('✅ Hero System initialized');
+      
+      // Initialize Threat Response System
+      const threatSystem = new HeroThreatResponse();
+      await threatSystem.initialize();
+      this.systems.set('threat', threatSystem);
+      console.log('✅ Threat Response System initialized');
+      
+      // Initialize Intelligence System
+      const intelligenceSystem = new HeroIntelligence();
+      await intelligenceSystem.initialize();
+      this.systems.set('intelligence', intelligenceSystem);
+      console.log('✅ Intelligence System initialized');
+      
+    } catch (error) {
+      console.error('❌ Error initializing systems:', error.message);
+      throw error;
+    }
+    
+    console.log(`🎯 All ${this.systems.size} hero systems initialized successfully`);
+  }
+  
+  // Start health monitoring
+  startHealthMonitoring() {
+    console.log('🏥 Starting health monitoring...');
+    
+    // Monitor health every 30 seconds
+    setInterval(async () => {
+      await this.checkSystemHealth();
+    }, ORCHESTRATOR_CONFIG.healthCheckInterval);
+    
+    // Initial health check
+    this.checkSystemHealth();
+  }
+  
+  // Check health of all systems
+  async checkSystemHealth() {
+    try {
+      console.log('🏥 Performing system health check...');
+      
+      const healthResults = {};
+      
+      for (const [name, system] of this.systems) {
+        try {
+          if (system.getStatusReport) {
+            healthResults[name] = system.getStatusReport();
+          } else if (system.getStatus) {
+            healthResults[name] = system.getStatus();
+          } else if (system.getIntelligenceReport) {
+            healthResults[name] = system.getIntelligenceReport();
+          } else {
+            healthResults[name] = { status: 'unknown', health: 0 };
+          }
+        } catch (error) {
+          healthResults[name] = { status: 'error', health: 0, error: error.message };
+        }
+      }
+      
+      this.healthStatus = healthResults;
+      this.lastHealthCheck = Date.now();
+      
+      // Check for critical issues
+      await this.checkForCriticalIssues(healthResults);
+      
+      console.log('✅ System health check completed');
+      
+    } catch (error) {
+      console.error('❌ Error during health check:', error.message);
+    }
+  }
+  
+  // Check for critical issues that require immediate attention
+  async checkForCriticalIssues(healthResults) {
+    const criticalIssues = [];
+    
+    for (const [systemName, health] of Object.entries(healthResults)) {
+      // Check for critical threats
+      if (health.threats && health.threats.critical > 0) {
+        criticalIssues.push({
+          system: systemName,
+          type: 'critical_threats',
+          count: health.threats.critical,
+          priority: 'critical'
+        });
+      }
+      
+      // Check for system failures
+      if (health.status === 'error' || health.status === 'failed') {
+        criticalIssues.push({
+          system: systemName,
+          type: 'system_failure',
+          status: health.status,
+          priority: 'critical'
+        });
+      }
+      
+      // Check for low health
+      if (health.system && health.system.systemHealth < 50) {
+        criticalIssues.push({
+          system: systemName,
+          type: 'low_health',
+          health: health.system.systemHealth,
+          priority: 'high'
+        });
+      }
+    }
+    
+    // Trigger emergency response if needed
+    if (criticalIssues.length > 0) {
+      await this.emergencyResponse(criticalIssues);
+    }
+  }
+  
+  // Trigger emergency response
+  async emergencyResponse(criticalIssues) {
+    if (this.emergencyMode) {
+      console.log('🚨 Emergency mode already active, skipping duplicate trigger');
+      return;
+    }
+    
+    console.log('🚨 EMERGENCY RESPONSE TRIGGERED!');
+    console.log('Critical issues detected:', criticalIssues.length);
+    
+    this.emergencyMode = true;
+    
+    try {
+      // Create emergency operation
+      const emergencyOp = await this.createOperation('emergency_response', {
+        criticalIssues,
+        timestamp: Date.now(),
+        priority: 'critical'
+      });
+      
+      // Execute emergency response
+      await this.executeOperation(emergencyOp.id);
+      
+      // Deactivate emergency mode after response
+      setTimeout(() => {
+        this.emergencyMode = false;
+        console.log('✅ Emergency mode deactivated');
+      }, 60000); // 1 minute
+      
+    } catch (error) {
+      console.error('❌ Emergency response failed:', error.message);
+      this.emergencyMode = false;
+    }
+  }
+  
+  // Start continuous operations
+  startContinuousOperations() {
+    console.log('⚡ Starting continuous operations...');
+    
+    // Run system health check every 5 minutes
+    setInterval(async () => {
+      await this.runOperation('system_health_check');
+    }, 5 * 60 * 1000);
+    
+    // Run threat containment every 2 minutes
+    setInterval(async () => {
+      await this.runOperation('threat_containment');
+    }, 2 * 60 * 1000);
+    
+    // Run intelligence optimization every 10 minutes
+    setInterval(async () => {
+      await this.runOperation('intelligence_optimization');
+    }, 10 * 60 * 1000);
+    
+    console.log('✅ Continuous operations started');
+  }
+  
+  // Create a new operation
+  async createOperation(type, metadata = {}) {
+    const operation = {
+      id: `op_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      type,
+      metadata,
+      status: 'created',
+      createdAt: Date.now(),
+      startedAt: null,
+      completedAt: null,
+      duration: null,
+      result: null,
+      error: null
+    };
+    
+    this.operations.push(operation);
+    
+    console.log(`📋 Created operation: ${operation.id} (${type})`);
+    return operation;
+  }
+  
+  // Run an operation
+  async runOperation(type, metadata = {}) {
+    try {
+      // Check if we can run more operations
+      if (this.activeOperations.size >= ORCHESTRATOR_CONFIG.maxConcurrentOperations) {
+        console.log(`⚠️ Maximum concurrent operations reached (${ORCHESTRATOR_CONFIG.maxConcurrentOperations}), queuing ${type}`);
+        return this.queueOperation(type, metadata);
+      }
+      
+      // Create and execute operation
+      const operation = await this.createOperation(type, metadata);
+      await this.executeOperation(operation.id);
+      
+    } catch (error) {
+      console.error(`❌ Error running operation ${type}:`, error.message);
+    }
+  }
+  
+  // Queue an operation for later execution
+  async queueOperation(type, metadata = {}) {
+    const operation = await this.createOperation(type, metadata);
+    operation.status = 'queued';
+    
+    // Try to execute queued operations periodically
+    setTimeout(async () => {
+      if (this.activeOperations.size < ORCHESTRATOR_CONFIG.maxConcurrentOperations) {
+        await this.executeOperation(operation.id);
+      }
+    }, 10000); // Try again in 10 seconds
+    
+    return operation;
+  }
+  
+  // Execute an operation
+  async executeOperation(operationId) {
+    const operation = this.operations.find(op => op.id === operationId);
+    if (!operation) {
+      throw new Error(`Operation ${operationId} not found`);
+    }
+    
+    if (operation.status === 'executing' || operation.status === 'completed') {
+      console.log(`⚠️ Operation ${operationId} is already ${operation.status}`);
+      return;
+    }
+    
+    try {
+      console.log(`⚡ Executing operation: ${operation.id} (${operation.type})`);
+      
+      operation.status = 'executing';
+      operation.startedAt = Date.now();
+      this.activeOperations.add(operation.id);
+      
+      // Execute based on operation type
+      let result;
+      switch (operation.type) {
+        case 'system_health_check':
+          result = await this.executeSystemHealthCheck();
+          break;
+        case 'threat_containment':
+          result = await this.executeThreatContainment();
+          break;
+        case 'intelligence_optimization':
+          result = await this.executeIntelligenceOptimization();
+          break;
+        case 'hero_upgrade':
+          result = await this.executeHeroUpgrade(operation.metadata);
+          break;
+        case 'emergency_response':
+          result = await this.executeEmergencyResponse(operation.metadata);
+          break;
+        default:
+          result = `Operation type ${operation.type} not implemented`;
+      }
+      
+      // Mark operation as completed
+      operation.status = 'completed';
+      operation.completedAt = Date.now();
+      operation.duration = operation.completedAt - operation.startedAt;
+      operation.result = result;
+      
+      this.activeOperations.delete(operation.id);
+      
+      console.log(`✅ Operation completed: ${operation.id} (${operation.duration}ms)`);
+      
+    } catch (error) {
+      console.error(`❌ Operation failed: ${operation.id}`, error.message);
+      
+      operation.status = 'failed';
+      operation.completedAt = Date.now();
+      operation.duration = operation.completedAt - operation.startedAt;
+      operation.error = error.message;
+      
+      this.activeOperations.delete(operation.id);
+    }
+  }
+  
+  // Execute system health check
+  async executeSystemHealthCheck() {
+    console.log('🏥 Executing comprehensive system health check...');
+    
+    const results = {};
+    
+    // Check hero system
+    if (this.systems.has('hero')) {
+      const heroSystem = this.systems.get('hero');
+      await heroSystem.analyzeSystemHealth();
+      results.hero = 'Health analysis completed';
+    }
+    
+    // Check threat system
+    if (this.systems.has('threat')) {
+      const threatSystem = this.systems.get('threat');
+      await threatSystem.scanForThreats();
+      results.threat = 'Threat scan completed';
+    }
+    
+    // Check intelligence system
+    if (this.systems.has('intelligence')) {
+      const intelligenceSystem = this.systems.get('intelligence');
+      await intelligenceSystem.learnFromSystem();
+      results.intelligence = 'Learning cycle completed';
+    }
+    
+    return results;
+  }
+  
+  // Execute threat containment
+  async executeThreatContainment() {
+    console.log('🛡️ Executing threat containment...');
+    
+    if (!this.systems.has('threat')) {
+      throw new Error('Threat Response System not available');
+    }
+    
+    const threatSystem = this.systems.get('threat');
+    
+    // Scan for threats
+    await threatSystem.scanForThreats();
+    
+    // Get threat status
+    const status = threatSystem.getStatus();
+    
+    return {
+      threats: status.threats.total,
+      critical: status.threats.critical,
+      responses: status.responses.total,
+      escalations: status.escalations
+    };
+  }
+  
+  // Execute intelligence optimization
+  async executeIntelligenceOptimization() {
+    console.log('🧠 Executing intelligence optimization...');
+    
+    if (!this.systems.has('intelligence')) {
+      throw new Error('Intelligence System not available');
+    }
+    
+    const intelligenceSystem = this.systems.get('intelligence');
+    
+    // Run optimization
+    await intelligenceSystem.autoOptimize();
+    
+    // Get optimization results
+    const report = intelligenceSystem.getIntelligenceReport();
+    
+    return {
+      patterns: report.patterns.total,
+      highConfidence: report.patterns.highConfidence,
+      optimizations: report.actions.recent
+    };
+  }
+  
+  // Execute hero upgrade
+  async executeHeroUpgrade(metadata) {
+    console.log('🚀 Executing hero upgrade...');
+    
+    if (!this.systems.has('hero')) {
+      throw new Error('Hero System not available');
+    }
+    
+    const heroSystem = this.systems.get('hero');
+    const { heroId } = metadata;
+    
+    if (!heroId) {
+      throw new Error('Hero ID required for upgrade operation');
+    }
+    
+    // Execute upgrade
+    const result = await heroSystem.executeHeroAction(heroId, 'upgrade');
+    
+    return {
+      hero: heroId,
+      result: result,
+      status: 'upgrade_completed'
+    };
+  }
+  
+  // Execute emergency response
+  async executeEmergencyResponse(metadata) {
+    console.log('🚨 Executing emergency response...');
+    
+    const { criticalIssues } = metadata;
+    
+    const responses = [];
+    
+    // Respond to each critical issue
+    for (const issue of criticalIssues) {
+      try {
+        let response;
+        
+        switch (issue.type) {
+          case 'critical_threats':
+            response = await this.executeThreatContainment();
+            break;
+          case 'system_failure':
+            response = await this.executeSystemHealthCheck();
+            break;
+          case 'low_health':
+            response = await this.executeIntelligenceOptimization();
+            break;
+          default:
+            response = `Unknown issue type: ${issue.type}`;
+        }
+        
+        responses.push({
+          issue,
+          response,
+          status: 'resolved'
+        });
+        
+      } catch (error) {
+        responses.push({
+          issue,
+          response: error.message,
+          status: 'failed'
+        });
+      }
+    }
+    
+    return {
+      issues: criticalIssues.length,
+      responses,
+      status: 'emergency_response_completed'
+    };
+  }
+  
+  // Get orchestrator status
+  getStatus() {
+    const activeOperations = Array.from(this.activeOperations);
+    const completedOperations = this.operations.filter(op => op.status === 'completed').length;
+    const failedOperations = this.operations.filter(op => op.status === 'failed').length;
+    
+    return {
+      status: this.status,
+      uptime: Date.now() - this.startTime,
+      systems: {
+        total: this.systems.size,
+        active: Array.from(this.systems.values()).filter(sys => sys.status === 'active').length
+      },
+      operations: {
+        total: this.operations.length,
+        active: activeOperations.length,
+        completed: completedOperations,
+        failed: failedOperations,
+        queued: this.operations.filter(op => op.status === 'queued').length
+      },
+      health: {
+        lastCheck: this.lastHealthCheck,
+        status: this.healthStatus
+      },
+      emergency: {
+        mode: this.emergencyMode,
+        timestamp: this.emergencyMode ? Date.now() : null
+      }
+    };
+  }
+  
+  // Display orchestrator dashboard
+  displayDashboard() {
+    const status = this.getStatus();
+    
+    console.log('\n' + '='.repeat(70));
+    console.log('🎯 HERO ORCHESTRATOR - MASTER COMMAND CENTER DASHBOARD');
+    console.log('='.repeat(70));
+    
+    console.log(`Status: ${status.status.toUpperCase()}`);
+    console.log(`Uptime: ${Math.round(status.uptime / 1000)}s`);
+    
+    console.log('\n🚀 SYSTEMS:');
+    console.log(`Total: ${status.systems.total} | Active: ${status.systems.active}`);
+    
+    for (const [name, system] of this.systems) {
+      const systemStatus = system.status || 'unknown';
+      const statusIcon = systemStatus === 'active' ? '✅' : '⚠️';
+      console.log(`  ${statusIcon} ${name}: ${systemStatus}`);
+    }
+    
+    console.log('\n⚡ OPERATIONS:');
+    console.log(`Total: ${status.operations.total}`);
+    console.log(`Active: ${status.operations.active} | Completed: ${status.operations.completed} | Failed: ${status.operations.failed} | Queued: ${status.operations.queued}`);
+    
+    if (status.operations.active > 0) {
+      console.log('\n🔄 ACTIVE OPERATIONS:');
+      for (const opId of status.operations.active) {
+        const operation = this.operations.find(op => op.id === opId);
+        if (operation) {
+          const duration = operation.startedAt ? Date.now() - operation.startedAt : 0;
+          console.log(`  ${operation.type}: ${Math.round(duration / 1000)}s`);
+        }
+      }
+    }
+    
+    console.log('\n🏥 HEALTH STATUS:');
+    if (status.health.lastCheck > 0) {
+      const lastCheck = Math.round((Date.now() - status.health.lastCheck) / 1000);
+      console.log(`Last Check: ${lastCheck}s ago`);
+      
+      for (const [systemName, health] of Object.entries(status.health.status)) {
+        const healthIcon = health.status === 'active' ? '🟢' : health.status === 'error' ? '🔴' : '🟡';
+        console.log(`  ${healthIcon} ${systemName}: ${health.status}`);
+      }
+    } else {
+      console.log('No health data available');
+    }
+    
+    if (status.emergency.mode) {
+      console.log('\n🚨 EMERGENCY MODE ACTIVE!');
+      const emergencyTime = Math.round((Date.now() - status.emergency.timestamp) / 1000);
+      console.log(`Active for: ${emergencyTime}s`);
+    }
+    
+    console.log('\n' + '='.repeat(70));
+  }
+  
+  // Get operation history
+  getOperationHistory(limit = 10) {
+    return this.operations
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(0, limit);
+  }
+  
+  // Display operation history
+  displayOperationHistory(limit = 10) {
+    const history = this.getOperationHistory(limit);
+    
+    console.log('\n📋 OPERATION HISTORY:');
+    console.log('='.repeat(50));
+    
+    for (const operation of history) {
+      const statusIcon = operation.status === 'completed' ? '✅' : 
+                        operation.status === 'failed' ? '❌' : 
+                        operation.status === 'executing' ? '⏳' : '📋';
+      
+      const duration = operation.duration ? `${operation.duration}ms` : 'N/A';
+      const timeAgo = Math.round((Date.now() - operation.createdAt) / 1000);
+      
+      console.log(`${statusIcon} ${operation.type} (${operation.id})`);
+      console.log(`  Status: ${operation.status} | Duration: ${duration} | Created: ${timeAgo}s ago`);
+      
+      if (operation.error) {
+        console.log(`  Error: ${operation.error}`);
+      }
+      
+      console.log('');
+    }
+  }
+}
+
+// CLI Interface
+async function main() {
+  const args = process.argv.slice(2);
+  const command = args[0] || 'dashboard';
+  
+  const orchestrator = new HeroOrchestrator();
+  
+  try {
+    await orchestrator.initialize();
+    
+    switch (command) {
+      case 'dashboard':
+        orchestrator.displayDashboard();
+        break;
+      case 'status':
+        console.log(JSON.stringify(orchestrator.getStatus(), null, 2));
+        break;
+      case 'health':
+        await orchestrator.checkSystemHealth();
+        console.log('✅ Health check completed');
+        break;
+      case 'threats':
+        await orchestrator.runOperation('threat_containment');
+        break;
+      case 'optimize':
+        await orchestrator.runOperation('intelligence_optimization');
+        break;
+      case 'upgrade':
+        const heroId = args[1];
+        if (!heroId) {
+          console.error('❌ Please specify a hero ID to upgrade');
+          process.exit(1);
+        }
+        await orchestrator.runOperation('hero_upgrade', { heroId });
+        break;
+      case 'emergency':
+        await orchestrator.runOperation('emergency_response', { criticalIssues: ['manual_trigger'] });
+        break;
+      case 'history':
+        const limit = parseInt(args[1]) || 10;
+        orchestrator.displayOperationHistory(limit);
+        break;
+      case 'start':
+        // Keep running for continuous operations
+        console.log('🎯 Orchestrator running continuously...');
+        console.log('Press Ctrl+C to stop');
+        
+        process.on('SIGINT', () => {
+          console.log('\n🛑 Orchestrator shutting down...');
+          process.exit(0);
+        });
+        
+        // Keep alive
+        setInterval(() => {}, 1000);
+        break;
+      default:
+        console.log('Available commands:');
+        console.log('  dashboard  - Show orchestrator dashboard');
+        console.log('  status     - Get system status (JSON)');
+        console.log('  health     - Run health check');
+        console.log('  threats    - Run threat containment');
+        console.log('  optimize   - Run intelligence optimization');
+        console.log('  upgrade <id> - Upgrade a hero');
+        console.log('  emergency  - Trigger emergency response');
+        console.log('  history [n] - Show operation history');
+        console.log('  start      - Start continuous operations');
+    }
+    
+  } catch (error) {
+    console.error('❌ Orchestrator Error:', error.message);
+    process.exit(1);
+  }
+}
+
+// Run if called directly
+if (require.main === module) {
+  main().catch(console.error);
+}
+
+module.exports = { HeroOrchestrator, OPERATION_TYPES };

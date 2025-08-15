@@ -18,6 +18,26 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "baseUrl": ".",
+    
+    // Build performance optimizations
+    "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
+    "assumeChangesOnlyAffectDirectDependencies": true,
+    
+    // Faster compilation options
+    "noEmitOnError": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+    
+    // Module resolution optimizations
+    "allowImportingTsExtensions": false,
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": false,
+    
+    // Path mapping for faster imports
     "paths": {
       "@/*": [
         "./*"
@@ -59,7 +79,8 @@
       "node_modules/@types"
     ],
     "allowJs": true,
-    "incremental": true,
+    
+    // Performance plugins
     "plugins": [
       {
         "name": "next"
@@ -81,6 +102,14 @@
     ".vercel",
     "scripts",
     "tests",
-    "**/*.backup.*"
-  ]
+    "**/*.backup.*",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ],
+  
+  // Performance optimizations
+  "ts-node": {
+    "swc": true,
+    "esm": true
+  }
 }

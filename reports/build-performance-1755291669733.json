@@ -1,0 +1,27 @@
+{
+  "timestamp": "2025-08-15T21:01:09.732Z",
+  "totalBuildTime": 3030.7335000000003,
+  "totalBuildTimeSeconds": "3.03",
+  "checkpoints": {
+    "build_start": {
+      "elapsed": "0.03",
+      "elapsedSeconds": "0.00"
+    },
+    "build_end": {
+      "elapsed": "3030.75",
+      "elapsedSeconds": "3.03"
+    }
+  },
+  "performance": {
+    "target": "Under 10 seconds",
+    "achieved": "✅ YES",
+    "improvement": "6.97s under target"
+  },
+  "recommendations": [],
+  "system": {
+    "nodeVersion": "v20.19.4",
+    "platform": "win32",
+    "arch": "x64",
+    "cpus": 12
+  }
+}

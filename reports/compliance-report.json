@@ -1,0 +1,221 @@
+{
+  "timestamp": "2025-08-15T19:02:23.978Z",
+  "totalViolations": 21,
+  "criticalViolations": 4,
+  "autoFixed": 0,
+  "manualFixes": [],
+  "complianceScore": 58,
+  "violations": [
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/client-portal/actions.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/sessions/actions.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/trainer-profile/actions.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/weekly-plans/actions.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/db-check/route.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "secret_exposure",
+      "severity": "critical",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/debug-env/route.ts",
+      "line": 1,
+      "description": "Potential secret exposure detected",
+      "autoFixable": false,
+      "suggestedFix": "Move secrets to environment variables or secure configuration",
+      "codeSnippet": "secret\") ?? \"\") !== (process.env.CRON_SECRET ?? \"\")) {\r\n    return Response.json({ ok:false }, { status: 403 });\r\n  }\r\n  const cwd = process.cwd();\r\n  const hasEnvLocal = existsSync(join(cwd, \""
+    },
+    {
+      "type": "runtime_missing",
+      "severity": "critical",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/env-check/route.ts",
+      "line": 1,
+      "description": "API route spawns processes or uses Node.js APIs but missing runtime export",
+      "autoFixable": true,
+      "suggestedFix": "Add: export const runtime = \"nodejs\"",
+      "codeSnippet": "export const runtime = \"nodejs\""
+    },
+    {
+      "type": "runtime_missing",
+      "severity": "critical",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/health/route.ts",
+      "line": 1,
+      "description": "API route spawns processes or uses Node.js APIs but missing runtime export",
+      "autoFixable": true,
+      "suggestedFix": "Add: export const runtime = \"nodejs\"",
+      "codeSnippet": "export const runtime = \"nodejs\""
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/sessions/route.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "runtime_missing",
+      "severity": "critical",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/system-health/route.ts",
+      "line": 1,
+      "description": "API route spawns processes or uses Node.js APIs but missing runtime export",
+      "autoFixable": true,
+      "suggestedFix": "Add: export const runtime = \"nodejs\"",
+      "codeSnippet": "export const runtime = \"nodejs\""
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/media/signed-download/route.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/media/signed-upload/route.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/v1/clients/route.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/types.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/data/checkins.repo.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/data/clients.repo.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/data/progress-metrics.repo.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/data/weekly-plans.repo.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    }
+  ],
+  "recommendations": []
+}

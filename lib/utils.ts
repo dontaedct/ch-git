@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
+import { NextResponse } from "next/server"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -94,4 +95,21 @@ export function getWeekStartDateForDate(date: Date): string {
   monday.setDate(date.getDate() - daysToMonday);
   monday.setHours(0, 0, 0, 0);
   return monday.toISOString();
+}
+
+/**
+ * Clear the redirect guard cookie to prevent redirect chains
+ * This should be called in destination routes after the redirect guard cookie has served its purpose
+ * @param response - The NextResponse object to modify
+ * @returns The modified response with cleared redirect guard cookie
+ */
+export function clearRedirectGuardCookie(response: NextResponse): NextResponse {
+  try {
+    response.cookies.set('__redirect_guard', '', { maxAge: 0, path: '/' });
+  } catch (error) {
+    // Silently fail if cookies can't be modified
+    console.warn('Could not clear redirect guard cookie:', error);
+  }
+  
+  return response;
 }

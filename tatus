@@ -1,0 +1,3 @@
+[33m8037fb0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Add comprehensive .gitignore to prevent build artifacts from being tracked
+[33me8032e6[m[33m ([m[1;31morigin/main[m[33m)[m feat: implement Windows-compatible Git hooks alternative
+[33me9e8d61[m cleanup: remove test file

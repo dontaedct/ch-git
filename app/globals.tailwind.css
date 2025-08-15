@@ -35,7 +35,7 @@ body {
 
 /* Apple-style card with subtle shadows */
 .card {
-  background: var(--surface);
+  background: var(--surface, #ffffff);
   @apply rounded-2xl border-0 shadow-lg;
   box-shadow: 
     0 1px 3px 0 rgba(0, 0, 0, 0.1),
@@ -57,34 +57,34 @@ body {
 /* Apple-style inputs */
 .input {
   @apply bg-white border-2 rounded-xl px-4 py-3 outline-none transition-all duration-200;
-  border-color: var(--border);
-  color: var(--text);
+  border-color: var(--border, #e5e7eb);
+  color: var(--text, #262626);
   font-size: 16px;
   line-height: 1.5;
 }
 
 .input:focus {
   @apply ring-0;
-  border-color: var(--border-focus);
+  border-color: var(--border-focus, #3b82f6);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .input::placeholder {
-  color: var(--subtext);
+  color: var(--subtext, #737373);
 }
 
 /* Apple-style buttons */
 .btn {
   @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-medium transition-all duration-200;
   color: white;
-  background: var(--accent);
+  background: var(--accent, #3b82f6);
   font-size: 16px;
   line-height: 1.5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
-  background: var(--accent-hover);
+  background: var(--accent-hover, #2563eb);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.15);
 }
@@ -102,7 +102,7 @@ body {
 /* Ghost button = text only */
 .btn-ghost {
   @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-200;
-  color: var(--accent);
+  color: var(--accent, #3b82f6);
   background: transparent;
 }
 
@@ -113,22 +113,22 @@ body {
 /* Apple-style typography */
 .text-display {
   @apply text-4xl font-bold tracking-tight;
-  color: var(--text);
+  color: var(--text, #262626);
 }
 
 .text-headline {
   @apply text-2xl font-semibold tracking-tight;
-  color: var(--text);
+  color: var(--text, #262626);
 }
 
 .text-body {
   @apply text-base leading-relaxed;
-  color: var(--text);
+  color: var(--text, #262626);
 }
 
 .text-caption {
   @apply text-sm leading-relaxed;
-  color: var(--subtext);
+  color: var(--subtext, #737373);
 }
 
 /* Frosted glass effect */
@@ -138,7 +138,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Subtle animations */
+/* Subtle animations - DISABLED FOR DEBUGGING */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -151,7 +151,9 @@ body {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
+  /* animation: fadeInUp 0.6s ease-out; */
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 /* Focus states */
@@ -169,10 +171,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border);
+  background: var(--border, #e5e7eb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--subtext);
+  background: var(--subtext, #737373);
 }

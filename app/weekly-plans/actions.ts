@@ -1,6 +1,6 @@
 "use server";
 
-import { createServerClient } from '@/lib/supabase/server'
+import { createRealSupabaseClient } from '@/lib/supabase/server'
 // WeeklyPlanInsert and WeeklyPlanUpdate are not currently used but kept for future functionality
 import { revalidatePath } from "next/cache";
 import { sanitizeText } from "@/lib/sanitize";
@@ -23,12 +23,12 @@ export async function getWeeklyPlans(
       pageSize,
     });
 
-    const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (!user) {
+    const supabase = await createRealSupabaseClient();
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) {
       return { ok: false, error: "Not authenticated" };
     }
+    const user = authData.user;
 
     const baseQuery = supabase
       .from("weekly_plans")
@@ -50,10 +50,13 @@ export async function getWeeklyPlans(
 
     if (error) throw error;
 
+    // Type assertion for mock client compatibility
+    const typedData = data as WeeklyPlan[];
+
     return { 
       ok: true, 
       data: {
-        data: data ?? [],
+        data: typedData ?? [],
         page: validatedPage,
         pageSize: validatedPageSize,
         total: totalCount ?? 0,
@@ -66,12 +69,12 @@ export async function getWeeklyPlans(
 
 export async function createWeeklyPlan(formData: FormData): Promise<ActionResult<{ id: string }>> {
   try {
-    const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (!user) {
+    const supabase = await createRealSupabaseClient();
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) {
       return { ok: false, error: "Not authenticated" };
     }
+    const user = authData.user;
 
     // Parse form data
     const rawGoals = (formData.get("goals") as string | null)?.trim() ?? ""
@@ -146,7 +149,10 @@ export async function createWeeklyPlan(formData: FormData): Promise<ActionResult
     if (process.env.NODE_ENV === "production") {
       revalidatePath("/weekly-plans");
     }
-    return { ok: true, data: { id: data.id } };
+    
+    // Type assertion for mock client compatibility
+    const typedData = data as { id: string };
+    return { ok: true, data: { id: typedData.id } };
   } catch {
     return { ok: false, error: "Failed to create weekly plan" };
   }
@@ -154,12 +160,12 @@ export async function createWeeklyPlan(formData: FormData): Promise<ActionResult
 
 export async function updateWeeklyPlan(planId: string, updates: WeeklyPlanUpdate): Promise<ActionResult<void>> {
   try {
-    const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (!user) {
+    const supabase = await createRealSupabaseClient();
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) {
       return { ok: false, error: "Not authenticated" };
     }
+    const user = authData.user;
 
     const { error } = await supabase
       .from("weekly_plans")
@@ -191,12 +197,12 @@ export async function getClients(
       pageSize,
     });
 
-    const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
-    if (!user) {
+    const supabase = await createRealSupabaseClient();
+    const { data: authData } = await supabase.auth.getUser();
+    if (!authData?.user) {
       return { ok: false, error: "Not authenticated" };
     }
+    const user = authData.user;
 
     const baseQuery = supabase
       .from("clients")
@@ -218,10 +224,13 @@ export async function getClients(
 
     if (error) throw error;
 
+    // Type assertion for mock client compatibility
+    const typedData = data as Client[];
+
     return { 
       ok: true, 
       data: {
-        data: data ?? [],
+        data: typedData ?? [],
         page: validatedPage,
         pageSize: validatedPageSize,
         total: totalCount ?? 0,

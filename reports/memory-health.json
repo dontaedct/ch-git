@@ -1,0 +1,2344 @@
+{
+  "timestamp": "2025-08-15T20:02:23.557Z",
+  "totalIssues": 218,
+  "criticalIssues": 0,
+  "autoFixed": 0,
+  "manualFixes": [
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "setTimeout without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "setTimeout without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "setTimeout without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "setInterval without cleanup",
+    "setTimeout without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "setInterval without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Hook useIsMobile adds event listener without cleanup",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "useEffect in useAutoSave missing proper cleanup function",
+    "useEffect in useAutoSave missing proper cleanup function",
+    "Hook useAutoSave adds event listener without cleanup",
+    "Hook useAutoSave adds event listener without cleanup",
+    "Hook useAutoSave adds event listener without cleanup",
+    "Hook useAutoSave adds event listener without cleanup",
+    "Event listener added without cleanup",
+    "Event listener added without cleanup",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "useEffect in useMemoryLeakPrevention missing proper cleanup function",
+    "Hook useMemoryLeakPrevention adds event listener without cleanup",
+    "Hook useMemoryLeakPrevention adds event listener without cleanup",
+    "useEffect in useSafeTimeout missing proper cleanup function",
+    "useEffect in useSafeInterval missing proper cleanup function",
+    "useEffect in useSafeEventListener missing proper cleanup function",
+    "Hook useSafeEventListener adds event listener without cleanup",
+    "useEffect in useSafeSubscription missing proper cleanup function",
+    "Event listener added without cleanup",
+    "Event listener added without cleanup",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "setInterval without cleanup",
+    "setInterval without cleanup",
+    "setTimeout without cleanup",
+    "setInterval without cleanup",
+    "Hook useIsMobile adds event listener without cleanup",
+    "setTimeout without cleanup",
+    "setInterval without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "setInterval without cleanup",
+    "setInterval without cleanup",
+    "setInterval without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "setTimeout without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "setTimeout without cleanup",
+    "setInterval without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "setTimeout without cleanup",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe",
+    "Subscription/event listener without unsubscribe"
+  ],
+  "memoryUsage": {
+    "components": 218,
+    "hooks": 185,
+    "eventListeners": 19,
+    "timeouts": 33
+  },
+  "recommendations": [],
+  "patterns": [
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/trainer-profile/TrainerProfilePageContent.tsx",
+      "line": 33,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/trainer-profile/TrainerProfilePageContent.tsx",
+      "line": 230,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/trainer-profile/TrainerProfilePageContent.tsx",
+      "line": 236,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/trainer-profile/TrainerProfilePageContent.tsx",
+      "line": 242,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/weekly-plans/WeeklyPlansPageContent.tsx",
+      "line": 35,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/_debug/HydrationProbe.tsx",
+      "line": 23,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 22,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 25,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 28,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 36,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 40,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 50,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 53,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 56,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 68,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 71,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/auth/route.ts",
+      "line": 74,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/checkins/route.ts",
+      "line": 16,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/checkins/route.ts",
+      "line": 19,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/checkins/route.ts",
+      "line": 21,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/checkins/route.ts",
+      "line": 24,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/checkins/route.ts",
+      "line": 37,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/checkins/route.ts",
+      "line": 43,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/checkins/route.ts",
+      "line": 46,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 32,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 35,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 37,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 40,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 54,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 60,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 64,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 67,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 77,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 84,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 87,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 89,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 92,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 102,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 109,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 113,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/clients/route.ts",
+      "line": 116,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/db-check/route.ts",
+      "line": 23,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/debug-env/route.ts",
+      "line": 8,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/debug-env/route.ts",
+      "line": 13,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/email-smoke/route.ts",
+      "line": 6,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/env-check/route.ts",
+      "line": 12,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/health/route.ts",
+      "line": 13,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/health/route.ts",
+      "line": 18,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/intake/route.ts",
+      "line": 19,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/intake/route.ts",
+      "line": 22,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/intake/route.ts",
+      "line": 31,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/intake/route.ts",
+      "line": 34,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/intake/route.ts",
+      "line": 44,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/intake/route.ts",
+      "line": 50,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/intake/route.ts",
+      "line": 53,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/ping/route.ts",
+      "line": 2,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 38,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 41,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 45,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 55,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 68,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 87,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 93,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 102,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 106,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 117,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 127,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 138,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 148,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 161,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 172,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 179,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 182,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 186,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 201,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 214,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 225,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 232,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 242,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 258,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/progress-metrics/route.ts",
+      "line": 271,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/sessions/route.ts",
+      "line": 52,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/system-health/route.ts",
+      "line": 48,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/system-health/route.ts",
+      "line": 52,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/test/route.ts",
+      "line": 4,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/test-email/route.ts",
+      "line": 13,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/trainer-profile/route.ts",
+      "line": 19,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/trainer-profile/route.ts",
+      "line": 22,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/trainer-profile/route.ts",
+      "line": 31,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/trainer-profile/route.ts",
+      "line": 34,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/trainer-profile/route.ts",
+      "line": 43,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/trainer-profile/route.ts",
+      "line": 46,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 35,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 38,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 40,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 43,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 61,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 65,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 72,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 76,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 82,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 88,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 94,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 98,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 101,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 111,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 118,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 121,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 123,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 126,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 136,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 143,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 147,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-plans/route.ts",
+      "line": 150,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-recap/route.ts",
+      "line": 5,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-recap/route.ts",
+      "line": 7,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/weekly-recap/route.ts",
+      "line": 8,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/app/client-portal/check-in/CheckInPageContent.tsx",
+      "line": 75,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/guardian/emergency/route.ts",
+      "line": 13,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/guardian/emergency/route.ts",
+      "line": 20,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/guardian/emergency/route.ts",
+      "line": 30,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/guardian/emergency/route.ts",
+      "line": 37,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/guardian/emergency/route.ts",
+      "line": 46,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/guardian/status/route.ts",
+      "line": 13,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/guardian/status/route.ts",
+      "line": 15,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/guardian/status/route.ts",
+      "line": 22,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/media/signed-download/route.ts",
+      "line": 33,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/media/signed-upload/route.ts",
+      "line": 33,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/v1/clients/route.ts",
+      "line": 15,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/v1/clients/route.ts",
+      "line": 35,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/app/api/v1/clients/route.ts",
+      "line": 37,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-recovery.tsx",
+      "line": 36,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-recovery.tsx",
+      "line": 20,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-recovery.tsx",
+      "line": 222,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-recovery.tsx",
+      "line": 228,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-status.tsx",
+      "line": 42,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-status.tsx",
+      "line": 55,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-status.tsx",
+      "line": 65,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-status.tsx",
+      "line": 93,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/auto-save-status.tsx",
+      "line": 223,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 72,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 84,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 95,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 53,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 252,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 274,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 301,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 328,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/guardian-dashboard.tsx",
+      "line": 349,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/rsvp-panel.tsx",
+      "line": 198,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/rsvp-panel.tsx",
+      "line": 221,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/session-list.tsx",
+      "line": 31,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/session-list.tsx",
+      "line": 36,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/session-list.tsx",
+      "line": 126,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/session-list.tsx",
+      "line": 152,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/session-list.tsx",
+      "line": 218,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/components/ui/use-mobile.tsx",
+      "line": 13,
+      "description": "Hook useIsMobile adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/ui/use-toast.ts",
+      "line": 64,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/ui/VerifyingAccessShell.tsx",
+      "line": 7,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/components/ui/skeletons/PageBoot.tsx",
+      "line": 7,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 155,
+      "description": "useEffect in useAutoSave missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 180,
+      "description": "useEffect in useAutoSave missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 160,
+      "description": "Hook useAutoSave adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 161,
+      "description": "Hook useAutoSave adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 165,
+      "description": "Hook useAutoSave adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 166,
+      "description": "Hook useAutoSave adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 165,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 166,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 33,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 38,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 50,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 120,
+      "description": "useEffect in useMemoryLeakPrevention missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 36,
+      "description": "Hook useMemoryLeakPrevention adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 42,
+      "description": "Hook useMemoryLeakPrevention adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 162,
+      "description": "useEffect in useSafeTimeout missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 189,
+      "description": "useEffect in useSafeInterval missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 205,
+      "description": "useEffect in useSafeEventListener missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 208,
+      "description": "Hook useSafeEventListener adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 219,
+      "description": "useEffect in useSafeSubscription missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 36,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 42,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 19,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 20,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 29,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 30,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 152,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 179,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-mobile.ts",
+      "line": 13,
+      "description": "Hook useIsMobile adds event listener without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in useEffect cleanup or component unmount"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-toast.ts",
+      "line": 66,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/audit-logger.ts",
+      "line": 127,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/audit-logger.ts",
+      "line": 443,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/errors.ts",
+      "line": 8,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/performance-monitor.ts",
+      "line": 96,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/performance-monitor.ts",
+      "line": 105,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/rate-limiter.ts",
+      "line": 76,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/rate-limiter.ts",
+      "line": 179,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/utils.ts",
+      "line": 26,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auth/guard.ts",
+      "line": 65,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auth/guard.ts",
+      "line": 70,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/file-watcher.ts",
+      "line": 72,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/file-watcher.ts",
+      "line": 64,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/file-watcher.ts",
+      "line": 93,
+      "description": "setInterval without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/file-watcher.ts",
+      "line": 31,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/index.ts",
+      "line": 83,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/index.ts",
+      "line": 84,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/index.ts",
+      "line": 90,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/index.ts",
+      "line": 94,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "event_listener",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/index.ts",
+      "line": 377,
+      "description": "Event listener added without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Add removeEventListener in component unmount or cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/index.ts",
+      "line": 12,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/auto-save/index.ts",
+      "line": 226,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "timeout",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/guardian/service.ts",
+      "line": 51,
+      "description": "setTimeout without cleanup",
+      "autoFixable": true,
+      "suggestedFix": "Store timeout/interval ID and clear in cleanup function"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/guardian/service.ts",
+      "line": 60,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/guardian/service.ts",
+      "line": 66,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/guardian/service.ts",
+      "line": 72,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/guardian/service.ts",
+      "line": 74,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/validation/index.ts",
+      "line": 23,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/validation/index.ts",
+      "line": 27,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "high",
+      "file": "C:/Users/Dontae-PC/my-app/lib/validation/index.ts",
+      "line": 27,
+      "description": "Subscription/event listener without unsubscribe",
+      "autoFixable": true,
+      "suggestedFix": "Store subscription and call unsubscribe in cleanup"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 155,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 180,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 155,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 180,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 155,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 180,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 155,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 180,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 155,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 180,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 155,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-auto-save.ts",
+      "line": 180,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 120,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 120,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 205,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 120,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    },
+    {
+      "type": "subscription",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/hooks/use-memory-leak-prevention.ts",
+      "line": 120,
+      "description": "useEffect in  missing proper cleanup function",
+      "autoFixable": true,
+      "suggestedFix": "Add return function for cleanup in useEffect"
+    }
+  ]
+}

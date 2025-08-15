@@ -1,3 +1,71 @@
+export interface Database {
+  public: {
+    Tables: {
+      clients: {
+        Row: Client;
+        Insert: Omit<Client, 'id' | 'created_at'> & { id?: string; created_at?: string };
+        Update: Partial<Omit<Client, 'id' | 'created_at'>>;
+      };
+      sessions: {
+        Row: Session;
+        Insert: Omit<Session, 'id' | 'created_at'> & { id?: string; created_at?: string };
+        Update: Partial<Omit<Session, 'id' | 'created_at'>>;
+      };
+      weekly_plans: {
+        Row: WeeklyPlan;
+        Insert: Omit<WeeklyPlan, 'id' | 'created_at'> & { id?: string; created_at?: string };
+        Update: Partial<Omit<WeeklyPlan, 'id' | 'created_at'>>;
+      };
+      check_ins: {
+        Row: CheckIn;
+        Insert: Omit<CheckIn, 'id' | 'created_at'> & { id?: string; created_at?: string };
+        Update: Partial<Omit<CheckIn, 'id' | 'created_at'>>;
+      };
+      trainers: {
+        Row: {
+          id: string;
+          user_id: string;
+          business_name?: string;
+          bio?: string;
+          specialties?: string[];
+          certifications?: string[];
+          years_experience?: number;
+          hourly_rate?: number;
+          website?: string;
+          social_links?: unknown;
+          created_at: string;
+          updated_at?: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          business_name?: string;
+          bio?: string;
+          specialties?: string[];
+          certifications?: string[];
+          years_experience?: number;
+          hourly_rate?: number;
+          website?: string;
+          social_links?: unknown;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<{
+          business_name?: string;
+          bio?: string;
+          specialties?: string[];
+          certifications?: string[];
+          years_experience?: number;
+          hourly_rate?: number;
+          website?: string;
+          social_links?: unknown;
+          updated_at?: string;
+        }>;
+      };
+    };
+  };
+}
+
 export type Client = {
   id: string;
   coach_id: string;

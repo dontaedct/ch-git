@@ -1,9 +1,8 @@
 import '@app/globals.tailwind.css';
 import { Suspense } from 'react';
 import { PageBoot } from '@ui/skeletons/PageBoot';
-import { HydrationProbe } from '@app/_debug/HydrationProbe';
-import { LoopDetector } from '@app/_debug/LoopDetector';
 import { isSafeModeEnabled } from '@lib/env';
+import { FlagsProvider } from '@lib/registry/FlagsProvider';
 
 export const metadata = { title: "Coach Hub (dev)", description: "Dev shell" };
 
@@ -29,11 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             SAFE MODE
           </div>
         )}
-        {DEBUG_MODE && <HydrationProbe />}
-        {DEBUG_MODE && <LoopDetector />}
-        <Suspense fallback={<PageBoot />}>
-          {children}
-        </Suspense>
+        <FlagsProvider>
+          <Suspense fallback={<PageBoot />}>
+            {children}
+          </Suspense>
+        </FlagsProvider>
       </body>
     </html>
   );

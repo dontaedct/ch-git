@@ -32,6 +32,9 @@ const QuantumNeuralEngine = require('./quantum-neural-engine');
 const CausalityPredictor = require('./causality-predictor');
 const ConsciousnessSimulator = require('./consciousness-simulator');
 
+// Import concurrency limiter for bounded concurrency control
+const { ConcurrencyLimiter } = require('../lib/concurrency');
+
 class MITHeroUnifiedIntegration {
     constructor() {
         this.version = '1.0.0';
@@ -68,6 +71,31 @@ class MITHeroUnifiedIntegration {
             memory: 85, // Memory usage threshold
             responseTime: 2000, // Response time threshold in ms
             errorRate: 0.05 // Error rate threshold (5%)
+        };
+        
+        // Initialize concurrency limiters for different operation types
+        this.concurrencyLimiters = {
+            healthChecks: new ConcurrencyLimiter({
+                maxConcurrent: 20,
+                maxQueueSize: 50,
+                priorityLevels: 3,
+                timeoutMs: 15000,
+                resourceLimits: { cpu: 75, memory: 80, disk: 60 }
+            }),
+            systemOperations: new ConcurrencyLimiter({
+                maxConcurrent: 10,
+                maxQueueSize: 100,
+                priorityLevels: 5,
+                timeoutMs: 30000,
+                resourceLimits: { cpu: 70, memory: 75, disk: 55 }
+            }),
+            integrationTasks: new ConcurrencyLimiter({
+                maxConcurrent: 5,
+                maxQueueSize: 30,
+                priorityLevels: 4,
+                timeoutMs: 60000,
+                resourceLimits: { cpu: 65, memory: 70, disk: 50 }
+            })
         };
     }
 
@@ -227,13 +255,80 @@ class MITHeroUnifiedIntegration {
     }
 
     /**
-     * 🏥 Perform comprehensive health check
+     * 🏥 Perform comprehensive health check with bounded concurrency
      */
     async performComprehensiveHealthCheck() {
-        console.log('🏥 Performing comprehensive health check...');
+        console.log('🏥 Performing comprehensive health check with bounded concurrency...');
         
         // Initialize system health object
         this.systemHealth = {};
+        
+        // Define health check operations with priorities
+        const healthCheckOperations = [
+            {
+                operation: async () => {
+                    const health = await this.sentientArmy.phase1SystemHealthAudit();
+                    this.systemHealth.sentientArmy = health;
+                    return health;
+                },
+                priority: 1,
+                metadata: { system: 'sentientArmy', type: 'healthCheck' }
+            },
+            {
+                operation: async () => {
+                    const health = await this.quantumNeural.getSystemHealth();
+                    this.systemHealth.quantumNeural = health;
+                    return health;
+                },
+                priority: 2,
+                metadata: { system: 'quantumNeural', type: 'healthCheck' }
+            },
+            {
+                operation: async () => {
+                    const health = await this.causalityEngine.getSystemHealth();
+                    this.systemHealth.causalityEngine = health;
+                    return health;
+                },
+                priority: 2,
+                metadata: { system: 'causalityEngine', type: 'healthCheck' }
+            },
+            {
+                operation: async () => {
+                    const health = await this.consciousness.getSystemHealth();
+                    this.systemHealth.consciousness = health;
+                    return health;
+                },
+                priority: 2,
+                metadata: { system: 'consciousness', type: 'healthCheck' }
+            }
+        ];
+        
+        try {
+            // Execute health checks with bounded concurrency
+            const results = await this.concurrencyLimiters.healthChecks.executeBatch(
+                healthCheckOperations,
+                20 // Max 20 concurrent health checks
+            );
+            
+            console.log('✅ Comprehensive health check completed with bounded concurrency');
+            console.log(`📊 Overall system health: ${this.calculateOverallHealth()}%`);
+            
+            // Log concurrency metrics
+            const metrics = this.concurrencyLimiters.healthChecks.getMetrics();
+            console.log(`📈 Health check concurrency metrics: ${metrics.activeOperations} active, ${metrics.queuedOperations} queued`);
+            
+        } catch (error) {
+            console.error('❌ Health check failed:', error.message);
+            // Fallback to individual health checks if batch fails
+            await this.performFallbackHealthChecks();
+        }
+    }
+    
+    /**
+     * 🏥 Fallback health checks (individual execution)
+     */
+    async performFallbackHealthChecks() {
+        console.log('🔄 Performing fallback health checks...');
         
         // Check sentient army health
         try {
@@ -271,8 +366,7 @@ class MITHeroUnifiedIntegration {
             this.systemHealth.consciousness = { healthScore: 0, status: 'error' };
         }
         
-        console.log('✅ Comprehensive health check completed');
-        console.log(`📊 Overall system health: ${this.calculateOverallHealth()}%`);
+        console.log('✅ Fallback health checks completed');
     }
 
     /**
@@ -972,6 +1066,16 @@ class MITHeroUnifiedIntegration {
                 adaptiveLearning: this.adaptiveLearning?.active || false,
                 resourceOptimization: this.resourceOptimization?.active || false,
                 evolutionMechanisms: this.evolutionMechanisms?.active || false
+            },
+            concurrencyStatus: {
+                healthChecks: this.concurrencyLimiters.healthChecks.getStatus(),
+                systemOperations: this.concurrencyLimiters.systemOperations.getStatus(),
+                integrationTasks: this.concurrencyLimiters.integrationTasks.getStatus()
+            },
+            concurrencyMetrics: {
+                healthChecks: this.concurrencyLimiters.healthChecks.getMetrics(),
+                systemOperations: this.concurrencyLimiters.systemOperations.getMetrics(),
+                integrationTasks: this.concurrencyLimiters.integrationTasks.getMetrics()
             }
         };
     }
@@ -1033,6 +1137,30 @@ if (require.main === module) {
                 console.log(JSON.stringify(health, null, 2));
             });
             break;
+        case 'concurrency':
+            const status = await integration.getUnifiedStatus();
+            console.log('📊 MIT Hero System: Concurrency Status');
+            console.log('================================================================================');
+            console.log('Health Checks:');
+            console.log(`  Active: ${status.concurrencyStatus.healthChecks.activeOperations}`);
+            console.log(`  Queued: ${status.concurrencyStatus.healthChecks.queuedOperations}`);
+            console.log(`  Config: ${status.concurrencyStatus.healthChecks.config.maxConcurrent} max concurrent`);
+            console.log('');
+            console.log('System Operations:');
+            console.log(`  Active: ${status.concurrencyStatus.systemOperations.activeOperations}`);
+            console.log(`  Queued: ${status.concurrencyStatus.systemOperations.queuedOperations}`);
+            console.log(`  Config: ${status.concurrencyStatus.systemOperations.config.maxConcurrent} max concurrent`);
+            console.log('');
+            console.log('Integration Tasks:');
+            console.log(`  Active: ${status.concurrencyStatus.integrationTasks.activeOperations}`);
+            console.log(`  Queued: ${status.concurrencyStatus.integrationTasks.queuedOperations}`);
+            console.log(`  Config: ${status.concurrencyStatus.integrationTasks.config.maxConcurrent} max concurrent`);
+            console.log('');
+            console.log('Resource Usage:');
+            console.log(`  CPU: ${status.concurrencyMetrics.healthChecks.resourceUsage.cpu.toFixed(1)}%`);
+            console.log(`  Memory: ${status.concurrencyMetrics.healthChecks.resourceUsage.memory.toFixed(1)}%`);
+            console.log(`  Disk: ${status.concurrencyMetrics.healthChecks.resourceUsage.disk.toFixed(1)}%`);
+            break;
         case 'optimize':
             integration.triggerOptimization();
             break;
@@ -1045,12 +1173,13 @@ if (require.main === module) {
             console.log('Usage: node mit-hero-unified-integration.js [command]');
             console.log('');
             console.log('Commands:');
-            console.log('  execute  - Run full unified integration (default)');
-            console.log('  status   - Show unified system status');
-            console.log('  health   - Show unified system health');
-            console.log('  optimize - Trigger optimization');
-            console.log('  heal     - Trigger self-healing');
-            console.log('  help     - Show this help message');
+            console.log('  execute     - Run full unified integration (default)');
+            console.log('  status      - Show unified system status');
+            console.log('  health      - Show unified system health');
+            console.log('  concurrency - Show concurrency status and metrics');
+            console.log('  optimize    - Trigger optimization');
+            console.log('  heal        - Trigger self-healing');
+            console.log('  help        - Show this help message');
             console.log('');
             console.log('🎯 Mission: Create seamless, autonomous integration of all MIT Hero System components');
             console.log('');

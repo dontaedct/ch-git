@@ -1,0 +1,23 @@
+{
+  "input": {
+    "changed_files": [
+      {
+        "path": "db/migrations/003_add_users_table.sql",
+        "status": "modified",
+        "content": "CREATE TABLE users (id SERIAL PRIMARY KEY);"
+      }
+    ],
+    "codeowners": [],
+    "required_reviewers": [],
+    "authorized_users": ["admin"],
+    "author": "developer"
+  },
+  "expected": {
+    "allow": false,
+    "reasons": [
+      "MISSING_OWNERSHIP: Sensitive path db/migrations/003_add_users_table.sql changed without proper CODEOWNERS coverage"
+    ],
+    "suggestedFixes": [],
+    "riskScore": 3
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "decision": {
+    "decision": "FIX-APPLIED",
+    "reasons": [
+      "Database schema changes detected",
+      "Security-sensitive files modified",
+      "Preview deployment tests failed"
+    ],
+    "riskScore": 7,
+    "mode": "check",
+    "timestamp": "2025-08-16T00:43:58.964Z",
+    "suggestedFixes": []
+  },
+  "context": {
+    "commitSha": "39a7e6651d028ff90a92357622958f864dae8fc8",
+    "branch": "test-sentinel-gate",
+    "actor": "unknown",
+    "timestamp": "2025-08-16T00:43:59.082Z",
+    "duration": 0
+  },
+  "evidence": {
+    "policies": [
+      "High Risk Policy: Requires manual review",
+      "Database Policy: Schema changes require shadow testing"
+    ],
+    "tests": {
+      "dbShadowReport": "Migration failed in shadow DB"
+    },
+    "riskFactors": [
+      "Elevated risk requiring attention",
+      "Security-sensitive modifications"
+    ],
+    "suggestedFixes": []
+  },
+  "ci": {
+    "environment": "development",
+    "artifacts": {}
+  }
+}

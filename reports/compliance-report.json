@@ -1,10 +1,10 @@
 {
-  "timestamp": "2025-08-15T19:02:23.978Z",
-  "totalViolations": 21,
-  "criticalViolations": 4,
+  "timestamp": "2025-08-16T15:56:27.708Z",
+  "totalViolations": 25,
+  "criticalViolations": 6,
   "autoFixed": 0,
   "manualFixes": [],
-  "complianceScore": 58,
+  "complianceScore": 50,
   "violations": [
     {
       "type": "rls_violation",
@@ -177,6 +177,36 @@
       "codeSnippet": "Database query detected"
     },
     {
+      "type": "secret_exposure",
+      "severity": "critical",
+      "file": "C:/Users/Dontae-PC/my-app/lib/supabase/secure-client.ts",
+      "line": 1,
+      "description": "Potential secret exposure detected",
+      "autoFixable": false,
+      "suggestedFix": "Move secrets to environment variables or secure configuration",
+      "codeSnippet": "validateResourceOwnershipAndGetData"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/supabase/secure-client.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "rls_violation",
+      "severity": "medium",
+      "file": "C:/Users/Dontae-PC/my-app/lib/supabase/server-minimal.ts",
+      "line": 1,
+      "description": "Direct database access detected - ensure RLS policies are in place",
+      "autoFixable": false,
+      "suggestedFix": "Verify RLS policies exist and are properly configured",
+      "codeSnippet": "Database query detected"
+    },
+    {
       "type": "rls_violation",
       "severity": "medium",
       "file": "C:/Users/Dontae-PC/my-app/data/checkins.repo.ts",
@@ -185,6 +215,16 @@
       "autoFixable": false,
       "suggestedFix": "Verify RLS policies exist and are properly configured",
       "codeSnippet": "Database query detected"
+    },
+    {
+      "type": "secret_exposure",
+      "severity": "critical",
+      "file": "C:/Users/Dontae-PC/my-app/data/clients.repo.ts",
+      "line": 1,
+      "description": "Potential secret exposure detected",
+      "autoFixable": false,
+      "suggestedFix": "Move secrets to environment variables or secure configuration",
+      "codeSnippet": "validateResourceOwnershipAndGetData"
     },
     {
       "type": "rls_violation",

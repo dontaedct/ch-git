@@ -1,104 +1,190 @@
 #!/usr/bin/env node
 
-const { performance } = require('perf_hooks');
+/**
+ * Build Performance Monitor
+ * Monitors Next.js build performance and validates performance budgets
+ */
+
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { performance } = require('perf_hooks');
+
+// Performance monitoring configuration
+const PERFORMANCE_CONFIG = {
+  buildTimeThreshold: 120000, // 2 minutes
+  memoryThreshold: 2 * 1024 * 1024 * 1024, // 2GB
+  bundleSizeThreshold: 500 * 1024, // 500KB
+  cacheEfficiencyThreshold: 0.8 // 80%
+};
 
 class BuildPerformanceMonitor {
   constructor() {
     this.startTime = 0;
-    this.checkpoints = new Map();
-    this.metrics = {
-      totalTime: 0,
-      phases: {},
-      cacheHits: 0,
-      cacheMisses: 0,
-      memoryUsage: [],
-      cpuUsage: []
-    };
+    this.endTime = 0;
+    this.memoryUsage = {};
+    this.buildStats = {};
+    this.violations = [];
   }
 
   start() {
+    console.log('🚀 Starting build performance monitoring...');
     this.startTime = performance.now();
-    this.checkpoint('build_start');
-    console.log('🚀 Build Performance Monitor Started');
+    this.memoryUsage.start = process.memoryUsage();
     
-    // Monitor system resources
-    this.startResourceMonitoring();
-  }
-
-  checkpoint(name) {
-    const now = performance.now();
-    const elapsed = now - this.startTime;
-    this.checkpoints.set(name, { time: now, elapsed });
-    
-    console.log(`⏱️  Checkpoint: ${name} (${elapsed.toFixed(2)}ms)`);
+    // Clear previous build cache if requested
+    if (process.argv.includes('--clear-cache')) {
+      this.clearBuildCache();
+    }
   }
 
   end() {
-    const endTime = performance.now();
-    this.metrics.totalTime = endTime - this.startTime;
+    this.endTime = performance.now();
+    this.memoryUsage.end = process.memoryUsage();
     
-    this.checkpoint('build_end');
-    this.stopResourceMonitoring();
+    const buildTime = this.endTime - this.startTime;
+    console.log(`⏱️  Build completed in ${(buildTime / 1000).toFixed(2)}s`);
+    
+    this.analyzePerformance(buildTime);
     this.generateReport();
   }
 
-  startResourceMonitoring() {
-    // Monitor memory usage
-    this.memoryInterval = setInterval(() => {
-      const memUsage = process.memoryUsage();
-      this.metrics.memoryUsage.push({
-        timestamp: Date.now(),
-        rss: memUsage.rss,
-        heapUsed: memUsage.heapUsed,
-        heapTotal: memUsage.heapTotal
-      });
-    }, 1000);
-
-    // Monitor CPU usage
-    this.cpuInterval = setInterval(() => {
-      const cpuUsage = process.cpuUsage();
-      this.metrics.cpuUsage.push({
-        timestamp: Date.now(),
-        user: cpuUsage.user,
-        system: cpuUsage.system
-      });
-    }, 1000);
+  clearBuildCache() {
+    const cachePath = path.join(process.cwd(), '.next/cache');
+    if (fs.existsSync(cachePath)) {
+      console.log('🧹 Clearing build cache...');
+      fs.rmSync(cachePath, { recursive: true, force: true });
+    }
   }
 
-  stopResourceMonitoring() {
-    if (this.memoryInterval) clearInterval(this.memoryInterval);
-    if (this.cpuInterval) clearInterval(this.cpuInterval);
+  analyzePerformance(buildTime) {
+    // Check build time
+    if (buildTime > PERFORMANCE_CONFIG.buildTimeThreshold) {
+      this.violations.push({
+        type: 'buildTime',
+        value: buildTime,
+        threshold: PERFORMANCE_CONFIG.buildTimeThreshold,
+        severity: 'warning'
+      });
+    }
+
+    // Check memory usage
+    const memoryIncrease = this.memoryUsage.end.heapUsed - this.memoryUsage.start.heapUsed;
+    if (memoryIncrease > PERFORMANCE_CONFIG.memoryThreshold) {
+      this.violations.push({
+        type: 'memoryUsage',
+        value: memoryIncrease,
+        threshold: PERFORMANCE_CONFIG.memoryThreshold,
+        severity: 'warning'
+      });
+    }
+
+    // Analyze bundle sizes
+    this.analyzeBundleSizes();
+    
+    // Check cache efficiency
+    this.checkCacheEfficiency();
+  }
+
+  analyzeBundleSizes() {
+    const buildPath = path.join(process.cwd(), '.next');
+    if (!fs.existsSync(buildPath)) {
+      console.log('⚠️  Build directory not found, skipping bundle analysis');
+      return;
+    }
+
+    try {
+      // Get bundle analysis if available
+      const bundleStatsPath = path.join(buildPath, 'bundle-stats.json');
+      if (fs.existsSync(bundleStatsPath)) {
+        const stats = JSON.parse(fs.readFileSync(bundleStatsPath, 'utf8'));
+        this.analyzeBundleStats(stats);
+      }
+
+      // Analyze static assets
+      const staticPath = path.join(buildPath, 'static');
+      if (fs.existsSync(staticPath)) {
+        this.analyzeStaticAssets(staticPath);
+      }
+    } catch (error) {
+      console.log('⚠️  Error analyzing bundle sizes:', error.message);
+    }
+  }
+
+  analyzeBundleStats(stats) {
+    if (stats.assets) {
+      stats.assets.forEach(asset => {
+        if (asset.size > PERFORMANCE_CONFIG.bundleSizeThreshold) {
+          this.violations.push({
+            type: 'bundleSize',
+            name: asset.name,
+            size: asset.size,
+            threshold: PERFORMANCE_CONFIG.bundleSizeThreshold,
+            severity: 'warning'
+          });
+        }
+      });
+    }
+  }
+
+  analyzeStaticAssets(staticPath) {
+    const analyzeDirectory = (dir) => {
+      const files = fs.readdirSync(dir);
+      files.forEach(file => {
+        const filePath = path.join(dir, file);
+        const stat = fs.statSync(filePath);
+        
+        if (stat.isDirectory()) {
+          analyzeDirectory(filePath);
+        } else if (stat.isFile()) {
+          const size = stat.size;
+          if (size > PERFORMANCE_CONFIG.bundleSizeThreshold) {
+            this.violations.push({
+              type: 'staticAsset',
+              name: path.relative(staticPath, filePath),
+              size: size,
+              threshold: PERFORMANCE_CONFIG.bundleSizeThreshold,
+              severity: 'info'
+            });
+          }
+        }
+      });
+    };
+
+    analyzeDirectory(staticPath);
+  }
+
+  checkCacheEfficiency() {
+    const cachePath = path.join(process.cwd(), '.next/cache');
+    if (fs.existsSync(cachePath)) {
+      try {
+        const cacheStats = fs.statSync(cachePath);
+        const cacheSize = cacheStats.size;
+        
+        // Simple cache efficiency check
+        if (cacheSize > 100 * 1024 * 1024) { // 100MB
+          console.log('💾 Large cache detected, consider clearing if builds are slow');
+        }
+      } catch (error) {
+        console.log('⚠️  Error checking cache efficiency:', error.message);
+      }
+    }
   }
 
   generateReport() {
     const report = {
       timestamp: new Date().toISOString(),
-      totalBuildTime: this.metrics.totalTime,
-      totalBuildTimeSeconds: (this.metrics.totalTime / 1000).toFixed(2),
-      checkpoints: Object.fromEntries(
-        Array.from(this.checkpoints.entries()).map(([name, data]) => [
-          name,
-          {
-            elapsed: data.elapsed.toFixed(2),
-            elapsedSeconds: (data.elapsed / 1000).toFixed(2)
-          }
-        ])
-      ),
-      performance: {
-        target: 'Under 10 seconds',
-        achieved: this.metrics.totalTime < 10000 ? '✅ YES' : '❌ NO',
-        improvement: this.metrics.totalTime > 10000 ? 
-          `${((this.metrics.totalTime - 10000) / 1000).toFixed(2)}s over target` : 
-          `${(10 - this.metrics.totalTime / 1000).toFixed(2)}s under target`
-      },
-      recommendations: this.generateRecommendations(),
-      system: {
-        nodeVersion: process.version,
-        platform: process.platform,
-        arch: process.arch,
-        cpus: require('os').cpus().length
+      buildTime: this.endTime - this.startTime,
+      memoryUsage: this.memoryUsage.start && this.memoryUsage.end ? {
+        start: this.memoryUsage.start,
+        end: this.memoryUsage.end,
+        increase: this.memoryUsage.end.heapUsed - this.memoryUsage.start.heapUsed
+      } : null,
+      violations: this.violations,
+      summary: {
+        totalViolations: this.violations.length,
+        warnings: this.violations.filter(v => v.severity === 'warning').length,
+        info: this.violations.filter(v => v.severity === 'info').length
       }
     };
 
@@ -112,80 +198,85 @@ class BuildPerformanceMonitor {
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
     // Display summary
-    console.log('\n📊 BUILD PERFORMANCE REPORT');
-    console.log('============================');
-    console.log(`⏱️  Total Build Time: ${report.totalBuildTimeSeconds}s`);
-    console.log(`🎯 Target: ${report.performance.target}`);
-    console.log(`✅ Achieved: ${report.performance.achieved}`);
-    console.log(`📈 Status: ${report.performance.improvement}`);
+    console.log('\n📊 Build Performance Report:');
+    console.log('================================');
+    console.log(`⏱️  Build Time: ${(report.buildTime / 1000).toFixed(2)}s`);
+    if (report.memoryUsage) {
+      console.log(`💾 Memory Increase: ${(report.memoryUsage.increase / 1024 / 1024).toFixed(2)}MB`);
+    } else {
+      console.log(`💾 Memory Usage: Not tracked (analyze-only mode)`);
+    }
+    console.log(`⚠️  Violations: ${report.summary.totalViolations}`);
     console.log(`📁 Report saved to: ${reportPath}`);
 
-    if (report.performance.achieved === '❌ NO') {
-      console.log('\n🚨 PERFORMANCE RECOMMENDATIONS:');
-      report.recommendations.forEach((rec, index) => {
-        console.log(`${index + 1}. ${rec}`);
+    if (this.violations.length > 0) {
+      console.log('\n🚨 Performance Violations:');
+      this.violations.forEach(violation => {
+        const icon = violation.severity === 'warning' ? '⚠️' : 'ℹ️';
+        console.log(`${icon} ${violation.type}: ${this.formatViolation(violation)}`);
       });
     }
+
+    // Exit with error code if there are warnings
+    if (report.summary.warnings > 0) {
+      process.exit(1);
+    }
   }
 
-  generateRecommendations() {
-    const recommendations = [];
-    const buildTime = this.metrics.totalTime / 1000;
-
-    if (buildTime > 15) {
-      recommendations.push('Consider using build:fast or build:minimal for development');
-      recommendations.push('Enable SWC compilation for faster TypeScript processing');
-      recommendations.push('Review and optimize large dependencies');
+  formatViolation(violation) {
+    switch (violation.type) {
+      case 'buildTime':
+        return `Build took ${(violation.value / 1000).toFixed(2)}s (threshold: ${(violation.threshold / 1000).toFixed(2)}s)`;
+      case 'memoryUsage':
+        return `Memory increased by ${(violation.value / 1024 / 1024).toFixed(2)}MB (threshold: ${(violation.threshold / 1024 / 1024).toFixed(2)}MB)`;
+      case 'bundleSize':
+      case 'staticAsset':
+        return `${violation.name}: ${(violation.size / 1024).toFixed(2)}KB (threshold: ${(violation.threshold / 1024).toFixed(2)}KB)`;
+      default:
+        return `${violation.value} (threshold: ${violation.threshold})`;
     }
-
-    if (buildTime > 12) {
-      recommendations.push('Enable webpack persistent caching');
-      recommendations.push('Optimize module resolution and path mapping');
-      recommendations.push('Consider code splitting for large components');
-    }
-
-    if (buildTime > 10) {
-      recommendations.push('Enable incremental compilation');
-      recommendations.push('Optimize TypeScript configuration');
-      recommendations.push('Review bundle analyzer output');
-    }
-
-    return recommendations;
   }
 
-  // Cache monitoring methods
-  recordCacheHit() {
-    this.metrics.cacheHits++;
-  }
-
-  recordCacheMiss() {
-    this.metrics.cacheMisses++;
+  runBuild() {
+    try {
+      const buildCommand = process.argv.includes('--fast') ? 'npm run build:fast' : 'npm run build';
+      console.log(`🔨 Running: ${buildCommand}`);
+      
+      execSync(buildCommand, { 
+        stdio: 'inherit',
+        env: { ...process.env, BUILD_VERBOSE: '1' }
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('❌ Build failed:', error.message);
+      return false;
+    }
   }
 }
 
-// Export for use in other scripts
-module.exports = BuildPerformanceMonitor;
-
-// Run directly if called from command line
+// Main execution
 if (require.main === module) {
   const monitor = new BuildPerformanceMonitor();
   
-  // Handle process signals
-  process.on('SIGINT', () => {
-    console.log('\n🛑 Build interrupted, generating report...');
-    monitor.end();
-    process.exit(0);
-  });
-
-  process.on('SIGTERM', () => {
-    console.log('\n🛑 Build terminated, generating report...');
-    monitor.end();
-    process.exit(0);
-  });
-
-  // Start monitoring
-  monitor.start();
-  
-  // Keep process alive
-  process.stdin.resume();
+  // Check if we should just run analysis
+  if (process.argv.includes('--analyze-only')) {
+    monitor.analyzeBundleSizes();
+    monitor.generateReport();
+  } else if (process.argv.includes('--budget')) {
+    // Validate against performance budgets
+    monitor.analyzeBundleSizes();
+    monitor.generateReport();
+  } else {
+    // Run full build with monitoring
+    monitor.start();
+    const success = monitor.runBuild();
+    if (success) {
+      monitor.end();
+    } else {
+      process.exit(1);
+    }
+  }
 }
+
+module.exports = BuildPerformanceMonitor;

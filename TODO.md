@@ -15,7 +15,7 @@
 Immediate threats that must be contained
 
 ### ⏳ ⏳ ⏳ Contain Brute-Force Hydra
-**ID:**  | **Due:** 2025-09-04 | **Effort:** 3-5 days
+**ID:**  | **Due:** [RELATIVE: 3 weeks from now] | **Effort:** 3-5 days
 
 **Status:** pending
 **Impact:** Critical security vulnerability
@@ -24,7 +24,7 @@ Immediate threats that must be contained
 ---
 
 ### ⏳ ⏳ ⏳ Exile Audit Phantom
-**ID:**  | **Due:** 2025-09-04 | **Effort:** 2-3 days
+**ID:**  | **Due:** [RELATIVE: 3 weeks from now] | **Effort:** 2-3 days
 
 **Status:** pending
 **Impact:** No compliance trail for security events
@@ -36,7 +36,7 @@ Immediate threats that must be contained
 Major threats that need containment soon
 
 ### ⏳ ⏳ ⏳ Activate Observatory Trio
-**ID:**  | **Due:** 2025-09-04 | **Effort:** 1-2 days
+**ID:**  | **Due:** [RELATIVE: 3 weeks from now] | **Effort:** 1-2 days
 
 **Status:** pending
 **Impact:** Blind to production issues
@@ -45,7 +45,7 @@ Major threats that need containment soon
 ---
 
 ### ⏳ ⏳ ⏳ critical security fix needed asap
-**ID:**  | **Due:** 2025-09-04 | **Effort:** 1-3 days
+**ID:**  | **Due:** [RELATIVE: 3 weeks from now] | **Effort:** 1-3 days
 
 **Status:** pending
 **Impact:** Critical security or stability risk
@@ -57,7 +57,7 @@ Major threats that need containment soon
 Important improvements and promotions
 
 ### ⏳ ⏳ high priority deployment issue
-**ID:**  | **Due:** 2025-09-04 | **Effort:** 2-4 days
+**ID:**  | **Due:** [RELATIVE: 3 weeks from now] | **Effort:** 2-4 days
 
 **Status:** pending
 **Impact:** Major functionality or security impact
@@ -69,7 +69,7 @@ Important improvements and promotions
 Nice-to-have features and optimizations
 
 ### ⏳ ⏳ ⏳ Cage Release Minotaur
-**ID:**  | **Due:** 2025-09-04 | **Effort:** 1 week
+**ID:**  | **Due:** [RELATIVE: 3 weeks from now] | **Effort:** 1 week
 
 **Status:** pending
 **Impact:** Deployment risk and no rollback capability
@@ -78,7 +78,7 @@ Nice-to-have features and optimizations
 ---
 
 ### ⏳ ⏳ ⏳ Promote Auth Gate to B-tier
-**ID:**  | **Due:** 2025-09-04 | **Effort:** 3-4 days
+**ID:**  | **Due:** [RELATIVE: 3 weeks from now] | **Effort:** 3-4 days
 
 **Status:** pending
 **Impact:** Session security vulnerabilities
@@ -87,7 +87,7 @@ Nice-to-have features and optimizations
 ---
 
 ### ⏳ ⏳ ⏳ Enhance Command Oracle
-**ID:**  | **Due:** 2025-09-04 | **Effort:** 1-2 days
+**ID:**  | **Due:** [RELATIVE: 3 weeks from now] | **Effort:** 1-2 days
 
 **Status:** pending
 **Impact:** Better developer experience
@@ -96,7 +96,7 @@ Nice-to-have features and optimizations
 ---
 
 ### ⏳ nice enhancement for later
-**ID:** MEBRVB5U-3SD0N | **Due:** 2025-09-13 | **Effort:** 2-4 days
+**ID:** MEBRVB5U-3SD0N | **Due:** [RELATIVE: 4 weeks from now] | **Effort:** 2-4 days
 
 **Status:** pending
 **Impact:** Nice-to-have enhancement

@@ -138,30 +138,31 @@ export class FixEngine {
     const flagName = routePath.replace(/\//g, '-') || 'new-route';
     
     // Check if FeatureGate is already imported
-    if (!content.includes('FeatureGate')) {
+    if (!content.includes('import { FeatureGate }')) {
       // Add import at the top
-      const importStatement = `import { FeatureGate } from '@/components/FeatureGate';\n`;
+      const importStatement = `import { FeatureGate } from '@/components/FeatureGate';\n\n`;
       content = importStatement + content;
     }
     
     // Find the main export and wrap it
-    // This is a simplified approach - in practice, you'd want more sophisticated parsing
     if (content.includes('export default')) {
-      content = content.replace(
-        /export default function (\w+)/,
-        `export default function $1`
-      );
-      
-      // Wrap the entire component with FeatureGate
-      const wrappedContent = `export default function ${routePath.split('/').pop() || 'Page'}() {
+      // Extract the function name and body
+      const functionMatch = content.match(/export default function (\w+)\s*\([^)]*\)\s*{([\s\S]*)}/);
+      if (functionMatch) {
+        const functionName = functionMatch[1];
+        const functionBody = functionMatch[2];
+        
+        // Create the wrapped component
+        const wrappedContent = `export default function ${functionName}() {
   return (
     <FeatureGate flag="${flagName}">
-      ${content.replace(/export default function \w+\([^)]*\)\s*{([\s\S]*)}/, '$1')}
+      ${functionBody}
     </FeatureGate>
   );
 }`;
-      
-      return wrappedContent;
+        
+        return wrappedContent;
+      }
     }
     
     return content;

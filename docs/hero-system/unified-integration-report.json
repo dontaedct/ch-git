@@ -1,7 +1,7 @@
 {
-  "timestamp": "2025-08-15T19:25:56.842Z",
+  "timestamp": "2025-08-16T21:05:16.563Z",
   "version": "1.0.0",
-  "executionTime": 35,
+  "executionTime": 33,
   "integrationStatus": {
     "sentientArmy": "initialized",
     "quantumNeural": "initialized",
@@ -17,10 +17,10 @@
         "superpositionDepth": 4,
         "entanglementStrength": 0.8,
         "quantumStates": 8,
-        "entanglementConnections": 8,
+        "entanglementConnections": 12,
         "measurementHistory": 0,
         "emergencyShutdown": false,
-        "timestamp": 1755285956835
+        "timestamp": 1755378316556
       },
       "performance": {
         "totalOptimizations": 0,
@@ -29,7 +29,7 @@
         "averageOptimizationTime": 0,
         "lastOptimization": null
       },
-      "timestamp": 1755285956835,
+      "timestamp": 1755378316556,
       "emergencyShutdown": false,
       "quantumStateIntegrity": 100
     },
@@ -45,7 +45,7 @@
         "failurePredictionsSize": 0,
         "interventionHistorySize": 0,
         "emergencyShutdown": false,
-        "timestamp": 1755285956835
+        "timestamp": 1755378316556
       },
       "performance": {
         "totalPredictions": 0,
@@ -54,27 +54,23 @@
         "averagePredictionTime": 0,
         "lastPrediction": null
       },
-      "timestamp": 1755285956835,
+      "timestamp": 1755378316556,
       "emergencyShutdown": false,
       "causalGraphIntegrity": 0
-    },
-    "consciousness": {
-      "healthScore": 0,
-      "status": "error"
     }
   },
   "unifiedState": {
-    "timestamp": 1755285956837,
+    "timestamp": 1755378316559,
     "sentientArmy": {
       "version": "1.0.0",
-      "startTime": "2025-08-15T19:25:56.807Z",
+      "startTime": "2025-08-16T21:05:16.530Z",
       "systemHealth": {
         "baseline": {
-          "cpu": 23,
-          "memory": 854,
-          "io": 144,
-          "response": 1284,
-          "timestamp": "2025-08-15T19:25:56.834Z"
+          "cpu": 19,
+          "memory": 593,
+          "io": 125,
+          "response": 1848,
+          "timestamp": "2025-08-16T21:05:16.558Z"
         }
       },
       "integrationMap": {},
@@ -84,7 +80,7 @@
       "reliabilityMetrics": {},
       "selfImprovementData": {},
       "armyCoordination": {},
-      "timestamp": 1755285956837
+      "timestamp": 1755378316559
     },
     "quantumNeural": {
       "version": "1.0.0",
@@ -98,7 +94,7 @@
             "phase": 0,
             "entangled": [],
             "measurement": null,
-            "lastUpdate": 1755285956828
+            "lastUpdate": 1755378316550
           }
         ],
         [
@@ -110,7 +106,7 @@
             "phase": 0.7853981633974483,
             "entangled": [],
             "measurement": null,
-            "lastUpdate": 1755285956828
+            "lastUpdate": 1755378316550
           }
         ],
         [
@@ -122,7 +118,7 @@
             "phase": 1.5707963267948966,
             "entangled": [],
             "measurement": null,
-            "lastUpdate": 1755285956828
+            "lastUpdate": 1755378316550
           }
         ],
         [
@@ -134,7 +130,7 @@
             "phase": 2.356194490192345,
             "entangled": [],
             "measurement": null,
-            "lastUpdate": 1755285956828
+            "lastUpdate": 1755378316550
           }
         ],
         [
@@ -146,7 +142,7 @@
             "phase": 3.141592653589793,
             "entangled": [],
             "measurement": null,
-            "lastUpdate": 1755285956828
+            "lastUpdate": 1755378316550
           }
         ],
         [
@@ -158,7 +154,7 @@
             "phase": 3.9269908169872414,
             "entangled": [],
             "measurement": null,
-            "lastUpdate": 1755285956828
+            "lastUpdate": 1755378316550
           }
         ],
         [
@@ -170,7 +166,7 @@
             "phase": 4.71238898038469,
             "entangled": [],
             "measurement": null,
-            "lastUpdate": 1755285956828
+            "lastUpdate": 1755378316550
           }
         ],
         [
@@ -182,161 +178,193 @@
             "phase": 5.497787143782138,
             "entangled": [],
             "measurement": null,
-            "lastUpdate": 1755285956828
+            "lastUpdate": 1755378316550
           }
         ]
       ],
       "superpositionMatrix": [
         [
           1,
-          0.21573087763861187,
-          0.14308472616182308,
-          0.08878779463558618,
-          0.13674076334924065,
-          -0.09562940709844386,
-          -0.22102655019156214,
-          -0.061569139017784894
+          0.19830210238134233,
+          0.15555587253976755,
+          0.10672269098354849,
+          0.1004066667268244,
+          -0.18979391630810694,
+          -0.19892405657765994,
+          0.048972307774797705
         ],
         [
-          0.1717801148941842,
+          0.20654980340483325,
           1,
-          0.11060009551883791,
-          0.0726819916904748,
-          0.019032738721143055,
-          -0.13182426379845386,
-          0.0008535939258831476,
-          0.0779966392483522
+          0.09758078024901758,
+          0.07351980894806705,
+          0.04124540451663622,
+          0.016135376997173823,
+          0.04304548495118336,
+          -0.04794132712451256
         ],
         [
-          0.04441662492079329,
-          0.200906408627972,
+          0.12718601690859596,
+          0.20953992889037154,
           1,
-          -0.07776199908138803,
-          0.004312764836387484,
-          -0.057969964832057116,
-          0.1392875305884948,
-          0.010156132793417025
+          -0.19239640448799125,
+          -0.20561706561074944,
+          -0.025377354395315396,
+          -0.10637888969553773,
+          0.19932958954069824
         ],
         [
-          -0.022439453372777904,
-          -0.06163987335127641,
-          -0.12024438450483853,
+          0.19740597050063396,
+          -0.009674389513405423,
+          -0.19068912357400192,
           1,
-          -0.12907439056673803,
-          -0.04482871561132033,
-          -0.030285640569887723,
-          0.23247954268734167
+          -0.12122292414647093,
+          -0.1160314565250414,
+          0.18247091024311501,
+          0.10244189226795919
         ],
         [
-          -0.036313185952150884,
-          -0.06782815915331522,
-          -0.17583613895121297,
-          -0.07095834394509924,
+          -0.05172951017989534,
+          0.06873426267794625,
+          -0.03778054487306226,
+          -0.16906376230175296,
           1,
-          0.09180899939933086,
-          0.20731111332156443,
-          -0.021260464086729366
+          0.0005487703480756972,
+          0.0764645105010773,
+          0.10253564979129576
         ],
         [
-          -0.0755775796514847,
-          -0.2205053808913812,
-          -0.20080341416467667,
-          -0.081028597375767,
-          0.18556543525447416,
+          -0.16460512860584336,
+          -0.2066488302947485,
+          -0.12224659308162723,
+          0.04709736753174007,
+          0.014042421648893966,
           1,
-          0.02449777251346262,
-          0.09107056136355811
+          0.0967861287050262,
+          0.0186152935992737
         ],
         [
-          -0.08132284504772513,
-          -0.057736232783367133,
-          -0.14611744773149277,
-          0.08781916715939973,
-          0.2360640099955934,
-          -0.04805587854082129,
+          -0.022647207094740135,
+          -0.20584600968715788,
+          -0.09887895958608445,
+          0.07840102311365767,
+          -0.04321416641782583,
+          -0.022532860026808696,
           1,
-          -0.13582646425370717
+          -0.0442585311993627
         ],
         [
-          -0.15650190627008886,
-          0.054136770301436155,
-          0.15251212947127873,
-          -0.038327370298990915,
-          0.2193896078829264,
-          0.03355609488675069,
-          -0.1525488682542118,
+          -0.17486394738435662,
+          0.06799600285475388,
+          0.09146529138272268,
+          0.15403086622274664,
+          0.12572552329285475,
+          0.047004878282292446,
+          0.03818836156507395,
           1
         ]
       ],
       "entanglementMap": [
         [
-          "hero-ultimate-optimized-hero-unified-orchestrator",
+          "hero-unified-orchestrator-hero-ultimate-optimized",
           {
-            "strength": 0.9334899165903321,
-            "phase": 2.566832466964013,
-            "lastInteraction": 1755285956829
+            "strength": 0.8129757661445345,
+            "phase": 5.9524058633990915,
+            "lastInteraction": 1755378316551
           }
         ],
         [
-          "hero-audit-system-hero-validation-system",
+          "hero-unified-orchestrator-guardian",
           {
-            "strength": 0.8234263170315845,
-            "phase": 1.9123426441024793,
-            "lastInteraction": 1755285956829
+            "strength": 0.9773940926262006,
+            "phase": 3.338357605336562,
+            "lastInteraction": 1755378316551
           }
         ],
         [
-          "guardian-hero-ultimate-optimized",
+          "hero-audit-system-hero-ultimate-optimized",
           {
-            "strength": 0.8536238033012932,
-            "phase": 4.496529864292294,
-            "lastInteraction": 1755285956829
+            "strength": 0.9667821796393837,
+            "phase": 1.3196527686840367,
+            "lastInteraction": 1755378316551
           }
         ],
         [
-          "cursor-ai-universal-header-doctor",
+          "hero-audit-system-git-master-control",
           {
-            "strength": 0.8860077176488342,
-            "phase": 4.586919223893769,
-            "lastInteraction": 1755285956829
+            "strength": 0.9145815122320269,
+            "phase": 4.178669778284599,
+            "lastInteraction": 1755378316551
           }
         ],
         [
-          "doctor-hero-unified-orchestrator",
+          "hero-validation-system-doctor",
           {
-            "strength": 0.8144545809308332,
-            "phase": 5.026177232989417,
-            "lastInteraction": 1755285956829
+            "strength": 0.8297858260476869,
+            "phase": 3.202901914199305,
+            "lastInteraction": 1755378316551
+          }
+        ],
+        [
+          "guardian-hero-audit-system",
+          {
+            "strength": 0.8126940581986983,
+            "phase": 2.724020380792479,
+            "lastInteraction": 1755378316551
+          }
+        ],
+        [
+          "cursor-ai-universal-header-hero-validation-system",
+          {
+            "strength": 0.8778945768878921,
+            "phase": 1.9337014132858348,
+            "lastInteraction": 1755378316551
+          }
+        ],
+        [
+          "cursor-ai-universal-header-guardian",
+          {
+            "strength": 0.8040357656759215,
+            "phase": 4.534044559734137,
+            "lastInteraction": 1755378316551
+          }
+        ],
+        [
+          "doctor-hero-ultimate-optimized",
+          {
+            "strength": 0.892168952496377,
+            "phase": 4.112187294531097,
+            "lastInteraction": 1755378316551
           }
         ],
         [
           "doctor-cursor-ai-universal-header",
           {
-            "strength": 0.8497498011511825,
-            "phase": 5.169966551987034,
-            "lastInteraction": 1755285956829
+            "strength": 0.8290539017568251,
+            "phase": 2.1509901068730897,
+            "lastInteraction": 1755378316551
           }
         ],
         [
-          "doctor-git-master-control",
+          "git-master-control-hero-unified-orchestrator",
           {
-            "strength": 0.8444227531166644,
-            "phase": 2.451559271185686,
-            "lastInteraction": 1755285956829
+            "strength": 0.9060874301607574,
+            "phase": 3.3657686996012823,
+            "lastInteraction": 1755378316551
           }
         ],
         [
-          "git-master-control-hero-ultimate-optimized",
+          "git-master-control-guardian",
           {
-            "strength": 0.9479533065886664,
-            "phase": 5.289802324255787,
-            "lastInteraction": 1755285956829
+            "strength": 0.8431574410987559,
+            "phase": 1.352374329715581,
+            "lastInteraction": 1755378316551
           }
         ]
       ],
       "measurementHistory": [],
       "optimizationPaths": [],
-      "timestamp": 1755285956837
+      "timestamp": 1755378316559
     },
     "causalityEngine": {
       "version": "1.0.0",
@@ -348,92 +376,106 @@
             "name": "hero-unified-orchestrator",
             "causes": [
               {
-                "target": "hero-ultimate-optimized",
-                "strength": 0.34704782447099136,
-                "type": "correlation",
-                "timestamp": 1755285956831
-              },
-              {
                 "target": "hero-audit-system",
-                "strength": 0.3537275030283181,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.7094702267761777,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-validation-system",
-                "strength": 0.4464118303820359,
+                "strength": 0.751243179840352,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
+                "target": "cursor-ai-universal-header",
+                "strength": 0.6726296921042287,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
+                "target": "doctor",
+                "strength": 0.443650188904402,
                 "type": "influence",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "guardian",
-                "strength": 0.6596364920940738,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "git-master-control",
-                "strength": 0.7610591868782086,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.4105583174109949,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.7323864114164229,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "memory-leak-detector",
-                "strength": 0.3061216790087233,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.44655403293124263,
+                "type": "influence",
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
                 "source": "hero-ultimate-optimized",
-                "strength": 0.4775240191181761,
+                "strength": 0.4422544485691118,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-audit-system",
-                "strength": 0.5657945851879986,
+                "strength": 0.7242444582613958,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
+                "source": "hero-validation-system",
+                "strength": 0.7428066614575028,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
+                "source": "guardian",
+                "strength": 0.49207497333421685,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "cursor-ai-universal-header",
-                "strength": 0.39989335100018175,
+                "strength": 0.34640953019224696,
                 "type": "correlation",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
+              },
+              {
+                "source": "doctor",
+                "strength": 0.7289350117890705,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.779627827190607,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.4428747796357942,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "intelligent-build-orchestrator",
-                "strength": 0.5349942964663013,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.3296653609881417,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "source": "memory-leak-detector",
-                "strength": 0.7193164941382642,
+                "strength": 0.6242236839891366,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
             "dependencies": [
-              "git-master-control",
+              "hero-audit-system",
+              "hero-validation-system",
+              "doctor",
               "memory-leak-detector"
             ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -445,96 +487,90 @@
             "causes": [
               {
                 "target": "hero-unified-orchestrator",
-                "strength": 0.4775240191181761,
+                "strength": 0.4422544485691118,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-validation-system",
-                "strength": 0.6818586146190365,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "guardian",
-                "strength": 0.7076424050770493,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.463099671548434,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "cursor-ai-universal-header",
-                "strength": 0.5266725955675255,
-                "type": "influence",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "doctor",
-                "strength": 0.3612092798181876,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.684639379336641,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "git-master-control",
-                "strength": 0.4660789782700359,
+                "strength": 0.47442207205686715,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.7228324829690744,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.5030923306245297,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "memory-leak-detector",
-                "strength": 0.6359950123105191,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.5661036067974675,
+                "type": "influence",
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
-                "source": "hero-unified-orchestrator",
-                "strength": 0.34704782447099136,
-                "type": "correlation",
-                "timestamp": 1755285956831
-              },
-              {
                 "source": "hero-audit-system",
-                "strength": 0.4293141565561021,
+                "strength": 0.43114670245684966,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-validation-system",
-                "strength": 0.3886603692629297,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.5501993234882767,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "guardian",
-                "strength": 0.30102076360492325,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.5555814295648167,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "cursor-ai-universal-header",
-                "strength": 0.44735871497311597,
+                "strength": 0.5727436780474968,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
+              },
+              {
+                "source": "doctor",
+                "strength": 0.4219278593301675,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.6090493444409928,
+                "strength": 0.6538151065703877,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
+              },
+              {
+                "source": "intelligent-build-orchestrator",
+                "strength": 0.5310214719512995,
+                "type": "influence",
+                "timestamp": 1755378316553
               }
             ],
             "dependencies": [
               "git-master-control"
             ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -546,118 +582,90 @@
             "causes": [
               {
                 "target": "hero-unified-orchestrator",
-                "strength": 0.5657945851879986,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.7242444582613958,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-ultimate-optimized",
-                "strength": 0.4293141565561021,
+                "strength": 0.43114670245684966,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-validation-system",
-                "strength": 0.34064000298280916,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.5120914854403418,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "guardian",
-                "strength": 0.5887580134062209,
+                "strength": 0.5700909479467579,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "cursor-ai-universal-header",
-                "strength": 0.6378532507610442,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.3366369582280434,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "target": "doctor",
-                "strength": 0.5220827761265803,
-                "type": "influence",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "git-master-control",
-                "strength": 0.3124277670692322,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.7651054147770213,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.32113260623878603,
-                "type": "correlation",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "memory-leak-detector",
-                "strength": 0.3918399073790553,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.7051204119406429,
+                "type": "dependency",
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
                 "source": "hero-unified-orchestrator",
-                "strength": 0.3537275030283181,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.7094702267761777,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-validation-system",
-                "strength": 0.6006559261462888,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "guardian",
-                "strength": 0.7888159654528741,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.41083093891742894,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "cursor-ai-universal-header",
-                "strength": 0.7994413682274635,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.38938133317073054,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "source": "doctor",
-                "strength": 0.42598414987360544,
+                "strength": 0.5299454118655019,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.6038517684281257,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "intelligent-build-orchestrator",
-                "strength": 0.6054824262967284,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.31689686250257576,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "source": "memory-leak-detector",
-                "strength": 0.5460807979879133,
+                "strength": 0.41231522072558024,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
             "dependencies": [
-              "hero-validation-system",
-              "guardian",
-              "cursor-ai-universal-header",
-              "git-master-control",
-              "intelligent-build-orchestrator"
+              "hero-unified-orchestrator"
             ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -668,113 +676,118 @@
             "name": "hero-validation-system",
             "causes": [
               {
+                "target": "hero-unified-orchestrator",
+                "strength": 0.7428066614575028,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
                 "target": "hero-ultimate-optimized",
-                "strength": 0.3886603692629297,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.5501993234882767,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-audit-system",
-                "strength": 0.6006559261462888,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.41083093891742894,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "guardian",
-                "strength": 0.7510022689348179,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.5096462452345816,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "cursor-ai-universal-header",
-                "strength": 0.4377314192761406,
+                "strength": 0.4365555088120063,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "doctor",
-                "strength": 0.33168034879999253,
-                "type": "correlation",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "git-master-control",
-                "strength": 0.49057780394296524,
+                "strength": 0.4850233745119426,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.7350640526842465,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.336448782705443,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "target": "memory-leak-detector",
-                "strength": 0.5059470735172944,
+                "strength": 0.4205777457688614,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
                 "source": "hero-unified-orchestrator",
-                "strength": 0.4464118303820359,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.751243179840352,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-ultimate-optimized",
-                "strength": 0.6818586146190365,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.463099671548434,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-audit-system",
-                "strength": 0.34064000298280916,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.5120914854403418,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "guardian",
-                "strength": 0.6925718074772114,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.35260223176520666,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "source": "cursor-ai-universal-header",
-                "strength": 0.7343621582847952,
+                "strength": 0.6524425309540985,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "doctor",
-                "strength": 0.7681687296937791,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.5108201269763502,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.45579872874271876,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.754223998325164,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
+                "source": "intelligent-build-orchestrator",
+                "strength": 0.6245755990836197,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "memory-leak-detector",
-                "strength": 0.7900135564831343,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.3206137473633997,
+                "type": "correlation",
+                "timestamp": 1755378316553
               }
             ],
             "dependencies": [
-              "hero-ultimate-optimized",
-              "guardian",
+              "hero-unified-orchestrator",
               "cursor-ai-universal-header",
-              "doctor",
-              "memory-leak-detector"
+              "git-master-control",
+              "intelligent-build-orchestrator"
             ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -785,94 +798,71 @@
             "name": "guardian",
             "causes": [
               {
-                "target": "hero-ultimate-optimized",
-                "strength": 0.30102076360492325,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "target": "hero-unified-orchestrator",
+                "strength": 0.49207497333421685,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
-                "target": "hero-audit-system",
-                "strength": 0.7888159654528741,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "target": "hero-ultimate-optimized",
+                "strength": 0.5555814295648167,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-validation-system",
-                "strength": 0.6925718074772114,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.35260223176520666,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
-                "target": "cursor-ai-universal-header",
-                "strength": 0.551963883420506,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "target": "git-master-control",
+                "strength": 0.7940344051506967,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.5361867585930518,
+                "strength": 0.41999869911810905,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "memory-leak-detector",
-                "strength": 0.35291523036785044,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.7726585148791079,
+                "type": "dependency",
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
-                "source": "hero-unified-orchestrator",
-                "strength": 0.6596364920940738,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "hero-ultimate-optimized",
-                "strength": 0.7076424050770493,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
                 "source": "hero-audit-system",
-                "strength": 0.5887580134062209,
+                "strength": 0.5700909479467579,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-validation-system",
-                "strength": 0.7510022689348179,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.5096462452345816,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "doctor",
-                "strength": 0.7150115457562336,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.41572458715736393,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.3035700269111441,
-                "type": "correlation",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "intelligent-build-orchestrator",
-                "strength": 0.3793260719588679,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.5086572671764742,
+                "type": "influence",
+                "timestamp": 1755378316553
               }
             ],
-            "dependencies": [
-              "hero-unified-orchestrator",
-              "hero-ultimate-optimized",
-              "hero-validation-system",
-              "doctor"
-            ],
+            "dependencies": [],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -884,109 +874,104 @@
             "causes": [
               {
                 "target": "hero-unified-orchestrator",
-                "strength": 0.39989335100018175,
+                "strength": 0.34640953019224696,
                 "type": "correlation",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-ultimate-optimized",
-                "strength": 0.44735871497311597,
+                "strength": 0.5727436780474968,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-audit-system",
-                "strength": 0.7994413682274635,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.38938133317073054,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-validation-system",
-                "strength": 0.7343621582847952,
+                "strength": 0.6524425309540985,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "doctor",
-                "strength": 0.5302177986171023,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.7454718378028757,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "git-master-control",
-                "strength": 0.5138868387982259,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.768083660362854,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.5890349394519,
+                "strength": 0.465500098728412,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "memory-leak-detector",
-                "strength": 0.7087634782336378,
+                "strength": 0.7323558598815789,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
+                "source": "hero-unified-orchestrator",
+                "strength": 0.6726296921042287,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
                 "source": "hero-ultimate-optimized",
-                "strength": 0.5266725955675255,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.684639379336641,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-audit-system",
-                "strength": 0.6378532507610442,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.3366369582280434,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-validation-system",
-                "strength": 0.4377314192761406,
+                "strength": 0.4365555088120063,
                 "type": "influence",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "guardian",
-                "strength": 0.551963883420506,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "doctor",
-                "strength": 0.30662224423092,
+                "strength": 0.36709415610726825,
                 "type": "correlation",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.7689785506129547,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.411660710031736,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "intelligent-build-orchestrator",
-                "strength": 0.5994606707396055,
-                "type": "influence",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "memory-leak-detector",
-                "strength": 0.5161073068668651,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.7932827665388489,
+                "type": "dependency",
+                "timestamp": 1755378316553
               }
             ],
             "dependencies": [
-              "hero-audit-system",
-              "git-master-control"
+              "hero-unified-orchestrator",
+              "hero-ultimate-optimized",
+              "intelligent-build-orchestrator"
             ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -997,83 +982,105 @@
             "name": "doctor",
             "causes": [
               {
-                "target": "hero-audit-system",
-                "strength": 0.42598414987360544,
+                "target": "hero-unified-orchestrator",
+                "strength": 0.7289350117890705,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
+                "target": "hero-ultimate-optimized",
+                "strength": 0.4219278593301675,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
+              },
+              {
+                "target": "hero-audit-system",
+                "strength": 0.5299454118655019,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-validation-system",
-                "strength": 0.7681687296937791,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.5108201269763502,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "guardian",
-                "strength": 0.7150115457562336,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.41572458715736393,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "cursor-ai-universal-header",
-                "strength": 0.30662224423092,
+                "strength": 0.36709415610726825,
                 "type": "correlation",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "git-master-control",
-                "strength": 0.37499752540656406,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.48699260089518165,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.559656977273193,
+                "strength": 0.3679350718728509,
+                "type": "correlation",
+                "timestamp": 1755378316553
+              },
+              {
+                "target": "memory-leak-detector",
+                "strength": 0.5944320381498693,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
-                "source": "hero-ultimate-optimized",
-                "strength": 0.3612092798181876,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "source": "hero-unified-orchestrator",
+                "strength": 0.443650188904402,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-audit-system",
-                "strength": 0.5220827761265803,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.7651054147770213,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-validation-system",
-                "strength": 0.33168034879999253,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.4850233745119426,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "cursor-ai-universal-header",
-                "strength": 0.5302177986171023,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.7454718378028757,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.4378093528142466,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.6941787035624236,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
-                "source": "memory-leak-detector",
-                "strength": 0.38776155658133904,
+                "source": "intelligent-build-orchestrator",
+                "strength": 0.31528518822004886,
                 "type": "correlation",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
-            "dependencies": [],
+            "dependencies": [
+              "hero-audit-system",
+              "cursor-ai-universal-header",
+              "git-master-control"
+            ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -1085,114 +1092,103 @@
             "causes": [
               {
                 "target": "hero-unified-orchestrator",
-                "strength": 0.779627827190607,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.4428747796357942,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-ultimate-optimized",
-                "strength": 0.6090493444409928,
+                "strength": 0.6538151065703877,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-audit-system",
-                "strength": 0.6038517684281257,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.31689686250257576,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-validation-system",
-                "strength": 0.45579872874271876,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.754223998325164,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "guardian",
-                "strength": 0.3035700269111441,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.5086572671764742,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "cursor-ai-universal-header",
-                "strength": 0.7689785506129547,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.411660710031736,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "target": "doctor",
-                "strength": 0.4378093528142466,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.6941787035624236,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.6862614879751734,
+                "strength": 0.6024179079973703,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "memory-leak-detector",
-                "strength": 0.7816859713178088,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.5224268394458128,
+                "type": "influence",
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
-                "source": "hero-unified-orchestrator",
-                "strength": 0.7610591868782086,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
                 "source": "hero-ultimate-optimized",
-                "strength": 0.4660789782700359,
+                "strength": 0.47442207205686715,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
-                "source": "hero-audit-system",
-                "strength": 0.3124277670692322,
-                "type": "correlation",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "hero-validation-system",
-                "strength": 0.49057780394296524,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "source": "guardian",
+                "strength": 0.7940344051506967,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "cursor-ai-universal-header",
-                "strength": 0.5138868387982259,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.768083660362854,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "doctor",
-                "strength": 0.37499752540656406,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.48699260089518165,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "intelligent-build-orchestrator",
-                "strength": 0.435158482056731,
+                "strength": 0.4161760733035471,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "memory-leak-detector",
-                "strength": 0.46878628556407054,
+                "strength": 0.4116501397973763,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
             "dependencies": [
-              "hero-unified-orchestrator"
+              "guardian",
+              "cursor-ai-universal-header"
             ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -1204,104 +1200,104 @@
             "causes": [
               {
                 "target": "hero-unified-orchestrator",
-                "strength": 0.5349942964663013,
-                "type": "influence",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "hero-audit-system",
-                "strength": 0.6054824262967284,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "guardian",
-                "strength": 0.3793260719588679,
+                "strength": 0.3296653609881417,
                 "type": "correlation",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
+              },
+              {
+                "target": "hero-ultimate-optimized",
+                "strength": 0.5310214719512995,
+                "type": "influence",
+                "timestamp": 1755378316553
+              },
+              {
+                "target": "hero-validation-system",
+                "strength": 0.6245755990836197,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "target": "cursor-ai-universal-header",
-                "strength": 0.5994606707396055,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.7932827665388489,
+                "type": "dependency",
+                "timestamp": 1755378316553
+              },
+              {
+                "target": "doctor",
+                "strength": 0.31528518822004886,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "target": "git-master-control",
-                "strength": 0.435158482056731,
+                "strength": 0.4161760733035471,
                 "type": "influence",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "memory-leak-detector",
-                "strength": 0.45763569548869554,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
                 "source": "hero-unified-orchestrator",
-                "strength": 0.4105583174109949,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.7323864114164229,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-ultimate-optimized",
-                "strength": 0.7228324829690744,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.5030923306245297,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-audit-system",
-                "strength": 0.32113260623878603,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.7051204119406429,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-validation-system",
-                "strength": 0.7350640526842465,
-                "type": "dependency",
-                "timestamp": 1755285956831
+                "strength": 0.336448782705443,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "source": "guardian",
-                "strength": 0.5361867585930518,
+                "strength": 0.41999869911810905,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "cursor-ai-universal-header",
-                "strength": 0.5890349394519,
+                "strength": 0.465500098728412,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "doctor",
-                "strength": 0.559656977273193,
-                "type": "influence",
-                "timestamp": 1755285956831
+                "strength": 0.3679350718728509,
+                "type": "correlation",
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.6862614879751734,
+                "strength": 0.6024179079973703,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "memory-leak-detector",
-                "strength": 0.300909784175933,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.516131088167177,
+                "type": "influence",
+                "timestamp": 1755378316553
               }
             ],
             "dependencies": [
-              "hero-ultimate-optimized",
-              "hero-validation-system",
+              "hero-unified-orchestrator",
+              "hero-audit-system",
               "git-master-control"
             ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ],
@@ -1313,104 +1309,85 @@
             "causes": [
               {
                 "target": "hero-unified-orchestrator",
-                "strength": 0.7193164941382642,
+                "strength": 0.6242236839891366,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-audit-system",
-                "strength": 0.5460807979879133,
+                "strength": 0.41231522072558024,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "hero-validation-system",
-                "strength": 0.7900135564831343,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "cursor-ai-universal-header",
-                "strength": 0.5161073068668651,
-                "type": "influence",
-                "timestamp": 1755285956831
-              },
-              {
-                "target": "doctor",
-                "strength": 0.38776155658133904,
+                "strength": 0.3206137473633997,
                 "type": "correlation",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "git-master-control",
-                "strength": 0.46878628556407054,
+                "strength": 0.4116501397973763,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "target": "intelligent-build-orchestrator",
-                "strength": 0.300909784175933,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.516131088167177,
+                "type": "influence",
+                "timestamp": 1755378316553
               }
             ],
             "effects": [
               {
                 "source": "hero-unified-orchestrator",
-                "strength": 0.3061216790087233,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.44655403293124263,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-ultimate-optimized",
-                "strength": 0.6359950123105191,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "hero-audit-system",
-                "strength": 0.3918399073790553,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.5661036067974675,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "hero-validation-system",
-                "strength": 0.5059470735172944,
+                "strength": 0.4205777457688614,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               },
               {
                 "source": "guardian",
-                "strength": 0.35291523036785044,
-                "type": "correlation",
-                "timestamp": 1755285956831
+                "strength": 0.7726585148791079,
+                "type": "dependency",
+                "timestamp": 1755378316553
               },
               {
                 "source": "cursor-ai-universal-header",
-                "strength": 0.7087634782336378,
+                "strength": 0.7323558598815789,
                 "type": "dependency",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
+              },
+              {
+                "source": "doctor",
+                "strength": 0.5944320381498693,
+                "type": "influence",
+                "timestamp": 1755378316553
               },
               {
                 "source": "git-master-control",
-                "strength": 0.7816859713178088,
-                "type": "dependency",
-                "timestamp": 1755285956831
-              },
-              {
-                "source": "intelligent-build-orchestrator",
-                "strength": 0.45763569548869554,
+                "strength": 0.5224268394458128,
                 "type": "influence",
-                "timestamp": 1755285956831
+                "timestamp": 1755378316553
               }
             ],
             "dependencies": [
-              "hero-ultimate-optimized",
-              "cursor-ai-universal-header",
-              "git-master-control"
+              "guardian",
+              "cursor-ai-universal-header"
             ],
             "failureProbability": 0.01,
-            "lastUpdate": 1755285956830,
+            "lastUpdate": 1755378316552,
             "healthScore": 1
           }
         ]
@@ -1419,7 +1396,7 @@
       "failurePredictions": [],
       "interventionHistory": [],
       "temporalLogic": {},
-      "timestamp": 1755285956837
+      "timestamp": 1755378316559
     },
     "consciousness": {
       "version": "1.0.0",
@@ -1441,7 +1418,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1461,7 +1438,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1481,7 +1458,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1501,7 +1478,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1521,7 +1498,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1541,7 +1518,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1561,7 +1538,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1581,7 +1558,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1601,7 +1578,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ],
         [
@@ -1621,7 +1598,7 @@
               "collectiveIntelligence": 0
             },
             "evolutionHistory": [],
-            "lastUpdate": 1755285956832
+            "lastUpdate": 1755378316554
           }
         ]
       ],
@@ -1629,7 +1606,7 @@
       "collectiveIntelligence": {},
       "metaLearning": {},
       "evolutionHistory": [],
-      "timestamp": 1755285956837
+      "timestamp": 1755378316559
     },
     "overallHealth": 0
   },

@@ -1,285 +1,224 @@
+/**
+ * 🚀 MIT HERO SYSTEM - SUPABASE DATABASE TYPES
+ * 
+ * Type-safe database schema definitions for Supabase integration.
+ * These types ensure compile-time safety and proper IntelliSense support.
+ */
+
 export interface Database {
   public: {
     Tables: {
       clients: {
         Row: Client;
-        Insert: Omit<Client, 'id' | 'created_at'> & { id?: string; created_at?: string };
-        Update: Partial<Omit<Client, 'id' | 'created_at'>>;
+        Insert: ClientInsert;
+        Update: ClientUpdate;
       };
       sessions: {
         Row: Session;
-        Insert: Omit<Session, 'id' | 'created_at'> & { id?: string; created_at?: string };
-        Update: Partial<Omit<Session, 'id' | 'created_at'>>;
+        Insert: SessionInsert;
+        Update: SessionUpdate;
+      };
+      invites: {
+        Row: Invite;
+        Insert: InviteInsert;
+        Update: InviteUpdate;
+      };
+      attendance: {
+        Row: Attendance;
+        Insert: AttendanceInsert;
+        Update: AttendanceUpdate;
+      };
+      checkins: {
+        Row: CheckIn;
+        Insert: CheckInInsert;
+        Update: CheckInUpdate;
       };
       weekly_plans: {
         Row: WeeklyPlan;
-        Insert: Omit<WeeklyPlan, 'id' | 'created_at'> & { id?: string; created_at?: string };
-        Update: Partial<Omit<WeeklyPlan, 'id' | 'created_at'>>;
+        Insert: WeeklyPlanInsert;
+        Update: WeeklyPlanUpdate;
       };
-      check_ins: {
-        Row: CheckIn;
-        Insert: Omit<CheckIn, 'id' | 'created_at'> & { id?: string; created_at?: string };
-        Update: Partial<Omit<CheckIn, 'id' | 'created_at'>>;
+      trainer_profiles: {
+        Row: TrainerProfile;
+        Insert: TrainerProfileInsert;
+        Update: TrainerProfileUpdate;
       };
-      trainers: {
-        Row: {
-          id: string;
-          user_id: string;
-          business_name?: string;
-          bio?: string;
-          specialties?: string[];
-          certifications?: string[];
-          years_experience?: number;
-          hourly_rate?: number;
-          website?: string;
-          social_links?: unknown;
-          created_at: string;
-          updated_at?: string;
-        };
-        Insert: {
-          id?: string;
-          user_id: string;
-          business_name?: string;
-          bio?: string;
-          specialties?: string[];
-          certifications?: string[];
-          years_experience?: number;
-          hourly_rate?: number;
-          website?: string;
-          social_links?: unknown;
-          created_at?: string;
-          updated_at?: string;
-        };
-        Update: Partial<{
-          business_name?: string;
-          bio?: string;
-          specialties?: string[];
-          certifications?: string[];
-          years_experience?: number;
-          hourly_rate?: number;
-          website?: string;
-          social_links?: unknown;
-          updated_at?: string;
-        }>;
+      progress_metrics: {
+        Row: ProgressMetric;
+        Insert: ProgressMetricInsert;
+        Update: ProgressMetricUpdate;
       };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      session_type: 'group' | 'individual' | 'workshop';
+      attendance_status: 'confirmed' | 'attended' | 'cancelled' | 'no_show';
+      invite_status: 'pending' | 'accepted' | 'declined' | 'expired';
+      checkin_status: 'checked_in' | 'checked_out' | 'late';
     };
   };
 }
 
-export type Client = {
+// Core entity types
+export interface Client {
   id: string;
   coach_id: string;
-  full_name: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  first_name?: string;
-  last_name?: string;
-  phone?: string | null;
-  notes?: string | null;
-  stripe_customer_id?: string | null;
+  phone: string;
+  date_of_birth: string;
+  emergency_contact: string;
+  medical_notes: string;
+  fitness_goals: string;
   created_at: string;
-  updated_at?: string | null;
-  date_of_birth?: string | null;
-  height_cm?: number | null;
-  starting_weight_kg?: number | null;
-  current_weight_kg?: number | null;
-  goals?: string | null;
-  medical_notes?: string | null;
-  emergency_contact?: string | null;
-  auth_user_id?: string | null;
-  last_login?: string | null;
-};
+  updated_at: string;
+}
 
-export type Session = {
+export interface Session {
   id: string;
   coach_id: string;
   title: string;
-  type: "group" | "private";
-  location: "field" | "gym" | "track" | "other" | "Gym Studio A" | "Outdoor Track" | "Yoga Studio";
-  starts_at: string;
-  ends_at?: string | null;
+  type: Database['public']['Enums']['session_type'];
   capacity: number;
-  price?: number | null;
-  stripe_link?: string | null;
-  created_at?: string;
-  updated_at?: string | null;
-  description?: string | null;
-  duration_minutes?: number | null;
-  max_participants?: number | null;
-  notes?: string | null;
-};
+  description: string;
+  duration_minutes: number;
+  max_participants: number;
+  created_at: string;
+  updated_at: string;
+  starts_at: string;
+  ends_at: string;
+  location: string;
+  stripe_link: string;
+  notes: string;
+}
 
-export type WeeklyPlan = {
+export interface Invite {
   id: string;
   coach_id: string;
+  client_email: string;
+  status: Database['public']['Enums']['invite_status'];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Attendance {
+  id: string;
+  session_id: string;
   client_id: string;
-  week_start_date: string; // ISO date
-  week_end_date?: string; // ISO date
-  title?: string; // Plan title
-  description?: string; // Plan description
-  plan_json: unknown;
-  status: "draft" | "approved" | "sent" | "active" | "completed";
-  tasks?: WeeklyPlanTask[]; // Array of tasks - optional but defaults to empty array
-  goals?: WeeklyPlanGoal[]; // Array of goals - optional but defaults to empty array
-  created_at?: string;
-  updated_at?: string | null;
-  notes?: string | null;
-};
+  status: Database['public']['Enums']['attendance_status'];
+  check_in_time: string | null;
+  check_out_time: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string | null;
+}
 
-export type WeeklyPlanTask = {
+export interface CheckIn {
   id: string;
-  title: string;
-  description?: string;
-  completed: boolean;
-  order: number;
-  category: 'workout' | 'nutrition' | 'mindfulness' | 'other';
-  frequency: 'daily' | 'weekly' | 'custom';
-  custom_schedule?: string | null;
-  notes?: string | null;
-};
+  client_id: string;
+  session_id: string;
+  status: Database['public']['Enums']['checkin_status'];
+  check_in_time: string;
+  check_out_time: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
 
-export type WeeklyPlanGoal = {
-  id: string;
-  title: string;
-  description?: string;
-  completed: boolean;
-  order: number;
-};
-
-export type CheckIn = {
+export interface WeeklyPlan {
   id: string;
   coach_id: string;
-  client_id: string;
   week_start_date: string;
-  check_in_date?: string; // Date of check-in
-  adherence_pct?: number | null;
-  rpe_avg?: number | null;
-  energy?: number | null;
-  energy_level?: number | null;
-  soreness?: number | null;
-  bodyweight_kg?: number | null;
-  weight_kg?: number | null;
-  body_fat_percentage?: number | null;
-  sleep_hours?: number | null;
-  water_intake_liters?: number | null;
-  mood_rating?: number | null;
-  notes?: string | null;
-  created_at?: string;
-  updated_at?: string | null;
-};
-
-export type ProgressMetric = {
-  id: string;
-  coach_id: string;
-  client_id: string;
-  key: "compliance7" | "compliance28" | "sessions_done" | "streak_days" | "weight_delta";
-  value: number;
-  label?: string;
-  metric_date?: string; // Date of the metric
-  weight_kg?: number | null; // Weight in kg
-  body_fat_percentage?: number | null; // Body fat percentage
-  created_at?: string | null;
-  updated_at?: string | null;
-};
-
-// Insert types (for creating new records)
-export type ClientInsert = Omit<Client, 'id' | 'created_at'>;
-export type SessionInsert = Omit<Session, 'id' | 'created_at'>;
-export type WeeklyPlanInsert = Omit<WeeklyPlan, 'id' | 'created_at'>;
-export type CheckInInsert = Omit<CheckIn, 'id' | 'created_at'>;
-export type ProgressMetricInsert = Omit<ProgressMetric, 'created_at'>;
-
-// Update types (for updating existing records)
-export type ClientUpdate = Partial<Omit<Client, 'id' | 'created_at'>>;
-export type SessionUpdate = Partial<Omit<Session, 'id' | 'created_at'>>;
-export type WeeklyPlanUpdate = Partial<Omit<WeeklyPlan, 'id' | 'created_at'>>;
-export type CheckInUpdate = Partial<Omit<CheckIn, 'id' | 'created_at'>>;
-export type ProgressMetricUpdate = Partial<Omit<ProgressMetric, 'created_at'>>;
-
-// Missing types that are imported in lib/types.ts
-export type EmailLog = {
-  id: string;
-  coach_id: string;
-  client_id?: string | null;
-  session_id?: string | null;
-  email_type: string;
-  subject: string;
-  to_email: string;
-  status: 'sent' | 'failed' | 'pending';
-  error_message?: string | null;
+  plan_data: Record<string, any>;
   created_at: string;
-  updated_at?: string | null;
-};
+  updated_at: string;
+}
 
-export type Trainer = {
+export interface TrainerProfile {
   id: string;
-  coach_id: string;
   user_id: string;
-  business_name?: string | null;
-  specialization?: string | null;
-  specialties?: string[]; // Array of specialties
-  experience_years?: number | null;
-  years_experience?: number | null; // Alternative name for experience_years
-  hourly_rate?: number | null; // Hourly rate
-  certifications?: string[] | null;
-  bio?: string | null;
-  website?: string | null;
-  social_media?: Record<string, string> | null;
+  bio: string;
+  specialties: string[];
+  certifications: string[];
+  experience_years: number;
   created_at: string;
-  updated_at?: string | null;
-};
+  updated_at: string;
+}
 
-export type Invite = {
+export interface ProgressMetric {
   id: string;
-  coach_id: string;
-  session_id: string;
   client_id: string;
-  status: 'pending' | 'accepted' | 'declined' | 'cancelled';
-  sent_at: string;
-  responded_at?: string | null;
-  notes?: string | null;
+  metric_type: string;
+  value: number;
+  unit: string;
+  recorded_at: string;
+  notes: string | null;
   created_at: string;
-  updated_at?: string | null;
-};
+  updated_at: string;
+}
 
-export type Attendance = {
-  id: string;
-  coach_id: string;
-  session_id: string;
-  client_id: string;
-  status: 'confirmed' | 'attended' | 'no_show' | 'cancelled';
-  check_in_time?: string | null;
-  check_out_time?: string | null;
-  notes?: string | null;
-  created_at: string;
-  updated_at?: string | null;
-};
+// Insert types (omit auto-generated fields)
+export interface ClientInsert extends Omit<Client, 'id' | 'created_at' | 'updated_at'> {}
+export interface SessionInsert extends Omit<Session, 'id' | 'created_at' | 'updated_at'> {}
+export interface InviteInsert extends Omit<Invite, 'id' | 'created_at' | 'updated_at'> {}
+export interface AttendanceInsert extends Omit<Attendance, 'id' | 'created_at' | 'updated_at'> {}
+export interface CheckInInsert extends Omit<CheckIn, 'id' | 'created_at' | 'updated_at'> {}
+export interface WeeklyPlanInsert extends Omit<WeeklyPlan, 'id' | 'created_at' | 'updated_at'> {}
+export interface TrainerProfileInsert extends Omit<TrainerProfile, 'id' | 'created_at' | 'updated_at'> {}
+export interface ProgressMetricInsert extends Omit<ProgressMetric, 'id' | 'created_at' | 'updated_at'> {}
 
-export type Media = {
-  id: string;
-  coach_id: string;
-  client_id?: string | null;
-  session_id?: string | null;
-  file_path: string;
-  file_name: string;
-  file_size: number;
-  mime_type: string;
-  media_type: 'image' | 'video' | 'document' | 'other';
-  tags?: string[] | null;
-  description?: string | null;
-  created_at: string;
-  updated_at?: string | null;
-};
+// Update types (make all fields optional except id)
+export interface ClientUpdate extends Partial<Omit<Client, 'id' | 'created_at' | 'updated_at'>> {}
+export interface SessionUpdate extends Partial<Omit<Session, 'id' | 'created_at' | 'updated_at'>> {}
+export interface InviteUpdate extends Partial<Omit<Invite, 'id' | 'created_at' | 'updated_at'>> {}
+export interface AttendanceUpdate extends Partial<Omit<Attendance, 'id' | 'created_at' | 'updated_at'>> {}
+export interface CheckInUpdate extends Partial<Omit<CheckIn, 'id' | 'created_at' | 'updated_at'>> {}
+export interface WeeklyPlanUpdate extends Partial<Omit<WeeklyPlan, 'id' | 'created_at' | 'updated_at'>> {}
+export interface TrainerProfileUpdate extends Partial<Omit<TrainerProfile, 'id' | 'created_at' | 'updated_at'>> {}
+export interface ProgressMetricUpdate extends Partial<Omit<ProgressMetric, 'id' | 'created_at' | 'updated_at'>> {}
 
-// Insert types for new types
-export type EmailLogInsert = Omit<EmailLog, 'id' | 'created_at'>;
-export type TrainerInsert = Omit<Trainer, 'id' | 'created_at'>;
-export type InviteInsert = Omit<Invite, 'id' | 'created_at'>;
-export type AttendanceInsert = Omit<Attendance, 'id' | 'created_at'>;
-export type MediaInsert = Omit<Media, 'id' | 'created_at'>;
+// Utility types for common operations
+export type TableName = keyof Database['public']['Tables'];
+export type Row<T extends TableName> = Database['public']['Tables'][T]['Row'];
+export type Insert<T extends TableName> = Database['public']['Tables'][T]['Insert'];
+export type Update<T extends TableName> = Database['public']['Tables'][T]['Update'];
 
-// Update types for new types
-export type EmailLogUpdate = Partial<Omit<EmailLog, 'id' | 'created_at'>>;
-export type TrainerUpdate = Partial<Omit<Trainer, 'id' | 'created_at'>>;
-export type InviteUpdate = Partial<Omit<Invite, 'id' | 'created_at'>>;
-export type AttendanceUpdate = Partial<Omit<Attendance, 'id' | 'created_at'>>;
-export type MediaUpdate = Partial<Omit<Media, 'id' | 'created_at'>>;
+// Realtime subscription types
+export interface RealtimeChannel {
+  channel: string;
+  event: string;
+  payload: any;
+  timestamp: string;
+}
+
+// Error types for better error handling
+export interface SupabaseError {
+  message: string;
+  details?: string;
+  hint?: string;
+  code?: string;
+}
+
+// Response wrapper types
+export interface SupabaseResponse<T> {
+  data: T | null;
+  error: SupabaseError | null;
+  count?: number;
+  status?: number;
+  statusText?: string;
+}
+
+// Health check types
+export interface HealthCheckResult {
+  healthy: boolean;
+  timestamp: string;
+  errors: string[];
+  connectionCount: number;
+  responseTime: number;
+}

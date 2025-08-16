@@ -1,0 +1,31 @@
+{
+  "summary": {
+    "totalTime": 0,
+    "buildTime": 0,
+    "memoryUsage": 4,
+    "cacheHitRate": 0,
+    "testResults": {
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0
+    },
+    "errorCount": 0
+  },
+  "details": {
+    "startTime": 1755322218833,
+    "buildTime": 0,
+    "memoryUsage": 4,
+    "cacheHits": 0,
+    "cacheMisses": 0,
+    "testResults": {
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0
+    },
+    "errors": [],
+    "optimization": 48
+  },
+  "recommendations": [
+    "Improve caching strategy - current hit rate is below threshold"
+  ]
+}

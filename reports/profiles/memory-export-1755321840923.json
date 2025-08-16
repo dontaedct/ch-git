@@ -1,0 +1,42 @@
+{
+  "metadata": {
+    "timestamp": "2025-08-16T05:24:00.923Z",
+    "version": "1.0.0",
+    "system": "win32",
+    "nodeVersion": "v20.19.4"
+  },
+  "snapshots": [],
+  "memoryHistory": [],
+  "analysis": {
+    "patterns": {
+      "trend": "insufficient_data",
+      "growth": 0,
+      "volatility": 0
+    },
+    "leaks": [
+      {
+        "type": "high_heap_usage",
+        "severity": "high",
+        "description": "Heap usage at 83.01%",
+        "recommendation": "Consider optimizing memory usage or increasing heap size"
+      }
+    ],
+    "recommendations": [
+      {
+        "priority": "high",
+        "action": "Consider optimizing memory usage or increasing heap size",
+        "details": "Heap usage at 83.08%"
+      },
+      {
+        "priority": "medium",
+        "action": "Implement memory cleanup in useEffect hooks",
+        "details": "Ensure proper cleanup of event listeners, timeouts, and subscriptions"
+      },
+      {
+        "priority": "medium",
+        "action": "Use React.memo for expensive components",
+        "details": "Prevent unnecessary re-renders that can cause memory churn"
+      }
+    ]
+  }
+}

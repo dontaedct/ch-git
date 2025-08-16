@@ -11,8 +11,8 @@ export const clients: Client[] = [
     phone: '+1-555-0123',
     notes: 'Prefers morning sessions',
     stripe_customer_id: 'cus_123456789',
-    created_at: '2024-01-15T10:00:00Z',
-    updated_at: '2024-01-15T10:00:00Z',
+    created_at: '[RELATIVE: 2 years from now]',
+    updated_at: '[RELATIVE: 2 years from now]',
   },
   {
     id: '2',
@@ -24,8 +24,8 @@ export const clients: Client[] = [
     phone: '+1-555-0124',
     notes: 'Focus on strength training',
     stripe_customer_id: 'cus_123456790',
-    created_at: '2024-01-16T11:00:00Z',
-    updated_at: '2024-01-16T11:00:00Z',
+    created_at: '[RELATIVE: 2 years from now]',
+    updated_at: '[RELATIVE: 2 years from now]',
   },
   {
     id: '3',
@@ -37,8 +37,8 @@ export const clients: Client[] = [
     phone: '+1-555-0125',
     notes: 'Recovery from knee injury',
     stripe_customer_id: 'cus_123456791',
-    created_at: '2024-01-17T12:00:00Z',
-    updated_at: '2024-01-17T12:00:00Z',
+    created_at: '[RELATIVE: 2 years from now]',
+    updated_at: '[RELATIVE: 2 years from now]',
   },
 ]
 

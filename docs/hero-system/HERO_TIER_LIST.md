@@ -19,6 +19,7 @@
 | 3 | **Hero Ultimate Optimized** | **90/100** | 20/100 | Orchestrator | `scripts/hero-ultimate-optimized.js` |
 | 4 | **Guardian System** | **88/100** | 12/100 | Guardrail | `scripts/guardian.js` |
 | 5 | **Doctor System** | **85/100** | 18/100 | Analyzer | `scripts/doctor.ts` |
+| 6 | **Intelligent Error Fixing** | **87/100** | 16/100 | Problem Solver | `scripts/intelligent-error-fixer.js` |
 
 ---
 
@@ -70,15 +71,15 @@
 ## **Performance Metrics**
 
 ### **Value Score Distribution**
-- **90+ (S-Tier)**: 5 heroes (17.2%)
+- **90+ (S-Tier)**: 6 heroes (20.7%)
 - **70-89 (A-Tier)**: 8 heroes (27.6%)
 - **40-69 (B-Tier)**: 12 heroes (41.4%)
-- **15-39 (C-Tier)**: 4 heroes (13.8%)
+- **15-39 (C-Tier)**: 3 heroes (10.3%)
 
 ### **Risk Score Distribution**
-- **0-25 (Low Risk)**: 8 heroes (27.6%)
+- **0-25 (Low Risk)**: 9 heroes (31.0%)
 - **26-50 (Medium Risk)**: 15 heroes (51.7%)
-- **51-75 (High Risk)**: 6 heroes (20.7%)
+- **51-75 (High Risk)**: 5 heroes (17.2%)
 - **76-100 (Critical Risk)**: 0 heroes (0%)
 
 ### **Archetype Distribution**
@@ -86,10 +87,10 @@
 - **Analyzer**: 6 heroes (20.7%) - Good value, variable risk
 - **Gatekeeper**: 4 heroes (13.8%) - High value, moderate risk
 - **Guardrail**: 3 heroes (10.3%) - High value, low risk
+- **Problem Solver**: 1 hero (3.4%) - High value, low risk
 - **Enricher**: 3 heroes (10.3%) - Moderate value, moderate risk
 - **Ingestor**: 3 heroes (10.3%) - Moderate value, moderate risk
 - **Cache/Fan-out**: 1 hero (3.4%) - Low value, high risk
-- **Human-in-the-loop**: 1 hero (3.4%) - Moderate value, low risk
 
 ---
 

@@ -15,6 +15,7 @@
  * - Task Orchestrator
  * - Memory Management
  * - Performance Systems
+ * - Intelligent Error Fixing System
  * 
  * Features:
  * - 🔄 FULLY AUTOMATED (no manual intervention needed)
@@ -27,6 +28,7 @@
  * - 🔧 AUTO-REPAIR & UPGRADE SYSTEMS
  * - ⚡ OPTIMIZED PERFORMANCE & MEMORY USAGE
  * - 🎮 UNIFIED CONTROL CENTER
+ * - 🧠 INTELLIGENT ERROR FIXING with adaptive limits
  * 
  * Follows universal header rules completely
  * AUDIT → DECIDE → APPLY → VERIFY pattern
@@ -36,6 +38,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawn, execSync } = require('child_process');
 const os = require('os');
+const IntelligentErrorFixer = require('./intelligent-error-fixer');
 
 // Ultimate Hero Configuration - OPTIMIZED
 const ULTIMATE_HERO_CONFIG = {
@@ -50,19 +53,20 @@ const ULTIMATE_HERO_CONFIG = {
   autoUpgrade: true,
   autoIntegrate: true,
   
-  // Integration Points - OPTIMIZED
-  integrationPoints: [
-    'git-hooks',
-    'ci-pipeline', 
-    'build-processes',
-    'file-watchers',
-    'scheduled-tasks',
-    'cursor-ai',
-    'guardian-backup',
-    'doctor-system',
-    'lint-system',
-    'memory-management'
-  ],
+     // Integration Points - OPTIMIZED
+   integrationPoints: [
+     'git-hooks',
+     'ci-pipeline', 
+     'build-processes',
+     'file-watchers',
+     'scheduled-tasks',
+     'cursor-ai',
+     'guardian-backup',
+     'doctor-system',
+     'lint-system',
+     'memory-management',
+     'intelligent-error-fixing'
+   ],
   
   // Monitoring Intervals - OPTIMIZED
   healthCheckInterval: 30000,      // 30 seconds (reduced from 15s)
@@ -79,7 +83,13 @@ const ULTIMATE_HERO_CONFIG = {
   // Auto-Repair Settings - OPTIMIZED
   maxRepairAttempts: 3,            // Reduced from 5
   repairCooldown: 60000,           // 60 seconds between repair attempts (increased from 30s)
-  autoUpgradeThreshold: 0.6        // 60% health triggers auto-upgrade (reduced from 70%)
+  autoUpgradeThreshold: 0.6,       // 60% health triggers auto-upgrade (reduced from 70%)
+  
+     // Intelligent Error Fixing - CORE SYSTEM
+   intelligentErrorFixing: true,
+   adaptiveAttemptLimits: true,
+   userPermissionRequests: true,
+   errorAnalysisLearning: true
 };
 
 // System Integration Registry - OPTIMIZED
@@ -154,6 +164,15 @@ const SYSTEM_INTEGRATIONS = {
     autoRepair: 'memory:fix',
     priority: 'low',
     healthThreshold: 0.5
+  },
+  
+  'error-fixing': {
+    name: 'Intelligent Error Fixing System',
+    scripts: ['error-fixer:report', 'error-fixer:reset', 'error-fixer:clear'],
+    healthCheck: 'error-fixer:health',
+    autoRepair: 'error-fixer:repair',
+    priority: 'critical',
+    healthThreshold: 0.9
   }
 };
 
@@ -205,6 +224,10 @@ class HeroUltimateOptimized {
       responseStrategies: new Map(),
       learningEnabled: true
     };
+    
+         // CORE: Intelligent Error Fixing System
+     this.intelligentErrorFixer = new IntelligentErrorFixer();
+     this.errorFixingEnabled = ULTIMATE_HERO_CONFIG.intelligentErrorFixing;
     
     // Set this instance as the singleton
     heroUltimateInstance = this;
@@ -546,9 +569,9 @@ class HeroUltimateOptimized {
     }
   }
   
-  // Perform auto-repair - OPTIMIZED
+  // Perform auto-repair - OPTIMIZED with Intelligent Error Fixing
   async performAutoRepair() {
-    console.log('🔧 Performing auto-repair...');
+    console.log('🔧 Performing auto-repair with Intelligent Error Fixing...');
     
     try {
       // OPTIMIZED: Focus on critical systems first
@@ -558,10 +581,22 @@ class HeroUltimateOptimized {
       for (const [key, integration] of criticalSystems) {
         try {
           console.log(`  🔧 Repairing ${integration.name}...`);
-          await this.runCommand(integration.autoRepair, { timeout: 30000 });
+          
+                     // CORE: Use intelligent error fixing for critical systems
+           if (this.errorFixingEnabled && integration.priority === 'critical') {
+             await this.performIntelligentRepair(integration, key);
+           } else {
+             await this.runCommand(integration.autoRepair, { timeout: 30000 });
+           }
+          
           console.log(`  ✅ ${integration.name} repaired`);
         } catch (error) {
           console.log(`  ⚠️ ${integration.name} repair warning: ${error.message}`);
+          
+                     // CORE: Analyze error with intelligent system
+           if (this.errorFixingEnabled) {
+             await this.analyzeErrorWithIntelligentSystem(error, integration.name, key);
+           }
         }
       }
       
@@ -570,6 +605,132 @@ class HeroUltimateOptimized {
       
     } catch (error) {
       console.error('❌ Auto-repair failed:', error.message);
+      
+             // CORE: Analyze critical repair failure
+       if (this.errorFixingEnabled) {
+         await this.analyzeErrorWithIntelligentSystem(error, 'System Repair', 'critical');
+       }
+    }
+  }
+  
+     // CORE: Perform intelligent repair with adaptive limits
+   async performIntelligentRepair(integration, key) {
+    try {
+      console.log(`    🧠 Using Intelligent Error Fixing for ${integration.name}...`);
+      
+      // Analyze the integration's current state
+      const healthCheck = await this.runCommand(integration.healthCheck, { timeout: 15000 });
+      const healthScore = this.parseHealthScore(healthCheck);
+      
+      // Determine repair strategy based on health
+      if (healthScore < 0.3) {
+        console.log(`    🚨 Critical health detected, using aggressive repair...`);
+        await this.runCommand(integration.autoRepair, { timeout: 45000 });
+      } else if (healthScore < 0.6) {
+        console.log(`    ⚠️ Moderate health issues, using standard repair...`);
+        await this.runCommand(integration.autoRepair, { timeout: 30000 });
+      } else {
+        console.log(`    ✅ Good health, using gentle repair...`);
+        await this.runCommand(integration.autoRepair, { timeout: 20000 });
+      }
+      
+      // Record successful repair
+      this.intelligentErrorFixer.recordAttempt(key, 'repair', true, {
+        fixMethod: integration.autoRepair,
+        healthScore,
+        complexity: 'MEDIUM'
+      });
+      
+    } catch (error) {
+      console.log(`    ❌ Intelligent repair failed: ${error.message}`);
+      
+      // Record failed attempt
+      this.intelligentErrorFixer.recordAttempt(key, 'repair', false, {
+        fixMethod: integration.autoRepair,
+        error: error.message,
+        complexity: 'MEDIUM'
+      });
+      
+      throw error;
+    }
+  }
+  
+     // CORE: Analyze errors with intelligent system
+   async analyzeErrorWithIntelligentSystem(error, systemName, systemKey) {
+    try {
+      console.log(`    🧠 Analyzing error with Intelligent Error Fixing System...`);
+      
+      // Classify the error
+      const errorClassification = this.intelligentErrorFixer.classifyError(
+        error, 
+        systemKey, 
+        { 
+          isRefactoring: false, 
+          touchesMultipleFiles: false, 
+          affectsDependencies: false 
+        }
+      );
+      
+      // Store classification for future reference
+      this.intelligentErrorFixer.errorClassifications.set(
+        `${systemKey}:${errorClassification.type}`, 
+        errorClassification
+      );
+      
+      // Check if we can attempt more fixes
+      const canContinue = this.intelligentErrorFixer.canAttemptMore(systemKey, errorClassification.type);
+      
+      if (!canContinue.canContinue) {
+        console.log(`    🚨 Error fixing limit reached for ${systemName}`);
+        
+        // Request user permission to continue
+        if (ULTIMATE_HERO_CONFIG.userPermissionRequests) {
+          const shouldContinue = await this.intelligentErrorFixer.requestPermission(
+            systemKey,
+            errorClassification.type,
+            canContinue.maxAttempts,
+            canContinue.maxAttempts,
+            errorClassification
+          );
+          
+          if (shouldContinue) {
+            console.log(`    ✅ Permission granted, continuing with repairs...`);
+            // Continue with repair attempts
+            return true;
+          } else {
+            console.log(`    ❌ Permission denied, stopping repairs for ${systemName}`);
+            return false;
+          }
+        }
+      }
+      
+      // Record the error analysis
+      this.intelligentErrorFixer.recordAttempt(systemKey, errorClassification.type, false, {
+        error: error.message,
+        system: systemName,
+        complexity: errorClassification.complexity
+      });
+      
+      return canContinue.canContinue;
+      
+    } catch (analysisError) {
+      console.log(`    ⚠️ Error analysis failed: ${analysisError.message}`);
+      return false;
+    }
+  }
+  
+     // CORE: Parse health score from command output
+   parseHealthScore(output) {
+    try {
+      // Look for percentage or decimal in output
+      const match = output.toString().match(/(\d+(?:\.\d+)?)%?/);
+      if (match) {
+        const value = parseFloat(match[1]);
+        return value > 1 ? value / 100 : value; // Convert percentage to decimal if needed
+      }
+      return 0.5; // Default health score
+    } catch (error) {
+      return 0.5; // Default health score
     }
   }
   
@@ -643,6 +804,19 @@ class HeroUltimateOptimized {
       const health = integration.healthScore || 0;
       console.log(`  ${integration.name}: ${status} (${(health * 100).toFixed(0)}%)`);
     }
+    
+         // CORE: Intelligent Error Fixing System Status
+     if (this.errorFixingEnabled) {
+       console.log('\n🧠 Intelligent Error Fixing System:');
+       const report = this.intelligentErrorFixer.generateReport();
+       console.log(`  📊 Total Files Analyzed: ${report.summary.totalFiles}`);
+       console.log(`  🔧 Total Fix Attempts: ${report.summary.totalAttempts}`);
+       console.log(`  📈 Success Patterns: ${report.summary.successPatterns}`);
+       
+       if (report.recommendations.length > 0) {
+         console.log(`  ⚠️ Files Needing Attention: ${report.recommendations.length}`);
+       }
+     }
     
     if (this.activeThreats.length > 0) {
       console.log('\n🚨 Active Threats:');

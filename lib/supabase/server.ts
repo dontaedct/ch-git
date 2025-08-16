@@ -8,7 +8,8 @@ export type { User } from '@/lib/auth/guard'
 // This function is ONLY called from API routes and server actions
 export async function createIsolatedSupabaseClient() {
   // Dynamic import to avoid bundling in server components
-  const { createClient } = await import('@supabase/supabase-js')
+  // Use a more specific import path to avoid client-side code
+  const { createClient } = await import('@supabase/supabase-js/dist/module/index.js')
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY

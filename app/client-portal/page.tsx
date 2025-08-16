@@ -1,3 +1,4 @@
+import { FeatureGate } from '@ui/FeatureGate';
 import { requireClientWithLoading } from '@lib/auth/roles'
 import { getClientPortalDataStub } from '@/data/client-portal.data'
 import { VerifyingAccessShell } from '@ui/VerifyingAccessShell'
@@ -31,17 +32,19 @@ export default async function ClientPortalPage() {
   
   // Render a simple server component instead of importing client component
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="container mx-auto px-6 py-8">
-        <h1 className="text-3xl font-bold text-center mb-8">Client Portal</h1>
-        <div className="text-center text-gray-600">
-          <p>Client portal functionality will be implemented here</p>
-          <p className="mt-2">Client ID: {clientId}</p>
-          <p>Coach ID: {coachId}</p>
-          <p>Check-ins: {data.checkIns.length}</p>
-          <p>Progress metrics: {data.progressMetrics.length}</p>
+    <FeatureGate flag="client-portal">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+        <div className="container mx-auto px-6 py-8">
+          <h1 className="text-3xl font-bold text-center mb-8">Client Portal</h1>
+          <div className="text-center text-gray-600">
+            <p>Client portal functionality will be implemented here</p>
+            <p className="mt-2">Client ID: {clientId}</p>
+            <p>Coach ID: {coachId}</p>
+            <p>Check-ins: {data.checkIns.length}</p>
+            <p>Progress metrics: {data.progressMetrics.length}</p>
+          </div>
         </div>
       </div>
-    </div>
+    </FeatureGate>
   )
 }

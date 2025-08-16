@@ -1,19 +1,134 @@
-name: CI
+name: CI - MIT Hero System
 
 on:
   push:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      optimization_level:
+        description: 'CI Optimization Level'
+        required: false
+        default: 'balanced'
+        type: choice
+        options:
+        - minimal
+        - balanced
+        - aggressive
+
+env:
+  NEXT_TELEMETRY_DISABLED: 1
+  BUILD_VERBOSE: 1
+  CI_OPTIMIZATION_LEVEL: ${{ github.event.inputs.optimization_level || 'balanced' }}
+  NODE_OPTIONS: --max-old-space-size=4096
+
+# Global concurrency control to prevent resource conflicts
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
+  # Pre-flight checks with fail-fast
+  preflight:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      should_continue: ${{ steps.check.outputs.should_continue }}
+      optimization_level: ${{ env.CI_OPTIMIZATION_LEVEL }}
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Pre-flight validation
+      id: check
+      run: |
+        echo "Running pre-flight checks..."
+        npm run ci:preflight
+        echo "should_continue=true" >> $GITHUB_OUTPUT
+        echo "Pre-flight checks passed"
 
+  # Parallel quality checks with aggressive caching
+  quality-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    needs: preflight
+    if: needs.preflight.outputs.should_continue == 'true'
     strategy:
+      fail-fast: true
+      matrix:
+        check: [lint, typecheck, security]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
+    
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Run ${{ matrix.check }}
+      run: |
+        case "${{ matrix.check }}" in
+          "lint")
+            npm run lint:fast
+            ;;
+          "typecheck")
+            npm run typecheck
+            ;;
+          "security")
+            npm run security:check
+            ;;
+        esac
+
+  # Parallel test execution with matrix optimization
+  test-matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    needs: [preflight, quality-checks]
+    if: needs.preflight.outputs.should_continue == 'true'
+    strategy:
+      fail-fast: true
       matrix:
         node-version: [18.x, 20.x]
-
+        test-type: [unit, integration, smoke]
+        include:
+          - node-version: 20.x
+            test-type: unit
+            parallel: true
+          - node-version: 20.x
+            test-type: integration
+            parallel: true
+          - node-version: 18.x
+            test-type: smoke
+            parallel: false
+    
     steps:
     - uses: actions/checkout@v4
     
@@ -23,22 +138,454 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     
-    - name: Install dependencies
-      run: npm ci
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
     
-    - name: Run linting
-      run: npm run lint
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
     
-    - name: Run type checking
-      run: npm run typecheck
+    - name: Run ${{ matrix.test-type }} tests
+      run: |
+        case "${{ matrix.test-type }}" in
+          "unit")
+            npm run test:unit -- --maxWorkers=2
+            ;;
+          "integration")
+            npm run test:integration -- --maxWorkers=2
+            ;;
+          "smoke")
+            npm run test:smoke
+            ;;
+        esac
+      env:
+        CI: true
+        NODE_OPTIONS: --max-old-space-size=2048
+
+  # Build performance monitoring with advanced caching
+  build-performance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    needs: [preflight, quality-checks]
+    if: needs.preflight.outputs.should_continue == 'true'
+    strategy:
+      fail-fast: true
+      matrix:
+        build-type: [fast, memory, optimized]
+        include:
+          - build-type: fast
+            cache-key: fast-build
+            parallel: true
+          - build-type: memory
+            cache-key: memory-build
+            parallel: true
+          - build-type: optimized
+            cache-key: optimized-build
+            parallel: false
     
-    - name: Run tests
-      run: npm test
+    steps:
+    - uses: actions/checkout@v4
     
-    - name: Build application
-      run: npm run build
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
+    
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Setup build cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          .next/cache
+          .next/standalone
+        key: ${{ runner.os }}-${{ matrix.cache-key }}-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.cache-key }}-${{ hashFiles('**/package-lock.json') }}-
+          ${{ runner.os }}-${{ matrix.cache-key }}-
+    
+    - name: Build with ${{ matrix.build-type }} optimization
+      run: npm run build:${{ matrix.build-type }}
       env:
         NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        BUILD_VERBOSE: 1
+        NODE_OPTIONS: --max-old-space-size=4096
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-${{ matrix.build-type }}-${{ matrix.cache-key }}
+        path: .next/
+        retention-days: 7
+        compression-level: 9
+
+  # Bundle analysis with conditional execution
+  bundle-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: [preflight, quality-checks]
+    if: github.event_name == 'pull_request' && needs.preflight.outputs.should_continue == 'true'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
+    
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Setup build cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          .next/cache
+          .next/standalone
+        key: ${{ runner.os }}-bundle-analysis-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+        restore-keys: |
+          ${{ runner.os }}-bundle-analysis-${{ hashFiles('**/package-lock.json') }}-
+          ${{ runner.os }}-bundle-analysis-
+    
+    - name: Build with bundle analysis
+      run: npm run build:analyze
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        ANALYZE: true
+        NODE_OPTIONS: --max-old-space-size=4096
+    
+    - name: Upload bundle analysis
+      uses: actions/upload-artifact@v4
+      with:
+        name: bundle-analysis
+        path: |
+          .next/bundle-analysis.html
+          .next/bundle-stats.json
+        retention-days: 30
+        compression-level: 9
+
+  # SLO Enforcement with MIT Hero System integration
+  slo-enforcement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [preflight, build-performance]
+    if: needs.preflight.outputs.should_continue == 'true'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
+    
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-optimized-optimized-build
+        path: .next/
+    
+    - name: Initialize SLO Enforcement
+      run: |
+        echo "🚀 Initializing MIT Hero System SLO Enforcement..."
+        npm run slo:init
+      env:
+        CI: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Run SLO Validation
+      run: |
+        echo "🔍 Running comprehensive SLO validation..."
+        npm run slo:validate
+      env:
+        CI: true
+        BUILD_VERBOSE: 1
+        NODE_OPTIONS: --max-old-space-size=2048
+    
+    - name: Upload SLO Reports
+      uses: actions/upload-artifact@v4
+      with:
+        name: slo-reports
+        path: reports/slo-*.json
+        retention-days: 90
+        compression-level: 9
+      if: always()
+
+  # Performance budget validation with fail-fast (legacy)
+  performance-budget:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    needs: [preflight, build-performance, slo-enforcement]
+    if: needs.preflight.outputs.should_continue == 'true' && needs.slo-enforcement.result == 'success'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
+    
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-optimized-optimized-build
+        path: .next/
+    
+    - name: Validate performance budgets
+      run: npm run build:budget
+      env:
+        BUILD_VERBOSE: 1
+        NODE_OPTIONS: --max-old-space-size=2048
+
+  # Main production build with advanced optimization
+  build-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: [preflight, quality-checks, test-matrix, build-performance, slo-enforcement]
+    if: needs.preflight.outputs.should_continue == 'true' && needs.slo-enforcement.result == 'success'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
+    
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Setup build cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          .next/cache
+          .next/standalone
+        key: ${{ runner.os }}-production-build-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+        restore-keys: |
+          ${{ runner.os }}-production-build-${{ hashFiles('**/package-lock.json') }}-
+          ${{ runner.os }}-production-build-
+    
+    - name: Build application (optimized)
+      run: npm run build:optimized
+      env:
+        NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        BUILD_VERBOSE: 1
+        NODE_OPTIONS: --max-old-space-size=4096
+    
+    - name: Upload production build
+      uses: actions/upload-artifact@v4
+      with:
+        name: production-build
+        path: .next/
+        retention-days: 30
+        compression-level: 9
+
+  # Build metrics and reporting with performance tracking
+  build-metrics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    needs: [build-production, bundle-analysis]
+    if: always() && needs.preflight.outputs.should_continue == 'true'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
+    
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: production-build
+        path: .next/
+    
+    - name: Generate build metrics
+      run: npm run build:metrics
+      env:
+        BUILD_VERBOSE: 1
+        NODE_OPTIONS: --max-old-space-size=2048
+    
+    - name: Upload build metrics
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-metrics
+        path: reports/
+        retention-days: 90
+        compression-level: 9
+
+  # CI optimization and health monitoring
+  ci-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: [preflight, quality-checks, test-matrix, build-performance, build-production, slo-enforcement]
+    if: always() && needs.preflight.outputs.should_continue == 'true'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Restore dependency cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          node_modules
+          .npm
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-
+    
+    - name: Install dependencies (cached)
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Run CI health check
+      run: npm run ci:health
+      env:
+        CI: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Generate CI optimization report
+      run: npm run ci:optimize:report
+      env:
+        CI: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Emergency rollback and recovery
+  emergency-rollback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [preflight, quality-checks, test-matrix, build-performance, build-production, slo-enforcement]
+    if: failure() && needs.preflight.outputs.should_continue == 'true'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 20.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: Execute emergency rollback
+      run: npm run ci:emergency:rollback
+      env:
+        CI: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        ROLLBACK_REASON: "CI pipeline failure detected"
+    
+    - name: Notify team of rollback
+      run: npm run ci:notify:rollback
+      env:
+        CI: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

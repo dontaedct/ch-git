@@ -1,0 +1,26 @@
+{
+  "timestamp": "2025-08-16T05:06:20.188Z",
+  "buildTime": 0,
+  "memoryUsage": null,
+  "violations": [
+    {
+      "type": "staticAsset",
+      "name": "chunks\\react-vendor~830d6981-96a643bf9fb839bf.js",
+      "size": 515279,
+      "threshold": 512000,
+      "severity": "info"
+    },
+    {
+      "type": "staticAsset",
+      "name": "chunks\\vendor.next~46eabd33-9a42b6b9d7ba4ad5.js",
+      "size": 530957,
+      "threshold": 512000,
+      "severity": "info"
+    }
+  ],
+  "summary": {
+    "totalViolations": 2,
+    "warnings": 0,
+    "info": 2
+  }
+}

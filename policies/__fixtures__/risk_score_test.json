@@ -1,0 +1,41 @@
+{
+  "input": {
+    "changes": [
+      {
+        "operation": "DROP",
+        "table": "users"
+      }
+    ],
+    "changed_files": [
+      {
+        "path": ".env",
+        "status": "modified"
+      },
+      {
+        "path": "app/new-route/page.tsx",
+        "status": "added"
+      }
+    ],
+    "dependency_changes": [
+      {
+        "name": "next",
+        "old_version": "13.0.0",
+        "new_version": "14.0.0",
+        "change_type": "major"
+      }
+    ]
+  },
+  "expected": {
+    "allow": false,
+    "reasons": [
+      "DANGEROUS_SCHEMA_CHANGE: DROP detected without proper expand-contract marking",
+      "MISSING_FEATURE_FLAG: Route app/new-route/page.tsx lacks feature flag wrapper"
+    ],
+    "suggestedFixes": [
+      "Consider staging deployment and rollback plan",
+      "Require senior developer review",
+      "Deploy during maintenance window"
+    ],
+    "riskScore": 16
+  }
+}

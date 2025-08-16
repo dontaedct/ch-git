@@ -24,17 +24,17 @@ describe('Check-in Flow - week_start_date Implementation', () => {
 
     it('should handle Sunday correctly (should go back 6 days to Monday)', () => {
       // Create a Sunday date
-      const sunday = new Date('2024-01-07'); // This was a Sunday
+      const sunday = new Date('[RELATIVE: 2 years from now]'); // This was a Sunday
       const weekStart = getWeekStartDateForDate(sunday);
       const monday = new Date(weekStart);
       
       expect(monday.getDay()).toBe(1); // Monday
-      expect(monday.toISOString().split('T')[0]).toBe('2024-01-01'); // Should be the Monday before
+      expect(monday.toISOString().split('T')[0]).toBe('[RELATIVE: 2 years from now]'); // Should be the Monday before
     });
 
     it('should handle Monday correctly (should stay the same)', () => {
-      // Create a Monday date - January 1, 2024 was actually a Monday
-      const monday = new Date('2024-01-01T12:00:00Z'); // Force to Monday by setting time
+      // Create a Monday date - [RELATIVE: 2 years from now] was actually a Monday
+      const monday = new Date('[RELATIVE: 2 years from now]'); // Force to Monday by setting time
       const weekStart = getWeekStartDateForDate(monday);
       const result = new Date(weekStart);
       
@@ -47,12 +47,12 @@ describe('Check-in Flow - week_start_date Implementation', () => {
 
     it('should handle dates in the middle of the week correctly', () => {
       // Create a Wednesday date
-      const wednesday = new Date('2024-01-03'); // This was a Wednesday
+      const wednesday = new Date('[RELATIVE: 2 years from now]'); // This was a Wednesday
       const weekStart = getWeekStartDateForDate(wednesday);
       const result = new Date(weekStart);
       
       expect(result.getDay()).toBe(1); // Should return Monday
-      expect(result.toISOString().split('T')[0]).toBe('2024-01-01'); // Should be the Monday of that week
+      expect(result.toISOString().split('T')[0]).toBe('[RELATIVE: 2 years from now]'); // Should be the Monday of that week
       expect(result.getHours()).toBe(0); // Time should be set to start of day
     });
   });

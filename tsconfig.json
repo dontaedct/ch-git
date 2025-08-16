@@ -72,6 +72,12 @@
       "@components/*": [
         "components/*",
         "src/components/*"
+      ],
+      "@dct/mit-hero-core": [
+        "packages/mit-hero-core/src"
+      ],
+      "@dct/mit-hero-core/*": [
+        "packages/mit-hero-core/src/*"
       ]
     },
     "typeRoots": [

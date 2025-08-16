@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-08-16T15:51:35.801Z",
+  "metrics": {
+    "buildTime": 0.5729999999999933,
+    "memoryUsage": {
+      "heapUsed": 4604992,
+      "heapTotal": 4952064,
+      "rss": 37797888,
+      "external": 1615149
+    },
+    "systemInfo": {
+      "platform": "win32",
+      "arch": "x64",
+      "nodeVersion": "v20.19.4",
+      "uptime": 0.0831679
+    }
+  },
+  "version": "1.0.0"
+}

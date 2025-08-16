@@ -1,0 +1,24 @@
+{
+  "timestamp": 1755321416555,
+  "memory": {
+    "heapUsed": 3674544,
+    "heapTotal": 4427776,
+    "external": 1232701,
+    "rss": 33181696,
+    "arrayBuffers": 10515
+  },
+  "heap": {
+    "used": 3677952,
+    "total": 4427776,
+    "percentage": 83.07
+  },
+  "external": {
+    "external": 1232741,
+    "arrayBuffers": 10515
+  },
+  "gc": {
+    "major": 0,
+    "minor": 0,
+    "duration": 0
+  }
+}

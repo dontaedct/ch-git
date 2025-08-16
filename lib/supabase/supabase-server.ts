@@ -93,8 +93,8 @@ const mockDataStore: Record<string, unknown[]> = {
       id: 'mock-plan-1',
       client_id: 'mock-client-1',
       coach_id: 'mock-coach-1',
-      week_start_date: '2024-01-01',
-      week_end_date: '2024-01-07',
+      week_start_date: '[RELATIVE: 2 years from now]',
+      week_end_date: '[RELATIVE: 2 years from now]',
       title: 'Mock Weekly Plan',
       description: 'A mock weekly plan for testing',
       plan_json: {
@@ -120,8 +120,8 @@ const mockDataStore: Record<string, unknown[]> = {
         ]
       },
       status: 'active',
-      created_at: '2024-01-01T00:00:00Z',
-      updated_at: '2024-01-01T00:00:00Z'
+      created_at: '[RELATIVE: 2 years from now]',
+      updated_at: '[RELATIVE: 2 years from now]'
     }
   ],
   clients: [
@@ -132,7 +132,7 @@ const mockDataStore: Record<string, unknown[]> = {
       email: 'mock@example.com',
       first_name: 'Mock',
       last_name: 'Client',
-      created_at: '2024-01-01T00:00:00Z'
+      created_at: '[RELATIVE: 2 years from now]'
     }
   ],
   coaches: [{ id: 'mock-coach-id' }],
@@ -141,12 +141,12 @@ const mockDataStore: Record<string, unknown[]> = {
       id: 'mock-checkin-1',
       coach_id: 'mock-coach-1',
       client_id: 'mock-client-1',
-      week_start_date: '2024-01-01',
-      check_in_date: '2024-01-02',
+      week_start_date: '[RELATIVE: 2 years from now]',
+      check_in_date: '[RELATIVE: 2 years from now]',
       adherence_pct: 85,
       mood_rating: 8,
       energy_level: 7,
-      created_at: '2024-01-02T00:00:00Z'
+      created_at: '[RELATIVE: 2 years from now]'
     }
   ],
   progress_metrics: [
@@ -156,8 +156,8 @@ const mockDataStore: Record<string, unknown[]> = {
       client_id: 'mock-client-1',
       key: 'compliance7',
       value: 85,
-      metric_date: '2024-01-01',
-      created_at: '2024-01-01T00:00:00Z'
+      metric_date: '[RELATIVE: 2 years from now]',
+      created_at: '[RELATIVE: 2 years from now]'
     }
   ],
   media: []

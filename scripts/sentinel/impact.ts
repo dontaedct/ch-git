@@ -4,6 +4,8 @@
  * Maps changed files to domains and builds impact maps for decision making
  */
 
+import { MigrationAnalysis, DatabaseMigrationAnalyzer } from './db-migration.js';
+
 export interface ImpactMap {
   changedFiles: string[];
   domains: {
@@ -18,12 +20,15 @@ export interface ImpactMap {
   hasMigration: boolean;
   hasEnvChange: boolean;
   riskLevel: 'low' | 'medium' | 'high';
+  migrationAnalysis?: MigrationAnalysis;
 }
 
 export class ImpactAnalyzer {
   private domainPatterns: Record<string, RegExp[]>;
+  private migrationAnalyzer: DatabaseMigrationAnalyzer;
   
   constructor() {
+    this.migrationAnalyzer = new DatabaseMigrationAnalyzer();
     this.domainPatterns = {
       appRoutes: [
         /^app\/.*\/page\.tsx?$/,
@@ -104,15 +109,22 @@ export class ImpactAnalyzer {
     const hasMigration = domains.dbMigrations.length > 0;
     const hasEnvChange = domains.env.length > 0;
     
+    // Analyze database migrations if present
+    let migrationAnalysis: MigrationAnalysis | undefined;
+    if (hasMigration) {
+      migrationAnalysis = await this.analyzeMigrations(domains.dbMigrations);
+    }
+    
     // Calculate risk level
-    const riskLevel = this.calculateRiskLevel(domains, hasMigration, hasEnvChange);
+    const riskLevel = this.calculateRiskLevel(domains, hasMigration, hasEnvChange, migrationAnalysis);
     
     return {
       changedFiles,
       domains,
       hasMigration,
       hasEnvChange,
-      riskLevel
+      riskLevel,
+      migrationAnalysis
     };
   }
   
@@ -131,17 +143,75 @@ export class ImpactAnalyzer {
   }
   
   /**
+   * Analyze database migrations for safety
+   */
+  private async analyzeMigrations(migrationFiles: string[]): Promise<MigrationAnalysis> {
+    const migrationData: Array<{
+      path: string;
+      content: string;
+      isNew: boolean;
+      phase: 'expand' | 'contract' | 'dual-read-write' | 'unknown';
+    }> = [];
+    
+    for (const file of migrationFiles) {
+      try {
+        // Read migration file content
+        const fs = await import('fs/promises');
+        const content = await fs.readFile(file, 'utf-8');
+        
+        // Determine if this is a new migration (simplified check)
+        const isNew = true; // In a real implementation, compare with base branch
+        
+        // Extract phase from content - look for proper phase markers
+        let phase: 'expand' | 'contract' | 'dual-read-write' | 'unknown' = 'unknown';
+        
+        // Look for phase markers - only exact matches at line beginnings
+        const lines = content.split('\n');
+        for (const line of lines) {
+          const trimmedLine = line.trim();
+          
+          // Accept phase markers in comments or standalone
+          if (trimmedLine === '#expand' || trimmedLine === '-- #expand') {
+            phase = 'expand';
+            break;
+          } else if (trimmedLine === '#contract' || trimmedLine === '-- #contract') {
+            phase = 'contract';
+            break;
+          } else if (trimmedLine === '#dual-read-write' || trimmedLine === '-- #dual-read-write' ||
+                     trimmedLine === '#dual_read_write' || trimmedLine === '-- #dual_read_write') {
+            phase = 'dual-read-write';
+            break;
+          }
+        }
+        
+        migrationData.push({ path: file, content, isNew, phase });
+      } catch (error) {
+        console.warn(`Warning: Could not read migration file ${file}:`, error);
+      }
+    }
+    
+    return this.migrationAnalyzer.analyzeMigrations(migrationData);
+  }
+  
+  /**
    * Calculate overall risk level based on changes
    */
   private calculateRiskLevel(
     domains: ImpactMap['domains'], 
     hasMigration: boolean, 
-    hasEnvChange: boolean
+    hasEnvChange: boolean,
+    migrationAnalysis?: MigrationAnalysis
   ): ImpactMap['riskLevel'] {
     let riskScore = 0;
     
     // High risk indicators
-    if (hasMigration) riskScore += 3;
+    if (hasMigration) {
+      if (migrationAnalysis && !migrationAnalysis.isSafe) {
+        riskScore += 5; // Unsafe migrations are very high risk
+      } else {
+        riskScore += 3; // Safe migrations are high risk
+      }
+    }
     if (hasEnvChange) riskScore += 3;
     if (domains.configs.length > 0) riskScore += 2;
     
@@ -191,7 +261,9 @@ export class ImpactAnalyzer {
             'Review migration safety and rollback plan',
             'Ensure migrations are backward compatible',
             'Add migration markers for expansion/contraction',
-            'Update documentation and runbooks'
+            'Update documentation and runbooks',
+            'Follow expand→dual-read/write→contract workflow',
+            'Add #expand, #contract, or #dual-read-write phase markers'
           ]
         };
         

@@ -2,7 +2,10 @@
  * FeatureGate Component
  * 
  * Wraps content with feature flag checking to enable/disable features
+ * Uses the enhanced flags system with environment-aware logic
  */
+
+import { useFeatureFlag } from '@lib/registry/FlagsProvider';
 
 interface FeatureGateProps {
   flag: string;
@@ -11,9 +14,7 @@ interface FeatureGateProps {
 }
 
 export function FeatureGate({ flag, children, fallback }: FeatureGateProps) {
-  // TODO: Implement actual feature flag checking logic
-  // For now, always show content (feature flags enabled by default)
-  const isEnabled = true; // This would normally check a feature flag service
+  const isEnabled = useFeatureFlag(flag);
   
   if (isEnabled) {
     return <>{children}</>;

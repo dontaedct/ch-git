@@ -1,3 +1,4 @@
+import { FeatureGate } from '@ui/FeatureGate';
 import { Suspense } from 'react'
 import { requireClientWithLoading } from '@lib/auth/roles'
 import { CheckInPageContent } from './CheckInPageContent'
@@ -26,11 +27,13 @@ export default async function CheckInPage() {
   const { clientId, coachId } = authResult.data
   
   return (
-    <Suspense fallback={<CheckInLoading />}>
-      <CheckInPageContent 
-        initialClientId={clientId}
-        initialCoachId={coachId}
-      />
-    </Suspense>
+    <FeatureGate flag="client-portal-check-in">
+      <Suspense fallback={<CheckInLoading />}>
+        <CheckInPageContent 
+          initialClientId={clientId}
+          initialCoachId={coachId}
+        />
+      </Suspense>
+    </FeatureGate>
   )
 }

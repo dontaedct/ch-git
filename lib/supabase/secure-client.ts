@@ -13,7 +13,7 @@
  */
 
 import { createIsolatedSupabaseClient } from './server';
-import { auditLogger } from '@/lib/audit-logger';
+import { auditLogger, AuditEventType, AuditSeverity } from '@/lib/audit-logger';
 import { getUserOrFail } from '@/lib/auth/guard';
 import type { User } from '@/lib/auth/guard';
 
@@ -151,15 +151,21 @@ function validateSessionTimeout(lastActivity: number, maxAgeMs: number = 30 * 60
  */
 function safeAuditLog(
   logger: typeof auditLogger,
-  method: 'logSecurityEvent' | 'logDataOperation',
-  ...args: Parameters<typeof auditLogger.logSecurityEvent | typeof auditLogger.logDataOperation>
+  method: 'logSecurityEvent',
+  eventType: string,
+  severity: string,
+  userId?: string,
+  userEmail?: string,
+  details?: Record<string, unknown>
 ): void {
   try {
-    if (method === 'logSecurityEvent') {
-      logger.logSecurityEvent(...(args as Parameters<typeof auditLogger.logSecurityEvent>));
-    } else {
-      logger.logDataOperation(...(args as Parameters<typeof auditLogger.logDataOperation>));
-    }
+    logger.logSecurityEvent(
+      eventType as Parameters<typeof auditLogger.logSecurityEvent>[0],
+      severity as Parameters<typeof auditLogger.logSecurityEvent>[1],
+      userId,
+      userEmail,
+      details
+    );
   } catch (auditError) {
     // Log audit failure to console but don't break the main operation
     console.error('[Audit Logger Error] Failed to log security event:', auditError);
@@ -186,8 +192,8 @@ export async function createSecureClient(): Promise<SecureClient> {
     // Check rate limiting
     if (!checkRateLimit(user.id)) {
       safeAuditLog(auditLogger, 'logSecurityEvent',
-        'security_event',
-        'high',
+        AuditEventType.SECURITY_EVENT,
+        AuditSeverity.HIGH,
         user.id,
         user.email,
         { 
@@ -215,8 +221,8 @@ export async function createSecureClient(): Promise<SecureClient> {
       const lastSignIn = new Date(user.last_sign_in_at).getTime();
       if (!validateSessionTimeout(lastSignIn, sessionTimeout)) {
         safeAuditLog(auditLogger, 'logSecurityEvent',
-          'security_event',
-          'high',
+          AuditEventType.SECURITY_EVENT,
+          AuditSeverity.HIGH,
           user.id,
           user.email,
           { 
@@ -245,8 +251,8 @@ export async function createSecureClient(): Promise<SecureClient> {
     
     // Log successful authentication
     safeAuditLog(auditLogger, 'logSecurityEvent',
-      'user_login',
-      'low',
+      AuditEventType.USER_LOGIN,
+      AuditSeverity.LOW,
       user.id,
       user.email,
       { role, timestamp: new Date().toISOString() }
@@ -260,8 +266,8 @@ export async function createSecureClient(): Promise<SecureClient> {
   } catch (error) {
     // Log authentication failure
     safeAuditLog(auditLogger, 'logSecurityEvent',
-      'security_event',
-      'high',
+      AuditEventType.SECURITY_EVENT,
+      AuditSeverity.HIGH,
       undefined,
       undefined,
       { 
@@ -320,20 +326,20 @@ export function validateResourceAccess(
 ): void {
   // Check if user has required role
   if (!allowedRoles.includes(context.userRole)) {
-    safeAuditLog(auditLogger, 'logSecurityEvent',
-      'security_event',
-      'high',
-      context.userId,
-      context.userEmail,
-      {
-        violation: 'insufficient_role',
-        requiredRoles: allowedRoles,
-        userRole: context.userRole,
-        resourceType: context.resourceType,
-        operation: context.operation,
-        resourceId: context.resourceId
-      }
-    );
+          safeAuditLog(auditLogger, 'logSecurityEvent',
+        AuditEventType.SECURITY_EVENT,
+        AuditSeverity.HIGH,
+        context.userId,
+        context.userEmail,
+        {
+          violation: 'insufficient_role',
+          requiredRoles: allowedRoles,
+          userRole: context.userRole,
+          resourceType: context.resourceType,
+          operation: context.operation,
+          resourceId: context.resourceId
+        }
+      );
     
     throw new SecurityViolationError(
       `Insufficient role: ${context.userRole} cannot perform ${context.operation} on ${context.resourceType}`,
@@ -344,20 +350,20 @@ export function validateResourceAccess(
   
   // For coaches, ensure they can only access their own resources
   if (context.userRole === UserRole.COACH && context.userId !== resourceOwnerId) {
-    safeAuditLog(auditLogger, 'logSecurityEvent',
-      'security_event',
-      'high',
-      context.userId,
-      context.userEmail,
-      {
-        violation: 'resource_ownership_violation',
-        resourceOwnerId,
-        userId: context.userId,
-        resourceType: context.resourceType,
-        operation: context.operation,
-        resourceId: context.resourceId
-      }
-    );
+          safeAuditLog(auditLogger, 'logSecurityEvent',
+        AuditEventType.SECURITY_EVENT,
+        AuditSeverity.HIGH,
+        context.userId,
+        context.userEmail,
+        {
+          violation: 'resource_ownership_violation',
+          resourceOwnerId,
+          userId: context.userId,
+          resourceType: context.resourceType,
+          operation: context.operation,
+          resourceId: context.resourceId
+        }
+      );
     
     throw new SecurityViolationError(
       `Access denied: Cannot access ${context.resourceType} owned by another user`,
@@ -367,8 +373,8 @@ export function validateResourceAccess(
   }
   
   // Log successful access validation
-  safeAuditLog(auditLogger, 'logDataOperation',
-    'data_read',
+  auditLogger.logDataOperation(
+    AuditEventType.DATA_READ,
     context.userId,
     context.userEmail ?? 'unknown',
     context.resourceType,
@@ -406,21 +412,21 @@ export function createSecurityContext(
  */
 function handleSecurityError(error: unknown, context: SecurityContext): never {
   // Log the error for monitoring
-  safeAuditLog(auditLogger, 'logSecurityEvent',
-    'security_event',
-    'high',
-    context.userId,
-    context.userEmail,
-    {
-      error: error instanceof Error ? error.message : 'Unknown error',
-      errorStack: error instanceof Error ? error.stack : undefined,
-      resourceType: context.resourceType,
-      operation: context.operation,
-      resourceId: context.resourceId,
-      additionalContext: context.additionalContext,
-      timestamp: new Date().toISOString()
-    }
-  );
+                 safeAuditLog(auditLogger, 'logSecurityEvent',
+        AuditEventType.SECURITY_EVENT,
+        AuditSeverity.HIGH,
+        context.userId,
+        context.userEmail,
+        {
+          error: error instanceof Error ? error.message : 'Unknown error',
+          errorStack: error instanceof Error ? error.stack : undefined,
+          resourceType: context.resourceType,
+          operation: context.operation,
+          resourceId: context.resourceId,
+          additionalContext: context.additionalContext,
+          timestamp: new Date().toISOString()
+        }
+      );
   
   // Determine appropriate error type
   if (error instanceof SecurityViolationError) {
@@ -482,8 +488,8 @@ export async function executeSecureOperation<T>(
     const result = await operation();
     
     // Log successful operation
-    safeAuditLog(auditLogger, 'logDataOperation',
-      'data_read',
+    auditLogger.logDataOperation(
+      AuditEventType.DATA_READ,
       context.userId,
       context.userEmail ?? 'unknown',
       context.resourceType,
@@ -534,20 +540,20 @@ export async function validateResourceOwnershipAndGetData<T>(
     
     if (!data) {
       // Log potential security violation attempt
-      safeAuditLog(auditLogger, 'logSecurityEvent',
-        'security_event',
-        'high',
-        context.userId,
-        context.userEmail,
-        {
-          violation: 'resource_not_found_or_unauthorized',
-          tableName: sanitizedTableName,
-          resourceId: sanitizedResourceId,
-          userId: context.userId,
-          resourceType: context.resourceType,
-          operation: context.operation
-        }
-      );
+              safeAuditLog(auditLogger, 'logSecurityEvent',
+          AuditEventType.SECURITY_EVENT,
+          AuditSeverity.HIGH,
+          context.userId,
+          context.userEmail,
+          {
+            violation: 'resource_not_found_or_unauthorized',
+            tableName: sanitizedTableName,
+            resourceId: sanitizedResourceId,
+            userId: context.userId,
+            resourceType: context.resourceType,
+            operation: context.operation
+          }
+        );
       
       throw new SecurityViolationError(
         `Resource not found or access denied: ${sanitizedTableName} with id ${sanitizedResourceId}`,
@@ -607,20 +613,20 @@ export async function validateResourceOwnership(
     
     // Validate ownership
     if (data.coach_id !== userId) {
-      safeAuditLog(auditLogger, 'logSecurityEvent',
-        'security_event',
-        'high',
-        context.userId,
-        context.userEmail,
-        {
-          violation: 'resource_ownership_violation',
-          resourceOwnerId: data.coach_id,
-          userId: context.userId,
-          resourceType: context.resourceType,
-          operation: context.operation,
-          resourceId: context.resourceId
+              safeAuditLog(auditLogger, 'logSecurityEvent',
+          AuditEventType.SECURITY_EVENT,
+          AuditSeverity.HIGH,
+          context.userId,
+          context.userEmail,
+          {
+            violation: 'resource_ownership_violation',
+            resourceOwnerId: data.coach_id,
+            userId: context.userId,
+            resourceType: context.resourceType,
+            operation: context.operation,
+            resourceId: context.resourceId
         }
-      );
+        );
       
       throw new SecurityViolationError(
         `Access denied: Resource ${resourceId} does not belong to user ${userId}`,
@@ -719,8 +725,8 @@ export function cleanupSecuritySystem(): void {
   
   // Log cleanup
   safeAuditLog(auditLogger, 'logSecurityEvent',
-    'system_event',
-    'low',
+    AuditEventType.SYSTEM_STARTUP,
+    AuditSeverity.LOW,
     undefined,
     undefined,
     {

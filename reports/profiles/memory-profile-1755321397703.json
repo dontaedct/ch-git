@@ -1,0 +1,37 @@
+{
+  "timestamp": "2025-08-16T05:16:37.703Z",
+  "duration": 60013,
+  "snapshots": 7,
+  "patterns": {
+    "trend": "stable",
+    "growth": -223216,
+    "growthMB": -0.21,
+    "volatility": 111471.05997266094,
+    "volatilityMB": 0.11
+  },
+  "leaks": [],
+  "recommendations": [
+    {
+      "priority": "low",
+      "action": "Memory usage looks healthy",
+      "details": "Continue monitoring for any changes"
+    },
+    {
+      "priority": "medium",
+      "action": "Implement memory cleanup in useEffect hooks",
+      "details": "Ensure proper cleanup of event listeners, timeouts, and subscriptions"
+    },
+    {
+      "priority": "medium",
+      "action": "Use React.memo for expensive components",
+      "details": "Prevent unnecessary re-renders that can cause memory churn"
+    }
+  ],
+  "summary": {
+    "initialMemory": "4.43 MB",
+    "finalMemory": "4.22 MB",
+    "peakMemory": "4.43 MB",
+    "averageMemory": "4.19 MB",
+    "totalGrowth": "NaN undefined"
+  }
+}

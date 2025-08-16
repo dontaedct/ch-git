@@ -21,10 +21,10 @@
 
 import { execSync } from 'child_process';
 import { join } from 'path';
-import { GitAnalyzer } from './sentinel/git.js';
-import { ImpactAnalyzer } from './sentinel/impact.js';
-import { OutputFormatter } from './sentinel/io.js';
-import { FixEngine } from './sentinel/fixes.js';
+import { GitAnalyzer } from './sentinel/git';
+import { ImpactAnalyzer } from './sentinel/impact';
+import { OutputFormatter } from './sentinel/io';
+import { FixEngine } from './sentinel/fixes';
 
 // Sentinel Gate Configuration
 const SENTINEL_CONFIG = {
@@ -150,7 +150,7 @@ class SentinelGate {
       return {
         allow: false,
         reasons: ['High-risk changes detected (migrations, env changes)'],
-        suggestedFixes: ['add-migration-markers', 'add-codeowner-stub'],
+        suggestedFixes: ['add-migration-markers', 'add-codeowner-stub', 'wrap-new-route-with-feature-flag'],
         riskScore: 8
       };
     }
@@ -159,7 +159,7 @@ class SentinelGate {
       return {
         allow: false,
         reasons: ['New routes detected without feature flags'],
-        suggestedFixes: ['wrap-new-route-with-feature-flag'],
+        suggestedFixes: ['wrap-new-route-with-feature-flag', 'add-codeowner-stub'],
         riskScore: 5
       };
     }

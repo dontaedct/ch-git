@@ -22,6 +22,7 @@ export interface SecurityMetrics {
 }
 
 export interface ThreatIndicator {
+  id: string;
   type: 'brute_force' | 'privilege_escalation' | 'data_exfiltration' | 'session_hijacking';
   severity: 'low' | 'medium' | 'high' | 'critical';
   description: string;

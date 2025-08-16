@@ -17,4 +17,5 @@ export * from '@lib/validation';
 export * from '@lib/auth';
 
 /** @deprecated Use @lib/supabase instead */
-export * from '@lib/supabase';
+// Commented out to avoid duplicate exports with @lib/types
+// export * from '@lib/supabase';

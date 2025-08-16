@@ -1,0 +1,156 @@
+{
+  "name": "MIT Hero System - CI Performance Budgets",
+  "version": "1.0.0",
+  "description": "Performance budgets for CI pipeline optimization",
+  "budgets": {
+    "build": {
+      "time": {
+        "fast": 120,
+        "memory": 180,
+        "optimized": 300,
+        "critical": 600
+      },
+      "memory": {
+        "max": 4096,
+        "warning": 3072,
+        "optimal": 2048
+      },
+      "bundle": {
+        "maxSize": 1024,
+        "warningSize": 768,
+        "optimalSize": 512
+      }
+    },
+    "test": {
+      "time": {
+        "unit": 60,
+        "integration": 120,
+        "smoke": 30,
+        "critical": 300
+      },
+      "coverage": {
+        "min": 80,
+        "target": 90,
+        "optimal": 95
+      }
+    },
+    "cache": {
+      "hitRate": {
+        "min": 0.6,
+        "target": 0.8,
+        "optimal": 0.9
+      },
+      "size": {
+        "max": 2048,
+        "warning": 1536,
+        "optimal": 1024
+      }
+    },
+    "overall": {
+      "totalTime": {
+        "minimal": 300,
+        "balanced": 600,
+        "aggressive": 900,
+        "critical": 1800
+      },
+      "parallelization": {
+        "min": 0.3,
+        "target": 0.6,
+        "optimal": 0.8
+      }
+    }
+  },
+  "thresholds": {
+    "failFast": {
+      "enabled": true,
+      "maxFailures": 3,
+      "maxTime": 1800
+    },
+    "rollback": {
+      "enabled": true,
+      "triggers": [
+        "build_failure",
+        "test_failure",
+        "security_violation",
+        "performance_degradation"
+      ]
+    },
+    "notifications": {
+      "enabled": true,
+      "channels": [
+        "github_actions",
+        "slack",
+        "email"
+      ],
+      "triggers": [
+        "budget_exceeded",
+        "rollback_executed",
+        "health_check_failed"
+      ]
+    }
+  },
+  "optimization": {
+    "levels": {
+      "minimal": {
+        "workers": 2,
+        "cache": true,
+        "parallel": false,
+        "failFast": false
+      },
+      "balanced": {
+        "workers": 4,
+        "cache": true,
+        "parallel": true,
+        "failFast": true
+      },
+      "aggressive": {
+        "workers": 8,
+        "cache": true,
+        "parallel": true,
+        "failFast": true,
+        "memory": 8192
+      }
+    },
+    "strategies": {
+      "caching": {
+        "dependencies": true,
+        "build": true,
+        "test": true,
+        "artifacts": true
+      },
+      "parallelization": {
+        "quality": true,
+        "tests": true,
+        "builds": true,
+        "analysis": true
+      },
+      "resource": {
+        "memory": "adaptive",
+        "cpu": "balanced",
+        "disk": "optimized"
+      }
+    }
+  },
+  "monitoring": {
+    "metrics": [
+      "build_time",
+      "test_time",
+      "memory_usage",
+      "cache_hit_rate",
+      "parallelization_efficiency",
+      "error_rate",
+      "rollback_frequency"
+    ],
+    "reporting": {
+      "frequency": "per_run",
+      "format": "json",
+      "retention": "90_days"
+    },
+    "alerts": {
+      "budget_exceeded": "warning",
+      "performance_degradation": "warning",
+      "system_failure": "critical",
+      "rollback_executed": "info"
+    }
+  }
+}

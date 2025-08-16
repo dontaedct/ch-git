@@ -1,0 +1,251 @@
+name: Sentinel DB - Safe Migration Enforcement
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+jobs:
+  shadow-migration-check:
+    name: Shadow Migration Safety Check
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: shadow_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Supabase CLI
+        run: |
+          curl -fsSL https://supabase.com/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Create shadow database
+        run: |
+          # Create shadow database for testing migrations
+          PGPASSWORD=postgres psql -h localhost -U postgres -d postgres -c "CREATE DATABASE shadow_db;"
+          PGPASSWORD=postgres psql -h localhost -U postgres -d postgres -c "CREATE DATABASE main_schema;"
+
+      - name: Apply main branch schema to shadow DB
+        run: |
+          # Get the base commit (main branch)
+          BASE_COMMIT=$(git merge-base HEAD origin/main)
+          
+          # Apply main branch schema to shadow DB
+          git checkout $BASE_COMMIT
+          if [ -d "supabase/migrations" ]; then
+            for migration in supabase/migrations/*.sql; do
+              if [ -f "$migration" ]; then
+                echo "Applying migration: $migration"
+                PGPASSWORD=postgres psql -h localhost -U postgres -d shadow_db -f "$migration"
+              fi
+            done
+          fi
+          
+          # Also apply to main_schema for comparison
+          PGPASSWORD=postgres psql -h localhost -U postgres -d main_schema -c "SELECT 1;"
+
+      - name: Check for migration files
+        id: check-migrations
+        run: |
+          if [ -d "supabase/migrations" ]; then
+            # Count new migration files since base commit
+            BASE_COMMIT=$(git merge-base HEAD origin/main)
+            NEW_MIGRATIONS=$(git diff --name-only $BASE_COMMIT HEAD | grep "supabase/migrations/.*\.sql" | wc -l)
+            echo "new_migrations=$NEW_MIGRATIONS" >> $GITHUB_OUTPUT
+            
+            if [ $NEW_MIGRATIONS -gt 0 ]; then
+              echo "has_migration=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_migration=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "new_migrations=0" >> $GITHUB_OUTPUT
+            echo "has_migration=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Run shadow migration test
+        if: steps.check-migrations.outputs.has_migration == 'true'
+        id: shadow-test
+        run: |
+          # Checkout current PR changes
+          git checkout HEAD
+          
+          # Create migration report
+          MIGRATION_REPORT="migration-safety-report.txt"
+          echo "=== MIGRATION SAFETY REPORT ===" > $MIGRATION_REPORT
+          echo "Generated: $(date)" >> $MIGRATION_REPORT
+          echo "PR: ${{ github.event.pull_request.number }}" >> $MIGRATION_REPORT
+          echo "" >> $MIGRATION_REPORT
+          
+          # Check for expand/contract markers
+          if grep -r "#expand\|#contract" supabase/migrations/; then
+            echo "✅ EXPAND/CONTRACT PHASE DETECTED" >> $MIGRATION_REPORT
+            echo "Phase: $(grep -r "#expand\|#contract" supabase/migrations/ | head -1)" >> $MIGRATION_REPORT
+            echo "" >> $MIGRATION_REPORT
+          else
+            echo "⚠️  NO EXPAND/CONTRACT PHASE MARKERS FOUND" >> $MIGRATION_REPORT
+            echo "All migrations will be treated as EXPAND phase" >> $MIGRATION_REPORT
+            echo "" >> $MIGRATION_REPORT
+          fi
+          
+          # Detect unsafe operations
+          UNSAFE_OPS=()
+          
+          # Check for DROP operations
+          if grep -r "DROP" supabase/migrations/; then
+            UNSAFE_OPS+=("DROP operations detected")
+            echo "❌ UNSAFE: DROP operations detected" >> $MIGRATION_REPORT
+          fi
+          
+          # Check for RENAME operations
+          if grep -r "RENAME" supabase/migrations/; then
+            UNSAFE_OPS+=("RENAME operations detected")
+            echo "❌ UNSAFE: RENAME operations detected" >> $MIGRATION_REPORT
+          fi
+          
+          # Check for ALTER TYPE operations that tighten constraints
+          if grep -r "ALTER TYPE.*SET" supabase/migrations/; then
+            UNSAFE_OPS+=("Type constraint tightening detected")
+            echo "❌ UNSAFE: Type constraint tightening detected" >> $MIGRATION_REPORT
+          fi
+          
+          # Check for column removals
+          if grep -r "DROP COLUMN" supabase/migrations/; then
+            UNSAFE_OPS+=("Column removal detected")
+            echo "❌ UNSAFE: Column removal detected" >> $MIGRATION_REPORT
+          fi
+          
+          # Check for table removals
+          if grep -r "DROP TABLE" supabase/migrations/; then
+            UNSAFE_OPS+=("Table removal detected")
+            echo "❌ UNSAFE: Table removal detected" >> $MIGRATION_REPORT
+          fi
+          
+          # Apply migrations to shadow DB for testing
+          echo "=== APPLYING MIGRATIONS TO SHADOW DB ===" >> $MIGRATION_REPORT
+          
+          for migration in supabase/migrations/*.sql; do
+            if [ -f "$migration" ]; then
+              echo "Testing migration: $migration" >> $MIGRATION_REPORT
+              
+              # Check if this migration was added in this PR
+              BASE_COMMIT=$(git merge-base HEAD origin/main)
+              if git diff --name-only $BASE_COMMIT HEAD | grep -q "$migration"; then
+                echo "  -> NEW MIGRATION IN PR" >> $MIGRATION_REPORT
+                
+                # Try to apply to shadow DB
+                if PGPASSWORD=postgres psql -h localhost -U postgres -d shadow_db -f "$migration" 2>&1; then
+                  echo "  ✅ Successfully applied to shadow DB" >> $MIGRATION_REPORT
+                else
+                  echo "  ❌ Failed to apply to shadow DB" >> $MIGRATION_REPORT
+                  UNSAFE_OPS+=("Migration failed in shadow DB")
+                fi
+              else
+                echo "  -> EXISTING MIGRATION (skipped)" >> $MIGRATION_REPORT
+              fi
+            fi
+          done
+          
+          # Determine if migration is safe
+          if [ ${#UNSAFE_OPS[@]} -eq 0 ]; then
+            echo "" >> $MIGRATION_REPORT
+            echo "✅ MIGRATION SAFETY CHECK PASSED" >> $MIGRATION_REPORT
+            echo "All operations are safe for production" >> $MIGRATION_REPUT
+            echo "safe=true" >> $GITHUB_OUTPUT
+          else
+            echo "" >> $MIGRATION_REPORT
+            echo "❌ MIGRATION SAFETY CHECK FAILED" >> $MIGRATION_REPORT
+            echo "Unsafe operations detected:" >> $MIGRATION_REPORT
+            for op in "${UNSAFE_OPS[@]}"; do
+              echo "  - $op" >> $MIGRATION_REPORT
+            done
+            echo "" >> $MIGRATION_REPORT
+            echo "NEXT STEPS:" >> $MIGRATION_REPORT
+            echo "1. Follow expand→dual-read/write→contract workflow" >> $MIGRATION_REPORT
+            echo "2. Add #expand or #contract markers to migrations" >> $MIGRATION_REPORT
+            echo "3. Ensure backward compatibility during transitions" >> $MIGRATION_REPORT
+            echo "safe=false" >> $GITHUB_OUTPUT
+          fi
+          
+          # Save report for artifacts
+          echo "$MIGRATION_REPORT" > migration_report_path.txt
+
+      - name: Upload migration report
+        if: steps.check-migrations.outputs.has_migration == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: migration-safety-report
+          path: |
+            migration-safety-report.txt
+            migration_report_path.txt
+
+      - name: Generate Change Journal Entry
+        if: steps.check-migrations.outputs.has_migration == 'true'
+        env:
+          HAS_DB_MIGRATIONS: 'true'
+          DB_SHADOW_REPORT: ${{ steps.shadow-test.outputs.safe }}
+          DB_REPORT_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+        run: |
+          echo "🗂️ Generating Change Journal entry for database migration check..."
+          npx tsx scripts/sentinel-report.ts
+
+      - name: Upload Change Journal Artifacts
+        if: steps.check-migrations.outputs.has_migration == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sentinel-artifacts
+          path: |
+            .sentinel/journal/
+            migration-safety-report.txt
+
+      - name: Fail on unsafe migrations
+        if: steps.shadow-test.outputs.safe == 'false'
+        run: |
+          echo "❌ UNSAFE DATABASE MIGRATIONS DETECTED"
+          echo "This PR contains unsafe database operations that could cause data loss."
+          echo "Please follow the expand→contract workflow and add appropriate phase markers."
+          echo ""
+          echo "See the migration safety report for details."
+          exit 1
+
+      - name: Success message
+        if: steps.shadow-test.outputs.safe == 'true'
+        run: |
+          echo "✅ DATABASE MIGRATION SAFETY CHECK PASSED"
+          echo "All migrations are safe for production deployment."
+
+      - name: Skip message
+        if: steps.check-migrations.outputs.has_migration == 'false'
+        run: |
+          echo "ℹ️  No database migrations detected in this PR"
+          echo "Skipping migration safety checks."

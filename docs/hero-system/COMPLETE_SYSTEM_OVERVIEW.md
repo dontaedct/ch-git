@@ -201,6 +201,7 @@ npm run hero:sentient:perfection # Run sentient army perfection
 npm run quantum:neural:initialize # Initialize quantum neural engine
 npm run causality:predict        # Run causality prediction
 npm run consciousness:emerge     # Trigger consciousness emergence
+npm run error-fixer:report       # Intelligent error fixing system
 
 # Information
 npm run hero:unified:help        # Get help and usage information

@@ -20,6 +20,7 @@
 | Guardian System | Guardrail | 88/100 | 12/100 | `scripts/guardian.js` | ✅ **VALIDATED** |
 | Doctor System | Analyzer | 85/100 | 18/100 | `scripts/doctor.ts` | ✅ **VALIDATED** |
 | Cursor AI Universal Header | Gatekeeper | 92/100 | 10/100 | `scripts/cursor-ai-universal-header.js` | ✅ **VALIDATED** |
+| Intelligent Error Fixing | Problem Solver | 87/100 | 16/100 | `scripts/intelligent-error-fixer.js` | ✅ **VALIDATED** |
 
 ---
 
@@ -71,20 +72,20 @@
 ## **System Statistics**
 
 ### **Hero System Distribution**
-- **S-Tier**: 5 systems (17.2%) - Mission critical
+- **S-Tier**: 6 systems (20.7%) - Mission critical
 - **A-Tier**: 8 systems (27.6%) - High value
 - **B-Tier**: 12 systems (41.4%) - Useful
-- **C-Tier**: 4 systems (13.8%) - Experimental
+- **C-Tier**: 3 systems (10.3%) - Experimental
 
 ### **Archetype Distribution**
 - **Orchestrator**: 8 systems (27.6%) - Coordinates workflows
 - **Analyzer**: 6 systems (20.7%) - Inspects and validates
 - **Gatekeeper**: 4 systems (13.8%) - Enforces rules
 - **Guardrail**: 3 systems (10.3%) - Prevents failures
+- **Problem Solver**: 1 system (3.4%) - Intelligent fixing
 - **Enricher**: 3 systems (10.3%) - Enhances data
 - **Ingestor**: 3 systems (10.3%) - Processes input
 - **Cache/Fan-out**: 1 system (3.4%) - Stores/distributes
-- **Human-in-the-loop**: 1 system (3.4%) - Requires approval
 
 ### **Platform Distribution**
 - **Node.js**: 20 systems (69.0%) - JavaScript runtime

@@ -42,6 +42,16 @@
 - **Result**: Beginner-proof guidance; discoverability; stays automatically up-to-date
 - **Status**: Active and evolving
 
+### **A-tier — Intelligent Error Fixing System**
+- **Adaptive Error Resolution**: `scripts/intelligent-error-fixer.js`
+- **MIT Hero Integration**: Enhanced `scripts/hero-ultimate-optimized.js`
+- **Smart Classification**: YAML (8), Indentation (6), Syntax (5), Logic (4), Complex (3) attempts
+- **User Permission System**: Override limits with intelligent recommendations
+- **Pattern Learning**: Tracks successful fixes and builds knowledge base
+- **Commands**: `npm run error-fixer:report`, `npm run error-fixer:reset`, `npm run error-fixer:clear`
+- **Result**: Replaces rigid 3-attempt limit with intelligent, adaptive error resolution
+- **Status**: Active and learning
+
 ### **A-tier — Repo Guardians**
 - **Git Guardians**: `scripts/git-guardian.js`, `git-auto-recovery.js`, `git-master-control.js`
 - **Pre-commit/Push Hooks**: `scripts/pre-commit-check.js`, `scripts/prepush.cjs`

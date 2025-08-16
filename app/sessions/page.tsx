@@ -1,3 +1,4 @@
+import { FeatureGate } from '@ui/FeatureGate';
 import { requireCoachWithLoading } from '@lib/auth/roles'
 import { VerifyingAccessShell } from '@ui/VerifyingAccessShell'
 
@@ -25,10 +26,12 @@ export default async function SessionsPage() {
   const { coachId } = authResult.data
   
   return (
-    <main style={{ padding: 24 }}>
-      <h1>Sessions</h1>
-      <p>Coach ID: {coachId}</p>
-      <p>Welcome to the sessions management page.</p>
-    </main>
+    <FeatureGate flag="sessions">
+      <main style={{ padding: 24 }}>
+        <h1>Sessions</h1>
+        <p>Coach ID: {coachId}</p>
+        <p>Welcome to the sessions management page.</p>
+      </main>
+    </FeatureGate>
   );
 }

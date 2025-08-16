@@ -1,7 +1,10 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { FeatureGate } from '@ui/FeatureGate';
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '@/lib/supabase/types'
 import Link from 'next/link'
 
 function LoginPageContent() {
@@ -9,10 +12,19 @@ function LoginPageContent() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const supabase = createClient()
+  const [supabase, setSupabase] = useState<SupabaseClient<Database> | null>(null)
+
+  // Initialize Supabase client
+  useEffect(() => {
+    createClient().then(client => setSupabase(client))
+  }, [])
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!supabase) {
+      setError('Supabase client not initialized')
+      return
+    }
     setLoading(true)
     setError(null)
 
@@ -37,6 +49,10 @@ function LoginPageContent() {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!supabase) {
+      setError('Supabase client not initialized')
+      return
+    }
     setLoading(true)
     setError(null)
 
@@ -81,7 +97,7 @@ function LoginPageContent() {
 
         {/* Form Card */}
         <div className="card card-hover p-8 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleSignIn}>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-gray-700">
                 Email Address
@@ -96,7 +112,7 @@ function LoginPageContent() {
                 required
               />
             </div>
-            
+
             <div className="space-y-2">
               <label htmlFor="password" className="text-sm font-medium text-gray-700">
                 Password
@@ -111,75 +127,32 @@ function LoginPageContent() {
                 required
               />
             </div>
-            
+
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                <p className="text-sm text-red-600">
-                  {error}
-                </p>
+              <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+                <p className="text-sm text-red-600">{error}</p>
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="space-y-4">
               <button
                 type="submit"
-                onClick={handleSignIn}
                 disabled={loading}
-                className="btn flex-1 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Signing in...
-                  </>
-                ) : (
-                  'Sign In'
-                )}
+                {loading ? 'Signing in...' : 'Sign In'}
               </button>
-              
+
               <button
-                type="submit"
+                type="button"
                 onClick={handleSignUp}
                 disabled={loading}
-                className="btn-ghost flex-1 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn btn-secondary w-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {loading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Signing up...
-                  </>
-                ) : (
-                  'Sign Up'
-                )}
+                {loading ? 'Signing up...' : 'Sign Up'}
               </button>
             </div>
           </form>
-
-          {/* Footer Note */}
-          <div className="mt-8 pt-6 border-t border-gray-100">
-            <p className="text-xs text-gray-500 text-center">
-              Your account is secure and protected with industry-standard encryption.
-            </p>
-          </div>
-        </div>
-
-        {/* Back to Home */}
-        <div className="text-center mt-6">
-          <Link 
-            href="/" 
-            className="text-sm text-gray-500 hover:text-gray-700 transition-colors inline-flex items-center gap-1"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Home
-          </Link>
         </div>
       </div>
     </div>
@@ -188,20 +161,8 @@ function LoginPageContent() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <div className="text-center">
-            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
-            <p className="mt-2 text-sm text-gray-600">Loading login form...</p>
-          </div>
-          <div className="flex items-center justify-center p-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-          </div>
-        </div>
-      </div>
-    }>
+    <FeatureGate flag="login">
       <LoginPageContent />
-    </Suspense>
-  );
+    </FeatureGate>
+  )
 }

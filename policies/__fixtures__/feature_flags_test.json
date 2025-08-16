@@ -1,0 +1,19 @@
+{
+  "input": {
+    "changed_files": [
+      {
+        "path": "app/new-feature/page.tsx",
+        "status": "added",
+        "content": "export default function NewFeaturePage() { return <div>New Feature</div>; }"
+      }
+    ]
+  },
+  "expected": {
+    "allow": false,
+    "reasons": [
+      "MISSING_FEATURE_FLAG: Route app/new-feature/page.tsx lacks feature flag wrapper"
+    ],
+    "suggestedFixes": [],
+    "riskScore": 2
+  }
+}

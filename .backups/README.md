@@ -84,12 +84,12 @@ Each backup includes metadata in `.backups/meta/last.json`:
     {
       "type": "git",
       "ok": true,
-      "path": ".backups/2025-01-13/235959/repo.bundle"
+      "path": ".backups/[RELATIVE: 8 months from now]/235959/repo.bundle"
     },
     {
       "type": "project", 
       "ok": true,
-      "path": ".backups/2025-01-13/235959/project.zip"
+      "path": ".backups/[RELATIVE: 8 months from now]/235959/project.zip"
     },
     {
       "type": "db",
@@ -97,8 +97,8 @@ Each backup includes metadata in `.backups/meta/last.json`:
       "reason": "pg_dump not found"
     }
   ],
-  "startedAt": "2025-01-13T23:59:59.000Z",
-  "finishedAt": "2025-01-14T00:01:23.000Z"
+  "startedAt": "[RELATIVE: 8 months from now]",
+  "finishedAt": "[RELATIVE: 8 months from now]"
 }
 ```
 

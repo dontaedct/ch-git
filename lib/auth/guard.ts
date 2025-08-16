@@ -27,7 +27,7 @@ export interface User {
 // Minimal client interface that doesn't import Supabase
 export interface MinimalAuthClient {
   auth: {
-    getUser: () => Promise<{ data: { user: User } | null; error: Error | null }>
+    getUser: () => Promise<{ data: { user: User | null }; error: Error | null }>
     getSession: () => Promise<{ data: { session: unknown } | null; error: Error | null }>
   }
 }

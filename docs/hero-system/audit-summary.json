@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "generated_at": "2025-08-17T02:36:09.395Z",
+    "generated_at": "2025-08-17T03:03:21.783Z",
     "version": "2.0.0",
     "framework": "MIT Hero System - Bulletproof Audit",
     "audit_scope": "Complete accuracy verification"
   },
   "summary": {
     "npm_scripts": {
-      "total": 313,
-      "available": 313,
+      "total": 315,
+      "available": 315,
       "broken": 0,
       "accuracy": "100% verified"
     },
@@ -19,7 +19,7 @@
     }
   },
   "npm_scripts": {
-    "count": 313,
+    "count": 315,
     "list": [
       "dev",
       "prebuild",
@@ -333,7 +333,9 @@
       "mit-hero:smoke",
       "mit-hero:test",
       "mit-hero:plan",
-      "mit-hero:status"
+      "mit-hero:status",
+      "build:all",
+      "typecheck:all"
     ]
   },
   "hero_systems": {

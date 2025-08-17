@@ -6,32 +6,7 @@
  * including environment variable loading, validation, and configuration interfaces.
  */
 
-import { z } from 'zod';
-
-// ============================================================================
-// ENVIRONMENT SCHEMAS
-// ============================================================================
-
-/** Server-side environment configuration schema */
-const ServerSchema = z.object({
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
-  DEFAULT_COACH_ID: z.string().uuid().optional(),
-  NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
-  LOG_LEVEL: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
-  MAX_CONCURRENT_OPERATIONS: z.coerce.number().int().min(1).max(100).default(10),
-  RETRY_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(10).default(3),
-  CIRCUIT_BREAKER_THRESHOLD: z.coerce.number().int().min(1).max(100).default(5),
-  CIRCUIT_BREAKER_TIMEOUT: z.coerce.number().int().min(1000).max(60000).default(30000),
-});
-
-/** Browser-safe public environment schema */
-const PublicSchema = z.object({
-  NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
-  NEXT_PUBLIC_SAFE_MODE: z.string().optional(),
-});
+import { getEnv, getEnvConfig } from './env';
 
 // ============================================================================
 // CONFIGURATION INTERFACES
@@ -91,34 +66,29 @@ class ConfigurationManager {
   getServerConfig(): ServerConfig {
     if (this.serverConfig) return this.serverConfig;
 
-    const parsed = ServerSchema.safeParse(process.env);
-    if (!parsed.success) {
-      const msg = parsed.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join('; ');
-      throw new Error(`Invalid server environment configuration: ${msg}`);
-    }
-
-    const env = parsed.data;
+    const env = getEnv();
+    const config = getEnvConfig();
     
     this.serverConfig = {
       supabase: {
-        url: env.NEXT_PUBLIC_SUPABASE_URL,
-        anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-        serviceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY,
+        url: config.supabase.url,
+        anonKey: config.supabase.anonKey,
+        serviceRoleKey: config.supabase.serviceRoleKey,
       },
       coach: {
-        defaultId: env.DEFAULT_COACH_ID,
+        defaultId: config.coach.defaultId,
       },
-      environment: env.NODE_ENV,
+      environment: config.system.environment,
       logging: {
-        level: env.LOG_LEVEL,
+        level: config.system.logLevel,
       },
       concurrency: {
-        maxOperations: env.MAX_CONCURRENT_OPERATIONS,
+        maxOperations: config.performance.maxConcurrentOperations,
       },
       retry: {
-        maxAttempts: env.RETRY_MAX_ATTEMPTS,
-        circuitBreakerThreshold: env.CIRCUIT_BREAKER_THRESHOLD,
-        circuitBreakerTimeout: env.CIRCUIT_BREAKER_TIMEOUT,
+        maxAttempts: config.performance.retryMaxAttempts,
+        circuitBreakerThreshold: config.performance.circuitBreakerThreshold,
+        circuitBreakerTimeout: config.performance.circuitBreakerTimeout,
       },
     };
 
@@ -131,25 +101,14 @@ class ConfigurationManager {
   getPublicConfig(): PublicConfig {
     if (this.publicConfig) return this.publicConfig;
 
-    const parsed = PublicSchema.safeParse({
-      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      NEXT_PUBLIC_SAFE_MODE: process.env.NEXT_PUBLIC_SAFE_MODE,
-    });
-
-    if (!parsed.success) {
-      const msg = parsed.error.errors.map(e => `${e.path.join('.')}: ${e.message}`).join('; ');
-      throw new Error(`Invalid public environment configuration: ${msg}`);
-    }
-
-    const env = parsed.data;
+    const config = getEnvConfig();
 
     this.publicConfig = {
       supabase: {
-        url: env.NEXT_PUBLIC_SUPABASE_URL,
-        anonKey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        url: config.public.supabaseUrl,
+        anonKey: config.public.supabaseAnonKey,
       },
-      safeMode: env.NEXT_PUBLIC_SAFE_MODE === '1',
+      safeMode: config.public.safeMode,
     };
 
     return this.publicConfig;
@@ -190,6 +149,8 @@ class ConfigurationManager {
     this.serverConfig = null;
     this.publicConfig = null;
     this.config = null;
+    // Also reset environment loader for testing
+    import('./env').then(({ resetEnv }) => resetEnv());
   }
 }
 

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-17T02:39:40.470Z",
+  "timestamp": "2025-08-17T03:06:54.296Z",
   "overallStatus": "PASSED - READY FOR EXTERNAL DISTRIBUTION",
   "phaseResults": {
     "phase1": {
@@ -92,8 +92,8 @@
     "phase3": {
       "status": "COMPLETED",
       "results": {
-        "totalCommands": 313,
-        "availableCommands": 313,
+        "totalCommands": 315,
+        "availableCommands": 315,
         "missingCommands": [],
         "commandTests": {
           "dev": {
@@ -1347,6 +1347,14 @@
           "mit-hero:status": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "build:all": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "typecheck:all": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           }
         }
       }
@@ -1362,7 +1370,7 @@
   },
   "summary": {
     "totalSystems": 5,
-    "totalCommands": 313,
+    "totalCommands": 315,
     "totalFailures": 0,
     "totalWarnings": 0,
     "criticalIssues": 0

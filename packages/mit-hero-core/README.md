@@ -16,6 +16,32 @@ A robust, autonomous system orchestration framework designed for enterprise-grad
 npm install @mit-hero/core
 ```
 
+## 🔧 Environment Configuration
+
+The MIT Hero Core requires several environment variables to function properly. Copy `.env.example` to `.env` and configure the following:
+
+### Required Environment Variables
+
+- **`SUPABASE_URL`** - Your Supabase project URL
+- **`SUPABASE_ANON_KEY`** - Your Supabase anonymous key
+- **`SUPABASE_SERVICE_ROLE_KEY`** - Your Supabase service role key
+- **`NEXT_PUBLIC_SUPABASE_URL`** - Public Supabase URL (same as SUPABASE_URL)
+- **`NEXT_PUBLIC_SUPABASE_ANON_KEY`** - Public Supabase anonymous key
+
+### Optional Environment Variables
+
+- **`RESEND_API_KEY`** - For email functionality
+- **`SLACK_WEBHOOK_URL`** - For Slack notifications
+- **`NODE_ENV`** - Environment (development/test/production)
+- **`LOG_LEVEL`** - Logging level (error/warn/info/debug/trace)
+- **`MAX_CONCURRENT_OPERATIONS`** - Max concurrent operations (1-100)
+- **`RETRY_MAX_ATTEMPTS`** - Max retry attempts (1-10)
+- **`CIRCUIT_BREAKER_THRESHOLD`** - Circuit breaker failure threshold (1-100)
+- **`CIRCUIT_BREAKER_TIMEOUT`** - Circuit breaker timeout in milliseconds
+- **`DEFAULT_COACH_ID`** - Default coach UUID (optional)
+
+See [`.env.example`](../../.env.example) for a complete template with all variables and documentation.
+
 ## 🎯 Quick Start
 
 ### Basic Usage
@@ -27,7 +53,7 @@ import { HeroSystem, HealthMonitor, PerformanceBudget } from '@mit-hero/core';
 const hero = new HeroSystem({
   name: 'my-application',
   version: '1.0.0',
-  environment: process.env.NODE_ENV || 'development'
+  environment: 'development' // Will use NODE_ENV from environment configuration
 });
 
 // Add health monitoring

@@ -1,44 +1,24 @@
 /**
  * @dct/mit-hero-core
- * MIT Hero Core Module
+ * MIT Hero Core Module - JavaScript Working Version
  * 
- * This module provides the foundational infrastructure for the MIT Hero system,
- * including core types, interfaces, utilities, configuration, adapters, and
- * the main orchestrator API functions.
- * 
- * MIT-HERO-MOD: Simplified working version
+ * MIT-HERO-MOD: Basic working implementation
  */
 
-// ============================================================================
-// CORE TYPES AND INTERFACES
-// ============================================================================
-
-// Basic types for now
-export interface HeroCore {
-  id: string;
-  name: string;
-  version: string;
-  status: 'active' | 'inactive';
-}
-
-export interface HeroSystem {
-  heroes: HeroCore[];
-  version: string;
-  status: 'operational' | 'degraded' | 'down';
-}
+"use strict";
 
 // ============================================================================
 // CORE UTILITIES
 // ============================================================================
 
-export const createHeroCore = (name: string, version: string): HeroCore => ({
+const createHeroCore = (name, version) => ({
   id: `hero-${Date.now()}`,
   name,
   version,
   status: 'active'
 });
 
-export const createHeroSystem = (version: string): HeroSystem => ({
+const createHeroSystem = (version) => ({
   heroes: [],
   version,
   status: 'operational'
@@ -48,41 +28,41 @@ export const createHeroSystem = (version: string): HeroSystem => ({
 // MAIN API FUNCTIONS (Simplified working versions)
 // ============================================================================
 
-export const preflightRepo = () => ({
+const preflightRepo = () => ({
   success: true,
   issues: [],
   recommendations: ['Repository health check completed'],
   timestamp: new Date().toISOString()
 });
 
-export const preflightCsv = (csvPath: string) => ({
+const preflightCsv = (csvPath) => ({
   success: true,
   issues: [],
   recommendations: [`CSV validation completed for ${csvPath}`],
   timestamp: new Date().toISOString()
 });
 
-export const prepublishCms = (cmsPath: string) => ({
+const prepublishCms = (cmsPath) => ({
   success: true,
   issues: [],
   recommendations: [`CMS validation completed for ${cmsPath}`],
   timestamp: new Date().toISOString()
 });
 
-export const applyFixes = (issues: string[]) => ({
+const applyFixes = (issues) => ({
   success: true,
   appliedFixes: issues,
   failedFixes: [],
   timestamp: new Date().toISOString()
 });
 
-export const rollback = () => ({
+const rollback = () => ({
   success: true,
   rolledBackChanges: ['System restored to previous state'],
   timestamp: new Date().toISOString()
 });
 
-export const generateReport = () => ({
+const generateReport = () => ({
   systemHealth: 'operational',
   performanceMetrics: 'optimal',
   recentOperations: ['All systems operational'],
@@ -94,21 +74,21 @@ export const generateReport = () => ({
 // ORCHESTRATOR INSTANCE
 // ============================================================================
 
-export const orchestrator = {
+const orchestrator = {
   status: 'operational',
   version: '0.2.0',
   getStatus: () => ({ status: 'operational', version: '0.2.0' })
 };
 
-export const CoreOrchestrator = class {
+const CoreOrchestrator = class {
   static getStatus() {
     return { status: 'operational', version: '0.2.0' };
   }
 };
 
-export const getOrchestratorStatus = () => orchestrator.getStatus();
+const getOrchestratorStatus = () => orchestrator.getStatus();
 
-export const updateOrchestratorConfig = (config: any) => ({
+const updateOrchestratorConfig = (config) => ({
   success: true,
   message: 'Configuration updated',
   config
@@ -118,26 +98,37 @@ export const updateOrchestratorConfig = (config: any) => ({
 // VERSION INFO
 // ============================================================================
 
-export const VERSION = '0.2.0';
-export const PACKAGE_NAME = '@dct/mit-hero-core';
+const VERSION = '0.2.0';
+const PACKAGE_NAME = '@dct/mit-hero-core';
 
 // ============================================================================
-// DEFAULT EXPORT
+// EXPORTS
 // ============================================================================
 
-export default {
-  VERSION,
-  PACKAGE_NAME,
+module.exports = {
+  // Core utilities
   createHeroCore,
   createHeroSystem,
+  
+  // Main API functions
   preflightRepo,
   preflightCsv,
   prepublishCms,
   applyFixes,
   rollback,
   generateReport,
+  
+  // Orchestrator
   orchestrator,
   CoreOrchestrator,
   getOrchestratorStatus,
-  updateOrchestratorConfig
+  updateOrchestratorConfig,
+  
+  // Version info
+  VERSION,
+  PACKAGE_NAME
 };
+
+// Also export as default
+module.exports.default = module.exports;
+

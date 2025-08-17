@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-08-16T20:41:59.692Z",
+  "timestamp": "2025-08-16T22:14:39.128Z",
   "npm_scripts": {
-    "total": 299,
-    "available": 299,
+    "total": 310,
+    "available": 310,
     "broken": 0,
     "list": [
       "dev",
@@ -100,6 +100,13 @@
       "git:guardian",
       "git:smart",
       "git:auto",
+      "date:validate",
+      "date:validate:pre-commit",
+      "date:validate:auto",
+      "date:validate:status",
+      "date:validate:setup-hooks",
+      "date:validate:restart-monitoring",
+      "date:validate:health",
       "git:repair",
       "git:setup-hooks",
       "git:monitor",
@@ -156,6 +163,9 @@
       "cursor:header",
       "cursor:header:fix",
       "cursor:header:report",
+      "cursor:loading:optimize",
+      "cursor:loading:test",
+      "cursor:loading:demo",
       "cursor:auto",
       "cursor:auto:manual",
       "hero:unified",
@@ -303,12 +313,13 @@
       "hero:unified:help",
       "hero:bulletproof:activate",
       "hero:test:health",
-      "hero:overview"
+      "hero:overview",
+      "mit-hero:smoke"
     ]
   },
   "hero_systems": {
-    "total": 30,
-    "actual_files": 30,
+    "total": 32,
+    "actual_files": 32,
     "missing_files": 0,
     "list": [
       {
@@ -340,10 +351,17 @@
         "exists": true
       },
       {
+        "name": "cursor-ai-loading-optimizer.js",
+        "path": "scripts/cursor-ai-loading-optimizer.js",
+        "size": 10935,
+        "modified": "2025-08-16T20:57:59.311Z",
+        "exists": true
+      },
+      {
         "name": "cursor-ai-universal-header.js",
         "path": "scripts/cursor-ai-universal-header.js",
-        "size": 24206,
-        "modified": "2025-08-15T01:12:10.591Z",
+        "size": 26750,
+        "modified": "2025-08-16T20:57:59.311Z",
         "exists": true
       },
       {
@@ -480,6 +498,13 @@
         "exists": true
       },
       {
+        "name": "pre-commit-date-validation.js",
+        "path": "scripts/pre-commit-date-validation.js",
+        "size": 971,
+        "modified": "2025-08-16T21:26:30.112Z",
+        "exists": true
+      },
+      {
         "name": "rename.ts",
         "path": "scripts/rename.ts",
         "size": 10144,
@@ -530,26 +555,26 @@
   },
   "report": {
     "metadata": {
-      "generated_at": "2025-08-16T20:41:59.692Z",
+      "generated_at": "2025-08-16T22:14:39.128Z",
       "version": "2.0.0",
       "framework": "MIT Hero System - Bulletproof Audit",
       "audit_scope": "Complete accuracy verification"
     },
     "summary": {
       "npm_scripts": {
-        "total": 299,
-        "available": 299,
+        "total": 310,
+        "available": 310,
         "broken": 0,
         "accuracy": "100% verified"
       },
       "hero_systems": {
-        "total": 30,
+        "total": 32,
         "accuracy": "100% verified",
         "note": "Only actual automation files counted"
       }
     },
     "npm_scripts": {
-      "count": 299,
+      "count": 310,
       "list": [
         "dev",
         "prebuild",
@@ -646,6 +671,13 @@
         "git:guardian",
         "git:smart",
         "git:auto",
+        "date:validate",
+        "date:validate:pre-commit",
+        "date:validate:auto",
+        "date:validate:status",
+        "date:validate:setup-hooks",
+        "date:validate:restart-monitoring",
+        "date:validate:health",
         "git:repair",
         "git:setup-hooks",
         "git:monitor",
@@ -702,6 +734,9 @@
         "cursor:header",
         "cursor:header:fix",
         "cursor:header:report",
+        "cursor:loading:optimize",
+        "cursor:loading:test",
+        "cursor:loading:demo",
         "cursor:auto",
         "cursor:auto:manual",
         "hero:unified",
@@ -849,16 +884,18 @@
         "hero:unified:help",
         "hero:bulletproof:activate",
         "hero:test:health",
-        "hero:overview"
+        "hero:overview",
+        "mit-hero:smoke"
       ]
     },
     "hero_systems": {
-      "count": 30,
+      "count": 32,
       "list": [
         "build-monitor.js",
         "cursor-ai-auto-start.js",
         "cursor-ai-auto-watcher.js",
         "cursor-ai-commands.js",
+        "cursor-ai-loading-optimizer.js",
         "cursor-ai-universal-header.js",
         "cursor-ai-windows-service.ps1",
         "doctor-enhanced.ts",
@@ -879,6 +916,7 @@
         "memory-leak-detector.ts",
         "policy-enforcer.ts",
         "pre-commit-check.js",
+        "pre-commit-date-validation.js",
         "rename.ts",
         "safety-smoke.cjs",
         "smart-lint.js",

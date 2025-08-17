@@ -1,0 +1,397 @@
+name: Package Integrity Checks
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'packages/mit-hero-core/**'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'packages/mit-hero-core/**'
+  release:
+    types: [ published, prereleased ]
+
+env:
+  NODE_VERSION: '18'
+  NPM_VERSION: '9'
+
+jobs:
+  # Dependency and Security Checks
+  dependency-check:
+    name: Dependency Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: packages/mit-hero-core/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/mit-hero-core
+        run: npm ci
+
+      - name: Check for outdated dependencies
+        working-directory: packages/mit-hero-core
+        run: npm outdated --depth=0 || true
+
+      - name: Audit dependencies
+        working-directory: packages/mit-hero-core
+        run: npm audit --audit-level=moderate
+
+      - name: Check dependency licenses
+        working-directory: packages/mit-hero-core
+        run: npx license-checker --summary --onlyAllow "MIT;ISC;Apache-2.0;BSD-2-Clause;BSD-3-Clause"
+
+      - name: Validate package.json
+        working-directory: packages/mit-hero-core
+        run: |
+          npx package-json-validator package.json
+          npx validate-npm-package-name
+
+  # Security Scanning
+  security-scan:
+    name: Security Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        working-directory: packages/mit-hero-core
+        run: npm ci
+
+      - name: Run Snyk security scan
+        working-directory: packages/mit-hero-core
+        run: |
+          npx snyk test --severity-threshold=high
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Run CodeQL analysis
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript, typescript
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+  # Build and Test Verification
+  build-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16, 18, 20]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: packages/mit-hero-core/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/mit-hero-core
+        run: npm ci
+
+      - name: Run linting
+        working-directory: packages/mit-hero-core
+        run: npm run lint
+
+      - name: Run type checking
+        working-directory: packages/mit-hero-core
+        run: npm run typecheck
+
+      - name: Run tests
+        working-directory: packages/mit-hero-core
+        run: npm test
+
+      - name: Run build
+        working-directory: packages/mit-hero-core
+        run: npm run build
+
+      - name: Verify build output
+        working-directory: packages/mit-hero-core
+        run: |
+          if [ ! -f "dist/index.js" ]; then
+            echo "Build output not found"
+            exit 1
+          fi
+          echo "Build output verified"
+
+  # Package Publishing Checks
+  package-verification:
+    name: Package Verification
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: packages/mit-hero-core/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/mit-hero-core
+        run: npm ci
+
+      - name: Build package
+        working-directory: packages/mit-hero-core
+        run: npm run build
+
+      - name: Pack package
+        working-directory: packages/mit-hero-core
+        run: npm pack
+
+      - name: Verify package contents
+        working-directory: packages/mit-hero-core
+        run: |
+          PACKAGE_FILE=$(ls *.tgz | head -1)
+          tar -tzf "$PACKAGE_FILE" | grep -E "^(package/|package/package.json|package/dist/|package/README.md|package/LICENSE)"
+          echo "Package contents verified"
+
+      - name: Validate package.json in tarball
+        working-directory: packages/mit-hero-core
+        run: |
+          PACKAGE_FILE=$(ls *.tgz | head -1)
+          tar -xzf "$PACKAGE_FILE" package/package.json
+          npx package-json-validator package/package.json
+
+  # Performance and Size Checks
+  performance-check:
+    name: Performance Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: packages/mit-hero-core/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/mit-hero-core
+        run: npm ci
+
+      - name: Build package
+        working-directory: packages/mit-hero-core
+        run: npm run build
+
+      - name: Check bundle size
+        working-directory: packages/mit-hero-core
+        run: |
+          npx bundle-size-checker dist/index.js --max-size 100KB
+          echo "Bundle size check passed"
+
+      - name: Run performance tests
+        working-directory: packages/mit-hero-core
+        run: npm run test:performance
+
+  # Documentation and API Checks
+  documentation-check:
+    name: Documentation Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        working-directory: packages/mit-hero-core
+        run: npm ci
+
+      - name: Check README links
+        working-directory: packages/mit-hero-core
+        run: |
+          npx markdown-link-check README.md
+          npx markdown-link-check API.md
+          npx markdown-link-check MIGRATION.md
+
+      - name: Validate API documentation
+        working-directory: packages/mit-hero-core
+        run: |
+          # Check if all exported classes are documented
+          EXPORTED_CLASSES=$(grep -r "export class" src/ | cut -d' ' -f3 | sort)
+          DOCUMENTED_CLASSES=$(grep -r "## " API.md | grep -E "## [A-Z][a-zA-Z]+" | cut -d' ' -f2 | sort)
+          
+          echo "Exported classes: $EXPORTED_CLASSES"
+          echo "Documented classes: $DOCUMENTED_CLASSES"
+          
+          # Basic validation - ensure major classes are documented
+          if ! echo "$EXPORTED_CLASSES" | grep -q "HeroSystem"; then
+            echo "HeroSystem class not found in exports"
+            exit 1
+          fi
+
+  # Integration Tests
+  integration-test:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: packages/mit-hero-core/package-lock.json
+
+      - name: Install dependencies
+        working-directory: packages/mit-hero-core
+        run: npm ci
+
+      - name: Run integration tests
+        working-directory: packages/mit-hero-core
+        run: npm run test:integration
+
+      - name: Test package installation
+        run: |
+          cd packages/mit-hero-core
+          npm pack
+          PACKAGE_FILE=$(ls *.tgz | head -1)
+          
+          # Test installing the packed package
+          mkdir test-install
+          cd test-install
+          npm init -y
+          npm install "../$PACKAGE_FILE"
+          
+          # Verify basic functionality
+          node -e "
+            const { HeroSystem } = require('@mit-hero/core');
+            const hero = new HeroSystem({
+              name: 'test',
+              version: '1.0.0',
+              environment: 'test'
+            });
+            console.log('Package installation test passed');
+          "
+
+  # Final Validation
+  final-validation:
+    name: Final Validation
+    runs-on: ubuntu-latest
+    needs: [dependency-check, security-scan, build-test, package-verification, performance-check, documentation-check, integration-test]
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Generate validation report
+        run: |
+          echo "## MIT Hero Core Package Validation Report" >> validation-report.md
+          echo "Generated: $(date)" >> validation-report.md
+          echo "" >> validation-report.md
+          
+          # Check job statuses
+          if [ "${{ needs.dependency-check.result }}" == "success" ]; then
+            echo "✅ Dependency Check: PASSED" >> validation-report.md
+          else
+            echo "❌ Dependency Check: FAILED" >> validation-report.md
+          fi
+          
+          if [ "${{ needs.security-scan.result }}" == "success" ]; then
+            echo "✅ Security Scan: PASSED" >> validation-report.md
+          else
+            echo "❌ Security Scan: FAILED" >> validation-report.md
+          fi
+          
+          if [ "${{ needs.build-test.result }}" == "success" ]; then
+            echo "✅ Build & Test: PASSED" >> validation-report.md
+          else
+            echo "❌ Build & Test: FAILED" >> validation-report.md
+          fi
+          
+          if [ "${{ needs.package-verification.result }}" == "success" ]; then
+            echo "✅ Package Verification: PASSED" >> validation-report.md
+          else
+            echo "❌ Package Verification: FAILED" >> validation-report.md
+          fi
+          
+          if [ "${{ needs.performance-check.result }}" == "success" ]; then
+            echo "✅ Performance Check: PASSED" >> validation-report.md
+          else
+            echo "❌ Performance Check: FAILED" >> validation-report.md
+          fi
+          
+          if [ "${{ needs.documentation-check.result }}" == "success" ]; then
+            echo "✅ Documentation Check: PASSED" >> validation-report.md
+          else
+            echo "❌ Documentation Check: FAILED" >> validation-report.md
+          fi
+          
+          if [ "${{ needs.integration-test.result }}" == "success" ]; then
+            echo "✅ Integration Test: PASSED" >> validation-report.md
+          else
+            echo "❌ Integration Test: FAILED" >> validation-report.md
+          fi
+          
+          echo "" >> validation-report.md
+          echo "## Summary" >> validation-report.md
+          
+          # Count failures
+          FAILURES=0
+          if [ "${{ needs.dependency-check.result }}" != "success" ]; then FAILURES=$((FAILURES + 1)); fi
+          if [ "${{ needs.security-scan.result }}" != "success" ]; then FAILURES=$((FAILURES + 1)); fi
+          if [ "${{ needs.build-test.result }}" != "success" ]; then FAILURES=$((FAILURES + 1)); fi
+          if [ "${{ needs.package-verification.result }}" != "success" ]; then FAILURES=$((FAILURES + 1)); fi
+          if [ "${{ needs.performance-check.result }}" != "success" ]; then FAILURES=$((FAILURES + 1)); fi
+          if [ "${{ needs.documentation-check.result }}" != "success" ]; then FAILURES=$((FAILURES + 1)); fi
+          if [ "${{ needs.integration-test.result }}" != "success" ]; then FAILURES=$((FAILURES + 1)); fi
+          
+          if [ $FAILURES -eq 0 ]; then
+            echo "🎉 All checks passed! Package is ready for release." >> validation-report.md
+          else
+            echo "⚠️  $FAILURES check(s) failed. Package needs attention before release." >> validation-report.md
+          fi
+          
+          cat validation-report.md
+
+      - name: Upload validation report
+        uses: actions/upload-artifact@v3
+        with:
+          name: validation-report
+          path: validation-report.md
+
+      - name: Fail if any required checks failed
+        if: |
+          needs.dependency-check.result != 'success' ||
+          needs.security-scan.result != 'success' ||
+          needs.build-test.result != 'success'
+        run: |
+          echo "Critical checks failed. Package validation incomplete."
+          exit 1

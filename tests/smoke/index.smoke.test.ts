@@ -364,4 +364,15 @@ class ComprehensiveSmokeTestRunner {
       
       if (result.details.total !== undefined) {
         console.log(`     Total Tests: ${result.details.total}`);
-        console.log(`
+        console.log(`     Passed: ${result.details.passed || 0}, Failed: ${result.details.failed || 0}`);
+      }
+    });
+    
+    if (report.recommendations.length > 0) {
+      console.log(`\n💡 Recommendations:`);
+      report.recommendations.forEach(rec => console.log(`  • ${rec}`));
+    }
+    
+    console.log('\n' + '='.repeat(80));
+  }
+}

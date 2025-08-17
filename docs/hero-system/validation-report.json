@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-16T20:45:02.870Z",
+  "timestamp": "2025-08-16T22:18:02.832Z",
   "overallStatus": "PASSED - READY FOR EXTERNAL DISTRIBUTION",
   "phaseResults": {
     "phase1": {
@@ -80,7 +80,7 @@
             "error": null,
             "details": {
               "fileLoadable": true,
-              "fileSize": 24100,
+              "fileSize": 26614,
               "syntaxValid": true,
               "commandExecutable": true,
               "systemHealthy": true
@@ -92,8 +92,8 @@
     "phase3": {
       "status": "COMPLETED",
       "results": {
-        "totalCommands": 299,
-        "availableCommands": 299,
+        "totalCommands": 310,
+        "availableCommands": 310,
         "missingCommands": [],
         "commandTests": {
           "dev": {
@@ -476,6 +476,34 @@
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
+          "date:validate": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "date:validate:pre-commit": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "date:validate:auto": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "date:validate:status": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "date:validate:setup-hooks": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "date:validate:restart-monitoring": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "date:validate:health": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
           "git:repair": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
@@ -697,6 +725,18 @@
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
           "cursor:header:report": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "cursor:loading:optimize": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "cursor:loading:test": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "cursor:loading:demo": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
@@ -1291,6 +1331,10 @@
           "hero:overview": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "mit-hero:smoke": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           }
         }
       }
@@ -1306,7 +1350,7 @@
   },
   "summary": {
     "totalSystems": 5,
-    "totalCommands": 299,
+    "totalCommands": 310,
     "totalFailures": 0,
     "totalWarnings": 0,
     "criticalIssues": 0

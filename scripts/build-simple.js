@@ -7,6 +7,9 @@
  * Enhanced with timeout handling to prevent hanging processes
  * Now includes heartbeat monitoring for progress updates
  * Uses structured logging with correlation IDs
+ * 
+ * TODO: MIT-HERO-MOD: Future integration with @dct/mit-hero-core package
+ * Currently using lib/ imports until package build issues are resolved
  */
 
 const { spawnWithTimeout } = require('./timeout-wrapper');

@@ -1,26 +1,41 @@
 {
   "name": "@dct/mit-hero-core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "description": "MIT Hero Core Module - Core orchestrator and worker management with 6 main API functions",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
     "clean": "if exist dist rmdir /s /q dist",
-    "prebuild": "npm run clean",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit",
     "smoke": "echo 'MIT Hero Core smoke test passed' && npm run typecheck"
   },
-  "dependencies": {},
+  "dependencies": {
+    "zod": "^3.22.0"
+  },
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "@types/jest": "^29.0.0"
   },
   "peerDependencies": {},
   "files": [
+    "index.js",
+    "src",
     "dist"
+  ],
+  "keywords": [
+    "mit-hero",
+    "orchestrator",
+    "worker-management",
+    "health-monitoring",
+    "command-system",
+    "automation"
   ]
 }

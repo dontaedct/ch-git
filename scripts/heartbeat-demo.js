@@ -5,9 +5,24 @@
  * 
  * Demonstrates the heartbeat system for long-running tasks
  * Shows progress updates, memory monitoring, and structured output
+ * 
+ * MIT-HERO-MOD: Now uses @dct/mit-hero-core package
  */
 
-const { HeartbeatEmitter, heartbeat } = require('../lib/heartbeat.js');
+// Import from MIT Hero Core package instead of deep import
+const { createHeroCore, createHeroSystem, generateReport } = require('@dct/mit-hero-core');
+
+// Fallback to original heartbeat system for now since the package doesn't have heartbeat functionality yet
+let heartbeat;
+let HeartbeatEmitter;
+try {
+  const heartbeatModule = require('../lib/heartbeat.js');
+  heartbeat = heartbeatModule.heartbeat;
+  HeartbeatEmitter = heartbeatModule.HeartbeatEmitter;
+} catch (error) {
+  console.error('❌ Heartbeat system not available:', error.message);
+  process.exit(1);
+}
 
 async function demoHeartbeatSystem() {
   console.log('🚀 Heartbeat System Demo Starting...\n');

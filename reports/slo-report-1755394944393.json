@@ -1,6 +1,6 @@
 {
-  "timestamp": "2025-08-17T01:42:30.667Z",
-  "duration": 1.6092000000000155,
+  "timestamp": "2025-08-17T01:42:24.392Z",
+  "duration": 2.0150999999999897,
   "ciContext": {
     "isCI": false,
     "isGitHubActions": false,
@@ -15,50 +15,50 @@
   "heroSystemStatus": {
     "operational": false,
     "error": "Command failed: node scripts/mit-hero-unified-integration.js --status\nfile:///C:/Users/Dontae-PC/my-app/scripts/mit-hero-unified-integration.js:24\r\nconst fs = require('fs');\r\n           ^\r\n\r\nReferenceError: require is not defined in ES module scope, you can use import instead\r\n    at \u001b[90mfile:///C:/Users/Dontae-PC/my-app/\u001b[39mscripts/mit-hero-unified-integration.js:24:12\r\n\u001b[90m    at ModuleJob.run (node:internal/modules/esm/module_job:263:25)\u001b[39m\r\n\u001b[90m    at async ModuleLoader.import (node:internal/modules/esm/loader:540:24)\u001b[39m\r\n\u001b[90m    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)\u001b[39m\r\n\r\nNode.js v20.19.4\r\n",
-    "timestamp": "2025-08-17T01:42:30.664Z"
+    "timestamp": "2025-08-17T01:42:24.389Z"
   },
   "metrics": {
     "start": {
-      "timestamp": "2025-08-17T01:42:30.665Z",
+      "timestamp": "2025-08-17T01:42:24.390Z",
       "memory": {
-        "rss": 45244416,
+        "rss": 45142016,
         "heapTotal": 4952064,
         "heapUsed": 4607864,
         "external": 1621848,
         "arrayBuffers": 11100
       },
       "cpu": {
-        "user": 31000,
+        "user": 0,
         "system": 31000
       },
-      "uptime": 0.1342063
+      "uptime": 0.1569658
     },
     "end": {
-      "timestamp": "2025-08-17T01:42:30.667Z",
+      "timestamp": "2025-08-17T01:42:24.392Z",
       "memory": {
-        "rss": 45273088,
+        "rss": 45178880,
         "heapTotal": 4952064,
         "heapUsed": 4626392,
         "external": 1621904,
         "arrayBuffers": 11116
       },
       "cpu": {
-        "user": 31000,
+        "user": 0,
         "system": 31000
       },
-      "uptime": 0.135701
+      "uptime": 0.1588663
     },
     "total": {
-      "buildTime": 1.6092000000000155,
+      "buildTime": 2.0150999999999897,
       "memoryPeak": {
-        "rss": 45273088,
+        "rss": 45178880,
         "heapTotal": 4952064,
         "heapUsed": 4626968,
         "external": 1621904,
         "arrayBuffers": 11116
       },
       "cpuPeak": {
-        "user": 31000,
+        "user": 0,
         "system": 31000
       }
     }

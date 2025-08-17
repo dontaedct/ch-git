@@ -1,0 +1,78 @@
+name: MIT Hero CI
+
+on:
+  pull_request:
+    branches: [main, refactor/mit-hero-core-module]
+  push:
+    branches: [main, refactor/mit-hero-core-module]
+
+jobs:
+  mit-hero-ci:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20.x]
+        package-manager: [npm, pnpm, yarn]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: ${{ matrix.package-manager }}
+          
+      - name: Detect package manager
+        id: package-manager
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            echo "manager=pnpm" >> $GITHUB_OUTPUT
+            echo "install-command=pnpm install --frozen-lockfile" >> $GITHUB_OUTPUT
+            echo "run-command=pnpm run" >> $GITHUB_OUTPUT
+          elif [ -f "yarn.lock" ]; then
+            echo "manager=yarn" >> $GITHUB_OUTPUT
+            echo "install-command=yarn install --frozen-lockfile" >> $GITHUB_OUTPUT
+            echo "run-command=yarn" >> $GITHUB_OUTPUT
+          else
+            echo "manager=npm" >> $GITHUB_OUTPUT
+            echo "install-command=npm ci" >> $GITHUB_OUTPUT
+            echo "run-command=npm run" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Install dependencies
+        run: ${{ steps.package-manager.outputs.install-command }}
+        
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+            .next/cache
+          key: ${{ runner.os }}-${{ matrix.package-manager }}-${{ hashFiles('**/package-lock.json', '**/pnpm-lock.yaml', '**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.package-manager }}-
+            
+      - name: Typecheck MIT Hero Core
+        run: ${{ steps.package-manager.outputs.run-command }} -w @dct/mit-hero-core typecheck
+        
+      - name: Build MIT Hero Core
+        run: ${{ steps.package-manager.outputs.run-command }} -w @dct/mit-hero-core build
+        
+      - name: Run MIT Hero Core smoke tests
+        run: ${{ steps.package-manager.outputs.run-command }} -w @dct/mit-hero-core smoke
+        
+      - name: Build coaching app
+        run: ${{ steps.package-manager.outputs.run-command }} build
+        
+      - name: Verify build artifacts
+        run: |
+          if [ -d ".next" ]; then
+            echo "✅ Coaching app build successful"
+          else
+            echo "❌ Coaching app build failed"
+            exit 1
+          fi

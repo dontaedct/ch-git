@@ -318,7 +318,9 @@
     "mit-hero:smoke": "cd packages/mit-hero-core && npm run smoke",
     "mit-hero:test": "node scripts/mit-hero-integration-test.js",
     "mit-hero:plan": "echo 'MIT Hero Core Migration Plan: docs/MIT_HERO_CORE_MIGRATION_PLAN.md'",
-    "mit-hero:status": "echo 'Package: @dct/mit-hero-core' && echo 'Status: WORKING - Package successfully integrated' && echo 'Plan: docs/MIT_HERO_CORE_MIGRATION_PLAN.md' && echo 'Progress: 1/6 scripts migrated'"
+    "mit-hero:status": "echo 'Package: @dct/mit-hero-core' && echo 'Status: WORKING - Package successfully integrated' && echo 'Plan: docs/MIT_HERO_CORE_MIGRATION_PLAN.md' && echo 'Progress: 1/6 scripts migrated'",
+    "build:all": "npm run -w @dct/mit-hero-core build && npm run build",
+    "typecheck:all": "npm run -w @dct/mit-hero-core typecheck && npm run typecheck"
   },
   "dependencies": {
     "@dct/mit-hero-core": "workspace:*",

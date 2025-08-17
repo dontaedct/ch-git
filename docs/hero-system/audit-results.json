@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-08-16T22:14:39.128Z",
+  "timestamp": "2025-08-17T02:36:09.395Z",
   "npm_scripts": {
-    "total": 310,
-    "available": 310,
+    "total": 313,
+    "available": 313,
     "broken": 0,
     "list": [
       "dev",
@@ -314,7 +314,10 @@
       "hero:bulletproof:activate",
       "hero:test:health",
       "hero:overview",
-      "mit-hero:smoke"
+      "mit-hero:smoke",
+      "mit-hero:test",
+      "mit-hero:plan",
+      "mit-hero:status"
     ]
   },
   "hero_systems": {
@@ -555,15 +558,15 @@
   },
   "report": {
     "metadata": {
-      "generated_at": "2025-08-16T22:14:39.128Z",
+      "generated_at": "2025-08-17T02:36:09.395Z",
       "version": "2.0.0",
       "framework": "MIT Hero System - Bulletproof Audit",
       "audit_scope": "Complete accuracy verification"
     },
     "summary": {
       "npm_scripts": {
-        "total": 310,
-        "available": 310,
+        "total": 313,
+        "available": 313,
         "broken": 0,
         "accuracy": "100% verified"
       },
@@ -574,7 +577,7 @@
       }
     },
     "npm_scripts": {
-      "count": 310,
+      "count": 313,
       "list": [
         "dev",
         "prebuild",
@@ -885,7 +888,10 @@
         "hero:bulletproof:activate",
         "hero:test:health",
         "hero:overview",
-        "mit-hero:smoke"
+        "mit-hero:smoke",
+        "mit-hero:test",
+        "mit-hero:plan",
+        "mit-hero:status"
       ]
     },
     "hero_systems": {

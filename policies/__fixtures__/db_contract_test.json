@@ -1,0 +1,25 @@
+{
+  "input": {
+    "changes": [
+      {
+        "operation": "DROP",
+        "table": "users",
+        "sql_content": "DROP TABLE users;"
+      }
+    ],
+    "pr": {
+      "labels": []
+    },
+    "branch": "feature/user-management"
+  },
+  "expected": {
+    "allow": false,
+    "reasons": [
+      "DANGEROUS_SCHEMA_CHANGE: DROP detected without proper expand-contract marking"
+    ],
+    "suggestedFixes": [
+      "Consider staging deployment and rollback plan"
+    ],
+    "riskScore": 8
+  }
+}

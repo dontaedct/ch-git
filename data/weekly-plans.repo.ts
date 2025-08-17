@@ -1,100 +1,352 @@
-import { requireUser } from '@/lib/auth/guard';
-import { startOfIsoWeek, asIsoDate } from '@/lib/date/week';
 import { weeklyPlanUpsert, WeeklyPlanUpsert } from '@/lib/validation/weekly-plans';
+import { isSafeModeEnabled } from '@/lib/env';
+import { 
+  createSecureClient, 
+  createSecurityContext, 
+  executeSecureOperation,
+  validateResourceOwnership,
+  ResourceType, 
+  OperationType, 
+  UserRole 
+} from '@/lib/supabase/secure-client';
 
-export async function upsertWeeklyPlan(input: Omit<WeeklyPlanUpsert, 'week_start_date'> & { date?: Date }) {
-  const { user, supabase } = await requireUser();
-
-  const normalized = startOfIsoWeek(input.date ?? new Date());
-  const payload = weeklyPlanUpsert.parse({
-    ...input,
-    week_start_date: asIsoDate(normalized)
-  });
-
-  // Satisfy RLS by including coach_id
-  const row = { ...payload, coach_id: user.id };
-
-  // Upsert against the weekly uniqueness constraint
-  const { data, error } = await supabase
-    .from('weekly_plans')
-    .upsert(row, { onConflict: 'coach_id, client_id, week_start_date' })
-    .select()
-    .maybeSingle();
-
-  if (error) throw error;
-  return data;
-}
-
-export async function getWeeklyPlan(client_id: string, anyDate: Date) {
-  const { supabase } = await requireUser();
-  const week = asIsoDate(startOfIsoWeek(anyDate));
+export async function upsertWeeklyPlan(
+  supabase: any,
+  user: { id: string },
+  input: WeeklyPlanUpsert
+) {
+  // Create secure client for RLS enforcement
+  const secureClient = await createSecureClient();
   
-  const { data, error } = await supabase
-    .from('weekly_plans')
-    .select('*')
-    .eq('client_id', client_id)
-    .eq('week_start_date', week)
-    .maybeSingle();
-
-  if (error) throw error;
-  return data;
-}
-
-export async function listClientWeeklyPlans(client_id: string, weeks: number = 12) {
-  const { supabase } = await requireUser();
-  const endDate = new Date();
-  const startDate = new Date();
-  startDate.setDate(startDate.getDate() - (weeks * 7));
+  // Create security context
+  const context = createSecurityContext(
+    secureClient.user.id,
+    secureClient.user.email,
+    secureClient.role,
+    ResourceType.WEEKLY_PLAN,
+    OperationType.CREATE,
+    undefined,
+    { input: { ...input, client_id: input.client_id } }
+  );
   
-  const { data, error } = await supabase
-    .from('weekly_plans')
-    .select('*')
-    .eq('client_id', client_id)
-    .gte('week_start_date', asIsoDate(startDate))
-    .lte('week_start_date', asIsoDate(endDate))
-    .order('week_start_date', { ascending: false });
-
-  if (error) throw error;
-  return data ?? [];
-}
-
-export async function updateWeeklyPlan(id: string, updates: Partial<WeeklyPlanUpsert>) {
-  const { user, supabase } = await requireUser();
-
-  const { data, error } = await supabase
-    .from('weekly_plans')
-    .update(updates)
-    .eq('id', id)
-    .eq('coach_id', user.id) // ensure ownership
-    .select()
-    .maybeSingle();
-
-  if (error) throw error;
-  return data;
-}
-
-export async function deleteWeeklyPlan(id: string) {
-  const { user, supabase } = await requireUser();
-
-  const { error } = await supabase
-    .from('weekly_plans')
-    .delete()
-    .eq('id', id)
-    .eq('coach_id', user.id); // ensure ownership
-
-  if (error) throw error;
-  return true;
-}
-
-export async function getWeeklyPlansForWeek(week_start_date: string) {
-  const { supabase } = await requireUser();
+  // Validate user has coach role
+  if (secureClient.role !== UserRole.COACH && secureClient.role !== UserRole.ADMIN) {
+    throw new Error('Insufficient permissions: Only coaches can manage weekly plans');
+  }
   
-  const { data, error } = await supabase
-    .from('weekly_plans')
-    .select('*')
-    .eq('week_start_date', week_start_date)
-    .order('created_at', { ascending: false });
+  return executeSecureOperation(async () => {
+    const payload = weeklyPlanUpsert.parse(input);
+    const row = { ...payload, coach_id: secureClient.user.id }; // satisfy RLS policies
 
-  if (error) throw error;
-  return data ?? [];
+    // unique per coach per client per week
+    const { data, error } = await secureClient.supabase
+      .from('weekly_plans')
+      .upsert(row, { onConflict: 'coach_id, client_id, week_start_date' })
+      .select()
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  }, context);
+}
+
+export async function getWeeklyPlan(
+  supabase: any,
+  client_id: string, 
+  week: string
+) {
+  if (isSafeModeEnabled()) {
+    return null;
+  }
+  
+  // Create secure client for RLS enforcement
+  const secureClient = await createSecureClient();
+  
+  // Create security context
+  const context = createSecurityContext(
+    secureClient.user.id,
+    secureClient.user.email,
+    secureClient.role,
+    ResourceType.WEEKLY_PLAN,
+    OperationType.READ,
+    undefined,
+    { client_id, week }
+  );
+  
+  return executeSecureOperation(async () => {
+    // First validate that the client belongs to the authenticated user
+    await validateResourceOwnership(
+      secureClient.supabase,
+      'clients',
+      client_id,
+      secureClient.user.id,
+      context
+    );
+    
+    const { data, error } = await secureClient.supabase
+      .from('weekly_plans')
+      .select('*')
+      .eq('client_id', client_id)
+      .eq('week_start_date', week)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  }, context);
+}
+
+export async function listClientWeeklyPlans(
+  supabase: any,
+  client_id: string
+) {
+  if (isSafeModeEnabled()) {
+    return [0,1,2,3,4].map(n => ({
+      id: `stub-${n}`,
+      coach_id: 'safe-mode-user',
+      client_id,
+      week_start_date: new Date(Date.now() - n*86400000*7).toISOString().slice(0,10),
+      status: 'active',
+      goals: ['Goal 1', 'Goal 2'],
+      notes: 'Stub plan',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }));
+  }
+  
+  // Create secure client for RLS enforcement
+  const secureClient = await createSecureClient();
+  
+  // Create security context
+  const context = createSecurityContext(
+    secureClient.user.id,
+    secureClient.user.email,
+    secureClient.role,
+    ResourceType.WEEKLY_PLAN,
+    OperationType.LIST,
+    undefined,
+    { client_id }
+  );
+  
+  return executeSecureOperation(async () => {
+    // First validate that the client belongs to the authenticated user
+    await validateResourceOwnership(
+      secureClient.supabase,
+      'clients',
+      client_id,
+      secureClient.user.id,
+      context
+    );
+    
+    const { data, error } = await secureClient.supabase
+      .from('weekly_plans')
+      .select('*')
+      .eq('client_id', client_id)
+      .order('week_start_date', { ascending: false });
+
+    if (error) throw error;
+    return data ?? [];
+  }, context);
+}
+
+export async function getWeeklyPlanById(
+  supabase: any,
+  user: { id: string },
+  id: string
+) {
+  if (isSafeModeEnabled()) {
+    return null;
+  }
+  
+  // Create secure client for RLS enforcement
+  const secureClient = await createSecureClient();
+  
+  // Create security context
+  const context = createSecurityContext(
+    secureClient.user.id,
+    secureClient.user.email,
+    secureClient.role,
+    ResourceType.WEEKLY_PLAN,
+    OperationType.READ,
+    id
+  );
+  
+  return executeSecureOperation(async () => {
+    // First validate resource ownership to ensure RLS compliance
+    await validateResourceOwnership(
+      secureClient.supabase,
+      'weekly_plans',
+      id,
+      secureClient.user.id,
+      context
+    );
+    
+    const { data, error } = await secureClient.supabase
+      .from('weekly_plans')
+      .select('*')
+      .eq('id', id)
+      .eq('coach_id', secureClient.user.id) // ensure ownership
+      .maybeSingle();
+
+    if (error) throw error;
+    return data;
+  }, context);
+}
+
+export async function updateWeeklyPlan(
+  supabase: any,
+  user: { id: string },
+  id: string,
+  updates: Partial<WeeklyPlanUpsert>
+) {
+  // Create secure client for RLS enforcement
+  const secureClient = await createSecureClient();
+  
+  // Create security context
+  const context = createSecurityContext(
+    secureClient.user.id,
+    secureClient.user.email,
+    secureClient.role,
+    ResourceType.WEEKLY_PLAN,
+    OperationType.UPDATE,
+    id,
+    { updates }
+  );
+  
+  return executeSecureOperation(async () => {
+    // First validate resource ownership to ensure RLS compliance
+    await validateResourceOwnership(
+      secureClient.supabase,
+      'weekly_plans',
+      id,
+      secureClient.user.id,
+      context
+    );
+    
+    const { data, error } = await secureClient.supabase
+      .from('weekly_plans')
+      .update(updates)
+      .eq('id', id)
+      .eq('coach_id', secureClient.user.id); // ensure ownership
+
+    if (error) throw error;
+    return data;
+  }, context);
+}
+
+export async function deleteWeeklyPlan(
+  supabase: any,
+  user: { id: string },
+  id: string
+) {
+  // Create secure client for RLS enforcement
+  const secureClient = await createSecureClient();
+  
+  // Create security context
+  const context = createSecurityContext(
+    secureClient.user.id,
+    secureClient.user.email,
+    secureClient.role,
+    ResourceType.WEEKLY_PLAN,
+    OperationType.DELETE,
+    id
+  );
+  
+  return executeSecureOperation(async () => {
+    // First validate resource ownership to ensure RLS compliance
+    await validateResourceOwnership(
+      secureClient.supabase,
+      'weekly_plans',
+      id,
+      secureClient.user.id,
+      context
+    );
+    
+    const { error } = await secureClient.supabase
+      .from('weekly_plans')
+      .delete()
+      .eq('id', id)
+      .eq('coach_id', secureClient.user.id); // ensure ownership
+
+    if (error) throw error;
+    return true;
+  }, context);
+}
+
+export async function getWeeklyPlanByDate(
+  supabase: any,
+  user: { id: string },
+  week_start_date: string
+) {
+  if (isSafeModeEnabled()) {
+    return null;
+  }
+  
+  // Create secure client for RLS enforcement
+  const secureClient = await createSecureClient();
+  
+  // Create security context
+  const context = createSecurityContext(
+    secureClient.user.id,
+    secureClient.user.email,
+    secureClient.role,
+    ResourceType.WEEKLY_PLAN,
+    OperationType.READ,
+    undefined,
+    { week_start_date }
+  );
+  
+  return executeSecureOperation(async () => {
+    const { data, error } = await secureClient.supabase
+      .from('weekly_plans')
+      .select('*')
+      .eq('week_start_date', week_start_date)
+      .eq('coach_id', secureClient.user.id) // ensure ownership
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data;
+  }, context);
+}
+
+export async function listCoachClients(
+  supabase: any,
+  user: { id: string }
+) {
+  if (isSafeModeEnabled()) {
+    return [0,1,2,3,4].map(n => ({
+      id: `stub-${n}`,
+      coach_id: 'safe-mode-user',
+      first_name: `Client ${n}`,
+      last_name: 'Stub',
+      email: `client${n}@stub.dev`,
+      phone: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }));
+  }
+  
+  // Create secure client for RLS enforcement
+  const secureClient = await createSecureClient();
+  
+  // Create security context
+  const context = createSecurityContext(
+    secureClient.user.id,
+    secureClient.user.email,
+    secureClient.role,
+    ResourceType.CLIENT,
+    OperationType.LIST,
+    undefined,
+    { filter: 'by_coach_id' }
+  );
+  
+  return executeSecureOperation(async () => {
+    const { data, error } = await secureClient.supabase
+      .from('clients')
+      .select('*')
+      .eq('coach_id', secureClient.user.id)
+      .order('first_name', { ascending: true });
+
+    if (error) throw error;
+    return data ?? [];
+  }, context);
 }

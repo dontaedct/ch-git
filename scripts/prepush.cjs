@@ -19,11 +19,13 @@ const CONFIG = {
   TIMEOUTS: {
     LINT: 8 * 60 * 1000,      // 8 minutes
     TYPECHECK: 8 * 60 * 1000, // 8 minutes
+    DOCTOR: 4 * 60 * 1000,    // 4 minutes
     BUILD: 12 * 60 * 1000      // 12 minutes
   },
   COMMANDS: {
     LINT: 'npm run lint',
     TYPECHECK: 'npm run typecheck',
+    DOCTOR: 'npm run doctor',
     BUILD: 'npm run build'
   }
 };
@@ -138,7 +140,7 @@ async function main() {
     }
     
     // Step 2: Typecheck
-    utils.log('📋 Step 2/3: Running type checking...');
+    utils.log('📋 Step 2/4: Running type checking...');
     const typecheckResult = await executeCommand(
       CONFIG.COMMANDS.TYPECHECK,
       'Type checking',
@@ -150,8 +152,21 @@ async function main() {
       process.exit(typecheckResult.code || 1);
     }
     
-    // Step 3: Build
-    utils.log('📋 Step 3/3: Running build...');
+    // Step 3: Doctor
+    utils.log('📋 Step 3/4: Running doctor checks...');
+    const doctorResult = await executeCommand(
+      CONFIG.COMMANDS.DOCTOR,
+      'Doctor',
+      CONFIG.TIMEOUTS.DOCTOR
+    );
+    
+    if (!doctorResult.success) {
+      utils.log('❌ Doctor checks failed - push blocked', 'error');
+      process.exit(doctorResult.code || 1);
+    }
+    
+    // Step 4: Build
+    utils.log('📋 Step 4/4: Running build...');
     const buildResult = await executeCommand(
       CONFIG.COMMANDS.BUILD,
       'Build',
@@ -164,7 +179,7 @@ async function main() {
     }
     
     // All checks passed
-    const totalTime = lintResult.duration + typecheckResult.duration + buildResult.duration;
+    const totalTime = lintResult.duration + typecheckResult.duration + doctorResult.duration + buildResult.duration;
     utils.log(`🎉 All pre-push checks passed in ${utils.formatTime(totalTime)}!`, 'success');
     utils.log('✅ Ready to push!');
     process.exit(0);

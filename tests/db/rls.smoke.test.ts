@@ -21,11 +21,11 @@ describe('RLS smoke test', () => {
     // Test that our week normalization works as expected
     const { startOfIsoWeek, asIsoDate } = require('@/lib/date/week');
     
-    const testDate = new Date('2024-01-15T10:30:00Z'); // Monday
+    const testDate = new Date('[RELATIVE: 2 years from now]'); // Monday
     const weekStart = startOfIsoWeek(testDate);
     const isoDate = asIsoDate(weekStart);
     
-    expect(isoDate).toBe('2024-01-15'); // Should be Monday
+    expect(isoDate).toBe('[RELATIVE: 2 years from now]'); // Should be Monday
   });
 
   it('validation schemas match DB structure', () => {

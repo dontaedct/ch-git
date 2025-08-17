@@ -1,4 +1,0 @@
-This is a test file to verify Husky hooks are working.
-
-Testing if hooks work after moving to .git/hooks directory.
-

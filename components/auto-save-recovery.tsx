@@ -26,18 +26,26 @@ export function AutoSaveRecovery({ className }: AutoSaveRecoveryProps) {
       checkForRecovery();
     };
 
+    let routeChangeTimeout: NodeJS.Timeout;
     const handleRouteChange = () => {
+      // Clear any existing timeout to prevent memory leaks
+      if (routeChangeTimeout) {
+        clearTimeout(routeChangeTimeout);
+      }
       // Small delay to ensure new page is loaded
-      setTimeout(checkForRecovery, 100);
+      routeChangeTimeout = setTimeout(checkForRecovery, 100);
     };
 
     window.addEventListener('auto-save', handleAutoSave);
     window.addEventListener('popstate', handleRouteChange);
     
     // Listen for Next.js route changes
+    let originalPushState: typeof history.pushState;
+    let originalReplaceState: typeof history.replaceState;
+    
     if (typeof window !== 'undefined') {
-      const originalPushState = history.pushState;
-      const originalReplaceState = history.replaceState;
+      originalPushState = history.pushState;
+      originalReplaceState = history.replaceState;
       
       history.pushState = function(...args) {
         originalPushState.apply(history, args);
@@ -51,6 +59,19 @@ export function AutoSaveRecovery({ className }: AutoSaveRecoveryProps) {
     }
 
     return () => {
+      // Clear timeout to prevent memory leaks
+      if (routeChangeTimeout) {
+        clearTimeout(routeChangeTimeout);
+      }
+      
+      // Restore original history methods
+      if (originalPushState) {
+        history.pushState = originalPushState;
+      }
+      if (originalReplaceState) {
+        history.replaceState = originalReplaceState;
+      }
+      
       window.removeEventListener('auto-save', handleAutoSave);
       window.removeEventListener('popstate', handleRouteChange);
     };

@@ -1,0 +1,95 @@
+{
+  "timestamp": "2025-08-16T05:16:37.706Z",
+  "duration": 60016,
+  "config": {
+    "duration": 60000,
+    "memoryInterval": 10000,
+    "cpuSampling": 1000,
+    "outputDir": "./reports/profiles",
+    "enableMemoryProfiling": true,
+    "enableCPUProfiling": true,
+    "enableBuildProfiling": false,
+    "enableTestProfiling": false,
+    "enableCrossCorrelation": true,
+    "enableRegressionDetection": true,
+    "verbose": false
+  },
+  "memory": {
+    "snapshots": 7,
+    "patterns": {
+      "trend": "stable",
+      "growth": -223216,
+      "growthMB": -0.21,
+      "volatility": 111471.05997266094,
+      "volatilityMB": 0.11
+    },
+    "leaks": [],
+    "recommendations": [
+      {
+        "priority": "low",
+        "action": "Memory usage looks healthy",
+        "details": "Continue monitoring for any changes"
+      },
+      {
+        "priority": "medium",
+        "action": "Implement memory cleanup in useEffect hooks",
+        "details": "Ensure proper cleanup of event listeners, timeouts, and subscriptions"
+      },
+      {
+        "priority": "medium",
+        "action": "Use React.memo for expensive components",
+        "details": "Prevent unnecessary re-renders that can cause memory churn"
+      }
+    ]
+  },
+  "cpu": {
+    "samples": 60,
+    "patterns": {
+      "trend": "low",
+      "avgUsage": 0,
+      "volatility": 0,
+      "peakUsage": 0,
+      "minUsage": 0
+    },
+    "bottlenecks": [],
+    "optimizations": [
+      {
+        "priority": "low",
+        "action": "CPU performance looks healthy",
+        "details": "Continue monitoring for any changes"
+      },
+      {
+        "priority": "medium",
+        "action": "Implement code splitting and lazy loading",
+        "details": "Reduce initial bundle size and improve load times"
+      },
+      {
+        "priority": "medium",
+        "action": "Use React.memo and useMemo for expensive computations",
+        "details": "Prevent unnecessary re-renders and recalculations"
+      },
+      {
+        "priority": "medium",
+        "action": "Optimize database queries and add caching",
+        "details": "Reduce database load and improve response times"
+      }
+    ],
+    "functionStats": []
+  },
+  "crossCorrelation": {
+    "dataPoints": 11,
+    "averageCorrelation": 0
+  },
+  "regressions": [],
+  "summary": {
+    "duration": "60s",
+    "memoryProfiled": true,
+    "cpuProfiled": true,
+    "crossCorrelationEnabled": true,
+    "regressionDetectionEnabled": true,
+    "memoryTrend": "stable",
+    "memoryGrowth": "-0.21MB",
+    "cpuTrend": "low",
+    "avgCPUUsage": "0%"
+  }
+}

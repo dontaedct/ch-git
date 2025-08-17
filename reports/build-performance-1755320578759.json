@@ -1,0 +1,19 @@
+{
+  "timestamp": "2025-08-16T05:02:58.759Z",
+  "buildTime": 0,
+  "memoryUsage": null,
+  "violations": [
+    {
+      "type": "staticAsset",
+      "name": "chunks\\vendors-eb79b046a4d72ab1.js",
+      "size": 2196859,
+      "threshold": 512000,
+      "severity": "info"
+    }
+  ],
+  "summary": {
+    "totalViolations": 1,
+    "warnings": 0,
+    "info": 1
+  }
+}

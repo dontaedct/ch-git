@@ -6,6 +6,7 @@ export const routes = {
   'db-check': '/api/db-check',
   'env-check': '/api/env-check',
   'debug-env': '/api/debug-env',
+  'debug-snapshot': '/debug/snapshot',
   
   // Core API
   clients: '/api/clients',

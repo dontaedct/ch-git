@@ -1,0 +1,14 @@
+# CODEOWNERS
+# This file defines who is responsible for which parts of the codebase
+# 
+# Format: path/to/file @username @team
+# 
+# Sensitive paths requiring owner review:
+/db/migrations/        @team-dct/owners
+/lib/supabase/         @team-dct/owners
+/app/(core)/           @team-dct/owners
+/scripts/              @team-dct/owners
+/policies/             @team-dct/sec
+
+# Global owners (entire repository)
+* @project-admin

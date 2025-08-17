@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { createServerClient } from '@/lib/supabase/server'
+import { createRealSupabaseClient } from '@/lib/supabase/server'
 import { SessionInsert, SessionUpdate, Session } from '@/lib/supabase/types'
 import { fail } from '@/lib/errors'
 import { error as logError } from '@/lib/logger'
@@ -24,12 +24,14 @@ export async function getSessions(
       pageSize,
     });
 
-    const supabase = await createServerClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    const supabase = await createRealSupabaseClient();
+    const { data: authData } = await supabase.auth.getUser();
     
-    if (!user) {
+    if (!authData?.user) {
       return { ok: false, error: "Not authenticated" };
     }
+
+    const user = authData.user as { id: string; email: string; created_at: string };
 
     const baseQuery = supabase
       .from("sessions")
@@ -54,7 +56,7 @@ export async function getSessions(
     return { 
       ok: true, 
       data: {
-        data: data ?? [],
+        data: (data ?? []) as Session[],
         page: validatedPage,
         pageSize: validatedPageSize,
         total: totalCount ?? 0,
@@ -67,7 +69,7 @@ export async function getSessions(
 
 export async function createSession(formData: FormData): Promise<{ ok: boolean; error?: string }> {
   try {
-    const supabase = await createServerClient()
+    const supabase = await createRealSupabaseClient()
     
     // Get form data
     const title = formData.get('title') as string
@@ -87,10 +89,12 @@ export async function createSession(formData: FormData): Promise<{ ok: boolean; 
     const endTime = new Date(startTime.getTime() + durationMinutes * 60 * 1000)
 
     // Scope to authenticated coach
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
+    const { data: authData } = await supabase.auth.getUser()
+    if (!authData?.user) {
       return { ok: false, error: 'Not authenticated' }
     }
+
+    const user = authData.user as { id: string; email: string; created_at: string };
 
     // Validate location against allowed values
     const allowedLocations = ['field', 'gym', 'track', 'other', 'Gym Studio A', 'Outdoor Track', 'Yoga Studio'] as const
@@ -135,7 +139,7 @@ export async function updateSession(
   formData: FormData
 ): Promise<{ ok: boolean; error?: string }> {
   try {
-    const supabase = await createServerClient()
+    const supabase = await createRealSupabaseClient()
     
     // Get form data
     const title = formData.get('title') as string
@@ -192,7 +196,7 @@ export async function updateSession(
 
 export async function deleteSession(sessionId: string): Promise<{ ok: boolean; error?: string }> {
   try {
-    const supabase = await createServerClient()
+    const supabase = await createRealSupabaseClient()
     
     const { error } = await supabase
       .from('sessions')

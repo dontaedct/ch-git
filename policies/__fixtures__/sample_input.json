@@ -1,0 +1,52 @@
+{
+  "changes": [
+    {
+      "operation": "CREATE",
+      "table": "users",
+      "sql_content": "CREATE TABLE users (id SERIAL PRIMARY KEY, name TEXT);"
+    }
+  ],
+  "changed_files": [
+    {
+      "path": "app/users/page.tsx",
+      "status": "added",
+      "content": "export default function UsersPage() { return <div>Users</div>; }"
+    },
+    {
+      "path": "lib/utils.ts",
+      "status": "modified",
+      "content": "export function formatName(name: string) { return name.trim(); }"
+    }
+  ],
+  "pr": {
+    "labels": ["feature", "users"]
+  },
+  "branch": "feature/user-management",
+  "author": "developer",
+  "codeowners": [
+    {
+      "path": "app/**",
+      "owners": ["frontend-team"]
+    },
+    {
+      "path": "lib/**",
+      "owners": ["backend-team"]
+    }
+  ],
+  "required_reviewers": [
+    {
+      "name": "senior-dev",
+      "approved": true
+    }
+  ],
+  "authorized_users": ["developer", "senior-dev", "admin"],
+  "emergency_mode": false,
+  "dependency_changes": [
+    {
+      "name": "react",
+      "old_version": "18.2.0",
+      "new_version": "18.3.0",
+      "change_type": "patch"
+    }
+  ]
+}

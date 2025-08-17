@@ -1,0 +1,46 @@
+﻿{
+  "folders": [
+    {
+      "name": "my-app",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "task.autoDetect": "on",
+    "task.allowAutomaticTasks": "on",
+    "terminal.integrated.allowAutomaticTaskRunning": true,
+    "typescript.preferences.includePackageJsonAutoImports": "auto",
+    "typescript.suggest.autoImports": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "esbenp.prettier-vscode"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Cursor AI: Universal Header",
+        "type": "shell",
+        "command": "npm",
+        "args": ["run", "cursor:auto"],
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
+        }
+      }
+    ]
+  }
+}

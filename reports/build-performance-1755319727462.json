@@ -1,0 +1,37 @@
+{
+  "timestamp": "2025-08-16T04:48:47.460Z",
+  "totalBuildTime": 102368.4798,
+  "totalBuildTimeSeconds": "102.37",
+  "checkpoints": {
+    "build_start": {
+      "elapsed": "0.03",
+      "elapsedSeconds": "0.00"
+    },
+    "build_end": {
+      "elapsed": "102368.50",
+      "elapsedSeconds": "102.37"
+    }
+  },
+  "performance": {
+    "target": "Under 10 seconds",
+    "achieved": "❌ NO",
+    "improvement": "92.37s over target"
+  },
+  "recommendations": [
+    "Consider using build:fast or build:minimal for development",
+    "Enable SWC compilation for faster TypeScript processing",
+    "Review and optimize large dependencies",
+    "Enable webpack persistent caching",
+    "Optimize module resolution and path mapping",
+    "Consider code splitting for large components",
+    "Enable incremental compilation",
+    "Optimize TypeScript configuration",
+    "Review bundle analyzer output"
+  ],
+  "system": {
+    "nodeVersion": "v20.19.4",
+    "platform": "win32",
+    "arch": "x64",
+    "cpus": 12
+  }
+}

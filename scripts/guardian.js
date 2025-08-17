@@ -17,6 +17,9 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 
+// Import retry helper for resilient operations
+const { RetryHelper } = require('../lib/retry.js');
+
 // Promisify fs functions
 const mkdir = promisify(fs.mkdir);
 const writeFile = promisify(fs.writeFile);
@@ -30,6 +33,14 @@ class GuardianBackup {
     this.metaDir = path.join(this.backupsDir, 'meta');
     this.isRunning = false;
     this.watchInterval = null;
+    
+    // Initialize retry helper for resilient operations
+    this.retryHelper = new RetryHelper({
+      maxAttempts: 3,
+      baseDelay: 2000, // 2 seconds for backup operations
+      maxDelay: 60000, // 1 minute max delay
+      strategy: 'EXPONENTIAL'
+    });
   }
 
   async ensureDirectories() {
@@ -46,42 +57,55 @@ class GuardianBackup {
   }
 
   async spawnCommand(command, args, options = {}) {
-    return new Promise((resolve) => {
-      const child = spawn(command, args, {
-        cwd: this.projectRoot,
-        stdio: ['pipe', 'pipe', 'pipe'],
-        ...options
-      });
-
-      let stdout = '';
-      let stderr = '';
-
-      child.stdout?.on('data', (data) => {
-        stdout += data.toString();
-      });
-
-      child.stderr?.on('data', (data) => {
-        stderr += data.toString();
-      });
-
-      child.on('close', (code) => {
-        resolve({
-          success: code === 0,
-          exitCode: code,
-          stdout,
-          stderr
-        });
-      });
-
-      child.on('error', (error) => {
-        resolve({
-          success: false,
-          exitCode: -1,
-          stdout,
-          stderr: error.message
-        });
-      });
-    });
+    const { spawnWithTimeout } = require('./timeout-wrapper');
+    
+    // Use retry helper for resilient command execution
+    const result = await this.retryHelper.retry(
+      async () => {
+        try {
+          // Use timeout wrapper with 5 minute timeout for backup operations
+          const result = await spawnWithTimeout(
+            command,
+            args,
+            {
+              cwd: this.projectRoot,
+              stdio: ['pipe', 'pipe', 'pipe'],
+              ...options
+            },
+            5 * 60 * 1000 // 5 minute timeout
+          );
+          
+          return result;
+        } catch (error) {
+          if (error.message.includes('timeout')) {
+            console.warn(`⏰ Command timeout: ${command} ${args.join(' ')}`);
+            return {
+              success: false,
+              exitCode: 124, // SIGTERM exit code
+              stdout: '',
+              stderr: `Command timeout: ${error.message}`
+            };
+          }
+          
+          // Re-throw other errors for retry logic
+          throw error;
+        }
+      },
+      `spawn-${command}-${args.join('-')}`,
+      {
+        maxAttempts: 3,
+        baseDelay: 2000,
+        strategy: 'EXPONENTIAL'
+      }
+    );
+    
+    if (!result.success) {
+      console.error(`💥 Command failed after retries: ${command} ${args.join(' ')}`);
+      console.error(`Last error: ${result.lastError?.message}`);
+      throw new Error(`Command failed after ${result.attempts} attempts: ${result.lastError?.message}`);
+    }
+    
+    return result.data;
   }
 
   async createGitBundle(backupPath) {

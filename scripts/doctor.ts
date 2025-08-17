@@ -654,7 +654,10 @@ class DoctorRunner {
   private getRelativePath(absolutePath: string): string {
     try {
       const cwd = process.cwd();
-      return absolutePath.replace(cwd, '').replace(/^[\\\/]/, '');
+      // Normalize path separators for cross-platform compatibility
+      const normalizedAbsolutePath = absolutePath.replace(/\\/g, '/');
+      const normalizedCwd = cwd.replace(/\\/g, '/');
+      return normalizedAbsolutePath.replace(normalizedCwd, '').replace(/^\//, '');
     } catch (error) {
       return absolutePath;
     }
@@ -678,6 +681,14 @@ class DoctorRunner {
       { pattern: /import\s+['"]src\/[^'"]*['"]/, message: 'Raw src/* import not allowed' }
     ];
 
+    // Special check for debug imports in root files
+    const rootDebugPatterns = [
+      { pattern: /^\s*from\s+['"]@app\/debug[^'"]*['"]/, message: 'Debug imports not allowed in root files - navigate to /debug/bulletproof instead' },
+      { pattern: /^\s*from\s+['"]@app\/_debug[^'"]*['"]/, message: 'Debug imports not allowed in root files - navigate to /debug/bulletproof instead' },
+      { pattern: /^\s*import\s+['"]@app\/debug[^'"]*['"]/, message: 'Debug imports not allowed in root files - navigate to /debug/bulletproof instead' },
+      { pattern: /^\s*import\s+['"]@app\/_debug[^'"]*['"]/, message: 'Debug imports not allowed in root files - navigate to /debug/bulletproof instead' }
+    ];
+
     let filesChecked = 0;
     const totalFiles = Math.min(sourceFiles.length, this.options.maxFiles!);
 
@@ -695,6 +706,21 @@ class DoctorRunner {
           const line = lines[i];
           const lineNumber = i + 1;
           
+          // Check for debug imports in root files
+          if (relativePath === 'app/page.tsx' || relativePath === 'app/layout.tsx') {
+            for (const { pattern, message } of rootDebugPatterns) {
+              if (pattern.test(line)) {
+                violations.push({
+                  file: relativePath,
+                  line: lineNumber,
+                  importPath: line.trim(),
+                  message
+                });
+              }
+            }
+          }
+          
+          // Check for general non-compliant imports
           for (const { pattern, message } of nonCompliantPatterns) {
             if (pattern.test(line)) {
               violations.push({

@@ -40,3 +40,8 @@ export function getPublicEnv() {
   });
   return publicCached;
 }
+
+/** Dev-only safe mode toggle. When enabled, UI should avoid auth gating and heavy fetches. */
+export function isSafeModeEnabled(): boolean {
+  return process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_SAFE_MODE === '1';
+}

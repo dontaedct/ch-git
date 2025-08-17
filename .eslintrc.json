@@ -20,7 +20,19 @@
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/prefer-nullish-coalescing": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
-    "no-restricted-imports": ["error", { "patterns": ["../*", "../../*", "../../../*"] }]
+    "no-restricted-imports": [
+      "error", 
+      { 
+        "patterns": [
+          "../*", 
+          "../../*", 
+          "../../../*",
+          // MIT-HERO-MOD: Prevent fragile imports from mit-hero-core internal files
+          "packages/mit-hero-core/src/**",
+          "@dct/mit-hero-core/src/**"
+        ]
+      }
+    ]
   },
   "env": {
     "node": true,
@@ -46,5 +58,27 @@
         "alwaysTryTypes": false
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "files": ["packages/mit-hero-core/**/*"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              // MIT-HERO-MOD: Prevent mit-hero-core from importing app files
+              "app/**",
+              "components/**",
+              "lib/**",
+              "data/**",
+              "types/**",
+              "hooks/**",
+              "styles/**"
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

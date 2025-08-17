@@ -1,100 +1,27 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { useState, Suspense } from 'react'
 import { Client, WeeklyPlan, CheckIn, ProgressMetric } from '@/lib/supabase/types'
 import { Progress } from '@/components/ui/progress'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
+import ErrorBoundary from '@/components/ui/error-boundary'
+import { SmallLoader } from '@/components/ui/small-loader'
 
 interface ProgressDashboardProps {
-  clientId: string
+  _clientId: string
+  initialData: {
+    client: Client | null
+    weeklyPlan: WeeklyPlan | null
+    checkIns: CheckIn[]
+    progressMetrics: ProgressMetric[]
+  }
 }
 
-export default function ProgressDashboard({ clientId }: ProgressDashboardProps) {
-  const [client, setClient] = useState<Client | null>(null)
-  const [weeklyPlan, setWeeklyPlan] = useState<WeeklyPlan | null>(null)
-  const [checkIns, setCheckIns] = useState<CheckIn[]>([])
-  const [progressMetrics, setProgressMetrics] = useState<ProgressMetric[]>([])
-  const [loading, setLoading] = useState(true)
-  const supabase = createClient()
-
-  const loadClientData = useCallback(async () => {
-    try {
-      // Load client profile
-      const { data: clientData } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('id', clientId)
-        .single()
-
-      if (clientData) {
-        // Type guard to ensure this is a Client
-        if (typeof clientData === 'object' && clientData && 'id' in clientData && 'coach_id' in clientData) {
-          setClient(clientData as Client)
-        }
-      }
-
-      // Load weekly plan
-      const { data: planData } = await supabase
-        .from('weekly_plans')
-        .select('*')
-        .eq('client_id', clientId)
-        .eq('status', 'active')
-        .order('week_start_date', { ascending: false })
-        .limit(1)
-        .single()
-
-      if (planData && typeof planData === 'object' && 'id' in planData && 'coach_id' in planData) {
-        setWeeklyPlan(planData as WeeklyPlan)
-      }
-
-      // Load check-ins
-      const { data: checkInData } = await supabase
-        .from('check_ins')
-        .select('*')
-        .eq('client_id', clientId)
-        .order('check_in_date', { ascending: false })
-        .limit(30)
-
-      if (checkInData && Array.isArray(checkInData) && checkInData.every(item => 
-        item && typeof item === 'object' && 'id' in item && 'coach_id' in item
-      )) {
-        setCheckIns(checkInData as CheckIn[])
-      }
-
-      // Load progress metrics
-      const { data: metricsData } = await supabase
-        .from('progress_metrics')
-        .select('*')
-        .eq('client_id', clientId)
-        .order('metric_date', { ascending: true })
-        .limit(60)
-
-      if (metricsData && Array.isArray(metricsData) && metricsData.every(item => 
-        item && typeof item === 'object' && 'id' in item && 'coach_id' in item
-      )) {
-        setProgressMetrics(metricsData as ProgressMetric[])
-      }
-    } catch (err) {
-      if (process.env.NODE_ENV !== "production") {
-        console.error('Failed to load client data:', err)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [clientId, supabase])
-
-  useEffect(() => {
-    loadClientData()
-  }, [clientId, loadClientData])
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    )
-  }
+function ProgressDashboardContent({ _clientId, initialData }: ProgressDashboardProps) {
+  const [client] = useState<Client | null>(initialData.client)
+  const [weeklyPlan] = useState<WeeklyPlan | null>(initialData.weeklyPlan)
+  const [checkIns] = useState<CheckIn[]>(initialData.checkIns)
+  const [progressMetrics] = useState<ProgressMetric[]>(initialData.progressMetrics)
 
   if (!client) {
     return <div className="p-8 text-center text-gray-500">Client not found</div>
@@ -144,228 +71,173 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
     }))
 
   return (
-    <div className="space-y-6">
-      {/* Client Header */}
-      <div className="card p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl font-semibold text-gray-900">
-              {client.first_name ?? client.full_name} {client.last_name ?? ''}
-            </h2>
-            <p className="text-gray-600">{client.email}</p>
+    <ErrorBoundary>
+      <div className="space-y-6">
+        {/* Client Header */}
+        <div className="card p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">
+                {client.first_name ?? client.full_name} {client.last_name ?? ''}
+              </h2>
+              <p className="text-gray-600">{client.email}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-sm text-gray-500">Member since</p>
+              <p className="font-medium">
+                {new Date(client.created_at).toLocaleDateString()}
+              </p>
+            </div>
           </div>
-          <div className="text-right">
-            <p className="text-sm text-gray-500">Member since</p>
-            <p className="font-medium">
-              {new Date(client.created_at).toLocaleDateString()}
-            </p>
+        </div>
+
+        {/* Key Metrics */}
+        <div className="grid md:grid-cols-4 gap-6">
+          <div className="card p-6">
+            <h3 className="text-sm font-medium text-gray-600 mb-2">Compliance</h3>
+            <div className="text-2xl font-bold text-gray-900 mb-2">{compliancePercentage}%</div>
+            <Progress value={compliancePercentage} className="h-2" />
+          </div>
+          
+          <div className="card p-6">
+            <h3 className="text-sm font-medium text-gray-600 mb-2">Total Check-ins</h3>
+            <div className="text-2xl font-bold text-gray-900">{totalCheckIns}</div>
+          </div>
+          
+          <div className="card p-6">
+            <h3 className="text-sm font-medium text-gray-600 mb-2">Average Mood</h3>
+            <div className="text-2xl font-bold text-gray-900">{averageMood}/10</div>
+          </div>
+          
+          <div className="card p-6">
+            <h3 className="text-sm font-medium text-gray-600 mb-2">Current Streak</h3>
+            <div className="text-2xl font-bold text-gray-900">{streak} days</div>
           </div>
         </div>
-      </div>
 
-      {/* Key Metrics */}
-      <div className="grid md:grid-cols-4 gap-6">
-        <div className="card p-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-2">Compliance</h3>
-          <div className="text-2xl font-bold text-gray-900 mb-2">{compliancePercentage}%</div>
-          <Progress value={compliancePercentage} className="h-2" />
-        </div>
-        
-        <div className="card p-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-2">Total Check-ins</h3>
-          <div className="text-2xl font-bold text-gray-900">{totalCheckIns}</div>
-          <p className="text-sm text-gray-500">Lifetime total</p>
-        </div>
-        
-        <div className="card p-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-2">Current Streak</h3>
-          <div className="text-2xl font-bold text-gray-900">{streak}</div>
-          <p className="text-sm text-gray-500">Days in a row</p>
-        </div>
-        
-        <div className="card p-6">
-          <h3 className="text-sm font-medium text-gray-600 mb-2">Avg. Mood</h3>
-          <div className="text-2xl font-bold text-gray-900">{averageMood}/5</div>
-          <p className="text-sm text-gray-500">Last 30 days</p>
-        </div>
-      </div>
-
-      {/* Charts Row */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Weight Progress */}
-        {weightChartData.length > 0 && (
+        {/* Charts */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Weight Progress Chart */}
           <div className="card p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Weight Progress</h3>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
+            {weightChartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={weightChartData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="date" />
                   <YAxis />
                   <Tooltip />
-                  <Line 
-                    type="monotone" 
-                    dataKey="weight" 
-                    stroke="#3b82f6" 
-                    strokeWidth={2}
-                    dot={{ fill: '#3b82f6', strokeWidth: 2, r: 4 }}
-                  />
+                  <Line type="monotone" dataKey="weight" stroke="#3b82f6" strokeWidth={2} />
+                  <Line type="monotone" dataKey="bodyFat" stroke="#ef4444" strokeWidth={2} />
                 </LineChart>
               </ResponsiveContainer>
-            </div>
+            ) : (
+              <div className="flex items-center justify-center h-64 text-gray-500">
+                No weight data available
+              </div>
+            )}
           </div>
-        )}
 
-        {/* Check-in Trends */}
-        {checkInChartData.length > 0 && (
+          {/* Check-in Mood & Energy Chart */}
           <div className="card p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Check-in Trends</h3>
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Mood & Energy Trends</h3>
+            {checkInChartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={checkInChartData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="date" />
-                  <YAxis domain={[0, 5]} />
+                  <YAxis domain={[0, 10]} />
                   <Tooltip />
-                  <Bar dataKey="mood" fill="#f59e0b" name="Mood" />
-                  <Bar dataKey="energy" fill="#3b82f6" name="Energy" />
+                  <Bar dataKey="mood" fill="#3b82f6" name="Mood" />
+                  <Bar dataKey="energy" fill="#10b981" name="Energy" />
                 </BarChart>
               </ResponsiveContainer>
+            ) : (
+              <div className="flex items-center justify-center h-64 text-gray-500">
+                No check-in data available
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Recent Check-ins */}
+        <div className="card p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Check-ins</h3>
+          {checkIns.length > 0 ? (
+            <div className="space-y-3">
+              {checkIns.slice(0, 5).map((checkIn) => (
+                <div key={checkIn.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <span className="font-medium">
+                      {checkIn.check_in_date ? new Date(checkIn.check_in_date).toLocaleDateString() : 'No date'}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-4 text-sm text-gray-600">
+                    <span>Mood: {checkIn.mood_rating ?? 'N/A'}/10</span>
+                    <span>Energy: {checkIn.energy_level ?? 'N/A'}/10</span>
+                    {checkIn.weight_kg && <span>Weight: {checkIn.weight_kg}kg</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              No check-ins recorded yet
+            </div>
+          )}
+        </div>
+
+        {/* Weekly Plan Summary */}
+        {weeklyPlan && (
+          <div className="card p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Current Weekly Plan</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="font-medium">{weeklyPlan.title}</span>
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  weeklyPlan.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {weeklyPlan.status}
+                </span>
+              </div>
+              {weeklyPlan.description && (
+                <p className="text-gray-600">{weeklyPlan.description}</p>
+              )}
+              {weeklyPlan.tasks && weeklyPlan.tasks.length > 0 && (
+                <div className="mt-4">
+                  <h4 className="font-medium text-gray-900 mb-2">Tasks</h4>
+                  <div className="space-y-2">
+                    {weeklyPlan.tasks.map((task, index) => (
+                      <div key={index} className="flex items-center space-x-2">
+                        <input
+                          type="checkbox"
+                          checked={task.completed}
+                          disabled
+                          className="w-4 h-4 text-blue-600 bg-white border-2 border-gray-300 rounded focus:ring-blue-500"
+                        />
+                        <span className={task.completed ? 'line-through text-gray-500' : 'text-gray-900'}>
+                          {task.title}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
       </div>
+    </ErrorBoundary>
+  );
+}
 
-      {/* Weekly Plan Status */}
-      {weeklyPlan && (
-        <div className="card p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Current Weekly Plan</h3>
-          <div className="space-y-4">
-            {/* Goals Section */}
-            {weeklyPlan.goals && weeklyPlan.goals.length > 0 ? (
-              <div>
-                <h4 className="font-medium text-gray-900 mb-2">Goals</h4>
-                <div className="flex flex-wrap gap-2">
-                  {weeklyPlan.goals.map((goal, index) => (
-                    <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                      {goal.title}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div>
-                <h4 className="font-medium text-gray-900 mb-2">Goals</h4>
-                <p className="text-gray-500 text-sm">No goals set for this week</p>
-              </div>
-            )}
-            
-            {/* Tasks Section */}
-            {weeklyPlan.tasks && weeklyPlan.tasks.length > 0 ? (
-              <div>
-                <h4 className="font-medium text-gray-900 mb-3">Task Completion</h4>
-                <div className="space-y-3">
-                  {weeklyPlan.tasks.map((task) => (
-                    <div key={task.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                      <div className={`w-5 h-5 rounded-lg flex items-center justify-center ${
-                        task.completed ? 'bg-green-500 text-white' : 'bg-gray-200'
-                      }`}>
-                        {task.completed && (
-                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <span className={`font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
-                          {task.title}
-                        </span>
-                        {task.description && (
-                          <p className="text-sm text-gray-600 mt-1">{task.description}</p>
-                        )}
-                      </div>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        task.category === 'workout' ? 'bg-red-100 text-red-800' :
-                        task.category === 'nutrition' ? 'bg-green-100 text-green-800' :
-                        task.category === 'mindfulness' ? 'bg-purple-100 text-purple-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
-                        {task.category}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div>
-                <h4 className="font-medium text-gray-900 mb-3">Task Completion</h4>
-                <p className="text-gray-500 text-sm">No tasks assigned for this week</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Recent Check-ins */}
-      {checkIns.length > 0 && (
-        <div className="card p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Check-ins</h3>
-          <div className="space-y-4">
-            {checkIns.slice(0, 10).map((checkIn) => (
-              <div key={checkIn.id} className="border border-gray-200 rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm text-gray-500">
-                    {checkIn.check_in_date ? new Date(checkIn.check_in_date).toLocaleDateString() : 'No date'}
-                  </span>
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
-                      Mood: {checkIn.mood_rating ?? 'N/A'}/5
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                      Energy: {checkIn.energy_level ?? 'N/A'}/5
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                  {checkIn.sleep_hours && (
-                    <div>
-                      <span className="text-gray-600">Sleep:</span>
-                      <span className="ml-2 font-medium">{checkIn.sleep_hours}h</span>
-                    </div>
-                  )}
-                  {checkIn.water_intake_liters && (
-                    <div>
-                      <span className="text-gray-600">Water:</span>
-                      <span className="ml-2 font-medium">{checkIn.water_intake_liters}L</span>
-                    </div>
-                  )}
-                  {checkIn.weight_kg && (
-                    <div>
-                      <span className="text-gray-600">Weight:</span>
-                      <span className="ml-2 font-medium">{checkIn.weight_kg}kg</span>
-                    </div>
-                  )}
-                  {checkIn.body_fat_percentage && (
-                    <div>
-                      <span className="text-gray-600">Body Fat:</span>
-                      <span className="ml-2 font-medium">{checkIn.body_fat_percentage}%</span>
-                    </div>
-                  )}
-                </div>
-                
-                {checkIn.notes && (
-                  <p className="text-gray-700 mt-3 pt-3 border-t border-gray-200">
-                    {checkIn.notes}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )
+export function ProgressDashboard({ _clientId, initialData }: ProgressDashboardProps) {
+  return (
+    <ErrorBoundary>
+      <Suspense fallback={<SmallLoader />}>
+        <ProgressDashboardContent _clientId={_clientId} initialData={initialData} />
+      </Suspense>
+    </ErrorBoundary>
+  );
 }

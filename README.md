@@ -222,3 +222,28 @@ npm run rename:table              # Table renaming
 ---
 
 *The MIT Hero System provides a unified, intelligent, and continuously improving platform with measurable performance targets and concrete SLOs, ensuring reliable performance and transparent metrics for the Coach Hub application.*
+
+## My App
+
+## Import Boundary Guards
+
+**MIT-HERO-MOD**: This project enforces strict import boundaries to prevent fragile dependencies:
+
+- **App cannot import** from `packages/mit-hero-core/src/**` (internal files)
+- **Core package cannot import** from app directories (`app/**`, `components/**`, `lib/**`, etc.)
+- **Enforced via ESLint** `no-restricted-imports` rules
+
+### Linting Commands
+
+```bash
+npm run lint:check      # Check for linting issues
+npm run lint:strict     # Strict linting with zero warnings allowed
+npm run lint:fix        # Auto-fix linting issues
+```
+
+### Fixing Import Violations
+
+If you encounter import boundary violations:
+1. Use the public API from `packages/mit-hero-core/index.js`
+2. Move shared code to appropriate shared packages
+3. Never import internal implementation details

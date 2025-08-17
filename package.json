@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
     "dev": "node scripts/dev-bootstrap.js && next dev -p 3000",
@@ -325,6 +326,7 @@
   },
   "dependencies": {
     "@dct/mit-hero-core": "workspace:*",
+    "@fastify/cors": "^11.1.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-aspect-ratio": "^1.1.7",
@@ -362,6 +364,7 @@
     "cmdk": "^1.1.1",
     "embla-carousel-react": "^8.6.0",
     "fast-glob": "^3.3.3",
+    "fastify": "^5.5.0",
     "input-otp": "^1.1.0",
     "leven": "^4.0.0",
     "lucide-react": "^0.539.0",
@@ -375,6 +378,7 @@
     "react-resizable-panels": "^2.0.9",
     "recharts": "^3.1.2",
     "resend": "^3.1.0",
+    "rimraf": "^6.0.1",
     "sonner": "^1.4.0",
     "stripe": "^14.10.0",
     "tailwind-merge": "^3.3.1",
@@ -392,7 +396,7 @@
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^30.0.0",
-    "@types/node": "^20",
+    "@types/node": "^20.19.11",
     "@types/papaparse": "^5.3.16",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -410,7 +414,7 @@
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.20.4",
-    "typescript": "^5",
+    "typescript": "^5.9.2",
     "webpack-bundle-analyzer": "^4.10.2"
   }
 }

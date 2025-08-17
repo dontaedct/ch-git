@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-17T03:27:21.223Z",
+  "timestamp": "2025-08-17T03:53:20.597Z",
   "overallStatus": "PASSED - READY FOR EXTERNAL DISTRIBUTION",
   "phaseResults": {
     "phase1": {
@@ -92,8 +92,8 @@
     "phase3": {
       "status": "COMPLETED",
       "results": {
-        "totalCommands": 315,
-        "availableCommands": 315,
+        "totalCommands": 316,
+        "availableCommands": 316,
         "missingCommands": [],
         "commandTests": {
           "dev": {
@@ -209,6 +209,10 @@
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
           "lint:staged": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "lint:strict": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
@@ -1370,7 +1374,7 @@
   },
   "summary": {
     "totalSystems": 5,
-    "totalCommands": 315,
+    "totalCommands": 316,
     "totalFailures": 0,
     "totalWarnings": 0,
     "criticalIssues": 0

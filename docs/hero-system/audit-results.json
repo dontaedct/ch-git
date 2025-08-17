@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-08-17T03:23:44.345Z",
+  "timestamp": "2025-08-17T03:49:50.501Z",
   "npm_scripts": {
-    "total": 315,
-    "available": 315,
+    "total": 316,
+    "available": 316,
     "broken": 0,
     "list": [
       "dev",
@@ -34,6 +34,7 @@
       "lint:check",
       "lint:fix",
       "lint:staged",
+      "lint:strict",
       "typecheck",
       "check",
       "test",
@@ -560,15 +561,15 @@
   },
   "report": {
     "metadata": {
-      "generated_at": "2025-08-17T03:23:44.345Z",
+      "generated_at": "2025-08-17T03:49:50.501Z",
       "version": "2.0.0",
       "framework": "MIT Hero System - Bulletproof Audit",
       "audit_scope": "Complete accuracy verification"
     },
     "summary": {
       "npm_scripts": {
-        "total": 315,
-        "available": 315,
+        "total": 316,
+        "available": 316,
         "broken": 0,
         "accuracy": "100% verified"
       },
@@ -579,7 +580,7 @@
       }
     },
     "npm_scripts": {
-      "count": 315,
+      "count": 316,
       "list": [
         "dev",
         "prebuild",
@@ -610,6 +611,7 @@
         "lint:check",
         "lint:fix",
         "lint:staged",
+        "lint:strict",
         "typecheck",
         "check",
         "test",

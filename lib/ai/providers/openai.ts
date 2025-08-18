@@ -4,10 +4,17 @@
  * Implements OpenAI client with strict JSON output support
  */
 
-import OpenAI from 'openai';
+import { retry } from '../tools/retry';
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { retry } from '../tools/retry';
+
+// Safety guard: only import OpenAI if available
+let OpenAI: any = null;
+try {
+  OpenAI = require('openai');
+} catch (error) {
+  console.warn('OpenAI SDK not available, provider will use mock mode');
+}
 
 export interface OpenAIConfig {
   apiKey?: string;
@@ -48,17 +55,38 @@ export interface OpenAIResponse {
 }
 
 export class OpenAIProvider {
-  private client: OpenAI;
+  private client: any;
   private config: OpenAIConfig;
+  private universalHeader: string | null = null;
   
   constructor(config: OpenAIConfig = {}) {
     this.config = config;
+    
+    // Safety check: ensure OpenAI SDK is available
+    if (!OpenAI) {
+      throw new Error('OpenAI SDK not available. Install with: npm install openai');
+    }
+    
     this.client = new OpenAI({
       apiKey: config.apiKey || process.env.OPENAI_API_KEY,
       organization: config.organization,
       baseURL: config.baseURL,
       timeout: config.timeout || 60000,
     });
+  }
+  
+  // Lazy load the universal header only when needed
+  private getUniversalHeader(): string {
+    if (this.universalHeader === null) {
+      try {
+        const universalHeaderPath = join(process.cwd(), 'lib/ai/prompts/system/universal_header.md');
+        this.universalHeader = readFileSync(universalHeaderPath, 'utf-8');
+      } catch (error) {
+        console.warn('Failed to load universal header, using fallback:', error);
+        this.universalHeader = '# Universal Header Rules\n\nFollow project conventions and safety guidelines.';
+      }
+    }
+    return this.universalHeader;
   }
   
   async chat(request: OpenAIRequest): Promise<OpenAIResponse> {
@@ -81,8 +109,7 @@ export class OpenAIProvider {
   ): Promise<{ ok: boolean; data?: unknown; error?: string; trace?: string }> {
     try {
       // Load universal header system message
-      const universalHeaderPath = join(process.cwd(), 'lib/ai/prompts/system/universal_header.md');
-      const universalHeader = readFileSync(universalHeaderPath, 'utf-8');
+      const universalHeader = this.getUniversalHeader();
       
       const systemMessage = `${universalHeader}\n\nYou must respond with valid JSON matching this schema:\n${JSON.stringify(schema, null, 2)}`;
       
@@ -122,7 +149,7 @@ export class OpenAIProvider {
       return { 
         ok: false, 
         error: error instanceof Error ? error.message : 'Unknown error',
-        trace: error instanceof Error ? error.stack : undefined
+        trace: error instanceof Error ? error.stack || 'No stack trace' : 'Unknown error type'
       };
     }
   }

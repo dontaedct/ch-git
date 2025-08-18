@@ -17,9 +17,18 @@ export function getEnv() {
   const parsed = ServerSchema.safeParse(process.env);
   if (!parsed.success) {
     const msg = parsed.error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join("; ");
-    throw new Error(`Invalid environment configuration: ${msg}`);
+    console.warn(`Environment validation warnings: ${msg}`);
+    // Return safe defaults for development
+    serverCached = {
+      NEXT_PUBLIC_SUPABASE_URL: 'http://localhost:54321',
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fallback-key',
+      SUPABASE_SERVICE_ROLE_KEY: undefined,
+      DEFAULT_COACH_ID: undefined,
+      NODE_ENV: 'development' as const,
+    };
+  } else {
+    serverCached = parsed.data;
   }
-  serverCached = parsed.data;
   return serverCached;
 }
 
@@ -34,9 +43,19 @@ let publicCached: z.infer<typeof PublicSchema> | null = null;
 /** Use this in client components/browser code */
 export function getPublicEnv() {
   if (publicCached) return publicCached;
-  publicCached = PublicSchema.parse({
+  const parsed = PublicSchema.safeParse({
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   });
+  if (!parsed.success) {
+    // Return safe defaults instead of crashing
+    console.warn('Missing Supabase environment variables, using fallback values');
+    publicCached = {
+      NEXT_PUBLIC_SUPABASE_URL: 'http://localhost:54321',
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fallback-key',
+    };
+  } else {
+    publicCached = parsed.data;
+  }
   return publicCached;
 }

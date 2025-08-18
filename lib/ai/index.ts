@@ -6,27 +6,11 @@
 
 import { routeRequest } from './router';
 import { IncidentReport, SpecDoc } from './tools/schema';
+import { isAIEnabled } from './flags';
+import type { AITask, AIOptions, AIResult } from './types';
 
-export interface AITask {
-  name: string;
-  input: unknown;
-  options?: AIOptions;
-}
-
-export interface AIOptions {
-  provider?: string;
-  model?: string;
-  temperature?: number;
-  maxTokens?: number;
-}
-
-export interface AIResult {
-  success: boolean;
-  data?: unknown;
-  error?: string;
-  provider: string;
-  timestamp: string;
-}
+// Re-export types for convenience
+export type { AITask, AIOptions, AIResult };
 
 // Task registry mapping task names to schemas
 export const TASK_REGISTRY = {
@@ -45,6 +29,16 @@ export type TaskName = keyof typeof TASK_REGISTRY;
  */
 export async function run(taskName: string, input: unknown, opts?: AIOptions): Promise<AIResult> {
   try {
+    // Check if AI is enabled
+    if (!isAIEnabled()) {
+      return {
+        success: false,
+        error: 'AI features are disabled. Set NEXT_PUBLIC_AI_ENABLED=true or AI_ENABLED=true to enable.',
+        provider: 'disabled',
+        timestamp: new Date().toISOString()
+      };
+    }
+    
     // Validate task name
     if (!(taskName in TASK_REGISTRY)) {
       throw new Error(`Unknown task: ${taskName}. Available tasks: ${Object.keys(TASK_REGISTRY).join(', ')}`);

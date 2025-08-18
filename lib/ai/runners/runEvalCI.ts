@@ -4,7 +4,7 @@
  * CI-optimized version that outputs only JSON summary
  */
 
-import { run } from '../index';
+import { run } from '@/lib/ai';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 

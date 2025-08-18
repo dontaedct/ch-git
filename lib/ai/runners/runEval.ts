@@ -4,7 +4,7 @@
  * Runs deterministic evaluations against AI tasks
  */
 
-import { run } from '../index';
+import { run } from '@/lib/ai';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 

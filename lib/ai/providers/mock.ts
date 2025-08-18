@@ -4,7 +4,7 @@
  * Deterministic mock responses for offline evaluation
  */
 
-import { AIOptions, AIResult } from '../index';
+import type { AIOptions, AIResult } from '../types';
 
 export interface MockTaskResponse {
   ok: boolean;
@@ -79,7 +79,7 @@ export class MockProvider {
     return {
       success: result.ok,
       data: result.data,
-      error: result.error,
+      error: result.error || 'Mock provider error',
       provider: this.name,
       timestamp: new Date().toISOString()
     };

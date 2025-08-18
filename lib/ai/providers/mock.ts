@@ -79,7 +79,7 @@ export class MockProvider {
     return {
       success: result.ok,
       data: result.data,
-      error: result.error || 'Mock provider error',
+      error: result.error ?? 'Mock provider error',
       provider: this.name,
       timestamp: new Date().toISOString()
     };

@@ -1,0 +1,37 @@
+{
+  "logs": [
+    {
+      "timestamp": "2025-01-15T10:30:00Z",
+      "level": "ERROR",
+      "message": "Database connection failed: timeout after 30 seconds",
+      "service": "auth-service",
+      "trace_id": "abc123"
+    },
+    {
+      "timestamp": "2025-01-15T10:31:00Z",
+      "level": "WARN",
+      "message": "Retrying database connection attempt 1/3",
+      "service": "auth-service",
+      "trace_id": "abc123"
+    },
+    {
+      "timestamp": "2025-01-15T10:32:00Z",
+      "level": "ERROR",
+      "message": "Database connection failed: timeout after 30 seconds",
+      "service": "auth-service",
+      "trace_id": "abc123"
+    },
+    {
+      "timestamp": "2025-01-15T10:35:00Z",
+      "level": "ERROR",
+      "message": "Service unavailable: all database connections exhausted",
+      "service": "auth-service",
+      "trace_id": "def456"
+    }
+  ],
+  "incident_id": "INC-2025-001",
+  "severity": "HIGH",
+  "affected_services": ["auth-service", "user-service"],
+  "reported_by": "oncall-eng"
+}
+

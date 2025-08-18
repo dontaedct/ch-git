@@ -1,0 +1,47 @@
+{
+  "test_execution": {
+    "timestamp": "2025-08-17T15:01:00Z",
+    "environment": "Windows PowerShell",
+    "script_version": "1.0.0"
+  },
+  "test_results": {
+    "disabled_503": {
+      "status": "SKIPPED",
+      "reason": "No disabled domain provided",
+      "expected": "503 if domain provided",
+      "actual": "N/A"
+    },
+    "staging_401": {
+      "status": "PASS",
+      "reason": "Unauthorized request properly rejected",
+      "expected": "Non-200 status code",
+      "actual": "401 (Unauthorized)"
+    },
+    "staging_200": {
+      "status": "SKIPPED",
+      "reason": "No JWT provided",
+      "expected": "200 with valid JWT",
+      "actual": "N/A"
+    },
+    "specdoc_shape": {
+      "status": "SKIPPED",
+      "reason": "No auth test performed",
+      "expected": "Valid SpecDoc format",
+      "actual": "N/A"
+    }
+  },
+  "verdict": "PARTIAL - Basic security tests pass, auth tests skipped",
+  "recommendations": [
+    "Provide valid JWT to test authenticated endpoints",
+    "Test with actual staging domain for production validation",
+    "Verify SpecDoc format compliance with real API responses"
+  ],
+  "artifacts_generated": [
+    "staging_unauth.json",
+    "staging_auth.json (mock)",
+    "disabled_resp.json (mock)",
+    "specdoc_check.json (mock)",
+    "staging_smoke_test.ps1",
+    "README.md"
+  ]
+}

@@ -68,10 +68,10 @@ export class OpenAIProvider {
     }
     
     this.client = new OpenAI({
-      apiKey: config.apiKey || process.env.OPENAI_API_KEY,
+      apiKey: config.apiKey ?? process.env.OPENAI_API_KEY,
       organization: config.organization,
       baseURL: config.baseURL,
-      timeout: config.timeout || 60000,
+      timeout: config.timeout ?? 60000,
     });
   }
   
@@ -149,7 +149,7 @@ export class OpenAIProvider {
       return { 
         ok: false, 
         error: error instanceof Error ? error.message : 'Unknown error',
-        trace: error instanceof Error ? error.stack || 'No stack trace' : 'Unknown error type'
+        trace: error instanceof Error ? error.stack ?? 'No stack trace' : 'Unknown error type'
       };
     }
   }

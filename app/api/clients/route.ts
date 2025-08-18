@@ -8,9 +8,10 @@ import { applyPagination } from "@/lib/utils";
 import { Client } from "@/lib/supabase/types";
 import { createRouteLogger } from "@/lib/logger";
 
+export const runtime = 'nodejs';
 export const revalidate = 60;
 
-async function GETHandler(req: NextRequest) {
+async function GETHandler(req: NextRequest): Promise<NextResponse> {
   const startTime = Date.now();
   const logger = createRouteLogger('GET', '/api/clients');
   
@@ -53,11 +54,11 @@ async function GETHandler(req: NextRequest) {
     return response;
   } catch (error) {
     if (error instanceof Error) {
-      const response = fail(error.message, "VALIDATION_ERROR", 400);
+      const response = NextResponse.json(fail(error.message, "VALIDATION_ERROR"), { status: 400 });
       logger.log(400, startTime);
       return response;
     }
-    const response = fail("Internal server error", "INTERNAL_ERROR", 500);
+    const response = NextResponse.json(fail("Internal server error", "INTERNAL_ERROR"), { status: 500 });
     logger.log(500, startTime);
     return response;
   }

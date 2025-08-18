@@ -6,6 +6,29 @@ const LIMIT = 100;
 
 export function middleware(req: Request) {
   const url = new URL(req.url);
+  
+  // Dev-only tracing and loop detection
+  if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
+    console.log(`🔍 Middleware: ${req.method} ${url.pathname}`);
+    
+    // Check for self-redirects (same pathname)
+    const referer = req.headers.get('referer');
+    if (referer) {
+      const refererUrl = new URL(referer);
+      if (refererUrl.pathname === url.pathname) {
+        console.warn('⚠️ Middleware: Potential self-redirect detected', {
+          pathname: url.pathname,
+          referer: refererUrl.pathname
+        });
+        
+        // Add loop detection header
+        const response = NextResponse.next();
+        response.headers.set('X-Loop-Detected', '1');
+        return response;
+      }
+    }
+  }
+  
   if (!url.pathname.startsWith("/api/")) return NextResponse.next();
 
   const ip = (req.headers.get("x-forwarded-for") || "local").split(",")[0].trim();

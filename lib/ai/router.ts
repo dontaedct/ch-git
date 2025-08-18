@@ -4,7 +4,7 @@
  * Routes AI requests to appropriate providers based on environment/config.
  */
 
-import { AIOptions, AIResult } from './index';
+import type { AIOptions, AIResult } from './types';
 import { createClient as createOpenAIClient } from './providers/openai';
 import { MockProvider } from './providers/mock';
 
@@ -36,7 +36,7 @@ export class OpenAIProviderAdapter implements AIProvider {
       return {
         success: result.ok,
         data: result.data,
-        error: result.error,
+        error: result.error || 'No error message',
         provider: this.name,
         timestamp: new Date().toISOString()
       };
@@ -67,18 +67,26 @@ export class StubProvider implements AIProvider {
 export function getProvider(providerName?: string): AIProvider {
   const provider = providerName || process.env.AI_PROVIDER || 'openai';
   
-  // Use mock provider if no OpenAI API key is set
+  // Use mock provider if no OpenAI API key is set or if OpenAI SDK is not available
   if (!process.env.OPENAI_API_KEY && provider === 'openai') {
+    console.warn('No OpenAI API key found, falling back to mock provider');
     return new MockProvider();
   }
   
-  switch (provider.toLowerCase()) {
-    case 'openai':
-      return new OpenAIProviderAdapter();
-    case 'mock':
-      return new MockProvider();
-    default:
-      return new StubProvider();
+  try {
+    switch (provider.toLowerCase()) {
+      case 'openai':
+        return new OpenAIProviderAdapter();
+      case 'mock':
+        return new MockProvider();
+      default:
+        console.warn(`Unknown provider '${provider}', falling back to stub provider`);
+        return new StubProvider();
+    }
+  } catch (error) {
+    console.error(`Failed to initialize provider '${provider}':`, error);
+    console.warn('Falling back to mock provider');
+    return new MockProvider();
   }
 }
 

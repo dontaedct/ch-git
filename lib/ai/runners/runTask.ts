@@ -4,7 +4,7 @@
  * Calls ai.run and writes JSON to ./var/ai/<task>.json
  */
 
-import { run } from '../index';
+import { run } from '@/lib/ai';
 import * as fs from 'fs';
 import * as path from 'path';
 

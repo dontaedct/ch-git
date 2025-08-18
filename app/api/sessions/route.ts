@@ -7,9 +7,10 @@ import { paginationSchema } from "@/lib/validation";
 import { applyPagination } from "@/lib/utils";
 import { Session } from "@/lib/supabase/types";
 
+export const runtime = 'nodejs';
 export const revalidate = 60;
 
-async function GETHandler(req: NextRequest) {
+async function GETHandler(req: NextRequest): Promise<NextResponse> {
   try {
     const user = await requireUser();
     const supabase = await createServerClient();
@@ -46,9 +47,9 @@ async function GETHandler(req: NextRequest) {
     }));
   } catch (error) {
     if (error instanceof Error) {
-      return fail(error.message, "VALIDATION_ERROR", 400);
+      return NextResponse.json(fail(error.message, "VALIDATION_ERROR"), { status: 400 });
     }
-    return fail("Internal server error", "INTERNAL_ERROR", 500);
+    return NextResponse.json(fail("Internal server error", "INTERNAL_ERROR"), { status: 500 });
   }
 }
 

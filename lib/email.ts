@@ -5,8 +5,8 @@ type Ok = { ok: true; id?: string; skipped?: true };
 type Fail = { ok: false; code: string; message: string };
 export type EmailResult = Ok | Fail;
 
-const KEY = process.env.RESEND_API_KEY || "";
-const FROM = process.env.RESEND_FROM || "Coach Hub <no-reply@example.com>";
+const KEY = process.env.RESEND_API_KEY ?? "";
+const FROM = process.env.RESEND_FROM ?? "Coach Hub <no-reply@example.com>";
 const resend = KEY ? new Resend(KEY) : null;
 
 function htmlWrap(inner: string) {
@@ -25,7 +25,7 @@ async function actuallySend(to: string, subject: string, html: string): Promise<
     if ((r as any)?.error) return { ok: false, code: "RESEND_ERROR", message: String((r as any).error) };
     return { ok: true, id: (r as any)?.id };
   } catch (e: any) {
-    return { ok: false, code: "SEND_FAILED", message: e?.message || "send failed" };
+    return { ok: false, code: "SEND_FAILED", message: e?.message ?? "send failed" };
   }
 }
 

@@ -114,9 +114,9 @@ export default function SessionList({
         <SessionForm
           mode="create"
           onSubmit={async (formData) => {
-            if (process.env.NODE_ENV !== "production") {
-              console.log('Creating session:', formData)
-            }
+                         if (process.env.NODE_ENV !== "production") {
+               console.warn('Creating session:', formData)
+             }
           }}
         />
       </div>
@@ -210,11 +210,11 @@ export default function SessionList({
           session={editingSession}
           mode="edit"
           onSubmit={async (formData) => {
-            if (onEditSession) {
-              if (process.env.NODE_ENV !== "production") {
-                console.log('Editing session:', formData)
-              }
-            }
+                         if (onEditSession) {
+               if (process.env.NODE_ENV !== "production") {
+                 console.warn('Editing session:', formData)
+               }
+             }
             setEditingSession(null)
           }}
         />

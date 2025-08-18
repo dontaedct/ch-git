@@ -15,3 +15,4 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
     </html>
   );
 }
+

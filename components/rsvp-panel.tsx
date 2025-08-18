@@ -231,7 +231,7 @@ export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="client-select">Select Client</Label>
-                <Select value={selectedClient || ''} onValueChange={setSelectedClient}>
+                <Select value={selectedClient ?? ''} onValueChange={setSelectedClient}>
                   <SelectTrigger>
                     <SelectValue placeholder="Choose a client to edit notes" />
                   </SelectTrigger>

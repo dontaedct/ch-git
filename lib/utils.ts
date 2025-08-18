@@ -24,7 +24,7 @@ export async function applyPagination<T>(
       console.error('Count error:', countError);
       return { data: [], total: 0 };
     }
-    const total = count || 0;
+    const total = count ?? 0;
 
     // Apply pagination
     const offset = (page - 1) * pageSize;
@@ -36,7 +36,7 @@ export async function applyPagination<T>(
     }
 
     return {
-      data: data || [],
+      data: data ?? [],
       total,
     };
   } catch (error) {

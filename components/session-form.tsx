@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Session } from '@/lib/types'
-import { createSessionSchema } from '@/lib/validation'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -79,7 +79,7 @@ export default function SessionForm({ session, onSubmit, mode }: SessionFormProp
               <Input
                 id="title"
                 name="title"
-                defaultValue={session?.title || ''}
+                defaultValue={session?.title ?? ''}
                 placeholder="e.g., Morning Strength Training"
                 required
               />
@@ -90,7 +90,7 @@ export default function SessionForm({ session, onSubmit, mode }: SessionFormProp
               <Textarea
                 id="description"
                 name="description"
-                defaultValue={session?.description || ''}
+                defaultValue={session?.description ?? ''}
                 placeholder="Describe what this session will cover..."
                 rows={3}
               />
@@ -128,7 +128,7 @@ export default function SessionForm({ session, onSubmit, mode }: SessionFormProp
                   min="15"
                   max="180"
                   step="15"
-                  defaultValue={session?.duration_minutes || 60}
+                  defaultValue={session?.duration_minutes ?? 60}
                   required
                 />
               </div>
@@ -148,7 +148,7 @@ export default function SessionForm({ session, onSubmit, mode }: SessionFormProp
                 <Input
                   id="location"
                   name="location"
-                  defaultValue={session?.location || ''}
+                  defaultValue={session?.location ?? ''}
                   placeholder="e.g., Gym Studio A, Outdoor Track"
                 />
               </div>
@@ -164,7 +164,7 @@ export default function SessionForm({ session, onSubmit, mode }: SessionFormProp
                   type="number"
                   min="1"
                   max="50"
-                  defaultValue={session?.max_participants || ''}
+                  defaultValue={session?.max_participants ?? ''}
                   placeholder="Unlimited if empty"
                 />
               </div>
@@ -180,7 +180,7 @@ export default function SessionForm({ session, onSubmit, mode }: SessionFormProp
             <Textarea
               id="notes"
               name="notes"
-              defaultValue={session?.notes || ''}
+              defaultValue={session?.notes ?? ''}
               placeholder="Any special instructions, equipment needed, etc."
               rows={3}
             />

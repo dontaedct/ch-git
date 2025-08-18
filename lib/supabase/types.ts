@@ -45,7 +45,20 @@ export type WeeklyPlan = {
   coach_id: string;
   client_id: string;
   week_start_date: string; // ISO date
+  week_end_date?: string;
+  title?: string;
+  description?: string;
   plan_json: unknown;
+  tasks?: Array<{
+    title: string;
+    category: string;
+    frequency: string;
+    completed?: boolean;
+  }>;
+  goals?: Array<{
+    description: string;
+    target: string;
+  }>;
   status: "draft" | "approved" | "sent";
   created_at?: string;
   updated_at?: string | null;
@@ -56,7 +69,8 @@ export type CheckIn = {
   id: string;
   coach_id: string;
   client_id: string;
-  week_start_date: string;
+  check_in_date: string;
+  week_start_date?: string;
   adherence_pct?: number | null;
   rpe_avg?: number | null;
   energy?: number | null;
@@ -74,9 +88,15 @@ export type CheckIn = {
 };
 
 export type ProgressMetric = {
+  id?: string;
+  client_id?: string;
+  coach_id?: string;
   key: "compliance7" | "compliance28" | "sessions_done" | "streak_days" | "weight_delta";
   value: number;
   label?: string;
+  weight_kg?: number;
+  body_fat_percentage?: number;
+  metric_date?: string;
   created_at?: string | null;
   updated_at?: string | null;
 };

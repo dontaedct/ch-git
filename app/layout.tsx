@@ -1,3 +1,5 @@
+import DebugOverlay from './_debug/DebugOverlay';
+
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -6,8 +8,6 @@ export const fetchCache = 'default-no-store';
 export const metadata = { title: "Coach Hub (dev)", description: "Dev shell" };
 
 const isPreview = process.env.VERCEL_ENV === 'preview';
-
-import DebugOverlay from './_debug/DebugOverlay';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

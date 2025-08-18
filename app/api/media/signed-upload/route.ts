@@ -6,24 +6,33 @@ import { ok, fail } from "@/lib/errors";
 import { signedUploadSchema } from "@/lib/validation";
 import { withSentry } from "@/lib/sentry-wrapper";
 
-async function POSTHandler(req: Request) {
-  const user = await requireUser();
-  const supabase = await createServerClient();
+export const runtime = 'nodejs';
 
-  const body = await req.json();
-  const { client_id, original } = signedUploadSchema.parse(body);
+async function POSTHandler(req: Request): Promise<NextResponse> {
+  try {
+    const user = await requireUser();
+    const supabase = await createServerClient();
 
-  // ensure client belongs to coach
-  const { data: okClient, error: cErr } = await supabase.from("clients").select("id").eq("id", client_id).eq("coach_id", user.id).single();
-  if (cErr || !okClient) return fail("forbidden", "FORBIDDEN", 403);
+    const body = await req.json();
+    const { client_id, original } = signedUploadSchema.parse(body);
 
-  // const ext = original.includes(".") ? original.split(".").pop() : "bin";
-  const path = `client/${client_id}/${randomUUID()}-${original.replaceAll(" ", "_")}`;
+    // ensure client belongs to coach
+    const { data: okClient, error: cErr } = await supabase.from("clients").select("id").eq("id", client_id).eq("coach_id", user.id).single();
+    if (cErr || !okClient) return NextResponse.json(fail("forbidden", "FORBIDDEN"), { status: 403 });
 
-  const { data, error } = await supabase.storage.from("media").createSignedUploadUrl(path);
-  if (error) return fail(error.message, "STORAGE_ERROR", 500);
+    // const ext = original.includes(".") ? original.split(".").pop() : "bin";
+    const path = `client/${client_id}/${randomUUID()}-${original.replaceAll(" ", "_")}`;
 
-  return NextResponse.json(ok({ path, token: data.token }));
+    const { data, error } = await supabase.storage.from("media").createSignedUploadUrl(path);
+    if (error) return NextResponse.json(fail(error.message, "STORAGE_ERROR"), { status: 500 });
+
+    return NextResponse.json(ok({ path, token: data.token }));
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(fail(error.message, "VALIDATION_ERROR"), { status: 400 });
+    }
+    return NextResponse.json(fail("Internal server error", "INTERNAL_ERROR"), { status: 500 });
+  }
 }
 
 export const POST = withSentry(POSTHandler);

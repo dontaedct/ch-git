@@ -7,6 +7,8 @@ export const metadata = { title: "Coach Hub (dev)", description: "Dev shell" };
 
 const isPreview = process.env.VERCEL_ENV === 'preview';
 
+import DebugOverlay from './_debug/DebugOverlay';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -17,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         background: '#fff',
         color: '#111'
       }}>
+        {process.env.VERCEL_ENV === 'preview' ? <DebugOverlay /> : null}
         {isPreview && (
           <div style={{
             position: 'fixed',

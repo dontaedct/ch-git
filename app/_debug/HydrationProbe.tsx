@@ -12,7 +12,7 @@ export default function HydrationProbe() {
     // Simulate hydration completion
     const timer = setTimeout(() => {
       setPhase('hydrated');
-      console.log('🟢 HydrationProbe: Hydration complete');
+      console.warn('🟢 HydrationProbe: Hydration complete');
     }, 100);
     
     return () => clearTimeout(timer);
@@ -20,10 +20,10 @@ export default function HydrationProbe() {
   
   useEffect(() => {
     // Log initial SSR
-    console.log('🔵 HydrationProbe: SSR HTML rendered');
+    console.warn('🔵 HydrationProbe: SSR HTML rendered');
     
     // Log hydration start
-    console.log('🟡 HydrationProbe: Hydration started');
+    console.warn('🟡 HydrationProbe: Hydration started');
     
     // Catch any unhandled errors
     const onError = (e: ErrorEvent) => {

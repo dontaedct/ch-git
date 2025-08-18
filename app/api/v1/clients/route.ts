@@ -4,8 +4,8 @@ import { ok, fail } from "@/lib/errors";
 export async function GET(req: Request) {
   try {
     const url = new URL(req.url);
-    const page = Math.max(1, Number(url.searchParams.get("page") || 1));
-    const pageSize = Math.min(50, Math.max(1, Number(url.searchParams.get("pageSize") || 20)));
+    const page = Math.max(1, Number(url.searchParams.get("page") ?? 1));
+    const pageSize = Math.min(50, Math.max(1, Number(url.searchParams.get("pageSize") ?? 20)));
 
     const supabase = createServerSupabase();
     const { data: { user } } = await supabase.auth.getUser();

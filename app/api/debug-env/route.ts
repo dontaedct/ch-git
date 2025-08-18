@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
-  if ((url.searchParams.get("secret") || "") !== (process.env.CRON_SECRET || "")) {
+  if ((url.searchParams.get("secret") ?? "") !== (process.env.CRON_SECRET ?? "")) {
     return Response.json({ ok:false }, { status: 403 });
   }
   const cwd = process.cwd();

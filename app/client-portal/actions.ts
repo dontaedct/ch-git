@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createServerClient } from '@/lib/supabase/server'
-import { zUUID, toggleTaskSchema } from '@/lib/validation'
+import { toggleTaskSchema } from '@/lib/validation'
 
 export async function toggleTaskCompletion(planId: string, taskId: string, completed: boolean) {
   const supabase = await createServerClient()
@@ -45,7 +45,7 @@ export async function toggleTaskCompletion(planId: string, taskId: string, compl
   href: string
 }
 
-const updatedTasks = (plan.tasks || []).map((t: PortalTile) =>
+const updatedTasks = (plan.tasks ?? []).map((t: PortalTile) =>
     t.id === taskId ? { ...t, completed } : t
   )
 

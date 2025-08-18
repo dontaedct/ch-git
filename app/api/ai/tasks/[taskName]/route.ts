@@ -76,7 +76,7 @@ export async function POST(
       return NextResponse.json(
         { 
           ok: false, 
-          error: result.error || "Task execution failed",
+          error: result.error ?? "Task execution failed",
           provider: result.provider,
           timestamp: result.timestamp
         },

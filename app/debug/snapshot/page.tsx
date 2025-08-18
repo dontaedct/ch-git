@@ -65,9 +65,9 @@ export default function DebugSnapshotPage() {
           <CardContent>
             <div style={{ fontSize: '14px', fontFamily: 'monospace' }}>
               <div>NODE_ENV: {process.env.NODE_ENV}</div>
-              <div>VERCEL_ENV: {process.env.VERCEL_ENV || 'not set'}</div>
-              <div>DEBUG: {process.env.NEXT_PUBLIC_DEBUG || 'not set'}</div>
-              <div>SAFE_MODE: {process.env.NEXT_PUBLIC_SAFE_MODE || 'not set'}</div>
+              <div>VERCEL_ENV: {process.env.VERCEL_ENV ?? 'not set'}</div>
+              <div>DEBUG: {process.env.NEXT_PUBLIC_DEBUG ?? 'not set'}</div>
+              <div>SAFE_MODE: {process.env.NEXT_PUBLIC_SAFE_MODE ?? 'not set'}</div>
               <div>Timestamp: {new Date().toISOString()}</div>
             </div>
           </CardContent>

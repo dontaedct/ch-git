@@ -89,7 +89,7 @@ export function IntakeForm({
           <input
             id={`${idPrefix}-email`}
             type="email"
-            value={form.email || ""}
+            value={form.email ?? ""}
             onChange={(e) => onChange("email", e.target.value)}
             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
           />
@@ -103,7 +103,7 @@ export function IntakeForm({
           <input
             id={`${idPrefix}-phone`}
             type="tel"
-            value={form.phone || ""}
+            value={form.phone ?? ""}
             onChange={(e) => onChange("phone", e.target.value)}
             className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none focus:ring-1 focus:ring-gray-900"
           />

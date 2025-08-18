@@ -2,7 +2,7 @@ import { sendEmail } from "@/lib/email";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const to = searchParams.get("to") || "you@example.com";
+  const to = searchParams.get("to") ?? "you@example.com";
   
   const result = await sendEmail({
     to,

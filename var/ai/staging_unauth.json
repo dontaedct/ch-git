@@ -1,0 +1,35 @@
+﻿{
+    "IsMutuallyAuthenticated":  false,
+    "Cookies":  [
+
+                ],
+    "Headers":  [
+                    "Connection",
+                    "Access-Control-Allow-Origin",
+                    "Access-Control-Allow-Credentials",
+                    "Content-Length",
+                    "Content-Type",
+                    "Date",
+                    "Server"
+                ],
+    "SupportsHeaders":  true,
+    "ContentLength":  233,
+    "ContentEncoding":  "",
+    "ContentType":  "text/html",
+    "CharacterSet":  "ISO-8859-1",
+    "Server":  "gunicorn/19.9.0",
+    "LastModified":  "\/Date(1755458918203)\/",
+    "StatusCode":  404,
+    "StatusDescription":  "NOT FOUND",
+    "ProtocolVersion":  {
+                            "Major":  1,
+                            "Minor":  1,
+                            "Build":  -1,
+                            "Revision":  -1,
+                            "MajorRevision":  -1,
+                            "MinorRevision":  -1
+                        },
+    "ResponseUri":  "https://httpbin.org/api/ai/tasks/spec_writer",
+    "Method":  "POST",
+    "IsFromCache":  false
+}

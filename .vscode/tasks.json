@@ -1,0 +1,58 @@
+﻿{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Cursor AI: Universal Header",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "cursor:auto"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "dependsOn": [],
+      "dependsOrder": "parallel"
+    },
+    {
+      "label": "Cursor AI: Auto-Start (Manual)",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "cursor:auto"],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Cursor AI: Header Check",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "cursor:header"],
+      "group": "build"
+    },
+    {
+      "label": "Cursor AI: Header Fix",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "cursor:header:fix"],
+      "group": "build"
+    },
+    {
+      "label": "Cursor AI: Header Report",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "cursor:header:report"],
+      "group": "build"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@app/*": ["./app/*"],
+      "@lib/*": ["./lib/*"],
+      "@components/*": ["./components/*"],
+      "@ui/*": ["./components/ui/*"],
+      "@data/*": ["./data/*"],
+      "@types/*": ["./types/*"],
+      "@hooks/*": ["./hooks/*"]
+    }
+  },
+  "include": [
+    "lib/ai/**/*",
+    "app/api/ai/tasks/**/*"
+  ]
+}

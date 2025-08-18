@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         background: '#fff',
         color: '#111'
       }}>
-        {process.env.VERCEL_ENV === 'preview' ? <DebugOverlay /> : null}
+        {(process.env.VERCEL_ENV === 'preview' || process.env.NEXT_PUBLIC_DEBUG_OVERLAY === '1') ? <DebugOverlay /> : null}
         {isPreview && (
           <div style={{
             position: 'fixed',

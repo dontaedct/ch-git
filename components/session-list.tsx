@@ -130,7 +130,7 @@ export default function SessionList({
                 <div className="space-y-1 min-w-0 flex-1">
                   <CardTitle className="text-base sm:text-lg truncate">{session.title}</CardTitle>
                   <CardDescription className="line-clamp-2 text-sm">
-                    {session.description || 'No description provided'}
+                    {session.description ?? 'No description provided'}
                   </CardDescription>
                 </div>
                 <Badge className={`${getStatusColor(session)} ml-2 flex-shrink-0`}>

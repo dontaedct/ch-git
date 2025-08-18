@@ -4,6 +4,8 @@ import { Project, SyntaxKind, Node, ts } from 'ts-morph';
 import { glob } from 'fast-glob';
 import { blue, green, red, yellow, cyan } from 'picocolors';
 import leven from 'leven';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 interface DoctorOptions {
   autoFix?: boolean;
@@ -80,6 +82,9 @@ class DoctorRunner {
 
     // Summary
     console.log(cyan(`\n💡 Run 'npm run doctor:fix' to automatically apply suggested fixes`));
+    
+    // Check dev script for double-start pattern
+    await this.checkDevScript();
   }
 
   private async buildExportsIndex(): Promise<void> {
@@ -298,6 +303,37 @@ class DoctorRunner {
   private getRelativePath(absolutePath: string): string {
     const cwd = process.cwd();
     return absolutePath.replace(cwd, '').replace(/^[\\\/]/, '');
+  }
+
+  private async checkDevScript(): Promise<void> {
+    try {
+      const packageJsonPath = path.join(process.cwd(), 'package.json');
+      const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+      const devScript = packageJson.scripts?.dev;
+      
+      if (!devScript) {
+        console.log(red('❌ No "dev" script found in package.json'));
+        return;
+      }
+      
+      // Check for double-start patterns
+      if (devScript.includes('&& next dev') || devScript.includes('&&next dev') || 
+          (devScript.match(/next dev/g) || []).length > 1) {
+        throw new Error('Doctor: dev script must be single-launch (node scripts/dev-bootstrap.js). Remove \'&& next dev ...\'.');
+      }
+      
+      // Check for correct single-launcher pattern
+      if (!devScript.includes('node scripts/dev-bootstrap.js')) {
+        console.log(yellow('⚠️  Dev script should use single launcher: "dev": "node scripts/dev-bootstrap.js"'));
+      } else {
+        console.log(green('✅ Dev script uses single launcher'));
+      }
+    } catch (error) {
+      if (error instanceof Error && error.message.startsWith('Doctor:')) {
+        throw error;
+      }
+      console.log(yellow('⚠️  Could not verify dev script (package.json read error)'));
+    }
   }
 }
 

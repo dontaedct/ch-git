@@ -1,0 +1,7 @@
+[33mcommit faff4ec6b431af7cc5dd2ba27085c13d247883b6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mpreview/fix-white-20250818-182323[m[33m, [m[1;31morigin/wip/ts-errors-20250813-195912[m[33m, [m[1;31morigin/preview/fix-white-20250818-182323[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mwip/ts-errors-20250813-195912[m[33m)[m
+Author: User <user@example.com>
+Date:   Mon Aug 18 18:08:29 2025 -0400
+
+    fix: more Phase 1 nullish coalescing fixes in OpenAI provider
+
+lib/ai/providers/openai.ts

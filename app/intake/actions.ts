@@ -1,9 +1,13 @@
 "use server";
 import { createServiceRoleSupabase } from "@/lib/supabase/server";
+
+
 import { intakeSchema, intakeFormSchema } from "@/lib/validation";
 import { sendConfirmationEmail } from "@/lib/email";
+
 import { normalizePhone } from "@/lib/validation";
 import { splitName } from "@/lib/utils/splitName";
+
 import type { CreateClientIntakeParams } from "@/lib/supabase/rpc-types";
 
 type Result = Promise<{ ok: true } | { ok: false; error: string }>;
@@ -26,17 +30,17 @@ export async function createClientIntake(formData: FormData): Result {
     if (parsedForm.phone) {
       try {
         normalizedPhone = normalizePhone(parsedForm.phone);
-      } catch {
+      } catch (error) {
         return { ok: false, error: "Invalid phone number format" };
       }
     }
 
     // Execute all database operations atomically
     const params: CreateClientIntakeParams = {
-      p_coach_id: "default-coach-id", // TODO: Get from environment or config
+      p_coach_id: parsed.coach_id,
       p_email: parsed.email,
-      p_first_name: splitName(parsed.full_name).first_name,
-      p_last_name: splitName(parsed.full_name).last_name ?? "", // Provide safe default
+      p_first_name: splitName(parsed.name).first_name,
+      p_last_name: splitName(parsed.name).last_name,
       p_phone: normalizedPhone
     };
     
@@ -52,14 +56,14 @@ export async function createClientIntake(formData: FormData): Result {
         to: parsed.email, 
         session: { title: "Welcome", starts_at: new Date().toISOString() } 
       });
-    } catch {
-      console.warn('Failed to send welcome email');
+    } catch (emailError) {
+      console.warn('Failed to send welcome email:', emailError);
       // Don't fail the entire operation if email fails
     }
 
     return { ok: true };
-  } catch {
-    const errorMessage = 'Unknown error occurred';
+  } catch (e: unknown) {
+    const errorMessage = e instanceof Error ? e.message : 'Unknown error occurred';
     return { ok: false, error: errorMessage ?? "intake failed" };
   }
 }

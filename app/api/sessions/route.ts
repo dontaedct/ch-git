@@ -1,15 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createServerClient } from "@/lib/supabase/server";
 import { requireUser } from "@/lib/auth/guard";
-import { ok, fail, asResponse } from "@/lib/errors";
+import { ok, fail } from "@/lib/errors";
 import { withSentry } from "@/lib/sentry-wrapper";
 import { paginationSchema } from "@/lib/validation";
+import { applyPagination } from "@/lib/utils";
+import { Session } from "@/lib/supabase/types";
 
-
+export const runtime = 'nodejs';
 export const revalidate = 60;
 
-async function GETHandler(req: NextRequest) {
+async function GETHandler(req: NextRequest): Promise<NextResponse> {
   try {
-    const { user, supabase } = await requireUser();
+    const user = await requireUser();
+    const supabase = await createServerClient();
 
     // Parse and validate pagination parameters
     const { searchParams } = new URL(req.url);
@@ -28,31 +32,24 @@ async function GETHandler(req: NextRequest) {
       .eq("coach_id", user.id)
       .order("starts_at", { ascending: false });
 
-    // Get total count first
-    const { count: totalCount } = await supabase
-      .from("sessions")
-      .select("*", { count: "exact", head: true })
-      .eq("coach_id", user.id);
-
     // Apply pagination
-    const offset = (validatedPage - 1) * validatedPageSize;
-    const { data, error } = await baseQuery
-      .select("*")
-      .range(offset, offset + validatedPageSize - 1);
-
-    if (error) throw error;
+    const { data, total } = await applyPagination<Session>(
+      baseQuery,
+      validatedPage,
+      validatedPageSize
+    );
 
     return NextResponse.json(ok({
-      data: data ?? [],
+      data,
       page: validatedPage,
       pageSize: validatedPageSize,
-      total: totalCount ?? 0,
+      total,
     }));
   } catch (error) {
     if (error instanceof Error) {
-      return asResponse(fail(error.message, "VALIDATION_ERROR"), 400);
+      return NextResponse.json(fail(error.message, "VALIDATION_ERROR"), { status: 400 });
     }
-    return asResponse(fail("Internal server error", "INTERNAL_ERROR"), 500);
+    return NextResponse.json(fail("Internal server error", "INTERNAL_ERROR"), { status: 500 });
   }
 }
 

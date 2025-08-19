@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache'
 import { createServerClient } from '@/lib/supabase/server'
 import { toggleTaskSchema } from '@/lib/validation'
-import { WeeklyPlanTask } from '@/lib/supabase/types'
 
 export async function toggleTaskCompletion(planId: string, taskId: string, completed: boolean) {
   const supabase = await createServerClient()
@@ -40,7 +39,13 @@ export async function toggleTaskCompletion(planId: string, taskId: string, compl
     throw new Error('Plan not found')
   }
 
-  const updatedTasks = (plan.tasks ?? []).map((t: WeeklyPlanTask) =>
+  interface PortalTile {
+  id: string
+  title: string
+  href: string
+}
+
+const updatedTasks = (plan.tasks ?? []).map((t: PortalTile) =>
     t.id === taskId ? { ...t, completed } : t
   )
 

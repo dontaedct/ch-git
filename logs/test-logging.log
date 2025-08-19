@@ -1,0 +1,26 @@
+2025-08-16T04:52:59.380Z INFO  [ad2f03ae] Starting logging system test | {"operationId":"665af0a2","timestamp":"2025-08-16T04:52:59.379Z","environment":"development"}
+2025-08-16T04:52:59.387Z DEBUG [ad2f03ae] This is a debug message | {"level":"debug","test":true}
+2025-08-16T04:52:59.388Z INFO  [ad2f03ae] This is an info message | {"level":"info","test":true}
+2025-08-16T04:52:59.388Z WARN  [ad2f03ae] This is a warning message | {"level":"warn","test":true}
+2025-08-16T04:52:59.389Z ERROR [ad2f03ae] This is an error message | {"level":"error","test":true}
+2025-08-16T04:52:59.493Z INFO  [ad2f03ae] Timer test completed | {"operationId":"665af0a2","timerId":"fa7f1a1a","duration":103.5874,"timestamp":"2025-08-16T04:52:59.493Z"}
+2025-08-16T04:52:59.494Z ERROR [ad2f03ae] Caught test error | {"operationId":"665af0a2","error":{},"timestamp":"2025-08-16T04:52:59.494Z"} | Error: Test error for logging
+2025-08-16T04:52:59.496Z INFO  [c3f934c9] New correlation ID test | {"operationId":"665af0a2","timestamp":"2025-08-16T04:52:59.496Z"}
+2025-08-16T04:52:59.496Z INFO  [ad2f03ae][build-test] Build operation test | {"operationId":"665af0a2","timestamp":"2025-08-16T04:52:59.496Z"}
+2025-08-16T04:52:59.497Z INFO  [ad2f03ae] Logging system test completed | {"operationId":"665af0a2","totalDuration":117.50539999999998,"timestamp":"2025-08-16T04:52:59.497Z"}
+2025-08-16T04:52:59.498Z INFO  [ad2f03ae] Logger shutting down
+2025-08-16T04:52:59.500Z INFO  [c3f934c9] Logger shutting down
+2025-08-16T04:52:59.500Z INFO  [ad2f03ae][build-test] Logger shutting down
+2025-08-16T04:53:34.684Z INFO  [28e1bcef] Starting logging system test | {"operationId":"9087a962","timestamp":"2025-08-16T04:53:34.684Z","environment":"development"}
+2025-08-16T04:53:34.691Z DEBUG [28e1bcef] This is a debug message | {"level":"debug","test":true}
+2025-08-16T04:53:34.692Z INFO  [28e1bcef] This is an info message | {"level":"info","test":true}
+2025-08-16T04:53:34.693Z WARN  [28e1bcef] This is a warning message | {"level":"warn","test":true}
+2025-08-16T04:53:34.693Z ERROR [28e1bcef] This is an error message | {"level":"error","test":true}
+2025-08-16T04:53:34.797Z INFO  [28e1bcef] Timer test completed | {"operationId":"9087a962","timerId":"70271819","duration":102.635,"timestamp":"2025-08-16T04:53:34.797Z"}
+2025-08-16T04:53:34.798Z ERROR [28e1bcef] Caught test error | {"operationId":"9087a962","error":{},"timestamp":"2025-08-16T04:53:34.798Z"} | Error: Test error for logging
+2025-08-16T04:53:34.799Z INFO  [6f8742a8] New correlation ID test | {"operationId":"9087a962","timestamp":"2025-08-16T04:53:34.799Z"}
+2025-08-16T04:53:34.800Z INFO  [28e1bcef][build-test] Build operation test | {"operationId":"9087a962","timestamp":"2025-08-16T04:53:34.800Z"}
+2025-08-16T04:53:34.801Z INFO  [28e1bcef] Logging system test completed | {"operationId":"9087a962","totalDuration":116.9906,"timestamp":"2025-08-16T04:53:34.801Z"}
+2025-08-16T04:53:34.803Z INFO  [28e1bcef] Logger shutting down
+2025-08-16T04:53:34.804Z INFO  [6f8742a8] Logger shutting down
+2025-08-16T04:53:34.805Z INFO  [28e1bcef][build-test] Logger shutting down

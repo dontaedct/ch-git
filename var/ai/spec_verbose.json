@@ -1,0 +1,12 @@
+{
+  "task": "spec_writer",
+  "input": "# User Authentication Service Enhancement\r\n\r\n## Overview\r\nEnhance the existing user authentication service to support multi-factor authentication (MFA) and improve security posture.\r\n\r\n## Requirements\r\n- Implement TOTP-based MFA using Google Authenticator or similar apps\r\n- Add rate limiting for login attempts\r\n- Implement account lockout after failed attempts\r\n- Add audit logging for security events\r\n- Support backup codes for account recovery\r\n\r\n## Technical Constraints\r\n- Must maintain backward compatibility with existing auth flows\r\n- Should integrate with existing user management system\r\n- Must follow OWASP security guidelines\r\n- Performance impact should be <100ms for MFA verification\r\n\r\n## Success Metrics\r\n- 95% of users enable MFA within 30 days\r\n- Zero successful brute force attacks\r\n- <1% false positive rate for legitimate users\r\n- 99.9% uptime for MFA verification service\r\n\r\n## Timeline\r\n- Phase 1: Core MFA implementation (4 weeks)\r\n- Phase 2: Rate limiting and lockout (2 weeks)\r\n- Phase 3: Audit logging and monitoring (2 weeks)\r\n- Phase 4: Testing and deployment (2 weeks)\r\n\r\n",
+  "result": {
+    "success": false,
+    "error": "The OPENAI_API_KEY environment variable is missing or empty; either provide it, or instantiate the OpenAI client with an apiKey option, like new OpenAI({ apiKey: 'My API Key' }).",
+    "provider": "unknown",
+    "timestamp": "2025-08-17T06:31:17.623Z"
+  },
+  "timestamp": "2025-08-17T06:31:17.623Z",
+  "runner": "runTask.ts"
+}

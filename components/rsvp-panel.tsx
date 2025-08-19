@@ -217,8 +217,8 @@ export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
                         </SelectContent>
                       </Select>
                       
-                                          <div className={`px-2 py-1 rounded-full text-xs border ${getStatusColor(localRSVPs[client.id]?.status ?? 'pending')}`}>
-                      {getStatusIcon(localRSVPs[client.id]?.status ?? 'pending')}
+                      <div className={`px-2 py-1 rounded-full text-xs border ${getStatusColor(localRSVPs[client.id]?.status ?? 'pending')}`}>
+                        {getStatusIcon(localRSVPs[client.id]?.status ?? 'pending')}
                       </div>
                     </div>
                   </div>

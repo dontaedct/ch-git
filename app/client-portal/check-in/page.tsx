@@ -16,6 +16,7 @@ export default function CheckInPage() {
   const [success, setSuccess] = useState(false)
   const supabase = createClient()
   const router = useRouter()
+  const DISABLE = process.env.NEXT_PUBLIC_DISABLE_REDIRECTS === '1';
 
   const loadClientData = useCallback(async (userId: string) => {
     try {
@@ -41,13 +42,13 @@ export default function CheckInPage() {
       if (user) {
         await loadClientData(user.id)
       } else {
-        router.push('/client-portal')
+        if (!DISABLE) router.push('/client-portal')
       }
     } catch {
       setError('Authentication error')
       setLoading(false)
     }
-  }, [loadClientData, router, supabase.auth])
+  }, [loadClientData, router, supabase.auth, DISABLE])
 
   useEffect(() => {
     checkAuth()
@@ -106,7 +107,7 @@ export default function CheckInPage() {
 
       setSuccess(true)
       setTimeout(() => {
-        router.push('/client-portal')
+        if (!DISABLE) router.push('/client-portal')
       }, 2000)
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to submit check-in'
@@ -330,7 +331,9 @@ export default function CheckInPage() {
               <div className="flex gap-4">
                 <button
                   type="button"
-                  onClick={() => router.push('/client-portal')}
+                  onClick={() => {
+                    if (!DISABLE) router.push('/client-portal')
+                  }}
                   className="btn-ghost flex-1"
                 >
                   Cancel

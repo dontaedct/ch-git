@@ -1,8 +1,15 @@
 import type { NextConfig } from "next";
-import createBundleAnalyzer from '@next/bundle-analyzer';
 import path from 'path';
 
-const withAnalyzer = createBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
+let withBundleAnalyzer: (cfg: NextConfig) => NextConfig = (x) => x;
+if (process.env.ANALYZE === "true") {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    withBundleAnalyzer = require("@next/bundle-analyzer")({ enabled: true });
+  } catch {
+    console.warn("[analyzer] not installed; skipping");
+  }
+}
 
 // Build-time environment validation
 if (process.env.NODE_ENV === 'production') {
@@ -122,4 +129,4 @@ const nextConfig: NextConfig = {
   transpilePackages: [],
 };
 
-export default withAnalyzer(nextConfig);
+export default withBundleAnalyzer(nextConfig);

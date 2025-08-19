@@ -60,6 +60,7 @@ jspm_packages/
 
 # next.js build output
 .next
+next.config.compiled.js
 
 # nuxt.js build output
 .nuxt

@@ -13,16 +13,38 @@ export default function ClientPortalPage() {
   const [progressMetrics, setProgressMetrics] = useState<ProgressMetric[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [connectionError, setConnectionError] = useState<boolean>(false)
   const supabase = createClient()
 
   const loadClientData = useCallback(async (userId: string) => {
     try {
+      // Test Supabase connection first
+      const { data: testData, error: testError } = await supabase
+        .from('clients')
+        .select('count')
+        .limit(1)
+      
+      if (testError) {
+        console.error('Supabase connection error:', testError)
+        setConnectionError(true)
+        setError('Unable to connect to database. Please check your connection.')
+        setLoading(false)
+        return
+      }
+
       // Get client profile
-      const { data: clientData } = await supabase
+      const { data: clientData, error: clientError } = await supabase
         .from('clients')
         .select('*')
         .eq('auth_user_id', userId)
         .single()
+
+      if (clientError) {
+        console.error('Client data error:', clientError)
+        setError('Failed to load client data: ' + clientError.message)
+        setLoading(false)
+        return
+      }
 
       if (clientData) {
         // Type guard to ensure this is a Client
@@ -79,8 +101,10 @@ export default function ClientPortalPage() {
           }
         }
       }
-    } catch {
-      setError('Failed to load client data')
+    } catch (err) {
+      console.error('Unexpected error:', err)
+      setError('An unexpected error occurred while loading data')
+      setConnectionError(true)
     } finally {
       setLoading(false)
     }
@@ -88,14 +112,22 @@ export default function ClientPortalPage() {
 
   const checkAuth = useCallback(async () => {
     try {
-      const { data: { user } } = await supabase.auth.getUser()
+      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      if (authError) {
+        console.error('Auth error:', authError)
+        setError('Authentication error: ' + authError.message)
+        setLoading(false)
+        return
+      }
+      
       if (user) {
         await loadClientData(user.id)
       } else {
         setLoading(false)
       }
-    } catch {
-      setError('Authentication error')
+    } catch (err) {
+      console.error('Auth check error:', err)
+      setError('Authentication check failed')
       setLoading(false)
     }
   }, [loadClientData, supabase.auth])
@@ -147,10 +179,78 @@ export default function ClientPortalPage() {
     )
   }
 
+  if (connectionError) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-red-50 flex items-center justify-center p-6">
+        <div className="w-full max-w-md text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-3xl mb-6">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Connection Error</h1>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
+            <h3 className="font-medium text-red-800 mb-2">Troubleshooting:</h3>
+            <ul className="text-sm text-red-700 space-y-1 text-left">
+              <li>• Check if Supabase is running</li>
+              <li>• Verify environment variables are set</li>
+              <li>• Ensure database tables exist</li>
+            </ul>
+          </div>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="btn bg-red-600 hover:bg-red-700"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (error && !connectionError) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-yellow-50 flex items-center justify-center p-6">
+        <div className="w-full max-w-md text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-3xl mb-6">
+            <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h1>
+          <p className="text-gray-600 mb-6">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="btn bg-yellow-600 hover:bg-yellow-700"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   if (!client) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex items-center justify-center p-6">
         <div className="w-full max-w-md">
+          {/* Development Mode Indicator */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+              <div className="flex items-center gap-2 mb-2">
+                <svg className="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="font-medium text-yellow-800">Development Mode</span>
+              </div>
+              <p className="text-sm text-yellow-700">
+                Supabase connection: {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Configured' : 'Missing URL'}<br/>
+                Anonymous key: {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Set' : 'Missing'}
+              </p>
+            </div>
+          )}
+
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-3xl mb-6">
               <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

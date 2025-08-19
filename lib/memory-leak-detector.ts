@@ -54,7 +54,7 @@ export class MemoryLeakDetector {
       const pattern: MemoryLeakPattern = {
         type: 'useEffect',
         severity: 'high',
-        description: `useEffect in ${hookName || 'component'} missing proper cleanup function`,
+        description: `useEffect in ${hookName ?? 'component'} missing proper cleanup function`,
         suggestedFix: 'Add return function for cleanup in useEffect',
         componentName,
         hookName

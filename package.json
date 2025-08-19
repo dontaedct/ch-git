@@ -25,7 +25,11 @@
     "rename:safe": "npm run rename:symbol -- $OLD $NEW && npm run doctor && npm run ci",
     "watch:renames": "tsx scripts/watch-renames.ts",
     "policy:enforce": "tsx scripts/policy-enforcer.ts",
-    "policy:build": "tsx scripts/policy-enforcer.ts --build"
+    "policy:build": "tsx scripts/policy-enforcer.ts --build",
+    "dev:status": "node scripts/dev-manager.js status",
+    "dev:kill": "node scripts/dev-manager.js kill",
+    "dev:clean": "node scripts/dev-manager.js clean",
+    "dev:ports": "node scripts/dev-manager.js ports"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

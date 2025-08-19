@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Session } from '@/lib/types'
+
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -179,7 +180,7 @@ export default function SessionForm({ session, onSubmit, mode }: SessionFormProp
             <Textarea
               id="notes"
               name="notes"
-                              defaultValue={session?.notes ?? ''}
+              defaultValue={session?.notes ?? ''}
               placeholder="Any special instructions, equipment needed, etc."
               rows={3}
             />

@@ -1,0 +1,74 @@
+[
+  {
+    "buildType": "build:fast",
+    "startTime": "2025-08-14T22:50:42.348Z",
+    "endTime": "2025-08-14T22:50:42.660Z",
+    "duration": "312ms",
+    "durationMs": 312,
+    "initialMemory": {
+      "rss": 40775680,
+      "heapTotal": 4689920,
+      "heapUsed": 4050760,
+      "external": 1563743,
+      "arrayBuffers": 10515
+    },
+    "finalMemory": {
+      "rss": "39MB",
+      "heapUsed": "4MB",
+      "heapTotal": "5MB",
+      "external": "2MB"
+    },
+    "exitCode": 1,
+    "success": false,
+    "outputLength": 104,
+    "errorLength": 103
+  },
+  {
+    "buildType": "build:fast",
+    "startTime": "2025-08-17T01:33:33.418Z",
+    "endTime": "2025-08-17T01:33:51.302Z",
+    "duration": "17884ms",
+    "durationMs": 17884,
+    "initialMemory": {
+      "rss": 44417024,
+      "heapTotal": 4689920,
+      "heapUsed": 4122952,
+      "external": 1563743,
+      "arrayBuffers": 10515
+    },
+    "finalMemory": {
+      "rss": "43MB",
+      "heapUsed": "4MB",
+      "heapTotal": "5MB",
+      "external": "2MB"
+    },
+    "exitCode": 1,
+    "success": false,
+    "outputLength": 1887,
+    "errorLength": 59739
+  },
+  {
+    "buildType": "build:fast",
+    "startTime": "2025-08-17T01:34:42.878Z",
+    "endTime": "2025-08-17T01:34:58.879Z",
+    "duration": "16001ms",
+    "durationMs": 16001,
+    "initialMemory": {
+      "rss": 44388352,
+      "heapTotal": 4689920,
+      "heapUsed": 4122952,
+      "external": 1563743,
+      "arrayBuffers": 10515
+    },
+    "finalMemory": {
+      "rss": "43MB",
+      "heapUsed": "4MB",
+      "heapTotal": "5MB",
+      "external": "2MB"
+    },
+    "exitCode": 1,
+    "success": false,
+    "outputLength": 1879,
+    "errorLength": 59741
+  }
+]

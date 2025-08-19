@@ -1,10 +1,15 @@
 'use client';
-export default function GlobalError({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
+
+export default function Error({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
   return (
-    <html><body style={{ padding: 24 }}>
-      <h1>Oops — something went wrong</h1>
-      <p style={{ color: "#666" }}>{error.message}</p>
-      <button onClick={() => reset()} style={{ padding: 8, marginTop: 12 }}>Try again</button>
-    </body></html>
+    <main style={{padding:24,fontFamily:'ui-sans-serif,system-ui'}}>
+      <h2 style={{fontSize:20,marginBottom:12}}>Something went wrong in this route.</h2>
+      <pre style={{whiteSpace:'pre-wrap',opacity:0.8,background:'#111',color:'#fff',padding:12,borderRadius:8}}>
+        {error?.message || 'Unknown error'}
+      </pre>
+      <button onClick={() => reset()} style={{marginTop:12,padding:'8px 12px',borderRadius:8}}>
+        Try again
+      </button>
+    </main>
   );
 }

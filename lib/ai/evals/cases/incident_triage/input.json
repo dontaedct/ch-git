@@ -1,0 +1,14 @@
+{
+  "logs": [
+    "2024-01-15 10:30:15 ERROR [ServiceA] Database connection timeout after 30s",
+    "2024-01-15 10:30:16 WARN [ServiceB] Retry attempt 1/3 failed",
+    "2024-01-15 10:30:17 ERROR [ServiceA] Failed to establish connection pool",
+    "2024-01-15 10:30:18 INFO [ServiceC] Health check failed - service unavailable",
+    "2024-01-15 10:30:19 ERROR [ServiceB] Circuit breaker opened - too many failures",
+    "2024-01-15 10:30:20 WARN [ServiceA] Memory usage at 85% - approaching threshold",
+    "2024-01-15 10:30:21 ERROR [ServiceD] API rate limit exceeded (429)",
+    "2024-01-15 10:30:22 INFO [ServiceB] Manual circuit breaker reset initiated",
+    "2024-01-15 10:30:23 WARN [ServiceC] Response time degradation detected",
+    "2024-01-15 10:30:24 ERROR [ServiceA] Critical error: unable to process requests"
+  ]
+}

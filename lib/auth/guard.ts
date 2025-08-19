@@ -1,19 +1,25 @@
 import { createServerSupabase } from "@/lib/supabase/server";
-import type { SupabaseClient } from "@supabase/supabase-js";
-import type { User } from "@supabase/supabase-js";
 
-export async function requireUser(): Promise<{ 
-  user: User; 
-  supabase: SupabaseClient 
-}> {
-  const supabase = await createServerSupabase();
+export async function requireUser() {
+  const supabase = createServerSupabase();
+  
+  // Dev-only tracing
+  if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
+    console.log('🔐 Auth Guard: Checking user authentication...');
+  }
+  
   const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) throw new Error("Unauthorized");
+  
+  if (error || !data?.user) {
+    if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
+      console.warn('❌ Auth Guard: Authentication failed', { error: error?.message });
+    }
+    throw new Error("Unauthorized");
+  }
+  
+  if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
+    console.log('✅ Auth Guard: User authenticated', { userId: data.user.id });
+  }
+  
   return { user: data.user, supabase };
-}
-
-export async function getUserOrFail(supabase: SupabaseClient): Promise<User> {
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) throw new Error("Unauthorized");
-  return data.user;
 }

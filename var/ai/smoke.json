@@ -1,0 +1,14 @@
+{
+  "task": "smoke",
+  "input": {
+    "message": "Default input"
+  },
+  "result": {
+    "success": false,
+    "error": "Unknown task: smoke. Available tasks: incident_triage, spec_writer",
+    "provider": "unknown",
+    "timestamp": "2025-08-17T18:44:16.244Z"
+  },
+  "timestamp": "2025-08-17T18:44:16.245Z",
+  "runner": "runTask.ts"
+}

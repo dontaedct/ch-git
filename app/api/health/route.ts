@@ -1,20 +1,9 @@
-import { createServerSupabase } from "@/lib/supabase/server";
-import { ok, fail } from "@/lib/errors";
+import { NextResponse } from 'next/server';
+export const runtime = 'nodejs';
 
 export async function GET() {
-  try {
-    const supabase = await createServerSupabase();
-    const { error } = await supabase.from("sessions").select("id").limit(1);
-    const db = !error;
-    return Response.json(ok({
-      time: new Date().toISOString(),
-      env: {
-        url: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
-        anon: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      },
-      db,
-    }));
-  } catch {
-    return Response.json(fail("health failed"), { status: 500 });
-  }
+  return NextResponse.json(
+    { ok: true, env: process.env.VERCEL_ENV ?? 'local', time: new Date().toISOString() },
+    { status: 200 }
+  );
 }

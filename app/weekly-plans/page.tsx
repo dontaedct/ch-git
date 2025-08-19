@@ -31,7 +31,7 @@ export default function WeeklyPlansPage() {
       if (clientsResult.ok) {
         setClients((clientsResult.data as PaginatedResponse<Client>).data || []);
       }
-    } catch (error) {
+    } catch {
       if (process.env.NODE_ENV !== "production") {
         console.error('Failed to load data');
       }
@@ -51,7 +51,7 @@ export default function WeeklyPlansPage() {
         setShowCreateForm(false);
         await loadData();
       } else {
-        setMessage({ type: 'error', text: result.error || 'Failed to create plan' });
+        setMessage({ type: 'error', text: result.error });
       }
     } catch {
       setMessage({ type: 'error', text: 'An unexpected error occurred' });
@@ -64,7 +64,7 @@ export default function WeeklyPlansPage() {
     try {
       const updatedPlans = plans.map(plan => {
         if (plan.id === planId) {
-          const updatedTasks = [...plan.tasks];
+          const updatedTasks = [...(plan.tasks ?? [])];
           const currentTask = updatedTasks[taskIndex];
           if (currentTask) {
             updatedTasks[taskIndex] = {
@@ -81,7 +81,7 @@ export default function WeeklyPlansPage() {
       // Update in database
       const plan = plans.find(p => p.id === planId);
       if (plan) {
-        const updatedTasks = [...plan.tasks];
+        const updatedTasks = [...(plan.tasks ?? [])];
         const currentTask = updatedTasks[taskIndex];
         if (currentTask) {
           updatedTasks[taskIndex] = {
@@ -345,7 +345,7 @@ export default function WeeklyPlansPage() {
                     <h3 className="text-headline font-semibold text-gray-900 mb-2">{plan.title}</h3>
                     <div className="flex items-center gap-4 text-sm text-gray-600">
                       <span>
-                        {new Date(plan.week_start_date).toLocaleDateString()} - {new Date(plan.week_end_date).toLocaleDateString()}
+                        {plan.week_start_date ? new Date(plan.week_start_date).toLocaleDateString() : 'No start date'} - {plan.week_end_date ? new Date(plan.week_end_date).toLocaleDateString() : 'No end date'}
                       </span>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         plan.status === 'active' ? 'bg-green-100 text-green-800' :
@@ -368,7 +368,7 @@ export default function WeeklyPlansPage() {
                     <div className="flex flex-wrap gap-2">
                       {plan.goals.map((goal, index) => (
                         <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                          {goal}
+                          {goal.title}
                         </span>
                       ))}
                     </div>
@@ -378,7 +378,7 @@ export default function WeeklyPlansPage() {
                 <div>
                   <h4 className="font-medium text-gray-900 mb-3">Tasks</h4>
                   <div className="space-y-3">
-                    {plan.tasks.map((task, index) => (
+                    {plan.tasks?.map((task, index) => (
                       <div key={task.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                         <input
                           type="checkbox"

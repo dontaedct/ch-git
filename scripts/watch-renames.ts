@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
 import chokidar from 'chokidar';
-import { Project, SyntaxKind } from 'ts-morph';
+import { Project, SyntaxKind, Node, ts } from 'ts-morph';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -76,7 +76,8 @@ class ImportPathUpdater {
             if (args.length > 0) {
               const arg = args[0];
               if (arg.getKind() === SyntaxKind.StringLiteral) {
-                const moduleSpecifier = arg.getLiteralValue();
+                const stringLiteral = arg as ts.StringLiteral;
+                const moduleSpecifier = stringLiteral.text;
                 
                 if (moduleSpecifier && !moduleSpecifier.startsWith('@')) {
                   const resolvedPath = path.resolve(path.dirname(filePath), moduleSpecifier);
@@ -84,7 +85,8 @@ class ImportPathUpdater {
                   
                   if (resolvedPath === normalizedOldPath) {
                     const newRelativePath = this.getRelativePath(filePath, newPath);
-                    arg.setLiteralValue(newRelativePath);
+                    // Use ts-morph's setLiteralValue method
+                    (arg as any).setLiteralValue(newRelativePath);
                     hasChanges = true;
                   }
                 }
@@ -172,23 +174,23 @@ class ImportPathUpdater {
     const filePaths = new Map<string, number>();
 
     watcher
-      .on('add', (filePath) => {
+      .on('add', (filePath: string) => {
         filePaths.set(filePath, Date.now());
       })
-      .on('unlink', (filePath) => {
+      .on('unlink', (filePath: string) => {
         filePaths.delete(filePath);
       })
-      .on('move', (oldPath, newPath) => {
+      .on('move', (oldPath: string, newPath: string) => {
         console.log(`🔄 Detected move: ${path.relative(process.cwd(), oldPath)} → ${path.relative(process.cwd(), newPath)}`);
         this.addRenameEvent(oldPath, newPath);
       })
-      .on('change', (filePath) => {
+      .on('change', (filePath: string) => {
         // Update timestamp for change events
         if (filePaths.has(filePath)) {
           filePaths.set(filePath, Date.now());
         }
       })
-      .on('error', (error) => {
+      .on('error', (error: Error) => {
         console.error('❌ Watcher error:', error);
       });
 

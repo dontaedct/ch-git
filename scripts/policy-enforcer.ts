@@ -56,7 +56,7 @@ class PolicyEnforcer {
         .filter(line => line.trim())
         .map(line => {
           const [status, file] = line.split('\t');
-          return { status, file };
+          return { status: status || '', file: file || '' };
         });
     } catch (error) {
       console.error('Failed to get staged files:', error);

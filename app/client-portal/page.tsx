@@ -25,39 +25,59 @@ export default function ClientPortalPage() {
         .single()
 
       if (clientData) {
-        setClient(clientData)
-        
-        // Load weekly plan
-        const { data: planData } = await supabase
-          .from('weekly_plans')
-          .select('*')
-          .eq('client_id', clientData.id)
-          .eq('status', 'active')
-          .order('week_start_date', { ascending: false })
-          .limit(1)
-          .single()
+        // Type guard to ensure this is a Client
+        if (typeof clientData === 'object' && clientData && 'id' in clientData && 'coach_id' in clientData) {
+          const client = clientData as Client;
+          setClient(client)
+          
+          // Load weekly plan
+          const { data: planData } = await supabase
+            .from('weekly_plans')
+            .select('*')
+            .eq('client_id', client.id)
+            .eq('status', 'active')
+            .order('week_start_date', { ascending: false })
+            .limit(1)
+            .single()
 
-        if (planData) setWeeklyPlan(planData)
+          if (planData && typeof planData === 'object' && 'id' in planData && 'coach_id' in planData) {
+            // Type guard to ensure this is a WeeklyPlan
+            const weeklyPlan = planData as WeeklyPlan
+            setWeeklyPlan(weeklyPlan)
+          }
 
-        // Load check-ins
-        const { data: checkInData } = await supabase
-          .from('check_ins')
-          .select('*')
-          .eq('client_id', clientData.id)
-          .order('check_in_date', { ascending: false })
-          .limit(10)
+          // Load check-ins
+          const { data: checkInData } = await supabase
+            .from('check_ins')
+            .select('*')
+            .eq('client_id', client.id)
+            .order('check_in_date', { ascending: false })
+            .limit(10)
 
-        if (checkInData) setCheckIns(checkInData)
+          if (checkInData && Array.isArray(checkInData) && checkInData.every(item => 
+            item && typeof item === 'object' && 'id' in item && 'coach_id' in item
+          )) {
+            // Type guard to ensure this is an array of CheckIn
+            const checkIns = checkInData as CheckIn[]
+            setCheckIns(checkIns)
+          }
 
-        // Load progress metrics
-        const { data: metricsData } = await supabase
-          .from('progress_metrics')
-          .select('*')
-          .eq('client_id', clientData.id)
-          .order('metric_date', { ascending: true })
-          .limit(30)
+          // Load progress metrics
+          const { data: metricsData } = await supabase
+            .from('progress_metrics')
+            .select('*')
+            .eq('client_id', client.id)
+            .order('metric_date', { ascending: true })
+            .limit(30)
 
-        if (metricsData) setProgressMetrics(metricsData)
+          if (metricsData && Array.isArray(metricsData) && metricsData.every(item => 
+            item && typeof item === 'object' && 'id' in item && 'coach_id' in item
+          )) {
+            // Type guard to ensure this is an array of ProgressMetric
+            const progressMetrics = metricsData as ProgressMetric[]
+            setProgressMetrics(progressMetrics)
+          }
+        }
       }
     } catch {
       setError('Failed to load client data')
@@ -184,7 +204,7 @@ export default function ClientPortalPage() {
   }
 
   // Calculate compliance percentage
-  const compliancePercentage = weeklyPlan 
+  const compliancePercentage = weeklyPlan?.tasks && weeklyPlan.tasks.length > 0
     ? Math.round((weeklyPlan.tasks.filter(t => t.completed).length / weeklyPlan.tasks.length) * 100)
     : 0
 
@@ -193,9 +213,10 @@ export default function ClientPortalPage() {
     checkIns.filter((checkIn, index) => {
       if (index === 0) return true
       if (index - 1 >= 0 && index - 1 < checkIns.length) {
+        if (!checkIn.check_in_date) return false
         const currentDate = new Date(checkIn.check_in_date)
         const prevCheckIn = checkIns[index - 1]
-        if (!prevCheckIn) return false
+        if (!prevCheckIn?.check_in_date) return false
         const prevDate = new Date(prevCheckIn.check_in_date)
         const diffDays = Math.floor((currentDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24))
         return diffDays === 1
@@ -218,7 +239,7 @@ export default function ClientPortalPage() {
               <span className="text-lg sm:text-xl font-semibold text-gray-900">Client Portal</span>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <span className="hidden sm:inline text-gray-600">Welcome, {client.first_name}!</span>
+              <span className="hidden sm:inline text-gray-600">Welcome, {client?.first_name ?? 'Client'}!</span>
               <button
                 onClick={handleSignOut}
                 className="btn-ghost px-3 sm:px-4 py-2 text-sm"
@@ -298,18 +319,18 @@ export default function ClientPortalPage() {
               <div>
                 <h4 className="font-medium text-gray-900 mb-2">Goals</h4>
                 <div className="flex flex-wrap gap-2">
-                  {weeklyPlan.goals.map((goal, index) => (
+                  {weeklyPlan.goals?.map((goal, index) => (
                     <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                      {goal}
+                      {goal.title}
                     </span>
-                  ))}
+                  )) ?? <span className="text-gray-500 text-sm">No goals set</span>}
                 </div>
               </div>
               
               <div>
                 <h4 className="font-medium text-gray-900 mb-3">Tasks</h4>
                 <div className="space-y-3">
-                  {weeklyPlan.tasks.map((task) => (
+                  {weeklyPlan.tasks?.map((task) => (
                     <div key={task.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                       <div className={`w-5 h-5 rounded-lg flex items-center justify-center ${
                         task.completed ? 'bg-green-500 text-white' : 'bg-gray-200'
@@ -337,7 +358,7 @@ export default function ClientPortalPage() {
                         {task.category}
                       </span>
                     </div>
-                  ))}
+                  )) ?? <span className="text-gray-500 text-sm">No tasks assigned</span>}
                 </div>
               </div>
             </div>
@@ -353,16 +374,16 @@ export default function ClientPortalPage() {
                 <div key={checkIn.id} className="border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-sm text-gray-500">
-                      {new Date(checkIn.check_in_date).toLocaleDateString()}
+                      {checkIn.check_in_date ? new Date(checkIn.check_in_date).toLocaleDateString() : 'No date'}
                     </span>
                     <div className="flex items-center gap-4 text-sm">
                       <span className="flex items-center gap-1">
                         <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
-                        Mood: {checkIn.mood_rating}/5
+                        Mood: {checkIn.mood_rating ?? 'N/A'}/5
                       </span>
                       <span className="flex items-center gap-1">
                         <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-                        Energy: {checkIn.energy_level}/5
+                        Energy: {checkIn.energy_level ?? 'N/A'}/5
                       </span>
                     </div>
                   </div>

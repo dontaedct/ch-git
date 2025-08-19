@@ -112,13 +112,7 @@ export default function ClientPortalPage() {
 
   const checkAuth = useCallback(async () => {
     try {
-      // Add timeout to prevent hanging
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Auth check timeout')), 5000)
-      );
-      
-      const authPromise = supabase.auth.getUser();
-      const { data: { user }, error: authError } = await Promise.race([authPromise, timeoutPromise]) as any;
+      const { data: { user }, error: authError } = await supabase.auth.getUser();
       
       if (authError) {
         console.error('Auth error:', authError)
@@ -141,7 +135,6 @@ export default function ClientPortalPage() {
       }
     } catch (err) {
       console.error('Auth check error:', err)
-      // If it's a timeout or other error, just show login form
       setError('Authentication check failed')
       setLoading(false)
     }
@@ -157,6 +150,13 @@ export default function ClientPortalPage() {
           setLoading(false)
           return
         }
+        // If session exists, load user data
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          await loadClientData(user.id)
+        } else {
+          setLoading(false)
+        }
       } catch (err) {
         console.log('Session check failed - showing login form')
         setLoading(false)
@@ -164,23 +164,9 @@ export default function ClientPortalPage() {
     }
     
     checkSession()
-  }, [supabase.auth])
+  }, []) // Empty dependency array - only run once on mount
 
-  useEffect(() => {
-    checkAuth()
-    
-    // Fallback timeout - if auth check takes too long, force show login form
-    const fallbackTimeout = setTimeout(() => {
-      if (loading) {
-        console.log('Fallback timeout - forcing login form display')
-        setLoading(false)
-        setError(null)
-      }
-    }, 3000)
-    
-    return () => clearTimeout(fallbackTimeout)
-  }, [checkAuth, loading])
-
+  // Remove the problematic useEffect that was causing infinite loops
 
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {

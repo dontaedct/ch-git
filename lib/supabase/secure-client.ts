@@ -151,6 +151,7 @@ function validateSessionTimeout(lastActivity: number, maxAgeMs: number = 30 * 60
 function safeAuditLog(
   logger: typeof auditLogger,
   method: 'logSecurityEvent' | 'logDataOperation',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ...args: any[]
 ): void {
   try {

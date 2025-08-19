@@ -147,9 +147,39 @@ export default function ClientPortalPage() {
     }
   }, [loadClientData, supabase.auth])
 
+  // Direct check for auth session - if none exists, show login form immediately
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        if (!session) {
+          console.log('No session found - immediately showing login form')
+          setLoading(false)
+          return
+        }
+      } catch (err) {
+        console.log('Session check failed - showing login form')
+        setLoading(false)
+      }
+    }
+    
+    checkSession()
+  }, [supabase.auth])
+
   useEffect(() => {
     checkAuth()
-  }, [checkAuth])
+    
+    // Fallback timeout - if auth check takes too long, force show login form
+    const fallbackTimeout = setTimeout(() => {
+      if (loading) {
+        console.log('Fallback timeout - forcing login form display')
+        setLoading(false)
+        setError(null)
+      }
+    }, 3000)
+    
+    return () => clearTimeout(fallbackTimeout)
+  }, [checkAuth, loading])
 
 
 

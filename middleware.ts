@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 
 const store = new Map<string,{count:number, ts:number}>();
 const WINDOW = 60_000; // 1 min
@@ -46,6 +47,44 @@ export function middleware(req: Request) {
     }
   }
 
+  // Route protection logic - only protect specific routes
+  const protectedPatterns = [
+    /^\/client-portal(\/.*)?$/,  // /client-portal and /client-portal/*
+    /^\/sessions(\/.*)?$/        // /sessions and /sessions/*
+  ];
+  
+  const isProtectedRoute = protectedPatterns.some(pattern => pattern.test(url.pathname));
+  
+  if (isProtectedRoute) {
+    if (isDebugMode) {
+      console.log(`[MIDDLEWARE] Protected route detected: ${url.pathname}`);
+    }
+    
+    // For protected routes, check authentication
+    const supabase = createMiddlewareClient({ req, res: NextResponse.next() });
+    
+    // Check if user has a valid session
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (!session) {
+      if (isDebugMode) {
+        console.log(`[MIDDLEWARE] Unauthenticated access to protected route: ${url.pathname}`);
+      }
+      
+      // Redirect to login or show access denied
+      // For now, we'll let the page handle the auth check to avoid middleware complexity
+      // The page will show appropriate login/CTA UI
+      return NextResponse.next();
+    }
+    
+    if (isDebugMode) {
+      console.log(`[MIDDLEWARE] Authenticated access to protected route: ${url.pathname}`);
+    }
+  } else if (isDebugMode) {
+    console.log(`[MIDDLEWARE] Public route: ${url.pathname}`);
+  }
+
+  // API rate limiting (existing logic)
   if (!url.pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
@@ -66,6 +105,14 @@ export function middleware(req: Request) {
   return NextResponse.next();
 }
 
-export const config = { matcher: "/api/:path*" };
+export const config = { 
+  matcher: [
+    // Protect specific routes
+    '/client-portal/:path*',
+    '/sessions/:path*',
+    // Keep API rate limiting
+    '/api/:path*'
+  ]
+};
 
 

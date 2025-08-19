@@ -11,13 +11,13 @@ const nextConfig: NextConfig = {
   async headers() {
     const isPreview = process.env.VERCEL_ENV === 'preview';
     
-    // Production CSP - strict security
+    // Production CSP - strict security but allow Next.js to function
     const productionCsp = [
       "default-src 'self'",
       "img-src 'self' data: blob:",
       "media-src 'self' blob:",
-      "script-src 'self'",
-      "script-src-elem 'self'",
+      "script-src 'self' 'unsafe-eval'",
+      "script-src-elem 'self' 'unsafe-inline'",
       "style-src 'self' 'unsafe-inline'",
       "connect-src 'self' https: wss:",
       "frame-ancestors 'none'",

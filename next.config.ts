@@ -27,6 +27,7 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  transpilePackages: ['@supabase/supabase-js', '@supabase/ssr'],
 };
 
 export default nextConfig;

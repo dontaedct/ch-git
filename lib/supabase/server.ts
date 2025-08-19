@@ -1,19 +1,32 @@
 import { cookies } from "next/headers";
-import { createServerClient } from "@supabase/ssr";
+import { createServerClient as createSSRServerClient, type CookieOptions } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { getEnv } from "@/lib/env";
 
 /** Authenticated client bound to request cookies */
-export function createServerSupabase() {
+export async function createServerSupabase() {
   const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = getEnv();
-  const cookieStore = cookies();
-  return createServerClient(NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, {
-    cookies: {
-      get: (n: string) => cookieStore.get(n)?.value,
-      set: (n: string, v: string, o: any) => cookieStore.set({ name: n, value: v, ...o }),
-      remove: (n: string, o: any) => cookieStore.set({ name: n, value: "", ...o }),
-    },
-  });
+  const cookieStore = await cookies();
+  
+  return createSSRServerClient(
+    NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        get: (name: string) => cookieStore.get(name)?.value,
+        set: (name: string, value: string, options: CookieOptions) => {
+          cookieStore.set({ name, value, ...options });
+        },
+        remove: (name: string, options: CookieOptions) => {
+          cookieStore.set({ name, value: "", ...options });
+        },
+      },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    }
+  );
 }
 
 /** Back-compat alias for old imports */
@@ -23,9 +36,18 @@ export const createServerClient = createServerSupabase;
 export function createServiceRoleSupabase() {
   const { NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = getEnv();
   if (!SUPABASE_SERVICE_ROLE_KEY) throw new Error("SUPABASE_SERVICE_ROLE_KEY missing");
-  return createClient(NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
-    auth: { autoRefreshToken: false, persistSession: false },
-  });
+  
+  // Use direct supabase-js client for service role (no cookies needed)
+  return createClient(
+    NEXT_PUBLIC_SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY,
+    {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    }
+  );
 }
 
 /** Back-compat alias for old imports */

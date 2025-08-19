@@ -1,12 +1,33 @@
 {
+  "framework": "nextjs",
+  "buildCommand": "cp next.config.vercel.js next.config.js && next build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "devCommand": "npm run dev",
   "crons": [
     {
       "path": "/api/weekly-recap",
-      "schedule": "0 13 * * 1",
-      "headers": {
-        "User-Agent": "vercel-cron/1.0"
-      },
-      "query": "secret=${CRON_SECRET}"
+      "schedule": "0 13 * * 1"
+    }
+  ],
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
     }
   ]
 }

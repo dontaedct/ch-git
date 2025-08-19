@@ -1,10 +1,19 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
 
 export default function Home() {
+  const router = useRouter();
+  
+  useEffect(() => {
+    // Redirect to client-portal on mount
+    router.replace('/client-portal');
+  }, [router]);
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
       {/* Hero Section */}

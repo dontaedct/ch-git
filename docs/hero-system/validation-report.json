@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-15T19:02:12.046Z",
+  "timestamp": "2025-08-19T20:51:59.190Z",
   "overallStatus": "PASSED - READY FOR EXTERNAL DISTRIBUTION",
   "phaseResults": {
     "phase1": {
@@ -58,7 +58,7 @@
             "error": null,
             "details": {
               "fileLoadable": true,
-              "fileSize": 13878,
+              "fileSize": 14351,
               "syntaxValid": true,
               "commandExecutable": true,
               "systemHealthy": true
@@ -92,8 +92,8 @@
     "phase3": {
       "status": "COMPLETED",
       "results": {
-        "totalCommands": 223,
-        "availableCommands": 223,
+        "totalCommands": 230,
+        "availableCommands": 230,
         "missingCommands": [],
         "commandTests": {
           "dev": {
@@ -129,6 +129,18 @@
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
           "build:monitor:memory": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "build:optimized": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "build:ultra-fast": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "build:performance": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
@@ -404,6 +416,14 @@
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
+          "db:migrate:rls": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "security:test": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
           "restore:drill": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
@@ -541,6 +561,14 @@
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
           "compliance:report": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "sentinel:check": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "sentinel:fix": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
@@ -1002,7 +1030,7 @@
   },
   "summary": {
     "totalSystems": 5,
-    "totalCommands": 223,
+    "totalCommands": 230,
     "totalFailures": 0,
     "totalWarnings": 0,
     "criticalIssues": 0

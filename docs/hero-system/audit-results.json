@@ -1,8 +1,8 @@
 {
-  "timestamp": "2025-08-15T19:00:15.687Z",
+  "timestamp": "2025-08-19T20:49:35.900Z",
   "npm_scripts": {
-    "total": 223,
-    "available": 223,
+    "total": 230,
+    "available": 230,
     "broken": 0,
     "list": [
       "dev",
@@ -14,6 +14,9 @@
       "build:monitor",
       "build:monitor:fast",
       "build:monitor:memory",
+      "build:optimized",
+      "build:ultra-fast",
+      "build:performance",
       "test:performance",
       "start",
       "lint",
@@ -82,6 +85,8 @@
       "backup:auto",
       "release:baseline",
       "safety:smoke",
+      "db:migrate:rls",
+      "security:test",
       "restore:drill",
       "helper",
       "check:quick",
@@ -117,6 +122,8 @@
       "compliance:enforce",
       "compliance:fix",
       "compliance:report",
+      "sentinel:check",
+      "sentinel:fix",
       "build:smart",
       "build:orchestrate",
       "build:ai",
@@ -239,161 +246,161 @@
         "name": "build-monitor.js",
         "path": "scripts/build-monitor.js",
         "size": 5155,
-        "modified": "2025-08-14T22:49:45.729Z",
+        "modified": "2025-08-19T20:14:37.702Z",
         "exists": true
       },
       {
         "name": "cursor-ai-auto-start.js",
         "path": "scripts/cursor-ai-auto-start.js",
         "size": 12221,
-        "modified": "2025-08-15T01:12:10.593Z",
+        "modified": "2025-08-19T20:14:37.705Z",
         "exists": true
       },
       {
         "name": "cursor-ai-auto-watcher.js",
         "path": "scripts/cursor-ai-auto-watcher.js",
         "size": 14062,
-        "modified": "2025-08-15T01:17:08.082Z",
+        "modified": "2025-08-19T20:14:37.706Z",
         "exists": true
       },
       {
         "name": "cursor-ai-commands.js",
         "path": "scripts/cursor-ai-commands.js",
         "size": 2647,
-        "modified": "2025-08-14T17:10:25.364Z",
+        "modified": "2025-08-19T20:14:37.706Z",
         "exists": true
       },
       {
         "name": "cursor-ai-universal-header.js",
         "path": "scripts/cursor-ai-universal-header.js",
         "size": 24206,
-        "modified": "2025-08-15T01:12:10.591Z",
+        "modified": "2025-08-19T20:14:37.707Z",
         "exists": true
       },
       {
         "name": "cursor-ai-windows-service.ps1",
         "path": "scripts/cursor-ai-windows-service.ps1",
         "size": 8622,
-        "modified": "2025-08-15T01:17:08.086Z",
+        "modified": "2025-08-19T20:14:37.707Z",
         "exists": true
       },
       {
         "name": "doctor-lightweight.ts",
         "path": "scripts/doctor-lightweight.ts",
         "size": 6397,
-        "modified": "2025-08-14T03:21:03.888Z",
+        "modified": "2025-08-19T17:24:59.173Z",
         "exists": true
       },
       {
         "name": "doctor.ts",
         "path": "scripts/doctor.ts",
         "size": 27998,
-        "modified": "2025-08-14T03:21:03.888Z",
+        "modified": "2025-08-19T20:14:37.709Z",
         "exists": true
       },
       {
         "name": "git-auto-recovery.js",
         "path": "scripts/git-auto-recovery.js",
         "size": 3995,
-        "modified": "2025-08-14T07:41:27.562Z",
+        "modified": "2025-08-19T20:14:37.709Z",
         "exists": true
       },
       {
         "name": "git-guardian.js",
         "path": "scripts/git-guardian.js",
         "size": 5346,
-        "modified": "2025-08-14T07:41:27.562Z",
+        "modified": "2025-08-19T20:14:37.710Z",
         "exists": true
       },
       {
         "name": "git-master-control.js",
         "path": "scripts/git-master-control.js",
         "size": 5958,
-        "modified": "2025-08-14T07:41:27.565Z",
+        "modified": "2025-08-19T20:14:37.711Z",
         "exists": true
       },
       {
         "name": "guardian-integration.js",
         "path": "scripts/guardian-integration.js",
         "size": 11318,
-        "modified": "2025-08-14T02:03:45.621Z",
+        "modified": "2025-08-19T17:24:59.175Z",
         "exists": true
       },
       {
         "name": "guardian.js",
         "path": "scripts/guardian.js",
-        "size": 13988,
-        "modified": "2025-08-14T04:36:11.658Z",
+        "size": 14461,
+        "modified": "2025-08-19T17:24:59.177Z",
         "exists": true
       },
       {
         "name": "hero-audit-system.js",
         "path": "scripts/hero-audit-system.js",
         "size": 14106,
-        "modified": "2025-08-15T09:25:49.430Z",
+        "modified": "2025-08-19T20:14:37.711Z",
         "exists": true
       },
       {
         "name": "hero-cleanup.js",
         "path": "scripts/hero-cleanup.js",
         "size": 3124,
-        "modified": "2025-08-15T07:47:02.664Z",
+        "modified": "2025-08-19T20:14:37.712Z",
         "exists": true
       },
       {
         "name": "hero-ultimate-optimized.js",
         "path": "scripts/hero-ultimate-optimized.js",
         "size": 23815,
-        "modified": "2025-08-15T07:47:02.664Z",
+        "modified": "2025-08-19T20:14:37.712Z",
         "exists": true
       },
       {
         "name": "hero-ultimate-runner.bat",
         "path": "scripts/hero-ultimate-runner.bat",
         "size": 217,
-        "modified": "2025-08-15T07:14:15.499Z",
+        "modified": "2025-08-19T20:14:37.713Z",
         "exists": true
       },
       {
         "name": "hero-unified-orchestrator.js",
         "path": "scripts/hero-unified-orchestrator.js",
         "size": 36258,
-        "modified": "2025-08-15T07:47:02.664Z",
+        "modified": "2025-08-19T20:14:37.713Z",
         "exists": true
       },
       {
         "name": "hero-validation-system.js",
         "path": "scripts/hero-validation-system.js",
         "size": 23531,
-        "modified": "2025-08-15T08:52:30.199Z",
+        "modified": "2025-08-19T20:14:37.713Z",
         "exists": true
       },
       {
         "name": "intelligent-build-orchestrator.ts",
         "path": "scripts/intelligent-build-orchestrator.ts",
         "size": 18902,
-        "modified": "2025-08-15T04:43:19.184Z",
+        "modified": "2025-08-19T20:14:37.714Z",
         "exists": true
       },
       {
         "name": "memory-leak-detector.ts",
         "path": "scripts/memory-leak-detector.ts",
         "size": 18465,
-        "modified": "2025-08-15T04:41:01.267Z",
+        "modified": "2025-08-19T20:14:37.714Z",
         "exists": true
       },
       {
         "name": "policy-enforcer.ts",
         "path": "scripts/policy-enforcer.ts",
         "size": 7815,
-        "modified": "2025-08-13T04:15:26.433Z",
+        "modified": "2025-08-19T17:24:59.177Z",
         "exists": true
       },
       {
         "name": "pre-commit-check.js",
         "path": "scripts/pre-commit-check.js",
         "size": 1208,
-        "modified": "2025-08-14T06:49:08.654Z",
+        "modified": "2025-08-19T17:24:59.178Z",
         "exists": true
       },
       {
@@ -406,36 +413,36 @@
       {
         "name": "safety-smoke.cjs",
         "path": "scripts/safety-smoke.cjs",
-        "size": 6478,
-        "modified": "2025-08-14T04:54:37.867Z",
+        "size": 6672,
+        "modified": "2025-08-19T17:24:59.182Z",
         "exists": true
       },
       {
         "name": "smart-lint.js",
         "path": "scripts/smart-lint.js",
         "size": 8987,
-        "modified": "2025-08-13T17:13:11.783Z",
+        "modified": "2025-08-19T17:24:59.183Z",
         "exists": true
       },
       {
         "name": "todo-system.js",
         "path": "scripts/todo-system.js",
         "size": 24016,
-        "modified": "2025-08-14T19:09:39.915Z",
+        "modified": "2025-08-19T20:14:37.722Z",
         "exists": true
       },
       {
         "name": "universal-header-enforcer.ts",
         "path": "scripts/universal-header-enforcer.ts",
         "size": 21137,
-        "modified": "2025-08-15T04:42:14.207Z",
+        "modified": "2025-08-19T20:14:37.722Z",
         "exists": true
       },
       {
         "name": "watch-renames.ts",
         "path": "scripts/watch-renames.ts",
         "size": 7134,
-        "modified": "2025-08-14T03:21:03.889Z",
+        "modified": "2025-08-19T17:24:59.185Z",
         "exists": true
       }
     ]
@@ -447,15 +454,15 @@
   },
   "report": {
     "metadata": {
-      "generated_at": "2025-08-15T19:00:15.687Z",
+      "generated_at": "2025-08-19T20:49:35.900Z",
       "version": "2.0.0",
       "framework": "MIT Hero System - Bulletproof Audit",
       "audit_scope": "Complete accuracy verification"
     },
     "summary": {
       "npm_scripts": {
-        "total": 223,
-        "available": 223,
+        "total": 230,
+        "available": 230,
         "broken": 0,
         "accuracy": "100% verified"
       },
@@ -466,7 +473,7 @@
       }
     },
     "npm_scripts": {
-      "count": 223,
+      "count": 230,
       "list": [
         "dev",
         "prebuild",
@@ -477,6 +484,9 @@
         "build:monitor",
         "build:monitor:fast",
         "build:monitor:memory",
+        "build:optimized",
+        "build:ultra-fast",
+        "build:performance",
         "test:performance",
         "start",
         "lint",
@@ -545,6 +555,8 @@
         "backup:auto",
         "release:baseline",
         "safety:smoke",
+        "db:migrate:rls",
+        "security:test",
         "restore:drill",
         "helper",
         "check:quick",
@@ -580,6 +592,8 @@
         "compliance:enforce",
         "compliance:fix",
         "compliance:report",
+        "sentinel:check",
+        "sentinel:fix",
         "build:smart",
         "build:orchestrate",
         "build:ai",

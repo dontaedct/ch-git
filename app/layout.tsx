@@ -29,8 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             SAFE MODE
           </div>
         )}
-        {DEBUG_MODE && <HydrationProbe />}
-        {DEBUG_MODE && <LoopDetector />}
+        {DEBUG_MODE && process.env.VERCEL_ENV === 'preview' && <HydrationProbe />}
+        {DEBUG_MODE && process.env.VERCEL_ENV === 'preview' && <LoopDetector />}
         <Suspense fallback={<PageBoot />}>
           {children}
         </Suspense>

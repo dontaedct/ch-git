@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "generated_at": "2025-08-15T19:00:15.687Z",
+    "generated_at": "2025-08-19T20:49:35.900Z",
     "version": "2.0.0",
     "framework": "MIT Hero System - Bulletproof Audit",
     "audit_scope": "Complete accuracy verification"
   },
   "summary": {
     "npm_scripts": {
-      "total": 223,
-      "available": 223,
+      "total": 230,
+      "available": 230,
       "broken": 0,
       "accuracy": "100% verified"
     },
@@ -19,7 +19,7 @@
     }
   },
   "npm_scripts": {
-    "count": 223,
+    "count": 230,
     "list": [
       "dev",
       "prebuild",
@@ -30,6 +30,9 @@
       "build:monitor",
       "build:monitor:fast",
       "build:monitor:memory",
+      "build:optimized",
+      "build:ultra-fast",
+      "build:performance",
       "test:performance",
       "start",
       "lint",
@@ -98,6 +101,8 @@
       "backup:auto",
       "release:baseline",
       "safety:smoke",
+      "db:migrate:rls",
+      "security:test",
       "restore:drill",
       "helper",
       "check:quick",
@@ -133,6 +138,8 @@
       "compliance:enforce",
       "compliance:fix",
       "compliance:report",
+      "sentinel:check",
+      "sentinel:fix",
       "build:smart",
       "build:orchestrate",
       "build:ai",

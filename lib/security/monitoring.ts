@@ -209,7 +209,6 @@ export class SecurityMonitor {
   private addThreatIndicator(indicator: Omit<ThreatIndicator, 'id'>): void {
     const threatIndicator: ThreatIndicator = {
       ...indicator,
-      id: `threat_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
     };
 
     this.threatIndicators.push(threatIndicator);

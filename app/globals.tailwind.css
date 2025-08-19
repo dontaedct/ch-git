@@ -2,12 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Fix SVG scaling issues from global CSS resets */
-svg {
-  max-width: none !important;
-  height: auto !important;
-  width: auto !important;
-}
+/* Fix SVG scaling issues from global CSS resets - REMOVED global svg rule */
 
 /* Apple-inspired design system */
 :root {

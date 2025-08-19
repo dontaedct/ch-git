@@ -7,8 +7,8 @@ const isPreview = process.env.VERCEL_ENV === 'preview' ||
 
 const isDev = process.env.NODE_ENV !== 'production'; // localhost, next dev
 
-// TEMPORARY: Force preview CSP for all non-production to fix hydration
-const forcePreviewCSP = process.env.NODE_ENV !== 'production';
+// TEMPORARY: Force preview CSP for ALL environments to fix hydration
+const forcePreviewCSP = true; // TEMPORARILY FORCE FOR ALL
 
 // Debug logging
 console.log('🔍 Next.js Config Environment Detection:', {
@@ -17,7 +17,9 @@ console.log('🔍 Next.js Config Environment Detection:', {
   NODE_ENV: process.env.NODE_ENV,
   isPreview,
   isDev,
-  forcePreviewCSP
+  forcePreviewCSP,
+  'VERCEL_ENV !== production': process.env.VERCEL_ENV !== 'production',
+  'NODE_ENV !== production': process.env.NODE_ENV !== 'production'
 });
 
 const cspProd = [
@@ -52,30 +54,16 @@ const nextConfig: NextConfig = {
   typescript: { ignoreBuildErrors: true },
 
   async headers() {
-    // TEMPORARY: Force preview CSP for all non-production environments
-    if (forcePreviewCSP) {
-      console.log('🔍 FORCING PREVIEW CSP for non-production environment');
-      return [
-        {
-          source: "/(.*)",
-          headers: [
-            { key: "X-Content-Type-Options", value: "nosniff" },
-            { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-            { key: "Content-Security-Policy", value: cspPreview + ";" },
-          ],
-        },
-      ];
-    }
-
-    // Production: strict CSP
-    console.log('🔍 Using PRODUCTION CSP (strict)');
+    // TEMPORARY: Force preview CSP for ALL environments to fix hydration
+    console.log('🔍 TEMPORARILY FORCING PREVIEW CSP FOR ALL ENVIRONMENTS');
+    console.log('🔍 CSP Value:', cspPreview);
     return [
       {
         source: "/(.*)",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Content-Security-Policy", value: cspProd + ";" },
+          { key: "Content-Security-Policy", value: cspPreview + ";" },
         ],
       },
     ];

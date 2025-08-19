@@ -12,6 +12,8 @@ export const fetchCache = 'default-no-store';
 export const metadata = { title: "Coach Hub", description: "Personal training management platform" };
 
 const isSafeMode = process.env.NEXT_PUBLIC_SAFE_MODE === '1';
+const isPreview = process.env.VERCEL_ENV === 'preview';
+const showDebug = process.env.NEXT_PUBLIC_SHOW_DEBUG === '1';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,9 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         background: '#fff',
         color: '#111'
       }}>
-        {process.env.NEXT_PUBLIC_DEBUG === '1' ? <DebugOverlay /> : null}
-        <HydrationProbe />
-        <LoopDetector />
+        {isPreview && showDebug && <DebugOverlay />}
+        {isPreview && showDebug && <HydrationProbe />}
+        {isPreview && showDebug && <LoopDetector />}
         {isSafeMode && (
           <div style={{
             position: 'fixed',

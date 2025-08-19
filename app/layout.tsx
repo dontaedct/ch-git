@@ -9,9 +9,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'default-no-store';
 
-export const metadata = { title: "Coach Hub (dev)", description: "Dev shell" };
+export const metadata = { title: "Coach Hub", description: "Personal training management platform" };
 
-const isPreview = process.env.VERCEL_ENV === 'preview';
 const isSafeMode = process.env.NEXT_PUBLIC_SAFE_MODE === '1';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -24,28 +23,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         background: '#fff',
         color: '#111'
       }}>
-        {(process.env.VERCEL_ENV === 'preview' || process.env.NEXT_PUBLIC_DEBUG_OVERLAY === '1') ? <DebugOverlay /> : null}
+        {process.env.NEXT_PUBLIC_DEBUG === '1' ? <DebugOverlay /> : null}
         <HydrationProbe />
         <LoopDetector />
-        {isPreview && (
-          <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 9999,
-            padding: '6px 10px',
-            fontSize: 12,
-            background: '#fffae6',
-            borderBottom: '1px solid #f5d36a'
-          }}>
-            Preview build • {new Date().toISOString()}
-          </div>
-        )}
         {isSafeMode && (
           <div style={{
             position: 'fixed',
-            top: isPreview ? 28 : 0,
+            top: 0,
             left: 0,
             right: 0,
             zIndex: 9998,
@@ -58,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             🛡️ SAFE MODE • Bypassing auth guards and heavy data fetches
           </div>
         )}
-        <div style={{ paddingTop: isPreview ? 28 : 0 }}>
+        <div style={{ paddingTop: 0 }}>
           <Suspense fallback={<PageBoot />}>
             {children}
           </Suspense>

@@ -14,8 +14,7 @@
 
 import { createIsolatedSupabaseClient } from './server';
 import { auditLogger } from '@/lib/audit-logger';
-import { getUserOrFail } from '@/lib/auth/guard';
-import type { User } from '@/lib/auth/guard';
+import { getUserOrFail, type User } from '@/lib/auth/guard';
 
 // Role definitions for access control
 export enum UserRole {
@@ -152,13 +151,17 @@ function validateSessionTimeout(lastActivity: number, maxAgeMs: number = 30 * 60
 function safeAuditLog(
   logger: typeof auditLogger,
   method: 'logSecurityEvent' | 'logDataOperation',
-  ...args: Parameters<typeof auditLogger.logSecurityEvent | typeof auditLogger.logDataOperation>
+  ...args: any[]
 ): void {
   try {
     if (method === 'logSecurityEvent') {
-      logger.logSecurityEvent(...(args as Parameters<typeof auditLogger.logSecurityEvent>));
+      // logSecurityEvent expects: (eventType, severity, userId?, userEmail?, details?)
+      const [eventType, severity, userId, userEmail, details] = args;
+      logger.logSecurityEvent(eventType, severity, userId, userEmail, details);
     } else {
-      logger.logDataOperation(...(args as Parameters<typeof auditLogger.logDataOperation>));
+      // logDataOperation expects: (eventType, userId, userEmail, resourceType, resourceId, action, details?, severity?)
+      const [eventType, userId, userEmail, resourceType, resourceId, action, details, severity] = args;
+      logger.logDataOperation(eventType, userId, userEmail, resourceType, resourceId, action, details, severity);
     }
   } catch (auditError) {
     // Log audit failure to console but don't break the main operation
@@ -181,7 +184,24 @@ export async function createSecureClient(): Promise<SecureClient> {
     const supabase = await createIsolatedSupabaseClient();
     
     // Validate user authentication
-    const user = await getUserOrFail(supabase);
+    const user = await getUserOrFail({
+      auth: {
+        getUser: async () => {
+          const result = await supabase.auth.getUser();
+          return {
+            data: result.data ? { user: result.data.user as User } : null,
+            error: result.error
+          };
+        },
+        getSession: async () => {
+          const result = await supabase.auth.getSession();
+          return {
+            data: result.data ? { session: result.data.session } : null,
+            error: result.error
+          };
+        }
+      }
+    });
     
     // Check rate limiting
     if (!checkRateLimit(user.id)) {

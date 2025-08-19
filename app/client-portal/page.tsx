@@ -112,9 +112,22 @@ export default function ClientPortalPage() {
 
   const checkAuth = useCallback(async () => {
     try {
-      const { data: { user }, error: authError } = await supabase.auth.getUser()
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Auth check timeout')), 5000)
+      );
+      
+      const authPromise = supabase.auth.getUser();
+      const { data: { user }, error: authError } = await Promise.race([authPromise, timeoutPromise]) as any;
+      
       if (authError) {
         console.error('Auth error:', authError)
+        // Don't treat missing session as an error - just show login form
+        if (authError.message?.includes('Auth session missing')) {
+          console.log('No auth session - showing login form')
+          setLoading(false)
+          return
+        }
         setError('Authentication error: ' + authError.message)
         setLoading(false)
         return
@@ -123,10 +136,12 @@ export default function ClientPortalPage() {
       if (user) {
         await loadClientData(user.id)
       } else {
+        console.log('No user found - showing login form')
         setLoading(false)
       }
     } catch (err) {
       console.error('Auth check error:', err)
+      // If it's a timeout or other error, just show login form
       setError('Authentication check failed')
       setLoading(false)
     }

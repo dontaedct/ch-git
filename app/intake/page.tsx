@@ -21,7 +21,7 @@ export default function IntakePage() {
               <CardHeader>
                 <CardTitle>New Client Registration</CardTitle>
                 <CardDescription>
-                  This form will be processed by our team and you'll receive a welcome email shortly.
+                  This form will be processed by our team and you&apos;ll receive a welcome email shortly.
                 </CardDescription>
               </CardHeader>
               <CardContent>

@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 
 const store = new Map<string,{count:number, ts:number}>();
 const WINDOW = 60_000; // 1 min
 const LIMIT = 100;
 
-export function middleware(req: Request) {
+export async function middleware(req: NextRequest) {
   const url = new URL(req.url);
   const isDebugMode = process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_DEBUG === '1';
   

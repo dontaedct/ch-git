@@ -1,11 +1,12 @@
 {
-  "timestamp": "2025-08-19T20:49:35.900Z",
+  "timestamp": "2025-08-19T22:48:18.140Z",
   "npm_scripts": {
-    "total": 230,
-    "available": 230,
+    "total": 231,
+    "available": 231,
     "broken": 0,
     "list": [
       "dev",
+      "dev:safe",
       "prebuild",
       "build",
       "build:fast",
@@ -329,8 +330,8 @@
       {
         "name": "guardian.js",
         "path": "scripts/guardian.js",
-        "size": 14461,
-        "modified": "2025-08-19T17:24:59.177Z",
+        "size": 14977,
+        "modified": "2025-08-19T22:38:30.900Z",
         "exists": true
       },
       {
@@ -350,8 +351,8 @@
       {
         "name": "hero-ultimate-optimized.js",
         "path": "scripts/hero-ultimate-optimized.js",
-        "size": 23815,
-        "modified": "2025-08-19T20:14:37.712Z",
+        "size": 24431,
+        "modified": "2025-08-19T22:38:30.908Z",
         "exists": true
       },
       {
@@ -364,15 +365,15 @@
       {
         "name": "hero-unified-orchestrator.js",
         "path": "scripts/hero-unified-orchestrator.js",
-        "size": 36258,
-        "modified": "2025-08-19T20:14:37.713Z",
+        "size": 37455,
+        "modified": "2025-08-19T22:38:30.901Z",
         "exists": true
       },
       {
         "name": "hero-validation-system.js",
         "path": "scripts/hero-validation-system.js",
-        "size": 23531,
-        "modified": "2025-08-19T20:14:37.713Z",
+        "size": 29190,
+        "modified": "2025-08-19T22:42:53.783Z",
         "exists": true
       },
       {
@@ -454,15 +455,15 @@
   },
   "report": {
     "metadata": {
-      "generated_at": "2025-08-19T20:49:35.900Z",
+      "generated_at": "2025-08-19T22:48:18.140Z",
       "version": "2.0.0",
       "framework": "MIT Hero System - Bulletproof Audit",
       "audit_scope": "Complete accuracy verification"
     },
     "summary": {
       "npm_scripts": {
-        "total": 230,
-        "available": 230,
+        "total": 231,
+        "available": 231,
         "broken": 0,
         "accuracy": "100% verified"
       },
@@ -473,9 +474,10 @@
       }
     },
     "npm_scripts": {
-      "count": 230,
+      "count": 231,
       "list": [
         "dev",
+        "dev:safe",
         "prebuild",
         "build",
         "build:fast",

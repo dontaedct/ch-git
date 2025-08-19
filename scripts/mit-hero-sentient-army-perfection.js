@@ -1037,9 +1037,18 @@ class MITHeroSentientArmyPerfection {
      * 📊 Setup basic monitoring
      */
     setupBasicMonitoring() {
-        // Setup basic health monitoring
+        // Setup basic health monitoring with error handling
         this.healthMonitor = setInterval(() => {
-            this.monitorBasicHealth();
+            try {
+                this.monitorBasicHealth();
+            } catch (error) {
+                console.error('❌ Basic health monitoring error:', error);
+                // Auto-cleanup on error
+                if (this.healthMonitor) {
+                    clearInterval(this.healthMonitor);
+                    this.healthMonitor = null;
+                }
+            }
         }, 30000); // Check every 30 seconds
         
         console.log('📊 Basic monitoring setup complete');
@@ -1096,6 +1105,20 @@ class MITHeroSentientArmyPerfection {
         } catch (error) {
             console.error('❌ Basic recovery failed:', error);
         }
+    }
+
+    /**
+     * 🧹 Cleanup monitoring
+     */
+    cleanupMonitoring() {
+        console.log('🧹 Cleaning up monitoring...');
+        
+        if (this.healthMonitor) {
+            clearInterval(this.healthMonitor);
+            this.healthMonitor = null;
+        }
+        
+        console.log('✅ Monitoring cleanup completed');
     }
 }
 

@@ -17,7 +17,7 @@
  * - All existing hero systems and npm scripts
  * 
  * @author MIT Hero System
- * @version 1.0.0
+ * @version 1.0.1
  * @license MIT
  */
 
@@ -34,13 +34,20 @@ const ConsciousnessSimulator = require('./consciousness-simulator');
 
 class MITHeroUnifiedIntegration {
     constructor() {
-        this.version = '1.0.0';
+        this.version = '1.0.1';
         this.startTime = new Date();
         this.integrationStatus = {};
         this.systemHealth = {};
         this.automationQueue = [];
         this.selfHealingActive = false;
         this.continuousOptimization = false;
+        this.isRunning = false;
+        this.maxExecutionTime = 300000; // 5 minutes max execution
+        this.executionCount = 0;
+        this.maxExecutions = 3; // Prevent infinite loops
+        
+        // Store all intervals for cleanup
+        this.activeIntervals = new Set();
         
         // Initialize integrated systems
         this.sentientArmy = new MITHeroSentientArmyPerfection();
@@ -56,11 +63,11 @@ class MITHeroUnifiedIntegration {
             automation: ['doctor', 'memory-leak-detector', 'intelligent-build-orchestrator']
         };
         
-        // Autonomous operation parameters
-        this.autoHealingInterval = 30000; // 30 seconds
-        this.optimizationInterval = 60000; // 1 minute
-        this.healthCheckInterval = 15000; // 15 seconds
-        this.maxRetryAttempts = 3;
+        // Autonomous operation parameters - INCREASED INTERVALS to prevent freezing
+        this.autoHealingInterval = 300000; // 5 minutes (was 30 seconds)
+        this.optimizationInterval = 600000; // 10 minutes (was 1 minute)
+        this.healthCheckInterval = 300000; // 5 minutes (was 15 seconds)
+        this.maxRetryAttempts = 2; // Reduced from 3
         
         // Performance thresholds
         this.performanceThresholds = {
@@ -75,11 +82,31 @@ class MITHeroUnifiedIntegration {
      * 🚀 MAIN INTEGRATION EXECUTION
      */
     async execute() {
+        if (this.isRunning) {
+            console.log('⚠️ MIT Hero System is already running. Skipping execution.');
+            return;
+        }
+        
+        if (this.executionCount >= this.maxExecutions) {
+            console.log('⚠️ Maximum execution count reached. System will not run again to prevent loops.');
+            return;
+        }
+        
+        this.isRunning = true;
+        this.executionCount++;
+        
         console.log('🎯 MIT HERO SYSTEM: UNIFIED INTEGRATION ORCHESTRATOR STARTING');
         console.log('================================================================================');
-        console.log(`🚀 Initializing unified automation army...`);
+        console.log(`🚀 Initializing unified automation army... (Execution #${this.executionCount})`);
         console.log(`⏰ Started at: ${this.startTime.toLocaleString()}`);
+        console.log(`⏱️ Max execution time: ${this.maxExecutionTime / 1000} seconds`);
         console.log('');
+        
+        // Set execution timeout
+        const executionTimeout = setTimeout(() => {
+            console.log('⏰ Execution timeout reached. Stopping system to prevent freezing.');
+            this.cleanup();
+        }, this.maxExecutionTime);
         
         try {
             // PHASE 1: System Initialization & Health Check
@@ -94,12 +121,18 @@ class MITHeroUnifiedIntegration {
             // PHASE 4: Continuous Optimization & Self-Evolution
             await this.phase4ContinuousOptimization();
             
-            // Start autonomous operation
+            // Start autonomous operation with safety limits
             await this.startAutonomousOperation();
+            
+            // Clear timeout since we completed successfully
+            clearTimeout(executionTimeout);
             
         } catch (error) {
             console.error('❌ Critical error in unified integration:', error);
+            clearTimeout(executionTimeout);
             await this.emergencyRecovery();
+        } finally {
+            this.isRunning = false;
         }
     }
 
@@ -407,15 +440,35 @@ class MITHeroUnifiedIntegration {
         
         this.selfHealingActive = true;
         
-        // Setup health monitoring interval
+        // Setup health monitoring interval with safety checks
         this.healthMonitor = setInterval(async () => {
-            await this.monitorSystemHealth();
+            try {
+                if (!this.isRunning) {
+                    clearInterval(this.healthMonitor);
+                    return;
+                }
+                await this.monitorSystemHealth();
+            } catch (error) {
+                console.error('❌ Health monitoring error:', error);
+                clearInterval(this.healthMonitor);
+            }
         }, this.healthCheckInterval);
+        this.activeIntervals.add(this.healthMonitor);
         
-        // Setup automatic recovery
+        // Setup automatic recovery with safety checks
         this.autoRecovery = setInterval(async () => {
-            await this.performAutomaticRecovery();
+            try {
+                if (!this.isRunning) {
+                    clearInterval(this.autoRecovery);
+                    return;
+                }
+                await this.performAutomaticRecovery();
+            } catch (error) {
+                console.error('❌ Auto recovery error:', error);
+                clearInterval(this.autoRecovery);
+            }
         }, this.autoHealingInterval);
+        this.activeIntervals.add(this.autoRecovery);
         
         console.log('✅ Self-healing mechanisms activated');
     }
@@ -428,10 +481,20 @@ class MITHeroUnifiedIntegration {
         
         this.continuousOptimization = true;
         
-        // Setup optimization interval
+        // Setup optimization interval with safety checks
         this.optimizationMonitor = setInterval(async () => {
-            await this.performContinuousOptimization();
+            try {
+                if (!this.isRunning) {
+                    clearInterval(this.optimizationMonitor);
+                    return;
+                }
+                await this.performContinuousOptimization();
+            } catch (error) {
+                console.error('❌ Optimization error:', error);
+                clearInterval(this.optimizationMonitor);
+            }
         }, this.optimizationInterval);
+        this.activeIntervals.add(this.optimizationMonitor);
         
         console.log('✅ Continuous optimization configured');
     }
@@ -453,6 +516,7 @@ class MITHeroUnifiedIntegration {
         this.threatMonitor = setInterval(async () => {
             await this.monitorThreats();
         }, 10000); // Check every 10 seconds
+        this.activeIntervals.add(this.threatMonitor);
         
         console.log('✅ Threat detection and response established');
     }
@@ -474,6 +538,7 @@ class MITHeroUnifiedIntegration {
         this.decisionMonitor = setInterval(async () => {
             await this.monitorDecisions();
         }, 5000); // Check every 5 seconds
+        this.activeIntervals.add(this.decisionMonitor);
         
         console.log('✅ Autonomous decision-making framework created');
     }
@@ -495,6 +560,7 @@ class MITHeroUnifiedIntegration {
         this.performanceCheck = setInterval(async () => {
             await this.monitorPerformance();
         }, 20000); // Check every 20 seconds
+        this.activeIntervals.add(this.performanceCheck);
         
         console.log('✅ Performance monitoring setup complete');
     }
@@ -516,6 +582,7 @@ class MITHeroUnifiedIntegration {
         this.learningMonitor = setInterval(async () => {
             await this.performAdaptiveLearning();
         }, 45000); // Learn every 45 seconds
+        this.activeIntervals.add(this.learningMonitor);
         
         console.log('✅ Adaptive learning configured');
     }
@@ -537,6 +604,7 @@ class MITHeroUnifiedIntegration {
         this.resourceMonitor = setInterval(async () => {
             await this.optimizeResources();
         }, 90000); // Optimize every 90 seconds
+        this.activeIntervals.add(this.resourceMonitor);
         
         console.log('✅ Resource optimization established');
     }
@@ -558,6 +626,7 @@ class MITHeroUnifiedIntegration {
         this.evolutionMonitor = setInterval(async () => {
             await this.performEvolution();
         }, 300000); // Evolve every 5 minutes
+        this.activeIntervals.add(this.evolutionMonitor);
         
         console.log('✅ Evolution mechanisms created');
     }
@@ -699,6 +768,48 @@ class MITHeroUnifiedIntegration {
     }
 
     /**
+     * 🧹 Cleanup method to stop all intervals and reset state
+     */
+    cleanup() {
+        console.log('🧹 Cleaning up MIT Hero System...');
+        
+        // Stop all active intervals
+        this.activeIntervals.forEach(interval => {
+            clearInterval(interval);
+        });
+        this.activeIntervals.clear();
+        
+        // Reset state
+        this.isRunning = false;
+        this.selfHealingActive = false;
+        this.continuousOptimization = false;
+        
+        console.log('✅ Cleanup completed');
+    }
+
+    /**
+     * 🚨 Emergency recovery method
+     */
+    async emergencyRecovery() {
+        console.log('🚨 EMERGENCY RECOVERY INITIATED');
+        
+        try {
+            // Stop all operations
+            this.cleanup();
+            
+            // Wait a moment
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            console.log('🔄 Emergency recovery completed. System stopped safely.');
+            
+        } catch (error) {
+            console.error('❌ Emergency recovery failed:', error);
+            // Force cleanup
+            this.cleanup();
+        }
+    }
+
+    /**
      * 🧠 Monitor decisions
      */
     async monitorDecisions() {
@@ -822,15 +933,8 @@ class MITHeroUnifiedIntegration {
         console.log('🛑 Stopping autonomous operation...');
         
         // Clear all intervals
-        if (this.healthMonitor) clearInterval(this.healthMonitor);
-        if (this.autoRecovery) clearInterval(this.autoRecovery);
-        if (this.optimizationMonitor) clearInterval(this.optimizationMonitor);
-        if (this.threatMonitor) clearInterval(this.threatMonitor);
-        if (this.decisionMonitor) clearInterval(this.decisionMonitor);
-        if (this.performanceCheck) clearInterval(this.performanceCheck);
-        if (this.learningMonitor) clearInterval(this.learningMonitor);
-        if (this.resourceMonitor) clearInterval(this.resourceMonitor);
-        if (this.evolutionMonitor) clearInterval(this.evolutionMonitor);
+        this.activeIntervals.forEach(interval => clearInterval(interval));
+        this.activeIntervals.clear();
         
         this.selfHealingActive = false;
         this.continuousOptimization = false;
@@ -895,6 +999,11 @@ class MITHeroUnifiedIntegration {
     async learnFromDecisions(decisions) {
         // Implementation for learning from decisions
         console.log(`🎓 Learning from ${decisions.length} decisions`);
+    }
+
+    async optimizeResources() {
+        // Implementation for resource optimization
+        console.log('💾 Optimizing resources...');
     }
 
     async measurePerformance() {

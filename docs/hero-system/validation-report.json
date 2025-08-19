@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-08-19T20:51:59.190Z",
+  "timestamp": "2025-08-19T22:50:42.635Z",
   "overallStatus": "PASSED - READY FOR EXTERNAL DISTRIBUTION",
   "phaseResults": {
     "phase1": {
@@ -36,10 +36,15 @@
             "error": null,
             "details": {
               "fileLoadable": true,
-              "fileSize": 36052,
+              "fileSize": 37237,
+              "fromCache": false,
               "syntaxValid": true,
               "commandExecutable": true,
               "systemHealthy": true
+            },
+            "performance": {
+              "duration": 1226.3927,
+              "startTime": 27.2122
             }
           },
           "Hero Ultimate Optimized": {
@@ -47,10 +52,15 @@
             "error": null,
             "details": {
               "fileLoadable": true,
-              "fileSize": 23625,
+              "fileSize": 24235,
+              "fromCache": false,
               "syntaxValid": true,
               "commandExecutable": true,
               "systemHealthy": true
+            },
+            "performance": {
+              "duration": 916.5582,
+              "startTime": 337.2406
             }
           },
           "Guardian System": {
@@ -58,10 +68,15 @@
             "error": null,
             "details": {
               "fileLoadable": true,
-              "fileSize": 14351,
+              "fileSize": 14867,
+              "fromCache": false,
               "syntaxValid": true,
               "commandExecutable": true,
               "systemHealthy": true
+            },
+            "performance": {
+              "duration": 610.2081999999999,
+              "startTime": 643.678
             }
           },
           "Doctor System": {
@@ -70,9 +85,14 @@
             "details": {
               "fileLoadable": true,
               "fileSize": 27912,
+              "fromCache": false,
               "syntaxValid": true,
               "commandExecutable": true,
               "systemHealthy": true
+            },
+            "performance": {
+              "duration": 308.59180000000003,
+              "startTime": 945.3647
             }
           },
           "Cursor AI Universal Header": {
@@ -81,22 +101,37 @@
             "details": {
               "fileLoadable": true,
               "fileSize": 24100,
+              "fromCache": false,
               "syntaxValid": true,
               "commandExecutable": true,
               "systemHealthy": true
+            },
+            "performance": {
+              "duration": 303.0627999999999,
+              "startTime": 1254.0821
             }
           }
+        },
+        "performanceMetrics": {
+          "startTime": 26.9048,
+          "endTime": 1557.4149,
+          "totalDuration": 1530.5101,
+          "averageTestTime": 306.10202
         }
       }
     },
     "phase3": {
       "status": "COMPLETED",
       "results": {
-        "totalCommands": 230,
-        "availableCommands": 230,
+        "totalCommands": 231,
+        "availableCommands": 231,
         "missingCommands": [],
         "commandTests": {
           "dev": {
+            "success": true,
+            "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
+          },
+          "dev:safe": {
             "success": true,
             "output": "Run arbitrary package scripts\n\nUsage:\nnpm run-script <command> [-- <args>]\n\nOptions:\n[-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]\n[-ws|--workspaces] [--include-workspace-root] [--if-present] [--ignore-scripts]\n[--foreground-scripts] [--script-shell <script-shell>]\n\naliases: run, rum, urn\n\nRun \"npm help run-script\" for more info\n"
           },
@@ -1030,7 +1065,7 @@
   },
   "summary": {
     "totalSystems": 5,
-    "totalCommands": 230,
+    "totalCommands": 231,
     "totalFailures": 0,
     "totalWarnings": 0,
     "criticalIssues": 0

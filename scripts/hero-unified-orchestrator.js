@@ -807,29 +807,68 @@ class HeroUnifiedOrchestrator {
   startUnifiedMonitoring() {
     console.log('  📊 Starting unified monitoring...');
     
+    // Store all intervals for cleanup
+    this.monitoringIntervals = {};
+    
     // Health check monitoring
     this.monitoringIntervals.health = setInterval(() => {
-      this.performComprehensiveHealthCheck();
+      try {
+        this.performComprehensiveHealthCheck();
+      } catch (error) {
+        console.error('❌ Health check error:', error);
+        clearInterval(this.monitoringIntervals.health);
+      }
     }, UNIFIED_HERO_CONFIG.healthCheckInterval);
     
     // Threat scanning
     this.monitoringIntervals.threats = setInterval(() => {
-      this.scanForThreats();
+      try {
+        this.scanForThreats();
+      } catch (error) {
+        console.error('❌ Threat scan error:', error);
+        clearInterval(this.monitoringIntervals.threats);
+      }
     }, UNIFIED_HERO_CONFIG.threatScanInterval);
     
     // Performance optimization
     this.monitoringIntervals.performance = setInterval(() => {
-      this.optimizePerformance();
+      try {
+        this.optimizePerformance();
+      } catch (error) {
+        console.error('❌ Performance optimization error:', error);
+        clearInterval(this.monitoringIntervals.performance);
+      }
     }, UNIFIED_HERO_CONFIG.optimizationInterval);
     
     // Memory monitoring
     this.monitoringIntervals.memory = setInterval(() => {
-      this.updateMemoryMetrics();
+      try {
+        this.updateMemoryMetrics();
+      } catch (error) {
+        console.error('❌ Memory monitoring error:', error);
+        clearInterval(this.monitoringIntervals.memory);
+      }
     }, UNIFIED_HERO_CONFIG.memoryCheckInterval);
     
     console.log('  ✅ Unified monitoring started');
   }
   
+  // Cleanup all monitoring intervals
+  cleanupMonitoring() {
+    console.log('  🧹 Cleaning up monitoring intervals...');
+    
+    if (this.monitoringIntervals) {
+      Object.values(this.monitoringIntervals).forEach(interval => {
+        if (interval) {
+          clearInterval(interval);
+        }
+      });
+      this.monitoringIntervals = {};
+    }
+    
+    console.log('  ✅ Monitoring cleanup completed');
+  }
+
   // Update memory metrics
   updateMemoryMetrics() {
     const currentMemory = process.memoryUsage();

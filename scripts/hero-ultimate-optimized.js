@@ -316,11 +316,20 @@ class HeroUltimateOptimized {
   async initializeMonitoring() {
     console.log('  📊 Initializing monitoring systems...');
     
-    // OPTIMIZED: Use efficient monitoring intervals
+    // OPTIMIZED: Use efficient monitoring intervals with error handling
     this.monitoringInterval = setInterval(() => {
-      this.performHealthCheck();
-      this.updatePerformanceMetrics();
-      this.scanForThreats();
+      try {
+        this.performHealthCheck();
+        this.updatePerformanceMetrics();
+        this.scanForThreats();
+      } catch (error) {
+        console.error('❌ Monitoring error:', error);
+        // Auto-cleanup on error
+        if (this.monitoringInterval) {
+          clearInterval(this.monitoringInterval);
+          this.monitoringInterval = null;
+        }
+      }
     }, ULTIMATE_HERO_CONFIG.healthCheckInterval);
     
     console.log('  ✅ Monitoring systems initialized');
@@ -374,6 +383,18 @@ class HeroUltimateOptimized {
     });
   }
   
+  // Cleanup monitoring
+  cleanupMonitoring() {
+    console.log('  🧹 Cleaning up monitoring...');
+    
+    if (this.monitoringInterval) {
+      clearInterval(this.monitoringInterval);
+      this.monitoringInterval = null;
+    }
+    
+    console.log('  ✅ Monitoring cleanup completed');
+  }
+
   // Perform health check - OPTIMIZED
   async performHealthCheck() {
     const startTime = Date.now();

@@ -431,8 +431,24 @@ async function main() {
           process.exit(0);
         });
         
-        // Keep alive
-        setInterval(() => {}, 1000);
+        // Keep process alive with proper cleanup
+        const keepAlive = setInterval(() => {
+          // Just keep the process running
+        }, 10000); // Check every 10 seconds instead of every 1 second
+        
+        // Cleanup on exit
+        process.on('SIGINT', () => {
+          clearInterval(keepAlive);
+          guardian.stopWatching();
+          process.exit(0);
+        });
+        
+        process.on('SIGTERM', () => {
+          clearInterval(keepAlive);
+          guardian.stopWatching();
+          process.exit(0);
+        });
+        
         break;
         
       case '--status':

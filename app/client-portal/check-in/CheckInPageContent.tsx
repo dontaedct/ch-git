@@ -73,7 +73,7 @@ export function CheckInPageContent({ initialClientId, initialCoachId }: CheckInP
             body_fat_percentage: checkInData.body_fat_percentage,
           })
 
-        if (metricError && process.env.NODE_ENV !== "production") {
+        if (metricError && process.env.VERCEL_ENV === 'preview' && process.env.NEXT_PUBLIC_SHOW_DEBUG === '1') {
           console.warn('Failed to save progress metric:', metricError)
         }
       }

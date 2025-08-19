@@ -1,0 +1,1 @@
+[33mba1c2f5[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mhotfix/svg-scale-guard-20250819[m[33m)[m fix(ui): stop global svg upscaling; gate debug UI to preview; size icons

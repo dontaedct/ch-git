@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fix SVG scaling issues from global CSS resets */
+svg {
+  max-width: none !important;
+  height: auto !important;
+  width: auto !important;
+}
+
 /* Apple-inspired design system */
 :root {
   --bg: hsl(0 0% 98%);

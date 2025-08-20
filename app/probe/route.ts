@@ -1,6 +1,6 @@
 export async function GET() {
-  const env = process.env.NODE_ENV || 'unknown';
-  const version = process.env.npm_package_version || 'unknown';
+  const env = process.env.NODE_ENV ?? 'unknown';
+  const version = process.env.npm_package_version ?? 'unknown';
   
   const html = `<!DOCTYPE html>
 <html>

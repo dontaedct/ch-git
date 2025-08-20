@@ -16,7 +16,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
   const logger = createRouteLogger('GET', '/api/clients');
   
   try {
-    const user = await requireUser();
+    const { user } = await requireUser();
     const supabase = await createServerClient();
 
     // Parse and validate pagination parameters
@@ -32,22 +32,25 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
     // Build the base query
     const baseQuery = supabase
       .from("clients")
-      .select("*")
+      .select("*", { count: "exact" })
       .eq("coach_id", user.id)
       .order("first_name", { ascending: true });
 
     // Apply pagination
-    const { data, total } = await applyPagination<Client>(
-      baseQuery,
-      validatedPage,
-      validatedPageSize
-    );
+    const from = (validatedPage - 1) * validatedPageSize;
+    const to = from + validatedPageSize - 1;
+    
+    const { data, error, count } = await baseQuery.range(from, to);
+    
+    if (error) {
+      throw error;
+    }
 
     const response = NextResponse.json(ok({
-      data,
+      data: data || [],
       page: validatedPage,
       pageSize: validatedPageSize,
-      total,
+      total: count || 0,
     }));
     
     logger.log(200, startTime);

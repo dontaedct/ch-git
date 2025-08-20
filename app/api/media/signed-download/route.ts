@@ -10,7 +10,7 @@ export const revalidate = 60;
 
 async function GETHandler(req: Request): Promise<NextResponse> {
   try {
-    const user = await requireUser();
+    const { user } = await requireUser();
     const supabase = await createServerClient();
 
     const { searchParams } = new URL(req.url);

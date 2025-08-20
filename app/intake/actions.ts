@@ -1,6 +1,6 @@
 "use server";
 import { createServiceRoleSupabase } from "@/lib/supabase/server";
-
+import { getEnv } from "@/lib/env";
 
 import { intakeSchema, intakeFormSchema } from "@/lib/validation";
 import { sendConfirmationEmail } from "@/lib/email";
@@ -37,10 +37,10 @@ export async function createClientIntake(formData: FormData): Result {
 
     // Execute all database operations atomically
     const params: CreateClientIntakeParams = {
-      p_coach_id: parsed.coach_id,
+      p_coach_id: parsed.coach_id || getEnv().DEFAULT_COACH_ID || '00000000-0000-0000-0000-000000000000',
       p_email: parsed.email,
       p_first_name: splitName(parsed.name).first_name,
-      p_last_name: splitName(parsed.name).last_name,
+      p_last_name: splitName(parsed.name).last_name || '',
       p_phone: normalizedPhone
     };
     

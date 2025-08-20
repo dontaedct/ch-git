@@ -22,8 +22,10 @@ export type PaginatedResponse<T> = {
 // Intake schemas
 export const intakeSchema = z.object({
   full_name: z.string().min(1),
+  name: z.string().min(1), // Add name field for backward compatibility
   email: z.string().email(),
   phone: z.string().optional(),
+  coach_id: z.string().uuid().optional(), // Add coach_id field
   consent: z.union([z.literal(true), z.string()]).transform(v => v === true || v === "on" || v === "true" || v === "1" || v === "1"),
 });
 

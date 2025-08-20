@@ -14,3 +14,6 @@ export function createRouteLogger(method: string, path: string) {
 /** Back-compat default export for sites that import default */
 const logger = { log, error };
 export default logger;
+
+/** Named export for logger */
+export { logger };

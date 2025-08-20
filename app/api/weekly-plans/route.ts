@@ -12,7 +12,7 @@ export const revalidate = 60;
 
 async function GETHandler(req: NextRequest): Promise<NextResponse> {
   try {
-    const user = await requireUser();
+    const { user } = await requireUser();
     const supabase = await createServerClient();
 
     // Parse and validate pagination parameters
@@ -28,22 +28,25 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
     // Build the base query
     const baseQuery = supabase
       .from("weekly_plans")
-      .select("*")
+      .select("*", { count: "exact" })
       .eq("coach_id", user.id)
       .order("week_start_date", { ascending: false });
 
     // Apply pagination
-    const { data, total } = await applyPagination<WeeklyPlan>(
-      baseQuery,
-      validatedPage,
-      validatedPageSize
-    );
+    const from = (validatedPage - 1) * validatedPageSize;
+    const to = from + validatedPageSize - 1;
+    
+    const { data, error, count } = await baseQuery.range(from, to);
+    
+    if (error) {
+      throw error;
+    }
 
     return NextResponse.json(ok({
-      data,
+      data: data || [],
       page: validatedPage,
       pageSize: validatedPageSize,
-      total,
+      total: count || 0,
     }));
   } catch (error) {
     if (error instanceof Error) {

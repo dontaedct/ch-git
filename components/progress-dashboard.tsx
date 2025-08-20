@@ -248,7 +248,7 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
                 <div className="flex flex-wrap gap-2">
                   {weeklyPlan.goals.map((goal, index) => (
                     <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                      {goal.title}
+                      {goal.description}
                     </span>
                   ))}
                 </div>
@@ -265,8 +265,8 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
               <div>
                 <h4 className="font-medium text-gray-900 mb-3">Task Completion</h4>
                 <div className="space-y-3">
-                  {weeklyPlan.tasks.map((task) => (
-                    <div key={task.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                  {weeklyPlan.tasks.map((task, index) => (
+                    <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                       <div className={`w-5 h-5 rounded-lg flex items-center justify-center ${
                         task.completed ? 'bg-green-500 text-white' : 'bg-gray-200'
                       }`}>
@@ -280,9 +280,6 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
                         <span className={`font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
                           {task.title}
                         </span>
-                        {task.description && (
-                          <p className="text-sm text-gray-600 mt-1">{task.description}</p>
-                        )}
                       </div>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                         task.category === 'workout' ? 'bg-red-100 text-red-800' :

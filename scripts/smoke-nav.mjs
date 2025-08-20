@@ -5,7 +5,7 @@
  * Validates that public routes are accessible and protected routes are guarded
  */
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+const BASE_URL = 'https://ch-5fl6ocdsq-dontaedct-1785s-projects.vercel.app';
 
 async function smokeTest() {
   console.log('🚀 Starting navigation smoke tests...\n');

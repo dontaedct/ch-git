@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
-import { toHttpResponse } from "./errors";
+import { fail } from "./errors";
 import { NextRequest, NextResponse } from "next/server";
 
 type RouteHandler = (
@@ -19,8 +19,8 @@ export function withSentry(handler: RouteHandler): RouteHandler {
       }
       
       // Return NextResponse using existing error handling
-      const httpResponse = toHttpResponse(error);
-      return NextResponse.json(httpResponse.body, { status: httpResponse.status });
+      const errorMessage = error instanceof Error ? error.message : 'Internal server error';
+      return NextResponse.json(fail(errorMessage, "INTERNAL_ERROR"), { status: 500 });
     }
   };
 }

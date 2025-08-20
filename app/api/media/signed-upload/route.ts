@@ -10,7 +10,7 @@ export const runtime = 'nodejs';
 
 async function POSTHandler(req: Request): Promise<NextResponse> {
   try {
-    const user = await requireUser();
+    const { user } = await requireUser();
     const supabase = await createServerClient();
 
     const body = await req.json();

@@ -11,8 +11,8 @@
  * Never traverses outside process.cwd()
  */
 
-import { spawn } from 'child_process';;
-import path from 'path';;
+import { spawn } from 'child_process';
+import path from 'path';
 
 // Configuration
 const CONFIG = {
@@ -191,4 +191,4 @@ if (import.meta.main) {
   main();
 }
 
-export { main, executeCommand };;
+export { main, executeCommand };

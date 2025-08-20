@@ -5,7 +5,7 @@
  * Run this manually before committing: node scripts/pre-commit-check.js
  */
 
-import { execSync } from 'child_process';;
+import { execSync } from 'child_process';
 
 console.log('🔍 Running pre-commit checks...\n');
 

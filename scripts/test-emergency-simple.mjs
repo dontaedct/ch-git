@@ -6,7 +6,7 @@
  * Quick test to verify the emergency recovery system is working
  */
 
-import { spawn } from 'child_process';;
+import { spawn } from 'child_process';
 
 console.log('🚨 Testing Emergency Recovery System...\n');
 

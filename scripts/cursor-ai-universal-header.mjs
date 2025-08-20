@@ -57,4 +57,4 @@ class CursorAIUniversalHeader {
     }
 }
 
-export default CursorAIUniversalHeader;;
+export default CursorAIUniversalHeader;

@@ -55,4 +55,4 @@ class MemoryLeakDetector {
     }
 }
 
-export default MemoryLeakDetector;;
+export default MemoryLeakDetector;

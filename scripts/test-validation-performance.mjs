@@ -6,7 +6,7 @@
  * and provides the expected performance improvements.
  */
 
-import HeroValidationSystem from './hero-validation-system';;
+import HeroValidationSystem from './hero-validation-system';
 
 async function testValidationPerformance() {
     console.log('🧪 Testing MIT Hero Validation Performance Optimizations');
@@ -70,4 +70,4 @@ if (import.meta.main) {
     testValidationPerformance();
 }
 
-export { testValidationPerformance };;
+export { testValidationPerformance };

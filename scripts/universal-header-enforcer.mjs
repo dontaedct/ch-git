@@ -49,4 +49,4 @@ class UniversalHeaderEnforcer {
     }
 }
 
-export default UniversalHeaderEnforcer;;
+export default UniversalHeaderEnforcer;

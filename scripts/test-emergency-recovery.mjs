@@ -11,9 +11,9 @@
  * Follows universal header rules
  */
 
-import { spawn } from 'child_process';;
-import fs from 'fs';;
-import path from 'path';;
+import { spawn } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 class EmergencyRecoveryTester {
     constructor() {
@@ -197,4 +197,4 @@ if (import.meta.main) {
     });
 }
 
-export default EmergencyRecoveryTester;;
+export default EmergencyRecoveryTester;

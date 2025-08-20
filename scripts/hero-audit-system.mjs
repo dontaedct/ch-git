@@ -52,4 +52,4 @@ class HeroAuditSystem {
     }
 }
 
-export default HeroAuditSystem;;
+export default HeroAuditSystem;

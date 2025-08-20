@@ -14,9 +14,9 @@ const __dirname = dirname(__filename);
  * Example: node scripts/generate-cursor-report.js "API endpoint development"
  */
 
-import fs from 'fs';;
-import path from 'path';;
-import { execSync } from 'child_process';;
+import fs from 'fs';
+import path from 'path';
+import { execSync } from 'child_process';
 
 class CursorAIReportGenerator {
   constructor() {
@@ -415,4 +415,4 @@ if (import.meta.main) {
   generator.generateReport();
 }
 
-export default CursorAIReportGenerator;;
+export default CursorAIReportGenerator;

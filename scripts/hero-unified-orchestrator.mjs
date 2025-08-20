@@ -35,10 +35,10 @@
  * AUDIT → DECIDE → APPLY → VERIFY pattern
  */
 
-import fs from 'fs';;
-import path from 'path';;
-import { spawn, execSync } from 'child_process';;
-import os from 'os';;
+import fs from 'fs';
+import path from 'path';
+import { spawn, execSync } from 'child_process';
+import os from 'os';
 
 // Unified Hero Configuration
 const UNIFIED_HERO_CONFIG = {
@@ -1183,4 +1183,4 @@ if (import.meta.main) {
   main().catch(console.error);
 }
 
-export { HeroUnifiedOrchestrator, UNIFIED_HERO_CONFIG, UNIFIED_SYSTEM_REGISTRY };;
+export { HeroUnifiedOrchestrator, UNIFIED_HERO_CONFIG, UNIFIED_SYSTEM_REGISTRY };

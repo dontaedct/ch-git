@@ -12,10 +12,10 @@
  * Follows universal header principles: automatic, careful, rule-compliant
  */
 
-import { spawn, execSync } from 'child_process';;
-import fs from 'fs';;
-import path from 'path';;
-import os from 'os';;
+import { spawn, execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 
 // Configuration
 const CONFIG = {
@@ -294,4 +294,4 @@ if (import.meta.main) {
   main();
 }
 
-export { main, selectStrategy, executeLint };;
+export { main, selectStrategy, executeLint };

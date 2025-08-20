@@ -11,8 +11,8 @@
  * @license MIT
  */
 
-import fs from 'fs';;
-import path from 'path';;
+import fs from 'fs';
+import path from 'path';
 
 class MITHeroSimple {
     constructor() {
@@ -188,4 +188,4 @@ if (import.meta.main) {
     }
 }
 
-export default MITHeroSimple;;
+export default MITHeroSimple;

@@ -67,4 +67,4 @@ class CausalityPredictor {
     }
 }
 
-export default CausalityPredictor;;
+export default CausalityPredictor;

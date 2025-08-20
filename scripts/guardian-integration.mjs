@@ -11,9 +11,9 @@
  * - Development workflow
  */
 
-import { execSync } from 'child_process';;
-import fs from 'fs';;
-import path from 'path';;
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
 
 class GuardianIntegration {
   constructor() {
@@ -56,7 +56,7 @@ class GuardianIntegration {
       const triggerGuardianBackup = async () => {
         try {
           // Use dynamic import to avoid circular dependencies
-          import { execSync } from 'child_process';;
+          const { execSync } = await import('child_process');
           execSync('npm run guardian:backup', { 
             cwd: process.cwd(),
             stdio: 'pipe' 
@@ -351,4 +351,4 @@ if (import.meta.main) {
   integration.runIntegration().catch(console.error);
 }
 
-export default GuardianIntegration;;
+export default GuardianIntegration;

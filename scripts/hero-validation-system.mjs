@@ -19,10 +19,10 @@ const __dirname = dirname(__filename);
  * 5. Integration Health Testing
  */
 
-import fs from 'fs';;
-import path from 'path';;
-import { execSync, spawn } from 'child_process';;
-import { performance } from 'perf_hooks';;
+import fs from 'fs';
+import path from 'path';
+import { execSync, spawn } from 'child_process';
+import { performance } from 'perf_hooks';
 
 class HeroValidationSystem {
     constructor() {
@@ -1067,4 +1067,4 @@ if (import.meta.main) {
     }
 }
 
-export default HeroValidationSystem;;
+export default HeroValidationSystem;

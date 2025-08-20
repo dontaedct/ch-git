@@ -2,10 +2,11 @@
 // Development server management utility
 // Commands: status, kill, clean, ports
 
-import fs from 'node:fs';;
-import path from 'node:path';;
-import os from 'node:os';;
-import { execSync } from 'node:child_process';;
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import { execSync } from 'node:child_process';
+import net from 'node:net';
 
 const LOCK_FILE = path.join(os.tmpdir(), 'coach-hub-dev.lock');
 
@@ -125,7 +126,6 @@ function cleanLockFiles() {
 }
 
 function showPorts() {
-  import net from 'node:net';;
   const PORT_RANGE = [9999, ...Array.from({ length: 11 }, (_, i) => 3000 + i)];
   
   console.log('🔍 Checking port availability...\n');
@@ -182,4 +182,4 @@ if (import.meta.main) {
   main();
 }
 
-export { getDevStatus, killDevServer, cleanLockFiles, showPorts };;
+export { getDevStatus, killDevServer, cleanLockFiles, showPorts };

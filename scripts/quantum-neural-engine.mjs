@@ -55,4 +55,4 @@ class QuantumNeuralEngine {
     }
 }
 
-export default QuantumNeuralEngine;;
+export default QuantumNeuralEngine;

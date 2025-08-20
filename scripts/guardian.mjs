@@ -12,10 +12,10 @@
  * Follows universal header rules perfectly
  */
 
-import { spawn } from 'child_process';;
-import fs from 'fs';;
-import path from 'path';;
-import { promisify } from 'util';;
+import { spawn } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { promisify } from 'util';
 
 // Promisify fs functions
 const mkdir = promisify(fs.mkdir);
@@ -231,7 +231,7 @@ class GuardianBackup {
           await this.copyDirectory(srcPath, destPath, excludePatterns);
         } else {
           // Copy file
-          import fs from 'fs';;
+          const fs = await import('fs');
           fs.copyFileSync(srcPath, destPath);
         }
       } catch (error) {
@@ -243,7 +243,7 @@ class GuardianBackup {
 
   async cleanupDirectory(dirPath) {
     try {
-      import fs from 'fs';;
+      const fs = await import('fs');
       if (fs.existsSync(dirPath)) {
         fs.rmSync(dirPath, { recursive: true, force: true });
       }
@@ -470,4 +470,4 @@ if (import.meta.main) {
   main().catch(console.error);
 }
 
-export default GuardianBackup;;
+export default GuardianBackup;

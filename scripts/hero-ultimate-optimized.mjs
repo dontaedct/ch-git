@@ -32,10 +32,10 @@
  * AUDIT → DECIDE → APPLY → VERIFY pattern
  */
 
-import fs from 'fs';;
-import path from 'path';;
-import { spawn, execSync } from 'child_process';;
-import os from 'os';;
+import fs from 'fs';
+import path from 'path';
+import { spawn, execSync } from 'child_process';
+import os from 'os';
 
 // Ultimate Hero Configuration - OPTIMIZED
 const ULTIMATE_HERO_CONFIG = {
@@ -761,4 +761,4 @@ if (import.meta.main) {
   main().catch(console.error);
 }
 
-export { HeroUltimateOptimized, ULTIMATE_HERO_CONFIG, SYSTEM_INTEGRATIONS };;
+export { HeroUltimateOptimized, ULTIMATE_HERO_CONFIG, SYSTEM_INTEGRATIONS };

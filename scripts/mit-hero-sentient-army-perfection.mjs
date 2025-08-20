@@ -22,10 +22,10 @@ const __dirname = dirname(__filename);
  * @license MIT
  */
 
-import fs from 'fs';;
-import path from 'path';;
-import { execSync, spawn } from 'child_process';;
-import os from 'os';;
+import fs from 'fs';
+import path from 'path';
+import { execSync, spawn } from 'child_process';
+import os from 'os';
 
 class MITHeroSentientArmyPerfection {
     constructor() {
@@ -1168,4 +1168,4 @@ if (import.meta.main) {
     }
 }
 
-export default MITHeroSentientArmyPerfection;;
+export default MITHeroSentientArmyPerfection;

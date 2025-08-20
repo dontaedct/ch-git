@@ -2,11 +2,11 @@
 // Enhanced launcher for dev: process locking, smart port selection, conflict resolution.
 // Tries 9999 first, then 3000..3010. Windows-friendly with process management.
 
-import net from 'node:net';;
-import { spawn } from 'node:child_process';;
-import fs from 'node:fs';;
-import path from 'node:path';;
-import os from 'node:os';;
+import net from 'node:net';
+import { spawn } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
 
 // Configuration
 const LOCK_FILE = path.join(os.tmpdir(), 'coach-hub-dev.lock');
@@ -154,4 +154,4 @@ if (import.meta.main) {
   main();
 }
 
-export { acquireLock, releaseLock, findAvailablePort };;
+export { acquireLock, releaseLock, findAvailablePort };

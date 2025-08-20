@@ -27,16 +27,16 @@ const __dirname = dirname(__filename);
  * @license MIT
  */
 
-import fs from 'fs';;
-import path from 'path';;
-import { execSync, spawn } from 'child_process';;
-import os from 'os';;
+import fs from 'fs';
+import path from 'path';
+import { execSync, spawn } from 'child_process';
+import os from 'os';
 
 // Import the integrated systems
-import MITHeroSentientArmyPerfection from './mit-hero-sentient-army-perfection';;
-import QuantumNeuralEngine from './quantum-neural-engine';;
-import CausalityPredictor from './causality-predictor';;
-import ConsciousnessSimulator from './consciousness-simulator';;
+import MITHeroSentientArmyPerfection from './mit-hero-sentient-army-perfection';
+import QuantumNeuralEngine from './quantum-neural-engine';
+import CausalityPredictor from './causality-predictor';
+import ConsciousnessSimulator from './consciousness-simulator';
 
 class MITHeroUnifiedIntegration {
     constructor() {
@@ -1193,7 +1193,7 @@ class MITHeroUnifiedIntegration {
             console.log('📦 Triggering Guardian emergency backup...');
             
             // Use child_process to run guardian emergency command
-            import { spawn } from 'child_process';;
+            const { spawn } = await import('child_process');
             
             return new Promise((resolve) => {
                 const child = spawn('npm', ['run', 'guardian:emergency'], {
@@ -1627,4 +1627,4 @@ if (import.meta.main) {
     }
 }
 
-export default MITHeroUnifiedIntegration;;
+export default MITHeroUnifiedIntegration;

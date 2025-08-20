@@ -49,4 +49,4 @@ class GitMasterControl {
     }
 }
 
-export default GitMasterControl;;
+export default GitMasterControl;

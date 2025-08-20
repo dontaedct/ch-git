@@ -49,4 +49,4 @@ class IntelligentBuildOrchestrator {
     }
 }
 
-export default IntelligentBuildOrchestrator;;
+export default IntelligentBuildOrchestrator;

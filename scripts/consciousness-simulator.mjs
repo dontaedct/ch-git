@@ -61,4 +61,4 @@ class ConsciousnessSimulator {
     }
 }
 
-export default ConsciousnessSimulator;;
+export default ConsciousnessSimulator;

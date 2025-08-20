@@ -5,8 +5,8 @@
  * This script tests the ultra-fast validation to ensure it completes step 2 in under 1 minute
  */
 
-import HeroValidationSystem from './hero-validation-system';;
-import { performance } from 'perf_hooks';;
+import HeroValidationSystem from './hero-validation-system';
+import { performance } from 'perf_hooks';
 
 async function testUltraFastValidation() {
     console.log('🧪 Testing MIT Hero Ultra-Fast Validation');
@@ -91,5 +91,5 @@ if (import.meta.main) {
     testUltraFastValidation();
 }
 
-export { testUltraFastValidation };;
+export { testUltraFastValidation };
 

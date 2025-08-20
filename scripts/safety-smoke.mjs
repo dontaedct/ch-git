@@ -5,15 +5,15 @@
  * Usage: npm run safety:smoke
  */
 
-import fs from 'fs';;
-import path from 'path';;
+import fs from 'fs';
+import path from 'path';
 
 const BACKUP_META_PATH = '.backups/meta/last.json';
 const MIN_SIZE_KB = 1;
 
 async function checkGuardianStatus() {
   return new Promise((resolve) => {
-    import { exec } from 'child_process';;
+    const { exec } = await import('child_process');
     exec('npm run guardian:check', { timeout: 10000 }, (error, stdout, stderr) => {
       if (error) {
         console.log('   Debug: Guardian check command failed:', error.message);
@@ -70,7 +70,7 @@ async function checkGuardianStatus() {
 
 async function triggerEmergency() {
   return new Promise((resolve) => {
-    import { exec } from 'child_process';;
+    const { exec } = await import('child_process');
     exec('npm run guardian:emergency', { timeout: 15000 }, (error, stdout, stderr) => {
       resolve({ success: !error });
     });

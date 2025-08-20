@@ -5,7 +5,7 @@
  * This script tests that the system can run without freezing and can be safely stopped
  */
 
-import MITHeroUnifiedIntegration from './mit-hero-unified-integration';;
+import MITHeroUnifiedIntegration from './mit-hero-unified-integration';
 
 async function testMitHero() {
     console.log('🧪 Testing MIT Hero System (Fixed Version)');

@@ -49,17 +49,24 @@ export function middleware(req: NextRequest) {
   );
 
   if (isProtectedPath) {
+    console.log(`🔒 Middleware: Protecting path ${url.pathname}`);
+    
     // Check if user is authenticated (you can implement your own auth logic here)
     // For now, we'll redirect to login or show a CTA
     const authToken = req.cookies.get('auth-token')?.value || req.headers.get('authorization');
     
+    console.log(`🔑 Middleware: Auth token found: ${!!authToken}`);
+    
     if (!authToken) {
+      console.log(`🚫 Middleware: No auth token, redirecting to login`);
       // Redirect to login or show CTA page
       if (url.pathname.startsWith('/client-portal')) {
         return NextResponse.redirect(new URL('/login?redirect=/client-portal', req.url));
       } else if (url.pathname.startsWith('/sessions')) {
         return NextResponse.redirect(new URL('/login?redirect=/sessions', req.url));
       }
+    } else {
+      console.log(`✅ Middleware: Auth token present, allowing access`);
     }
   }
 
@@ -90,15 +97,10 @@ export function middleware(req: NextRequest) {
 export const config = { 
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - api/health (health check)
-     * - probe (probe endpoint)
-     * - images (static images)
-     * - assets (static assets)
+     * Only match the specific protected routes we want to guard
+     * This ensures middleware only runs where needed
      */
-    '/((?!_next/static|_next/image|favicon.ico|api/health|probe|images|assets).*)',
+    '/client-portal/:path*',
+    '/sessions/:path*',
   ]
 };

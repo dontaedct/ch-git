@@ -4,8 +4,8 @@ import { requireUser } from "@/lib/auth/guard";
 import { ok, fail } from "@/lib/errors";
 import { withSentry } from "@/lib/sentry-wrapper";
 import { paginationSchema } from "@/lib/validation";
-import { applyPagination } from "@/lib/utils";
-import { Client } from "@/lib/supabase/types";
+import { paginate } from "@/lib/db/paginate";
+
 import { createRouteLogger } from "@/lib/logger";
 
 export const runtime = 'nodejs';
@@ -37,7 +37,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
       .order("first_name", { ascending: true });
 
     // Apply pagination
-    const { data, total } = await applyPagination<Client>(
+    const { data, count: total } = await paginate(
       baseQuery,
       validatedPage,
       validatedPageSize

@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Calendar, Clock, MapPin, Users, Edit, Trash2 } from 'lucide-react'
 import SessionForm from './session-form'
+import { isDevelopment } from '@/lib/env-client'
 import InvitePanel from './invite-panel'
 import RSVPPanel from './rsvp-panel'
 
@@ -114,7 +115,7 @@ export default function SessionList({
         <SessionForm
           mode="create"
           onSubmit={async (formData) => {
-                         if (process.env.NODE_ENV !== "production") {
+                         if (isDevelopment()) {
                console.warn('Creating session:', formData)
              }
           }}
@@ -211,7 +212,7 @@ export default function SessionList({
           mode="edit"
           onSubmit={async (formData) => {
                          if (onEditSession) {
-               if (process.env.NODE_ENV !== "production") {
+               if (isDevelopment()) {
                  console.warn('Editing session:', formData)
                }
              }

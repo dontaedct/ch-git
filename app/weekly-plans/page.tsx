@@ -5,6 +5,7 @@ import { createWeeklyPlan, getWeeklyPlans, updateWeeklyPlan, getClients } from "
 import { WeeklyPlan, Client } from "@/lib/supabase/types";
 import { PaginatedResponse } from "@/lib/validation";
 import Link from 'next/link';
+import { isDevelopment } from '@/lib/env-client';
 
 export default function WeeklyPlansPage() {
   const [plans, setPlans] = useState<WeeklyPlan[]>([]);
@@ -32,7 +33,7 @@ export default function WeeklyPlansPage() {
         setClients((clientsResult.data as PaginatedResponse<Client>).data || []);
       }
     } catch {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Failed to load data');
       }
     } finally {
@@ -93,7 +94,7 @@ export default function WeeklyPlansPage() {
         await updateWeeklyPlan(planId, { tasks: updatedTasks });
       }
     } catch (error) {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Failed to update task:', error);
       }
     }

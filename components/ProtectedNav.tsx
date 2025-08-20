@@ -1,6 +1,9 @@
 import Link from "next/link"
+import { getClientEnv } from '@lib/env-client'
 
 export function ProtectedNav() {
+  const env = getClientEnv();
+  
   return (
     <header className="w-full border-b border-gray-200 bg-white">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-3 sm:px-4 py-3 sm:py-4">
@@ -35,7 +38,7 @@ export function ProtectedNav() {
           >
             Client Portal
           </Link>
-          {process.env.NEXT_PUBLIC_ENABLE_AI_LIVE === '1' && (
+          {env.ENABLE_AI_LIVE && (
             <Link
               href="/ai/live"
               className="text-sm text-gray-700 hover:text-gray-900 underline-offset-4 hover:underline transition-colors"

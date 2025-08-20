@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { createTrainerProfile, updateTrainerProfile, getTrainerProfile } from "./actions";
 import { Trainer } from "@/lib/supabase/types";
-import Link from 'next/link'
+import Link from 'next/link';
+import { isDevelopment } from '@/lib/env-client';
 
 export default function TrainerProfilePage() {
   const [profile, setProfile] = useState<Partial<Trainer>>({});
@@ -22,7 +23,7 @@ export default function TrainerProfilePage() {
         setProfile(result.data);
       }
     } catch (error) {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Failed to load profile:', error)
       }
     } finally {

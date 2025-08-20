@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Client, CheckInInsert } from '@/lib/supabase/types'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { getClientEnv } from '@/lib/env-client'
 import { sanitizeText } from '@/lib/sanitize'
 import { getWeekStartDate } from '@/lib/utils'
 
@@ -16,7 +17,8 @@ export default function CheckInPage() {
   const [success, setSuccess] = useState(false)
   const supabase = createClient()
   const router = useRouter()
-  const DISABLE = process.env.NEXT_PUBLIC_DISABLE_REDIRECTS === '1';
+  const env = getClientEnv()
+  const DISABLE = env.BUILD_ENV !== 'production'; // Disable redirects in dev/preview
 
   const loadClientData = useCallback(async (userId: string) => {
     try {
@@ -99,7 +101,7 @@ export default function CheckInPage() {
           })
 
         if (metricError) {
-          if (process.env.NODE_ENV !== "production") {
+          if (!env.BUILD_ENV || env.BUILD_ENV !== 'production') {
             console.warn('Failed to save progress metric:', metricError)
           }
         }

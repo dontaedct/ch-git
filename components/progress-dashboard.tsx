@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Client, WeeklyPlan, CheckIn, ProgressMetric } from '@/lib/supabase/types'
 import { Progress } from '@/components/ui/progress'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
+import { isDevelopment } from '@/lib/env-client'
 
 interface ProgressDashboardProps {
   clientId: string
@@ -76,7 +77,7 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
         setProgressMetrics(metricsData as ProgressMetric[])
       }
     } catch (err) {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Failed to load client data:', err)
       }
     } finally {

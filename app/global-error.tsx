@@ -1,7 +1,9 @@
 'use client';
 
+import { isDevelopment } from '@lib/env-client';
+
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }, reset: () => void }) {
-  const isDev = process.env.NODE_ENV === 'development';
+  const isDev = isDevelopment();
   
   return (
     <html>

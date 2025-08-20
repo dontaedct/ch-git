@@ -11,6 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Search, Mail, Users, MessageSquare } from 'lucide-react'
+import { isDevelopment } from '@/lib/env-client'
 
 interface InvitePanelProps {
   sessionId: string
@@ -59,7 +60,7 @@ export default function InvitePanel({ sessionId, onInvite }: InvitePanelProps) {
       setSelectedClients(new Set())
       setMessage('')
     } catch (error) {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Failed to send invites:', error)
       }
     } finally {

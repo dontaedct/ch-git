@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Calendar, Clock, MapPin, Users, FileText, Plus, Edit } from 'lucide-react'
+import { isDevelopment } from '@/lib/env-client'
 
 interface SessionFormProps {
   session?: Session
@@ -26,7 +27,7 @@ export default function SessionForm({ session, onSubmit, mode }: SessionFormProp
       await onSubmit(formData)
       setOpen(false)
     } catch (error) {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Error submitting session:', error)
       }
     } finally {

@@ -1,7 +1,11 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+import { getClientEnv } from '@lib/env-client';
+
 export default function Home() {
+  const env = getClientEnv();
+  
   return (
     <div className="min-h-screen bg-white w-full max-w-full overflow-x-hidden">
       {/* Simple header */}
@@ -50,7 +54,7 @@ export default function Home() {
         </div>
 
         {/* Conditional AI Live */}
-        {process.env.NEXT_PUBLIC_ENABLE_AI_LIVE === '1' && (
+        {env.ENABLE_AI_LIVE && (
           <div className="mt-12 text-center w-full">
             <a 
               href="/ai/live"

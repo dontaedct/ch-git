@@ -5,7 +5,7 @@
  * Validates that public routes are accessible and protected routes are guarded
  */
 
-const BASE_URL = 'https://ch-og44h0gid-dontaedct-1785s-projects.vercel.app';
+const BASE_URL = 'https://ch-itdjk399x-dontaedct-1785s-projects.vercel.app';
 
 async function smokeTest() {
   console.log('🚀 Starting navigation smoke tests...\n');

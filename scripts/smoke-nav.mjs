@@ -16,7 +16,7 @@ const CONFIG = {
     fallbacks: ['http://localhost:3001', 'http://localhost:3002', 'http://localhost:3003']
   },
   preview: {
-    base: 'https://ch-5fl6ocdsq-dontaedct-1785s-projects.vercel.app'
+    base: 'https://ch-9yvewqnb5-dontaedct-1785s-projects.vercel.app'
   }
 };
 

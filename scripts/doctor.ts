@@ -2,7 +2,9 @@
 
 import { Project, SyntaxKind, Node, ts } from 'ts-morph';
 import { glob } from 'fast-glob';
-import { blue, green, red, yellow, cyan } from 'picocolors';
+import picocolors from 'picocolors';
+
+const { blue, green, red, yellow, cyan } = picocolors;
 import leven from 'leven';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -278,7 +280,7 @@ class DoctorRunner {
 
   private async autoFixImport(oldPath: string, newPath: string): Promise<void> {
     try {
-      const { execSync } = require('child_process');
+      const { execSync } = await import('node:child_process');
       const command = `npm run rename:import -- ${oldPath} ${newPath}`;
       console.log(`    Running: ${command}`);
       execSync(command, { stdio: 'inherit' });
@@ -290,7 +292,7 @@ class DoctorRunner {
 
   private async autoFixExport(oldName: string, newName: string): Promise<void> {
     try {
-      const { execSync } = require('child_process');
+      const { execSync } = await import('node:child_process');
       const command = `npm run rename:symbol -- ${oldName} ${newName}`;
       console.log(`    Running: ${command}`);
       execSync(command, { stdio: 'inherit' });
@@ -355,6 +357,7 @@ async function main() {
   }
 }
 
-if (require.main === module) {
+// ESM equivalent of require.main === module
+if (process.argv[1] && import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}`) {
   main();
 }

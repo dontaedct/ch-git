@@ -49,24 +49,18 @@ export function middleware(req: NextRequest) {
   );
 
   if (isProtectedPath) {
-    console.log(`🔒 Middleware: Protecting path ${url.pathname}`);
-    
-    // Check if user is authenticated (you can implement your own auth logic here)
-    // For now, we'll redirect to login or show a CTA
-    const authToken = req.cookies.get('auth-token')?.value || req.headers.get('authorization');
-    
-    console.log(`🔑 Middleware: Auth token found: ${!!authToken}`);
+    // Check if user is authenticated (simplified auth check)
+    const authToken = req.cookies.get('auth-token')?.value || 
+                     req.cookies.get('sb-access-token')?.value ||
+                     req.headers.get('authorization');
     
     if (!authToken) {
-      console.log(`🚫 Middleware: No auth token, redirecting to login`);
-      // Redirect to login or show CTA page
-      if (url.pathname.startsWith('/client-portal')) {
-        return NextResponse.redirect(new URL('/login?redirect=/client-portal', req.url));
-      } else if (url.pathname.startsWith('/sessions')) {
-        return NextResponse.redirect(new URL('/login?redirect=/sessions', req.url));
-      }
-    } else {
-      console.log(`✅ Middleware: Auth token present, allowing access`);
+      // Always redirect unauthenticated users to login
+      const redirectUrl = url.pathname.startsWith('/client-portal') 
+        ? '/login?redirect=/client-portal'
+        : '/login?redirect=/sessions';
+      
+      return NextResponse.redirect(new URL(redirectUrl, req.url));
     }
   }
 
@@ -97,10 +91,11 @@ export function middleware(req: NextRequest) {
 export const config = { 
   matcher: [
     /*
-     * Only match the specific protected routes we want to guard
-     * This ensures middleware only runs where needed
+     * Match protected routes and API rate limiting
+     * This ensures middleware runs for auth protection and rate limiting
      */
     '/client-portal/:path*',
     '/sessions/:path*',
+    '/api/:path*'
   ]
 };

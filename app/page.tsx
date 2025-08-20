@@ -13,7 +13,9 @@ export default function Home() {
       <ul style={{lineHeight:'1.9'}}>
         <li><a href="/api/health">/api/health</a> (JSON)</li>
         <li><a href="/probe">/probe</a> (probe page)</li>
-        <li><a href="/ai/live">/ai/live</a> (if implemented)</li>
+        {process.env.NEXT_PUBLIC_ENABLE_AI_LIVE === '1' && (
+          <li><a href="/ai/live">/ai/live</a> (AI Live)</li>
+        )}
         <li><a href="/sessions">/sessions</a> (if implemented)</li>
       </ul>
     </main>

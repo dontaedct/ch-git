@@ -1,0 +1,57 @@
+# CODEOWNERS - Critical Surface Protection
+#
+# This file defines code ownership for critical areas that require
+# mandatory review before changes can be merged.
+#
+# Syntax: path-pattern @username-or-team
+# Note: Replace @owner with your actual GitHub username
+
+# GitHub workflows and CI/CD
+/.github/** @owner
+
+# Build, deployment, and automation scripts
+/scripts/** @owner
+
+# Database migrations and schema
+/supabase/** @owner
+
+# Infrastructure and deployment configuration
+/infra/** @owner
+
+# Git hooks and development automation
+/.husky/** @owner
+
+# Environment and configuration schemas
+**/env*.ts @owner
+**/env*.js @owner
+**/config*.ts @owner
+**/config*.js @owner
+
+# Backup and restore logic
+**/*backup* @owner
+**/*restore* @owner
+**/*recovery* @owner
+
+# Security and authentication
+/lib/auth/** @owner
+**/auth.ts @owner
+**/auth.js @owner
+
+# Package management and dependencies
+/package.json @owner
+/package-lock.json @owner
+/yarn.lock @owner
+/pnpm-lock.yaml @owner
+
+# TypeScript and build configuration
+/tsconfig*.json @owner
+/next.config* @owner
+/vercel.json @owner
+
+# Policy enforcement and safety systems
+**/policy*.ts @owner
+**/guard*.ts @owner
+**/safety*.ts @owner
+
+# Registry systems (sources of truth)
+/lib/registry/** @owner

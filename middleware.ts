@@ -42,6 +42,27 @@ export function middleware(req: NextRequest) {
     }
   }
 
+  // Auth protection for protected routes only
+  const protectedPaths = ['/client-portal', '/sessions'];
+  const isProtectedPath = protectedPaths.some(path => 
+    url.pathname === path || url.pathname.startsWith(path + '/')
+  );
+
+  if (isProtectedPath) {
+    // Check if user is authenticated (you can implement your own auth logic here)
+    // For now, we'll redirect to login or show a CTA
+    const authToken = req.cookies.get('auth-token')?.value || req.headers.get('authorization');
+    
+    if (!authToken) {
+      // Redirect to login or show CTA page
+      if (url.pathname.startsWith('/client-portal')) {
+        return NextResponse.redirect(new URL('/login?redirect=/client-portal', req.url));
+      } else if (url.pathname.startsWith('/sessions')) {
+        return NextResponse.redirect(new URL('/login?redirect=/sessions', req.url));
+      }
+    }
+  }
+
   const res = NextResponse.next();
 
   // Force-relaxed CSP only on Vercel Preview to allow hydration & vercel.live
@@ -66,4 +87,18 @@ export function middleware(req: NextRequest) {
   return res;
 }
 
-export const config = { matcher: "/:path*" };
+export const config = { 
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - api/health (health check)
+     * - probe (probe endpoint)
+     * - images (static images)
+     * - assets (static assets)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|api/health|probe|images|assets).*)',
+  ]
+};

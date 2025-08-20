@@ -3,6 +3,7 @@ import HydrationProbe from './_debug/HydrationProbe';
 import LoopDetector from './_debug/LoopDetector';
 import { Suspense } from 'react';
 import PageBoot from '../components/ui/skeletons/PageBoot';
+import { PublicNav } from '../components/PublicNav';
 
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const dynamic = 'force-dynamic';
@@ -42,6 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             🛡️ SAFE MODE • Bypassing auth guards and heavy data fetches
           </div>
         )}
+        <PublicNav />
         <div style={{ paddingTop: 0 }}>
           <Suspense fallback={<PageBoot />}>
             {children}

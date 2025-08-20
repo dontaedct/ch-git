@@ -10,8 +10,7 @@ export const revalidate = 60;
 
 async function GETHandler(req: Request): Promise<NextResponse> {
   try {
-    const user = await requireUser();
-    const supabase = await createServerClient();
+    const { user, supabase } = await requireUser();
 
     const { searchParams } = new URL(req.url);
     const path = mediaPathSchema.parse(searchParams.get("path"));

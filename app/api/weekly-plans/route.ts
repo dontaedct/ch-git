@@ -4,16 +4,14 @@ import { requireUser } from "@/lib/auth/guard";
 import { ok, fail } from "@/lib/errors";
 import { withSentry } from "@/lib/sentry-wrapper";
 import { paginationSchema } from "@/lib/validation";
-import { applyPagination } from "@/lib/utils";
-import { WeeklyPlan } from "@/lib/supabase/types";
+import { paginate } from "@/lib/db/paginate";
 
 export const runtime = 'nodejs';
 export const revalidate = 60;
 
 async function GETHandler(req: NextRequest): Promise<NextResponse> {
   try {
-    const user = await requireUser();
-    const supabase = await createServerClient();
+    const { user, supabase } = await requireUser();
 
     // Parse and validate pagination parameters
     const { searchParams } = new URL(req.url);
@@ -33,7 +31,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
       .order("week_start_date", { ascending: false });
 
     // Apply pagination
-    const { data, total } = await applyPagination<WeeklyPlan>(
+    const { data, count: total } = await paginate(
       baseQuery,
       validatedPage,
       validatedPageSize

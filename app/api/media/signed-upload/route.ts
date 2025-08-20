@@ -10,8 +10,7 @@ export const runtime = 'nodejs';
 
 async function POSTHandler(req: Request): Promise<NextResponse> {
   try {
-    const user = await requireUser();
-    const supabase = await createServerClient();
+    const { user, supabase } = await requireUser();
 
     const body = await req.json();
     const { client_id, original } = signedUploadSchema.parse(body);

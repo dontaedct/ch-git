@@ -16,8 +16,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
   const logger = createRouteLogger('GET', '/api/clients');
   
   try {
-    const user = await requireUser();
-    const supabase = await createServerClient();
+    const { user, supabase } = await requireUser();
 
     // Parse and validate pagination parameters
     const { searchParams } = new URL(req.url);

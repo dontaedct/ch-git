@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const dynamic = 'force-dynamic';
 
 export default function AILivePage() {
@@ -10,7 +12,7 @@ export default function AILivePage() {
         Coming soon. This route is intentionally public.
       </p>
       <p style={{opacity:0.6,fontSize:14}}>
-        <a href="/" style={{color:'#0066cc',textDecoration:'none'}}>← Back to Coach Hub</a>
+        <Link href="/" style={{color:'#0066cc',textDecoration:'none'}}>← Back to Coach Hub</Link>
       </p>
     </main>
   );

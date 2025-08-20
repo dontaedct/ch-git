@@ -7,27 +7,8 @@ const LIMIT = 100;
 export function middleware(req: NextRequest) {
   const url = new URL(req.url);
   
-  // Dev-only tracing and loop detection
-  if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
-    console.log(`🔍 Middleware: ${req.method} ${url.pathname}`);
-    
-    // Check for self-redirects (same pathname)
-    const referer = req.headers.get('referer');
-    if (referer) {
-      const refererUrl = new URL(referer);
-      if (refererUrl.pathname === url.pathname) {
-        console.warn('⚠️ Middleware: Potential self-redirect detected', {
-          pathname: url.pathname,
-          referer: refererUrl.pathname
-        });
-        
-        // Add loop detection header
-        const response = NextResponse.next();
-        response.headers.set('X-Loop-Detected', '1');
-        return response;
-      }
-    }
-  }
+  // Always log in production for debugging
+  console.log(`🔍 Middleware executing for: ${req.method} ${url.pathname}`);
 
   // Handle API rate limiting
   if (url.pathname.startsWith("/api/")) {
@@ -49,10 +30,14 @@ export function middleware(req: NextRequest) {
   );
 
   if (isProtectedPath) {
+    console.log(`🔒 Middleware: Protecting path ${url.pathname}`);
+    
     // Check if user is authenticated (simplified auth check)
     const authToken = req.cookies.get('auth-token')?.value || 
                      req.cookies.get('sb-access-token')?.value ||
                      req.headers.get('authorization');
+    
+    console.log(`🔑 Middleware: Auth token found: ${!!authToken}`);
     
     if (!authToken) {
       // Always redirect unauthenticated users to login
@@ -60,6 +45,7 @@ export function middleware(req: NextRequest) {
         ? '/login?redirect=/client-portal'
         : '/login?redirect=/sessions';
       
+      console.log(`🚫 Middleware: Redirecting to ${redirectUrl}`);
       return NextResponse.redirect(new URL(redirectUrl, req.url));
     }
   }
@@ -88,14 +74,12 @@ export function middleware(req: NextRequest) {
   return res;
 }
 
-export const config = { 
+export const config = {
   matcher: [
     /*
-     * Match protected routes and API rate limiting
-     * This ensures middleware runs for auth protection and rate limiting
+     * Match all routes except static files and api routes we don't want to protect
+     * This ensures middleware runs for protected routes
      */
-    '/client-portal/:path*',
-    '/sessions/:path*',
-    '/api/:path*'
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ]
 };

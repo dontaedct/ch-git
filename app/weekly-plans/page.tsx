@@ -5,6 +5,7 @@ import { createWeeklyPlan, getWeeklyPlans, updateWeeklyPlan, getClients } from "
 import { WeeklyPlan, Client } from "@/lib/supabase/types";
 import { PaginatedResponse } from "@/lib/validation";
 import Link from 'next/link';
+import { isDevelopment } from '@/lib/env-client';
 
 export default function WeeklyPlansPage() {
   const [plans, setPlans] = useState<WeeklyPlan[]>([]);
@@ -32,7 +33,7 @@ export default function WeeklyPlansPage() {
         setClients((clientsResult.data as PaginatedResponse<Client>).data || []);
       }
     } catch {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Failed to load data');
       }
     } finally {
@@ -93,7 +94,7 @@ export default function WeeklyPlansPage() {
         await updateWeeklyPlan(planId, { tasks: updatedTasks });
       }
     } catch (error) {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Failed to update task:', error);
       }
     }
@@ -348,8 +349,8 @@ export default function WeeklyPlansPage() {
                         {plan.week_start_date ? new Date(plan.week_start_date).toLocaleDateString() : 'No start date'} - {plan.week_end_date ? new Date(plan.week_end_date).toLocaleDateString() : 'No end date'}
                       </span>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        plan.status === 'active' ? 'bg-green-100 text-green-800' :
-                        plan.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                        plan.status === 'sent' ? 'bg-green-100 text-green-800' :
+                        plan.status === 'approved' ? 'bg-blue-100 text-blue-800' :
                         'bg-gray-100 text-gray-800'
                       }`}>
                         {plan.status}
@@ -368,7 +369,7 @@ export default function WeeklyPlansPage() {
                     <div className="flex flex-wrap gap-2">
                       {plan.goals.map((goal, index) => (
                         <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                          {goal.title}
+                          {goal.description}
                         </span>
                       ))}
                     </div>
@@ -379,7 +380,7 @@ export default function WeeklyPlansPage() {
                   <h4 className="font-medium text-gray-900 mb-3">Tasks</h4>
                   <div className="space-y-3">
                     {plan.tasks?.map((task, index) => (
-                      <div key={task.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
                         <input
                           type="checkbox"
                           checked={task.completed}
@@ -390,20 +391,6 @@ export default function WeeklyPlansPage() {
                           <span className={`font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
                             {task.title}
                           </span>
-                          {task.description && (
-                            <p className="text-sm text-gray-600 mt-1">{task.description}</p>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                            task.category === 'workout' ? 'bg-red-100 text-red-800' :
-                            task.category === 'nutrition' ? 'bg-green-100 text-green-800' :
-                            task.category === 'mindfulness' ? 'bg-purple-100 text-purple-800' :
-                            'bg-gray-100 text-gray-800'
-                          }`}>
-                            {task.category}
-                          </span>
-                          <span className="text-xs text-gray-500">{task.frequency}</span>
                         </div>
                       </div>
                     ))}

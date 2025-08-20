@@ -355,6 +355,7 @@ async function main() {
   }
 }
 
-if (require.main === module) {
+// ESM equivalent of require.main === module
+if (process.argv[1] && import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}`) {
   main();
 }

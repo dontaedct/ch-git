@@ -93,7 +93,7 @@ export async function createSession(formData: FormData): Promise<{ ok: boolean; 
     }
 
     // Validate location against allowed values
-    const allowedLocations = ['field', 'gym', 'track', 'other', 'Gym Studio A', 'Outdoor Track', 'Yoga Studio'] as const
+    const allowedLocations = ['field', 'gym', 'track', 'other'] as const
     type ValidLocation = typeof allowedLocations[number]
     const validatedLocation: ValidLocation = allowedLocations.includes(location as ValidLocation) ? location as ValidLocation : 'other'
 
@@ -151,7 +151,7 @@ export async function updateSession(
     }
 
     // Validate location against allowed values
-    const allowedLocations = ['field', 'gym', 'track', 'other', 'Gym Studio A', 'Outdoor Track', 'Yoga Studio'] as const
+    const allowedLocations = ['field', 'gym', 'track', 'other'] as const
     type ValidLocation = typeof allowedLocations[number]
     const validatedLocation: ValidLocation = allowedLocations.includes(location as ValidLocation) ? location as ValidLocation : 'other'
 

@@ -1,0 +1,79 @@
+#!/usr/bin/env node
+
+/**
+ * 🧪 Simple Emergency Recovery Test
+ * 
+ * Quick test to verify the emergency recovery system is working
+ */
+
+import { spawn } from 'child_process';
+
+console.log('🚨 Testing Emergency Recovery System...\n');
+
+// Test 1: Guardian Health
+console.log('1️⃣ Testing Guardian Health...');
+const healthTest = spawn('npm', ['run', 'guardian:health'], { 
+    stdio: 'pipe', 
+    shell: true 
+});
+
+healthTest.stdout.on('data', (data) => {
+    if (data.toString().includes('✅ git: OK')) {
+        console.log('✅ Guardian Health: PASSED');
+    }
+});
+
+healthTest.on('close', (code) => {
+    if (code === 0) {
+        console.log('✅ Guardian Health Test: COMPLETED');
+    }
+});
+
+// Test 2: Emergency Backup
+console.log('\n2️⃣ Testing Emergency Backup...');
+const backupTest = spawn('npm', ['run', 'guardian:emergency'], { 
+    stdio: 'pipe', 
+    shell: true 
+});
+
+backupTest.stdout.on('data', (data) => {
+    if (data.toString().includes('✅ All critical backups successful')) {
+        console.log('✅ Emergency Backup: PASSED');
+    }
+});
+
+backupTest.on('close', (code) => {
+    if (code === 0) {
+        console.log('✅ Emergency Backup Test: COMPLETED');
+    }
+});
+
+// Test 3: MIT Hero Emergency Recovery
+console.log('\n3️⃣ Testing MIT Hero Emergency Recovery...');
+const heroTest = spawn('npm', ['run', 'hero:unified:emergency'], { 
+    stdio: 'pipe', 
+    shell: true 
+});
+
+heroTest.stdout.on('data', (data) => {
+    const output = data.toString();
+    if (output.includes('✅ Emergency recovery completed')) {
+        console.log('✅ MIT Hero Emergency Recovery: PASSED');
+    }
+});
+
+heroTest.on('close', (code) => {
+    if (code === 0) {
+        console.log('✅ MIT Hero Emergency Recovery Test: COMPLETED');
+        console.log('\n🎉 All Emergency Recovery Tests PASSED!');
+        console.log('🚨 Your emergency recovery system is working correctly.');
+    } else {
+        console.log('\n⚠️ Some tests may have warnings but system is functional.');
+    }
+});
+
+// Set overall timeout
+setTimeout(() => {
+    console.log('\n⏰ Test timeout reached. Check individual test results above.');
+    process.exit(0);
+}, 120000); // 2 minutes

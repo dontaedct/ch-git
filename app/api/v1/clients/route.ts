@@ -14,7 +14,7 @@ export async function GET(req: Request) {
     const from = (page-1)*pageSize;
     const to = from + pageSize - 1;
 
-    const list = supabase
+    const list = await supabase
       .from("clients")
       .select("id, full_name, email, created_at", { count: "exact" })
       .order("created_at", { ascending: false })

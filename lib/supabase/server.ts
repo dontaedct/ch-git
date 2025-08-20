@@ -52,3 +52,6 @@ export function createServiceRoleSupabase() {
 
 /** Back-compat alias for old imports */
 export const createServiceRoleClient = createServiceRoleSupabase;
+
+/** Back-compat alias for createServerSupabase */
+export const createRealSupabaseClient = createServerSupabase;

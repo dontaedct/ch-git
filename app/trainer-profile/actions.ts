@@ -10,7 +10,7 @@ import type { ActionResult } from "@/lib/types";
 export async function createTrainerProfile(formData: FormData): ActionResult<{ id: string }> {
   try {
     const supabase = await createServerClient();
-    const user = await getUserOrFail(supabase);
+    const user = await getUserOrFail();
     
     // Parse form data
     const specialties = formData.getAll("specialties").map(s => s.toString());
@@ -49,7 +49,7 @@ export async function createTrainerProfile(formData: FormData): ActionResult<{ i
 export async function updateTrainerProfile(formData: FormData): ActionResult<{ id: string }> {
   try {
     const supabase = await createServerClient();
-    const user = await getUserOrFail(supabase);
+    const user = await getUserOrFail();
     
     // Parse form data
     const specialties = formData.getAll("specialties").map(s => s.toString());
@@ -99,7 +99,7 @@ export async function updateTrainerProfile(formData: FormData): ActionResult<{ i
 export async function getTrainerProfile(): ActionResult<Trainer | null> {
   try {
     const supabase = await createServerClient();
-    const user = await getUserOrFail(supabase);
+    const user = await getUserOrFail();
 
     const { data, error } = await supabase
       .from("trainers")

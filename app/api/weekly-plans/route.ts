@@ -28,7 +28,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
     // Build the base query
     const baseQuery = supabase
       .from("weekly_plans")
-      .select("*")
+      .select("*", { count: "exact" })
       .eq("coach_id", user.id)
       .order("week_start_date", { ascending: false });
 

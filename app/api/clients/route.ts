@@ -32,7 +32,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
     // Build the base query
     const baseQuery = supabase
       .from("clients")
-      .select("*")
+      .select("*", { count: "exact" })
       .eq("coach_id", user.id)
       .order("first_name", { ascending: true });
 

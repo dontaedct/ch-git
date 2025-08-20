@@ -2,6 +2,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 export default function Home() {
+  const env = getClientEnv();
+  
   return (
     <main style={{padding:24,fontFamily:'ui-sans-serif,system-ui'}}>
       <h1 style={{fontSize:24,marginBottom:8}}>

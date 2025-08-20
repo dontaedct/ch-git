@@ -4,54 +4,54 @@
 # mandatory review before changes can be merged.
 #
 # Syntax: path-pattern @username-or-team
-# Note: Replace @owner with your actual GitHub username
+# Note: @dontaedct is the repository owner
 
 # GitHub workflows and CI/CD
-/.github/** @owner
+/.github/** @dontaedct
 
 # Build, deployment, and automation scripts
-/scripts/** @owner
+/scripts/** @dontaedct
 
 # Database migrations and schema
-/supabase/** @owner
+/supabase/** @dontaedct
 
 # Infrastructure and deployment configuration
-/infra/** @owner
+/infra/** @dontaedct
 
 # Git hooks and development automation
-/.husky/** @owner
+/.husky/** @dontaedct
 
 # Environment and configuration schemas
-**/env*.ts @owner
-**/env*.js @owner
-**/config*.ts @owner
-**/config*.js @owner
+**/env*.ts @dontaedct
+**/env*.js @dontaedct
+**/config*.ts @dontaedct
+**/config*.js @dontaedct
 
 # Backup and restore logic
-**/*backup* @owner
-**/*restore* @owner
-**/*recovery* @owner
+**/*backup* @dontaedct
+**/*restore* @dontaedct
+**/*recovery* @dontaedct
 
 # Security and authentication
-/lib/auth/** @owner
-**/auth.ts @owner
-**/auth.js @owner
+/lib/auth/** @dontaedct
+**/auth.ts @dontaedct
+**/auth.js @dontaedct
 
 # Package management and dependencies
-/package.json @owner
-/package-lock.json @owner
-/yarn.lock @owner
-/pnpm-lock.yaml @owner
+/package.json @dontaedct
+/package-lock.json @dontaedct
+/yarn.lock @dontaedct
+/pnpm-lock.yaml @dontaedct
 
 # TypeScript and build configuration
-/tsconfig*.json @owner
-/next.config* @owner
-/vercel.json @owner
+/tsconfig*.json @dontaedct
+/next.config* @dontaedct
+/vercel.json @dontaedct
 
 # Policy enforcement and safety systems
-**/policy*.ts @owner
-**/guard*.ts @owner
-**/safety*.ts @owner
+**/policy*.ts @dontaedct
+**/guard*.ts @dontaedct
+**/safety*.ts @dontaedct
 
 # Registry systems (sources of truth)
-/lib/registry/** @owner
+/lib/registry/** @dontaedct

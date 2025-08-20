@@ -115,7 +115,7 @@ export default function SessionList({
         <SessionForm
           mode="create"
           onSubmit={async (formData) => {
-                         if (isDevelopment()) {
+                         if (process.env.NODE_ENV !== "production") {
                console.warn('Creating session:', formData)
              }
           }}
@@ -150,7 +150,7 @@ export default function SessionList({
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Clock className="w-4 h-4" />
-                  <span>{formatDuration(session.duration_minutes || 60)}</span>
+                  <span>{formatDuration(session.duration_minutes)}</span>
                 </div>
                 
                 {session.location && (
@@ -212,7 +212,7 @@ export default function SessionList({
           mode="edit"
           onSubmit={async (formData) => {
                          if (onEditSession) {
-               if (isDevelopment()) {
+               if (process.env.NODE_ENV !== "production") {
                  console.warn('Editing session:', formData)
                }
              }

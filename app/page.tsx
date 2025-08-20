@@ -1,70 +1,25 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-import { getClientEnv } from '@lib/env-client';
-
 export default function Home() {
   const env = getClientEnv();
   
   return (
-    <div className="min-h-screen bg-white w-full max-w-full overflow-x-hidden">
-      {/* Simple header */}
-      <div className="bg-white border-b border-gray-200 px-6 py-4 w-full">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-2xl font-bold text-gray-900">Coach Hub</h1>
-        </div>
-      </div>
-
-      {/* Simple content */}
-      <div className="max-w-4xl mx-auto px-6 py-12 w-full">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Personal Training Management Platform
-          </h2>
-          <p className="text-lg text-gray-600">
-            Streamline client management, track progress, and deliver exceptional coaching experiences.
-          </p>
-        </div>
-
-        {/* Simple cards */}
-        <div className="space-y-6 w-full">
-          <div className="bg-white border border-gray-200 rounded-lg p-6 w-full">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Client Portal</h3>
-            <p className="text-gray-600 mb-4">Access your personalized dashboard and track progress.</p>
-            <a href="/client-portal" className="text-blue-600 hover:text-blue-700 font-medium">
-              Access Portal →
-            </a>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg p-6 w-full">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">New Client Intake</h3>
-            <p className="text-gray-600 mb-4">Start your fitness journey with our intake process.</p>
-            <a href="/intake" className="text-green-600 hover:text-green-700 font-medium">
-              Get Started →
-            </a>
-          </div>
-
-          <div className="bg-white border border-gray-200 rounded-lg p-6 w-full">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Group Sessions</h3>
-            <p className="text-gray-600 mb-4">Join community training sessions.</p>
-            <a href="/sessions" className="text-purple-600 hover:text-purple-700 font-medium">
-              View Sessions →
-            </a>
-          </div>
-        </div>
-
-        {/* Conditional AI Live */}
-        {env.ENABLE_AI_LIVE && (
-          <div className="mt-12 text-center w-full">
-            <a 
-              href="/ai/live"
-              className="inline-block bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800"
-            >
-              Try AI Live Assistant
-            </a>
-          </div>
+    <main style={{padding:24,fontFamily:'ui-sans-serif,system-ui'}}>
+      <h1 style={{fontSize:24,marginBottom:8}}>
+        Coach Hub
+      </h1>
+      <p style={{opacity:0.8,marginBottom:16}}>
+        Welcome to Coach Hub - your personal training management platform.
+      </p>
+      <ul style={{lineHeight:'1.9'}}>
+        <li><a href="/api/health">/api/health</a> (JSON)</li>
+        <li><a href="/probe">/probe</a> (probe page)</li>
+        {process.env.NEXT_PUBLIC_ENABLE_AI_LIVE === '1' && (
+          <li><a href="/ai/live">/ai/live</a> (AI Live)</li>
         )}
-      </div>
-    </div>
+        <li><a href="/sessions">/sessions</a> (if implemented)</li>
+      </ul>
+    </main>
   );
 }

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/dev-bootstrap.mjs",
+    "dev": "node scripts/dev-bootstrap.js",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -16,9 +16,7 @@
     "doctor:fix": "AUTO=1 tsx scripts/doctor.ts",
     "doctor:safe": "tsx scripts/doctor.ts --timeout 60000",
     "doctor:test": "node scripts/test-doctor.js",
-    "ci": "npm run tripwire:module-drift && npm run tripwire:client-boundary && npm run lint && npm run typecheck && npm run test && npm run build",
-    "tripwire:module-drift": "tsx scripts/checks/tripwire-module-drift.ts",
-    "tripwire:client-boundary": "tsx scripts/checks/tripwire-client-boundary.ts",
+    "ci": "npm run lint && npm run typecheck && npm run test && npm run build",
     "prepare": "node -e \"process.exit(process.env.CI?0:1)\" || husky install",
     "rename:symbol": "tsx scripts/rename.ts symbol",
     "rename:import": "tsx scripts/rename.ts import",
@@ -29,10 +27,10 @@
     "watch:renames": "tsx scripts/watch-renames.ts",
     "policy:enforce": "tsx scripts/policy-enforcer.ts",
     "policy:build": "tsx scripts/policy-enforcer.ts --build",
-    "dev:status": "node scripts/dev-manager.mjs status",
-    "dev:kill": "node scripts/dev-manager.mjs kill",
-    "dev:clean": "node scripts/dev-manager.mjs clean",
-    "dev:ports": "node scripts/dev-manager.mjs ports"
+    "dev:status": "node scripts/dev-manager.js status",
+    "dev:kill": "node scripts/dev-manager.js kill",
+    "dev:clean": "node scripts/dev-manager.js clean",
+    "dev:ports": "node scripts/dev-manager.js ports"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

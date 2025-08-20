@@ -23,11 +23,12 @@ export async function POST(
   { params }: { params: { taskName: string } }
 ) {
   const startTime = Date.now();
+  const routeLogger = logger.withOperation(`route:POST:/api/ai/tasks/${params.taskName}`);
   
   try {
     // AI feature flag guard - deny by default
     if (!isAIEnabled()) {
-      logger.log("AI access blocked by feature flag", { 
+      routeLogger.warn("AI access blocked by feature flag", { 
         taskName: params.taskName,
         aiEnabled: false 
       });
@@ -53,7 +54,7 @@ export async function POST(
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
     if (authError || !user) {
-      logger.log("Unauthorized access attempt", { error: authError?.message });
+      routeLogger.warn("Unauthorized access attempt", { error: authError?.message });
       return NextResponse.json(
         { ok: false, error: "Unauthorized" },
         { status: 401 }
@@ -85,7 +86,7 @@ export async function POST(
 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    logger.error("Task execution error", { 
+    routeLogger.error("Task execution error", { 
       taskName: params.taskName, 
       error: errorMessage,
       duration: Date.now() - startTime

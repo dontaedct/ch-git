@@ -1,7 +1,7 @@
 import { createServerSupabase } from "@/lib/supabase/server";
 
 export async function requireUser() {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
   
   // Dev-only tracing
   if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
@@ -22,10 +22,4 @@ export async function requireUser() {
   }
   
   return { user: data.user, supabase };
-}
-
-/** Get user or throw error - returns just the user object */
-export async function getUserOrFail() {
-  const { user } = await requireUser();
-  return user;
 }

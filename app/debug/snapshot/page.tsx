@@ -1,11 +1,8 @@
-import { Button } from '@ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/card';
-import { Badge } from '@ui/badge';
-import { getClientEnv } from '@lib/env-client';
+import { Button } from '../../../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import { Badge } from '../../../components/ui/badge';
 
 export default function DebugSnapshotPage() {
-  const env = getClientEnv();
-  
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
       <div style={{ marginBottom: '24px', textAlign: 'center' }}>
@@ -67,10 +64,10 @@ export default function DebugSnapshotPage() {
           </CardHeader>
           <CardContent>
             <div style={{ fontSize: '14px', fontFamily: 'monospace' }}>
-              <div>NODE_ENV: {env.NODE_ENV}</div>
-              <div>BUILD_ENV: {env.BUILD_ENV}</div>
-              <div>DEBUG: {env.DEBUG ? 'enabled' : 'disabled'}</div>
-              <div>SAFE_MODE: {env.SAFE_MODE ? 'enabled' : 'disabled'}</div>
+              <div>NODE_ENV: {process.env.NODE_ENV}</div>
+              <div>VERCEL_ENV: {process.env.VERCEL_ENV ?? 'not set'}</div>
+              <div>DEBUG: {process.env.NEXT_PUBLIC_DEBUG ?? 'not set'}</div>
+              <div>SAFE_MODE: {process.env.NEXT_PUBLIC_SAFE_MODE ?? 'not set'}</div>
               <div>Timestamp: {new Date().toISOString()}</div>
             </div>
           </CardContent>

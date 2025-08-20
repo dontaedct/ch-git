@@ -16,7 +16,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
   const logger = createRouteLogger('GET', '/api/clients');
   
   try {
-    const { user } = await requireUser();
+    const user = await requireUser();
     const supabase = await createServerClient();
 
     // Parse and validate pagination parameters
@@ -37,20 +37,17 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
       .order("first_name", { ascending: true });
 
     // Apply pagination
-    const from = (validatedPage - 1) * validatedPageSize;
-    const to = from + validatedPageSize - 1;
-    
-    const { data, error, count } = await baseQuery.range(from, to);
-    
-    if (error) {
-      throw error;
-    }
+    const { data, total } = await applyPagination<Client>(
+      baseQuery,
+      validatedPage,
+      validatedPageSize
+    );
 
     const response = NextResponse.json(ok({
-      data: data || [],
+      data,
       page: validatedPage,
       pageSize: validatedPageSize,
-      total: count || 0,
+      total,
     }));
     
     logger.log(200, startTime);

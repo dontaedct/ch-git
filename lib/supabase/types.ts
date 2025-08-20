@@ -114,24 +114,3 @@ export type SessionUpdate = Partial<Omit<Session, 'id' | 'created_at'>>;
 export type WeeklyPlanUpdate = Partial<Omit<WeeklyPlan, 'id' | 'created_at'>>;
 export type CheckInUpdate = Partial<Omit<CheckIn, 'id' | 'created_at'>>;
 export type ProgressMetricUpdate = Partial<Omit<ProgressMetric, 'created_at'>>;
-
-// Trainer types
-export type Trainer = {
-  id: string;
-  user_id: string;
-  business_name: string;
-  email: string;
-  phone?: string | null;
-  bio?: string | null;
-  specialties?: string[];
-  certifications?: string[];
-  years_experience?: number | null;
-  hourly_rate?: number | null;
-  website?: string | null;
-  social_links?: Record<string, string> | null;
-  created_at: string;
-  updated_at?: string | null;
-};
-
-export type TrainerInsert = Omit<Trainer, 'id' | 'created_at'>;
-export type TrainerUpdate = Partial<Omit<Trainer, 'id' | 'created_at'>>;

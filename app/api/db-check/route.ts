@@ -10,7 +10,7 @@ export const revalidate = 60;
 
 async function GETHandler(): Promise<NextResponse> {
   try {
-    const { user } = await requireUser();
+    const user = await requireUser();
 
     if (!hasRole(user, 'admin')) {
       return NextResponse.json(fail("Forbidden", "FORBIDDEN"), { status: 403 });

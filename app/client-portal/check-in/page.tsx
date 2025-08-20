@@ -17,8 +17,7 @@ export default function CheckInPage() {
   const [success, setSuccess] = useState(false)
   const supabase = createClient()
   const router = useRouter()
-  const env = getClientEnv()
-  const DISABLE = env.BUILD_ENV !== 'production'; // Disable redirects in dev/preview
+  const DISABLE = process.env.NEXT_PUBLIC_DISABLE_REDIRECTS === '1';
 
   const loadClientData = useCallback(async (userId: string) => {
     try {

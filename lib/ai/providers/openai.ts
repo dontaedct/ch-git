@@ -8,8 +8,13 @@ import { retry } from '../tools/retry';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-// Dynamic import for OpenAI to handle optional dependency
-type OpenAIType = any;
+// Safety guard: only import OpenAI if available
+let OpenAI: any = null;
+try {
+  OpenAI = require('openai');
+} catch (error) {
+  console.warn('OpenAI SDK not available, provider will use mock mode');
+}
 
 export interface OpenAIConfig {
   apiKey?: string;
@@ -50,30 +55,24 @@ export interface OpenAIResponse {
 }
 
 export class OpenAIProvider {
-  private client: any = null;
+  private client: any;
   private config: OpenAIConfig;
   private universalHeader: string | null = null;
   
   constructor(config: OpenAIConfig = {}) {
     this.config = config;
-  }
-
-  private async ensureClient() {
-    if (!this.client) {
-      try {
-        // Use require with type assertion for better compatibility
-        const OpenAI = eval('require("openai")');
-        this.client = new OpenAI({
-          apiKey: this.config.apiKey ?? process.env.OPENAI_API_KEY,
-          organization: this.config.organization,
-          baseURL: this.config.baseURL,
-          timeout: this.config.timeout ?? 60000,
-        });
-      } catch (error) {
-        throw new Error('OpenAI SDK not available. Install with: npm install openai');
-      }
+    
+    // Safety check: ensure OpenAI SDK is available
+    if (!OpenAI) {
+      throw new Error('OpenAI SDK not available. Install with: npm install openai');
     }
-    return this.client;
+    
+    this.client = new OpenAI({
+      apiKey: config.apiKey ?? process.env.OPENAI_API_KEY,
+      organization: config.organization,
+      baseURL: config.baseURL,
+      timeout: config.timeout ?? 60000,
+    });
   }
   
   // Lazy load the universal header only when needed
@@ -91,8 +90,7 @@ export class OpenAIProvider {
   }
   
   async chat(request: OpenAIRequest): Promise<OpenAIResponse> {
-    const client = await this.ensureClient();
-    const response = await client.chat.completions.create({
+    const response = await this.client.chat.completions.create({
       model: request.model,
       messages: request.messages,
       temperature: request.temperature,

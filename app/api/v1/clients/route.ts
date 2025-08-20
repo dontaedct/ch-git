@@ -7,7 +7,7 @@ export async function GET(req: Request) {
     const page = Math.max(1, Number(url.searchParams.get("page") ?? 1));
     const pageSize = Math.min(50, Math.max(1, Number(url.searchParams.get("pageSize") ?? 20)));
 
-    const supabase = await createServerSupabase();
+    const supabase = createServerSupabase();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return Response.json(fail("Unauthorized","UNAUTHORIZED"), { status: 401 });
 

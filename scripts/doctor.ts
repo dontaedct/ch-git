@@ -2,9 +2,7 @@
 
 import { Project, SyntaxKind, Node, ts } from 'ts-morph';
 import { glob } from 'fast-glob';
-import picocolors from 'picocolors';
-
-const { blue, green, red, yellow, cyan } = picocolors;
+import { blue, green, red, yellow, cyan } from 'picocolors';
 import leven from 'leven';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -280,7 +278,7 @@ class DoctorRunner {
 
   private async autoFixImport(oldPath: string, newPath: string): Promise<void> {
     try {
-      const { execSync } = await import('node:child_process');
+      const { execSync } = require('child_process');
       const command = `npm run rename:import -- ${oldPath} ${newPath}`;
       console.log(`    Running: ${command}`);
       execSync(command, { stdio: 'inherit' });
@@ -292,7 +290,7 @@ class DoctorRunner {
 
   private async autoFixExport(oldName: string, newName: string): Promise<void> {
     try {
-      const { execSync } = await import('node:child_process');
+      const { execSync } = require('child_process');
       const command = `npm run rename:symbol -- ${oldName} ${newName}`;
       console.log(`    Running: ${command}`);
       execSync(command, { stdio: 'inherit' });

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "functions": {
+    "/api/debug-env": {},
+    "/api/guardian/status": {},
+    "/api/guardian/emergency": {},
+    "/api/weekly-recap": {}
+  }
+}

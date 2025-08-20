@@ -16,26 +16,24 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      <div className="container mx-auto px-6 py-16">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-4xl mx-auto px-6 py-16">
         {/* Header Section */}
-        <div className="text-center mb-16 animate-fade-in-up">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-3xl mb-6">
-            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-            </svg>
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-200 rounded-full mb-6">
+            <div className="w-8 h-8 bg-gray-400 rounded"></div>
           </div>
-          <h1 className="text-display font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Welcome
           </h1>
-          <p className="text-body text-gray-600 mb-8">
-            We&apos;re excited to help you start your coaching journey! Please fill out this form to help us understand your goals and preferences.
+          <p className="text-lg text-gray-600 mb-8">
+            We're excited to help you start your coaching journey! Please fill out this form to help us understand your goals and preferences.
           </p>
         </div>
 
         {/* Form Card */}
         <div className="max-w-md mx-auto">
-          <div className="card card-hover p-8 animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+          <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
             <form action={handleSubmit} className="space-y-6">
               {/* Coach ID Field */}
               <div className="space-y-2">
@@ -47,7 +45,7 @@ export default function Page() {
                   name="coach_id"
                   type="text"
                   placeholder="Enter your coach ID"
-                  className="input w-full focus-ring"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   required
                 />
               </div>
@@ -62,7 +60,7 @@ export default function Page() {
                   name="email"
                   type="email"
                   placeholder="your.email@example.com"
-                  className="input w-full focus-ring"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   required
                 />
               </div>
@@ -77,7 +75,7 @@ export default function Page() {
                   name="name"
                   type="text"
                   placeholder="Enter your full name"
-                  className="input w-full focus-ring"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                   required
                 />
               </div>
@@ -92,21 +90,19 @@ export default function Page() {
                   name="phone"
                   type="tel"
                   placeholder="+1 (555) 123-4567"
-                  className="input w-full focus-ring"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                 />
               </div>
 
               {/* Consent Checkbox */}
               <div className="space-y-3">
-                <label className="flex items-start gap-3 cursor-pointer group">
-                  <div className="relative flex items-center">
-                    <input
-                      type="checkbox"
-                      name="consent"
-                      className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:ring-2 transition-colors"
-                      required
-                    />
-                  </div>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    name="consent"
+                    className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:ring-2 mt-1"
+                    required
+                  />
                   <span className="text-sm text-gray-600 leading-relaxed">
                     I agree to be contacted about my coaching sessions and related information.
                   </span>
@@ -117,23 +113,18 @@ export default function Page() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     Getting Started...
-                  </>
+                  </div>
                 ) : (
-                  <>
+                  <div className="flex items-center justify-center gap-2">
                     Get Started
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </>
+                    <div className="w-5 h-5 bg-white rounded"></div>
+                  </div>
                 )}
               </button>
             </form>

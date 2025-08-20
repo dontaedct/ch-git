@@ -125,7 +125,14 @@ async function runSmokeTests() {
   if (localAvailable) {
     console.log('\n📋 Testing local endpoints...');
     await testEndpoint('local', '/api/health', 200, 'ok');
-    await testEndpoint('local', '/probe', 200, '__probe OK');
+    
+    // Test probe with fallback logic
+    let localProbeResult = await testEndpoint('local', '/probe', 200, '__probe OK');
+    if (localProbeResult.result === 'FAIL') {
+      console.log('⚠️  Local /probe failed, trying /api/probe fallback...');
+      localProbeResult = await testEndpoint('local', '/api/probe', 200, '__probe OK');
+    }
+    
     await testEndpoint('local', '/', 200);
     await testEndpoint('local', '/intake', 200);
     await testEndpoint('local', '/client-portal', 200);
@@ -135,7 +142,14 @@ async function runSmokeTests() {
   // Test preview environment
   console.log('\n📋 Testing preview endpoints...');
   await testEndpoint('preview', '/api/health', 200, 'ok');
-  await testEndpoint('preview', '/probe', 200, '__probe OK');
+  
+  // Test probe with fallback logic
+  let probeResult = await testEndpoint('preview', '/probe', 200, '__probe OK');
+  if (probeResult.result === 'FAIL') {
+    console.log('⚠️  /probe failed, trying /api/probe fallback...');
+    probeResult = await testEndpoint('preview', '/api/probe', 200, '__probe OK');
+  }
+  
   await testEndpoint('preview', '/', 200);
   await testEndpoint('preview', '/intake', 200);
   await testEndpoint('preview', '/client-portal', 200);

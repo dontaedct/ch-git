@@ -7,6 +7,9 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -18,4 +21,10 @@ body {
 /* Basic utility classes */
 .container-page {
   @apply max-w-4xl mx-auto px-6;
+}
+
+/* Force all elements to respect viewport width */
+* {
+  max-width: 100%;
+  box-sizing: border-box;
 }

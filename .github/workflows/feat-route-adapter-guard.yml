@@ -1,0 +1,117 @@
+name: feat/route-adapter-guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    # Run for all PRs; guard logic decides whether to enforce
+  workflow_dispatch: {}   # ← lets us run it manually right away (unsticks "Queued")
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout PR HEAD
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch base ref (for proper diff)
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          echo "BASE REF: ${{ github.event.pull_request.base.ref }}"
+          git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1 || true
+
+      - name: Compute changed files
+        id: diff
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+            echo "Base: $BASE_SHA"
+            echo "Head: $HEAD_SHA"
+            git branch --remotes
+            git rev-parse "$BASE_SHA" >/dev/null 2>&1 || {
+              echo "Base SHA not present locally; fetching base branch tip…"
+              git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1 || true
+            }
+            CHANGED=$(git diff --name-only "$BASE_SHA...$HEAD_SHA")
+          else
+            # workflow_dispatch (manual run): best-effort on current ref vs its merge-base with origin/main
+            git fetch origin main --depth=1 || true
+            BASE=$(git merge-base HEAD origin/main || echo "HEAD^")
+            CHANGED=$(git diff --name-only "$BASE...HEAD")
+          fi
+
+          echo "$CHANGED" | sed '/^$/d' | tee changed_files.txt
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          cat changed_files.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Show changed files (debug)
+        run: |
+          echo "Changed files:"
+          cat changed_files.txt || true
+
+      - name: Decide if this is a UI PR (enforce only when relevant)
+        id: decide
+        shell: bash
+        run: |
+          set -euo pipefail
+          UI_PATTERNS='^(components/ui/|app/.*\.(tsx|ts)|styles/|design/)'
+          if grep -Eq "$UI_PATTERNS" changed_files.txt; then
+            echo "ui_pr=true" >> $GITHUB_OUTPUT
+            echo "Detected UI-related changes → guard will enforce."
+          else
+            echo "ui_pr=false" >> $GITHUB_OUTPUT
+            echo "No UI-related files changed → guard will no-op."
+          fi
+
+      - name: Enforce route/adapter guard (fail on violations)
+        if: ${{ steps.decide.outputs.ui_pr == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Evaluating violations…"
+
+          # Protected areas that UI PRs must NOT change
+          PROTECTED_REGEX='^(app/\(core\)/adapters/|lib/db/|supabase/|prisma/|migrations/)'
+          if grep -Eq "$PROTECTED_REGEX" changed_files.txt; then
+            echo "❌ UI PR cannot modify adapters/DB/supabase/prisma/migrations."
+            echo "Changed protected files:"
+            grep -E "$PROTECTED_REGEX" changed_files.txt || true
+            exit 1
+          fi
+
+          # Route rename/move detection (basic): renamed route or page files under app/**
+          # Use name-status to catch renames (lines start with R.., C.. etc.)
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git diff --name-status "${{ github.event.pull_request.base.sha }}...${{ github.event.pull_request.head.sha }}" > name_status.txt
+          else
+            git diff --name-status > name_status.txt
+          fi
+
+          if grep -E '^R[0-9]*\s+app/.*/(route|page)\.tsx\s+app/.*/(route|page)\.tsx' name_status.txt >/dev/null; then
+            echo "❌ Route/page file rename detected in a UI PR. Open a separate infra PR."
+            grep -E '^R[0-9]*\s+app/.*/(route|page)\.tsx' name_status.txt || true
+            exit 1
+          fi
+
+          echo "✅ Guard passed. UI changes do not touch protected areas or rename routes."
+
+      - name: No-op (not a UI PR)
+        if: ${{ steps.decide.outputs.ui_pr != 'true' }}
+        run: echo "Non-UI PR → guard skipped."

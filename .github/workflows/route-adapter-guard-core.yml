@@ -1,8 +1,17 @@
 name: route-adapter-guard-core
 
 on:
-  workflow_call: {}         # Reusable by other workflows
-  workflow_dispatch: {}     # Manual run to "prime" the workflow on main
+  workflow_call:
+    inputs:
+      base_sha:
+        description: "Base commit SHA to diff from"
+        required: false
+        type: string
+      head_sha:
+        description: "Head commit SHA to diff to"
+        required: false
+        type: string
+  workflow_dispatch: {}     # manual run to prime/debug
 
 permissions:
   contents: read
@@ -16,25 +25,33 @@ jobs:
   guard:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+
+    env:
+      INPUT_BASE_SHA: ${{ inputs.base_sha }}
+      INPUT_HEAD_SHA: ${{ inputs.head_sha }}
+
     steps:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
 
-      - name: Determine base/head (supports dispatch and call)
+      - name: Determine base/head
         id: basehead
         shell: bash
         run: |
           set -euo pipefail
-          if [[ -n "${{ inputs.base_sha || '' }}" && -n "${{ inputs.head_sha || '' }}" ]]; then
-            echo "base=${{ inputs.base_sha }}" >> $GITHUB_OUTPUT
-            echo "head=${{ inputs.head_sha }}" >> $GITHUB_OUTPUT
+          if [[ -n "${INPUT_BASE_SHA}" && -n "${INPUT_HEAD_SHA}" ]]; then
+            BASE="${INPUT_BASE_SHA}"
+            HEAD="${INPUT_HEAD_SHA}"
           else
-            # Manual dispatch on main: diff last 1 against merge-base with origin/main
+            # manual dispatch or fallback: diff against merge-base with origin/main
             git fetch origin main --depth=1 || true
-            BASE=$(git merge-base HEAD origin/main || echo "HEAD^")
-            echo "base=$BASE" >> $GITHUB_OUTPUT
-            echo "head=HEAD"  >> $GITHUB_OUTPUT
+            BASE="$(git merge-base HEAD origin/main || echo "HEAD^")"
+            HEAD="HEAD"
           fi
+          echo "Base: $BASE"
+          echo "Head: $HEAD"
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "head=$HEAD" >> "$GITHUB_OUTPUT"
 
       - name: Compute changed files
         id: diff
@@ -43,21 +60,28 @@ jobs:
           set -euo pipefail
           BASE="${{ steps.basehead.outputs.base }}"
           HEAD="${{ steps.basehead.outputs.head }}"
-          CHANGED=$(git diff --name-only "$BASE...$HEAD")
+          CHANGED="$(git diff --name-only "$BASE...$HEAD")" || true
           echo "$CHANGED" | sed '/^$/d' | tee changed_files.txt
-          echo "files<<EOF" >> $GITHUB_OUTPUT
-          cat changed_files.txt >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          cat changed_files.txt >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
-      - name: Decide if UI PR (enforce only when relevant)
+      - name: Show changed files (debug)
+        run: |
+          echo "Changed files:"
+          cat changed_files.txt || true
+
+      - name: Decide if UI-related
         id: decide
         shell: bash
         run: |
-          UI_PATTERNS='^(components/ui/|app/.*\.(tsx|ts)|styles/|design/)'
-          if grep -Eq "$UI_PATTERNS" changed_files.txt; then
-            echo "ui_pr=true" >> $GITHUB_OUTPUT
+          set -euo pipefail
+          if [[ -s changed_files.txt ]] && grep -Eq '^(components/ui/|app/.*\.(tsx|ts)|styles/|design/)' changed_files.txt; then
+            echo "ui_pr=true" >> "$GITHUB_OUTPUT"
+            echo "Detected UI-related changes."
           else
-            echo "ui_pr=false" >> $GITHUB_OUTPUT
+            echo "ui_pr=false" >> "$GITHUB_OUTPUT"
+            echo "No UI-related files changed."
           fi
 
       - name: Enforce route/adapter guard
@@ -71,15 +95,14 @@ jobs:
             grep -E "$PROTECTED_REGEX" changed_files.txt || true
             exit 1
           fi
-          # Catch route/page renames
-          git diff --name-status "$BASE...$HEAD" > name_status.txt
+          git diff --name-status "${{ steps.basehead.outputs.base }}...${{ steps.basehead.outputs.head }}" > name_status.txt || true
           if grep -E '^R[0-9]*\s+app/.*/(route|page)\.tsx\s+app/.*/(route|page)\.tsx' name_status.txt >/dev/null; then
-            echo "❌ Route/page rename detected in UI change. Open a separate infra PR."
+            echo "❌ Route/page rename detected in UI changes. Open a separate infra PR."
             grep -E '^R[0-9]*\s+app/.*/(route|page)\.tsx' name_status.txt || true
             exit 1
           fi
           echo "✅ Guard passed."
 
-      - name: No-op (not UI related)
+      - name: No-op (not UI)
         if: ${{ steps.decide.outputs.ui_pr != 'true' }}
         run: echo "Non-UI changes → guard skipped."

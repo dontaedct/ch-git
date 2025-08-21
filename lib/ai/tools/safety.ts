@@ -30,12 +30,12 @@ export class SafetyTools {
     this.config = config;
   }
   
-  async redactText(text: string): Promise<string> {
+  async redactText(_text: string): Promise<string> {
     // No-op implementation
-    return text;
+    return _text;
   }
   
-  async moderateText(text: string): Promise<SafetyResult> {
+  async moderateText(_text: string): Promise<SafetyResult> {
     // No-op implementation
     return {
       isSafe: true,
@@ -44,7 +44,7 @@ export class SafetyTools {
     };
   }
   
-  async checkSafety(text: string): Promise<SafetyResult> {
+  async checkSafety(_text: string): Promise<SafetyResult> {
     // No-op implementation
     return {
       isSafe: true,

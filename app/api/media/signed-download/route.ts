@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { mediaPathSchema } from "@/lib/validation";
-import { createServerClient } from "@/lib/supabase/server";
 import { requireUser } from "@/lib/auth/guard";
 import { ok, fail } from "@/lib/errors";
 import { withSentry } from "@/lib/sentry-wrapper";

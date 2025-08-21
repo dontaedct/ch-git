@@ -110,7 +110,7 @@ async function runEvalCase(evalCase: EvalCase): Promise<EvalResult> {
       return {
         name: evalCase.name,
         passed: false,
-        error: result.error || 'Task execution failed'
+        error: result.error ?? 'Task execution failed'
       };
     }
     
@@ -136,21 +136,27 @@ async function runEvalCase(evalCase: EvalCase): Promise<EvalResult> {
  * Main evaluation runner
  */
 async function main(): Promise<void> {
+  // eslint-disable-next-line no-console
   console.log('🤖 Starting AI Evaluation...');
+  // eslint-disable-next-line no-console
   console.log(`Provider: ${process.env.OPENAI_API_KEY ? 'OpenAI' : 'Mock (offline)'}`);
+  // eslint-disable-next-line no-console
   console.log('');
   
   const cases = loadEvalCases();
   const results: EvalResult[] = [];
   
   for (const evalCase of cases) {
+    // eslint-disable-next-line no-console
     console.log(`Running: ${evalCase.name}...`);
     const result = await runEvalCase(evalCase);
     results.push(result);
     
     const status = result.passed ? '✅ PASS' : '❌ FAIL';
+    // eslint-disable-next-line no-console
     console.log(`  ${status}: ${evalCase.name}`);
     if (!result.passed && result.error) {
+      // eslint-disable-next-line no-console
       console.log(`    Error: ${result.error}`);
     }
   }
@@ -163,13 +169,19 @@ async function main(): Promise<void> {
     details: results
   };
   
+  // eslint-disable-next-line no-console
   console.log('');
+  // eslint-disable-next-line no-console
   console.log('📊 Evaluation Summary:');
+  // eslint-disable-next-line no-console
   console.log(`Total: ${summary.total}`);
+  // eslint-disable-next-line no-console
   console.log(`Passed: ${summary.passed}`);
+  // eslint-disable-next-line no-console
   console.log(`Failed: ${summary.failed}`);
   
   // Output JSON for CI consumption
+  // eslint-disable-next-line no-console
   console.log(JSON.stringify(summary));
   
   // Exit with failure if any tests failed
@@ -181,6 +193,7 @@ async function main(): Promise<void> {
 // Run if called directly
 if (require.main === module) {
   main().catch(error => {
+    // eslint-disable-next-line no-console
     console.error('Evaluation failed:', error);
     process.exit(1);
   });

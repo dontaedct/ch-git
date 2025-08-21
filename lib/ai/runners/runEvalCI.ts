@@ -109,7 +109,7 @@ async function runEvalCase(evalCase: EvalCase): Promise<EvalResult> {
       return {
         name: evalCase.name,
         passed: false,
-        error: result.error || 'Task execution failed'
+        error: result.error ?? 'Task execution failed'
       };
     }
     
@@ -151,6 +151,7 @@ async function main(): Promise<void> {
   };
   
   // Output only JSON for CI consumption
+  // eslint-disable-next-line no-console
   console.log(JSON.stringify(summary));
   
   // Exit with failure if any tests failed
@@ -162,6 +163,7 @@ async function main(): Promise<void> {
 // Run if called directly
 if (require.main === module) {
   main().catch(error => {
+    // eslint-disable-next-line no-console
     console.error(JSON.stringify({ error: error.message }));
     process.exit(1);
   });

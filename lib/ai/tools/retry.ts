@@ -17,7 +17,7 @@ export interface RetryResult<T> {
   data?: T;
   attempts: number;
   totalTime: number;
-  error?: any;
+  error?: unknown;
 }
 
 export async function exponentialBackoff<T>(
@@ -32,7 +32,8 @@ export async function exponentialBackoff<T>(
     jitter: true
   };
   
-  const finalConfig = { ...defaultConfig, ...config };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const _finalConfig = { ...defaultConfig, ...config };
   
   // Stubbed implementation
   try {
@@ -43,14 +44,14 @@ export async function exponentialBackoff<T>(
       attempts: 1,
       totalTime: 0
     };
-  } catch (error) {
-    return {
-      success: false,
-      attempts: 1,
-      totalTime: 0,
-      error: "Retry mechanism not implemented - skeleton only"
-    };
-  }
+      } catch {
+      return {
+        success: false,
+        attempts: 1,
+        totalTime: 0,
+        error: "Retry mechanism not implemented - skeleton only"
+      };
+    }
 }
 
 export class RetryManager {
@@ -79,15 +80,15 @@ export async function retry<T>(
   fn: () => Promise<T>,
   config: Partial<RetryConfig> = {}
 ): Promise<T> {
-  const maxAttempts = config.maxAttempts || 3;
-  const baseDelay = config.baseDelay || 1000;
+  const maxAttempts = config.maxAttempts ?? 3;
+  const baseDelay = config.baseDelay ?? 1000;
   
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
       return await fn();
-    } catch (error) {
+    } catch (_error) {
       if (attempt === maxAttempts) {
-        throw error;
+        throw _error;
       }
       
       // Wait before retrying

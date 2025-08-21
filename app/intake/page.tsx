@@ -27,7 +27,7 @@ export default function Page() {
             Welcome
           </h1>
           <p className="text-lg text-gray-600 mb-8">
-            We're excited to help you start your coaching journey! Please fill out this form to help us understand your goals and preferences.
+            We&apos;re excited to help you start your coaching journey! Please fill out this form to help us understand your goals and preferences.
           </p>
         </div>
 

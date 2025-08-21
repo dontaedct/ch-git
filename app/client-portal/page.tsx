@@ -2,11 +2,13 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import Link from 'next/link'
+import type { User } from '@supabase/supabase-js'
 
 export default function ClientPortalPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const supabase = createClient()
 
   const checkAuth = useCallback(async () => {
@@ -153,12 +155,12 @@ export default function ClientPortalPage() {
         
         <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
           <p className="text-gray-600 mb-4">
-            Portal functionality is being developed. You'll soon be able to view your training progress, 
+            Portal functionality is being developed. You&apos;ll soon be able to view your training progress, 
             weekly plans, and check-in history here.
           </p>
-          <a href="/" className="text-blue-600 hover:text-blue-700 font-medium">
+          <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
             ← Back to Home
-          </a>
+          </Link>
         </div>
       </main>
     </div>

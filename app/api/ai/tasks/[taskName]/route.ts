@@ -8,7 +8,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createRealSupabaseClient } from "@/lib/supabase/server";
 import { run as aiRun } from "@/lib/ai";
-import { logger, createRouteLogger } from "@/lib/logger";
+import { createRouteLogger } from "@/lib/logger";
 import { isAIEnabled } from "@/lib/ai/flags";
 
 // Force Node.js runtime for AI operations (never Edge)

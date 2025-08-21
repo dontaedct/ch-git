@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Calendar, Clock, MapPin, Users, Edit, Trash2 } from 'lucide-react'
 import SessionForm from './session-form'
-import { isDevelopment } from '@/lib/env-client'
+
 import InvitePanel from './invite-panel'
 import RSVPPanel from './rsvp-panel'
 

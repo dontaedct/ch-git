@@ -1,5 +1,7 @@
 name: Safety Gate Status Bridge
 
+# This workflow bridges the required Safety Gate status for PRs
+# Triggered on PR events and manually via workflow_dispatch
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]

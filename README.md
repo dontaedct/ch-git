@@ -4,6 +4,7 @@
 - Emails: Resend (transactional only)
 - Cron: /api/weekly-recap with ?secret=CRON_SECRET
 - Env: see .env.local keys
+- TypeScript: Full type safety with 0 compilation errors
 
 ## Setup
 1. Copy `.env.example` to `.env` and configure your environment variables

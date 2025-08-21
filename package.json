@@ -30,7 +30,9 @@
     "dev:status": "node scripts/dev-manager.js status",
     "dev:kill": "node scripts/dev-manager.js kill",
     "dev:clean": "node scripts/dev-manager.js clean",
-    "dev:ports": "node scripts/dev-manager.js ports"
+    "dev:ports": "node scripts/dev-manager.js ports",
+    "guard:test": "node scripts/test-route-guard.mjs",
+    "guard:test:route": "node -e \"import('./scripts/test-route-guard.mjs').then(m => { const result = m.simulateGitDiff(['components/ui/button.tsx', 'app/sessions/page.tsx']); console.log('Test Result:', result); })\""
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

@@ -1,6 +1,7 @@
 name: MIT Hero Design Safety
 
 on:
+  workflow_dispatch:  # Allow manual triggering
   push:
     branches: [ main, develop ]
     paths:
@@ -8,6 +9,8 @@ on:
       - 'components/**'
       - 'tests/ui/**'
       - '.github/workflows/design-safety.yml'
+      - 'scripts/test-route-guard.mjs'
+      - 'docs/ROUTE_ADAPTER_GUARD.md'
   pull_request:
     branches: [ main, develop ]
     paths:
@@ -15,6 +18,8 @@ on:
       - 'components/**'
       - 'tests/ui/**'
       - '.github/workflows/design-safety.yml'
+      - 'scripts/test-route-guard.mjs'
+      - 'docs/ROUTE_ADAPTER_GUARD.md'
     types: [opened, synchronize, reopened, labeled, unlabeled]
 
 jobs:

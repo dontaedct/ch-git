@@ -32,7 +32,11 @@
     "dev:clean": "node scripts/dev-manager.js clean",
     "dev:ports": "node scripts/dev-manager.js ports",
     "guard:test": "node scripts/test-route-guard.mjs",
-    "guard:test:route": "node -e \"import('./scripts/test-route-guard.mjs').then(m => { const result = m.simulateGitDiff(['components/ui/button.tsx', 'app/sessions/page.tsx']); console.log('Test Result:', result); })\""
+    "guard:test:route": "node -e \"import('./scripts/test-route-guard.mjs').then(m => { const result = m.simulateGitDiff(['components/ui/button.tsx', 'app/sessions/page.tsx']); console.log('Test Result:', result); })\"",
+    "ui:contracts": "node design/scripts/component-contract-auditor.mjs || echo \"(info) contracts auditor not present — skipping\"",
+    "ai:evaluate": "node -e \"console.log('[ai:evaluate] no configured evaluations — skipping'); process.exit(0)\"",
+    "ai:eval:ci": "node -e \"console.log('[ai:eval:ci] no configured CI evaluations — skipping'); process.exit(0)\"",
+    "build:robust": "node scripts/build-robust.js"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

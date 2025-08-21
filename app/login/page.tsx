@@ -70,7 +70,7 @@ export default function LoginPage() {
             Welcome back
           </h1>
           <p className="text-base text-gray-600 mb-8">
-            Don't have an account? <Link href="/intake" className="text-blue-600 hover:text-blue-700 font-medium">Sign up here</Link>
+            Don&apos;t have an account? <Link href="/intake" className="text-blue-600 hover:text-blue-700 font-medium">Sign up here</Link>
           </p>
           <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
             ← Back to Home

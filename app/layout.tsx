@@ -2,7 +2,7 @@ import DebugOverlay from './_debug/DebugOverlay';
 import HydrationProbe from './_debug/HydrationProbe';
 import LoopDetector from './_debug/LoopDetector';
 import { Suspense } from 'react';
-import PageBoot from '../components/ui/skeletons/PageBoot';
+import PageBoot from '@/components/ui/skeletons/PageBoot';
 
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const dynamic = 'force-dynamic';

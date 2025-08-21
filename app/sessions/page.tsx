@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic";
 
+import Link from 'next/link';
+
 export default async function SessionsPage() {
   return (
     <div className="min-h-screen bg-white">
@@ -15,9 +17,9 @@ export default async function SessionsPage() {
           <p className="text-gray-600 mb-4">
             Sessions functionality is coming soon. This page will show available group training sessions.
           </p>
-          <a href="/" className="text-blue-600 hover:text-blue-700 font-medium">
+          <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
             ← Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

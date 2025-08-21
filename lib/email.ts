@@ -22,9 +22,11 @@ async function actuallySend(to: string, subject: string, html: string): Promise<
   if (!resend) return { ok: true, skipped: true }; // safe in dev without keys
   try {
     const r = await resend.emails.send({ from: FROM, to, subject, html });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((r as any)?.error) return { ok: false, code: "RESEND_ERROR", message: String((r as any).error) };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return { ok: true, id: (r as any)?.id };
-  } catch (e: any) {
+  } catch (e: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
     return { ok: false, code: "SEND_FAILED", message: e?.message ?? "send failed" };
   }
 }

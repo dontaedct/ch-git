@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase/server";
 import { randomUUID } from "crypto";
 import { requireUser } from "@/lib/auth/guard";
 import { ok, fail } from "@/lib/errors";

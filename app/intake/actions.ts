@@ -2,7 +2,7 @@
 import { createServiceRoleSupabase } from "@/lib/supabase/server";
 
 
-import { intakeSchema, intakeFormSchema } from "@/lib/validation";
+import { intakeFormSchema } from "@/lib/validation";
 import { sendConfirmationEmail } from "@/lib/email";
 
 import { normalizePhone } from "@/lib/validation";
@@ -29,7 +29,7 @@ export async function createClientIntake(formData: FormData): Result {
     if (parsed.phone) {
       try {
         normalizedPhone = normalizePhone(parsed.phone);
-      } catch (error) {
+      } catch {
         return { ok: false, error: "Invalid phone number format" };
       }
     }
@@ -55,14 +55,14 @@ export async function createClientIntake(formData: FormData): Result {
         to: parsed.email, 
         session: { title: "Welcome", starts_at: new Date().toISOString() } 
       });
-    } catch (emailError) {
-      console.warn('Failed to send welcome email:', emailError);
-      // Don't fail the entire operation if email fails
-    }
+          } catch (_emailError) {
+        console.warn('Failed to send welcome email:', _emailError);
+        // Don't fail the entire operation if email fails
+      }
 
     return { ok: true };
-  } catch (e: unknown) {
-    const errorMessage = e instanceof Error ? e.message : 'Unknown error occurred';
+  } catch (_e: unknown) {
+    const errorMessage = _e instanceof Error ? _e.message : 'Unknown error occurred';
     return { ok: false, error: errorMessage ?? "intake failed" };
   }
 }

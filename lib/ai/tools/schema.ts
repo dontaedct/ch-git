@@ -33,15 +33,15 @@ export type SpecDocType = z.infer<typeof SpecDoc>;
 // Schema validator interface
 export interface SchemaValidator<T> {
   validate(data: unknown): T;
-  safeParse(data: unknown): { success: boolean; data?: T; error?: any };
+  safeParse(data: unknown): { success: boolean; data?: T; error?: string };
 }
 
 export function createSchema<T>(): SchemaValidator<T> {
   return {
-    validate: (data: unknown) => {
+    validate: (_data: unknown) => {
       throw new Error("Schema validation not implemented - skeleton only");
     },
-    safeParse: (data: unknown) => ({
+    safeParse: (_data: unknown) => ({
       success: false,
       error: "Schema validation not implemented - skeleton only"
     })
@@ -49,6 +49,6 @@ export function createSchema<T>(): SchemaValidator<T> {
 }
 
 // Export common schema types
-export type AITaskSchema = SchemaValidator<any>;
-export type AIInputSchema = SchemaValidator<any>;
-export type AIOutputSchema = SchemaValidator<any>;
+export type AITaskSchema = SchemaValidator<unknown>;
+export type AIInputSchema = SchemaValidator<unknown>;
+export type AIOutputSchema = SchemaValidator<unknown>;

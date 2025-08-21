@@ -36,6 +36,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
  * @returns Object with paginated query and total count
  */
 export async function applyPagination<T>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query: any,
   page: number,
   pageSize: number

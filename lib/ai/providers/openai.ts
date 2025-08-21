@@ -4,15 +4,17 @@
  * Implements OpenAI client with strict JSON output support
  */
 
-import { retry } from '../tools/retry';
+import { retry } from '@/lib/ai/tools/retry';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
 // Safety guard: only import OpenAI if available
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let OpenAI: any = null;
 try {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   OpenAI = require('openai');
-} catch (error) {
+} catch {
   console.warn('OpenAI SDK not available, provider will use mock mode');
 }
 
@@ -55,6 +57,7 @@ export interface OpenAIResponse {
 }
 
 export class OpenAIProvider {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private client: any;
   private config: OpenAIConfig;
   private universalHeader: string | null = null;
@@ -81,8 +84,8 @@ export class OpenAIProvider {
       try {
         const universalHeaderPath = join(process.cwd(), 'lib/ai/prompts/system/universal_header.md');
         this.universalHeader = readFileSync(universalHeaderPath, 'utf-8');
-      } catch (error) {
-        console.warn('Failed to load universal header, using fallback:', error);
+      } catch (_error) {
+        console.warn('Failed to load universal header, using fallback:', _error);
         this.universalHeader = '# Universal Header Rules\n\nFollow project conventions and safety guidelines.';
       }
     }
@@ -116,7 +119,7 @@ export class OpenAIProvider {
       const userMessage = `Task: ${taskPrompt}\n\nInput: ${JSON.stringify(input, null, 2)}`;
       
       const response = await this.chat({
-        model: process.env.AI_MODEL || 'gpt-4o-mini',
+        model: process.env.AI_MODEL ?? 'gpt-4o-mini',
         messages: [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
@@ -136,7 +139,7 @@ export class OpenAIProvider {
         async () => {
           try {
             return JSON.parse(content);
-          } catch (e) {
+          } catch {
             throw new Error(`Invalid JSON: ${content}`);
           }
         },

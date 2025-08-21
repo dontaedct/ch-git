@@ -59,10 +59,12 @@ export async function runBackupOnce(opts: BackupOptions = {}): Promise<BackupSta
     
     child.stderr?.on('data', (data) => {
       stderr += data.toString();
+      // eslint-disable-next-line no-console
       console.error('Guardian stderr:', data.toString());
     });
     
     child.stdout?.on('data', (data) => {
+      // eslint-disable-next-line no-console
       console.log('Guardian stdout:', data.toString());
     });
     

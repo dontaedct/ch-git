@@ -20,7 +20,7 @@ export async function GET() {
       message = 'No backup status available';
     } else if (!status.ok) {
       healthStatus = 'ERROR';
-      message = `Last backup failed: ${status.error || 'Unknown error'}`;
+      message = `Last backup failed: ${status.error ?? 'Unknown error'}`;
     } else if (!lastBackupOk) {
       healthStatus = 'WARNING';
       message = 'Last backup was not successful';
@@ -51,10 +51,10 @@ export async function GET() {
       message,
       timestamp: new Date().toISOString(),
       backup: {
-        lastBackup: status?.finishedAt || null,
+        lastBackup: status?.finishedAt ?? null,
         backupAge,
         lastBackupOk,
-        artifacts: status?.artifacts || []
+        artifacts: status?.artifacts ?? []
       },
       system: {
         uptime: process.uptime(),

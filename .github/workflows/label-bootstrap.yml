@@ -1,0 +1,25 @@
+name: Label Bootstrap
+on:
+  workflow_dispatch: {}
+permissions:
+  issues: write
+jobs:
+  ensure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ensure ai-evals label exists
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner, repo = context.repo.repo;
+            const name  = "ai-evals"; const color = "BFD4F2"; const desc = "Run AI Evaluations on this PR";
+            try {
+              const { data: labels } = await github.rest.issues.listLabelsForRepo({ owner, repo, per_page: 100 });
+              const exists = labels.some(l => l.name.toLowerCase() === name);
+              if (!exists) {
+                await github.rest.issues.createLabel({ owner, repo, name, color, description: desc });
+                core.info("Created label ai-evals");
+              } else {
+                core.info("Label ai-evals already exists");
+              }
+            } catch (e) { core.warning(e.message); }

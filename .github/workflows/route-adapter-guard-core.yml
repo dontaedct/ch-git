@@ -1,0 +1,108 @@
+name: route-adapter-guard-core
+
+on:
+  workflow_call:
+    inputs:
+      base_sha:
+        description: "Base commit SHA to diff from"
+        required: false
+        type: string
+      head_sha:
+        description: "Head commit SHA to diff to"
+        required: false
+        type: string
+  workflow_dispatch: {}     # manual run to prime/debug
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      INPUT_BASE_SHA: ${{ inputs.base_sha }}
+      INPUT_HEAD_SHA: ${{ inputs.head_sha }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - name: Determine base/head
+        id: basehead
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "${INPUT_BASE_SHA}" && -n "${INPUT_HEAD_SHA}" ]]; then
+            BASE="${INPUT_BASE_SHA}"
+            HEAD="${INPUT_HEAD_SHA}"
+          else
+            # manual dispatch or fallback: diff against merge-base with origin/main
+            git fetch origin main --depth=1 || true
+            BASE="$(git merge-base HEAD origin/main || echo "HEAD^")"
+            HEAD="HEAD"
+          fi
+          echo "Base: $BASE"
+          echo "Head: $HEAD"
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          echo "head=$HEAD" >> "$GITHUB_OUTPUT"
+
+      - name: Compute changed files
+        id: diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="${{ steps.basehead.outputs.base }}"
+          HEAD="${{ steps.basehead.outputs.head }}"
+          CHANGED="$(git diff --name-only "$BASE...$HEAD")" || true
+          echo "$CHANGED" | sed '/^$/d' | tee changed_files.txt
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          cat changed_files.txt >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Show changed files (debug)
+        run: |
+          echo "Changed files:"
+          cat changed_files.txt || true
+
+      - name: Decide if UI-related
+        id: decide
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -s changed_files.txt ]] && grep -Eq '^(components/ui/|app/.*\.(tsx|ts)|styles/|design/)' changed_files.txt; then
+            echo "ui_pr=true" >> "$GITHUB_OUTPUT"
+            echo "Detected UI-related changes."
+          else
+            echo "ui_pr=false" >> "$GITHUB_OUTPUT"
+            echo "No UI-related files changed."
+          fi
+
+      - name: Enforce route/adapter guard
+        if: ${{ steps.decide.outputs.ui_pr == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROTECTED_REGEX='^(app/\(core\)/adapters/|lib/db/|supabase/|prisma/|migrations/)'
+          if grep -Eq "$PROTECTED_REGEX" changed_files.txt; then
+            echo "❌ UI PR cannot modify adapters/DB/supabase/prisma/migrations."
+            grep -E "$PROTECTED_REGEX" changed_files.txt || true
+            exit 1
+          fi
+          git diff --name-status "${{ steps.basehead.outputs.base }}...${{ steps.basehead.outputs.head }}" > name_status.txt || true
+          if grep -E '^R[0-9]*\s+app/.*/(route|page)\.tsx\s+app/.*/(route|page)\.tsx' name_status.txt >/dev/null; then
+            echo "❌ Route/page rename detected in UI changes. Open a separate infra PR."
+            grep -E '^R[0-9]*\s+app/.*/(route|page)\.tsx' name_status.txt || true
+            exit 1
+          fi
+          echo "✅ Guard passed."
+
+      - name: No-op (not UI)
+        if: ${{ steps.decide.outputs.ui_pr != 'true' }}
+        run: echo "Non-UI changes → guard skipped."

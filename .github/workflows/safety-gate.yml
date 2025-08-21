@@ -79,10 +79,9 @@ jobs:
       run: npm audit --audit-level=moderate
 
   lint:
-    name: Lint (Advisory)
+    name: Lint Code
     runs-on: ubuntu-latest
     timeout-minutes: 10
-    continue-on-error: true
 
     steps:
     - name: Checkout code
@@ -101,10 +100,9 @@ jobs:
       run: npm run lint
 
   test:
-    name: Test (Advisory)
+    name: Run Tests
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    continue-on-error: true
 
     steps:
     - name: Checkout code

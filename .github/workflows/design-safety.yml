@@ -30,35 +30,46 @@ jobs:
         run: |
           echo "🔒 Checking route and adapter invariants for UI PRs..."
           
+          # Determine the correct SHA references based on event type
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BEFORE_SHA="${{ github.event.pull_request.base.sha }}"
+            AFTER_SHA="${{ github.event.pull_request.head.sha }}"
+          else
+            BEFORE_SHA="${{ github.event.before }}"
+            AFTER_SHA="${{ github.event.after }}"
+          fi
+          
+          echo "📋 Comparing changes from $BEFORE_SHA to $AFTER_SHA"
+          
           # Check if this is a UI-only PR (changes under components/ui/**)
-          if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q "^components/ui/"; then
+          if git diff --name-only $BEFORE_SHA $AFTER_SHA | grep -q "^components/ui/"; then
             echo "📋 UI components changed - checking for protected area modifications..."
             
             # Check for changes in protected areas
             PROTECTED_CHANGES=""
             
             # Check for route segment changes
-            if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q "^app/"; then
+            if git diff --name-only $BEFORE_SHA $AFTER_SHA | grep -q "^app/"; then
               PROTECTED_CHANGES="$PROTECTED_CHANGES\n- Route segments (app/**)"
             fi
             
             # Check for adapter changes (app/adapters/**)
-            if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q "^app/adapters/"; then
+            if git diff --name-only $BEFORE_SHA $AFTER_SHA | grep -q "^app/adapters/"; then
               PROTECTED_CHANGES="$PROTECTED_CHANGES\n- Adapters (app/adapters/**)"
             fi
             
             # Check for database layer changes
-            if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q "^lib/db/"; then
+            if git diff --name-only $BEFORE_SHA $AFTER_SHA | grep -q "^lib/db/"; then
               PROTECTED_CHANGES="$PROTECTED_CHANGES\n- Database layer (lib/db/**)"
             fi
             
             # Check for Supabase changes
-            if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q "^supabase/"; then
+            if git diff --name-only $BEFORE_SHA $AFTER_SHA | grep -q "^supabase/"; then
               PROTECTED_CHANGES="$PROTECTED_CHANGES\n- Supabase configuration (supabase/**)"
             fi
             
             # Check for lib/supabase changes
-            if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q "^lib/supabase/"; then
+            if git diff --name-only $BEFORE_SHA $AFTER_SHA | grep -q "^lib/supabase/"; then
               PROTECTED_CHANGES="$PROTECTED_CHANGES\n- Supabase client layer (lib/supabase/**)"
             fi
             

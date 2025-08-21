@@ -23,9 +23,29 @@ supabase link --project-ref YOUR_PROJECT_REF
 supabase db push
 ```
 
-## Functions
+## Core Tables Migration
 
-### `create_client_intake`
+### `001_create_core_tables.sql`
+
+**Purpose**: Creates all essential tables needed for the Coach Hub platform, including the check-in flow.
+
+**What it creates**:
+1. `clients` - Client profiles linked to coaches
+2. `check_ins` - Daily client check-ins with weekly tracking via `week_start_date`
+3. `progress_metrics` - Client progress data like weight and measurements
+4. `weekly_plans` - Weekly training plans for clients
+5. `sessions` - Group and private training sessions
+6. `trainers` - Trainer profile information
+
+**Key Features**:
+- **week_start_date**: Required field for weekly progress tracking (Monday start)
+- **Row Level Security**: All tables have proper RLS policies
+- **Indexes**: Performance-optimized for common queries
+- **Constraints**: Data validation and referential integrity
+
+**Run this first** before using other RPC functions.
+
+## Functions
 
 **Purpose**: Atomic intake flow that handles both client creation/update and email logging in a single transaction.
 

@@ -1,0 +1,10 @@
+[33m13716bb[m[33m ([m[1;31morigin/release/restore-home-20250113[m[33m, [m[1;32mrelease/restore-home-20250113[m[33m)[m fix(auth): eliminate infinite re-render loop causing broken UI
+[33m2465548[m fix(auth): add aggressive fallback and direct session check to prevent hanging
+[33m27edea7[m fix(auth): add timeout and better error handling for missing auth sessions
+[33mea490f9[m fix(csp): allow unsafe-eval and unsafe-inline for Next.js runtime in production
+[33m2dc5235[m fix(client-portal): add proper error handling and connection testing for broken UI
+[33m85ea5f0[m restore(home): reinstate normal landing + dynamic redirect fallback
+[33mbcfdb5c[m[33m ([m[1;31morigin/release/merge-preview[m[33m, [m[1;32mrelease/merge-preview[m[33m)[m Merge origin/main into preview/fix-white-20250818-182323, preferring preview version for specified files
+[33m062872f[m[33m ([m[1;31morigin/preview/fix-white-20250818-182323[m[33m, [m[1;32mpreview/fix-white-20250818-182323[m[33m)[m preview: remove shell and default-off DebugOverlay
+[33m4c192fb[m fix: update main page link to use /probe instead of /__probe
+[33m16af5f4[m fix: add _probe route to resolve 404 error

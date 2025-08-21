@@ -2,7 +2,7 @@
 import { createServiceRoleSupabase } from "@/lib/supabase/server";
 
 
-import { intakeSchema, intakeFormSchema } from "@/lib/validation";
+import { intakeFormSchema } from "@/lib/validation";
 import { sendConfirmationEmail } from "@/lib/email";
 
 import { normalizePhone } from "@/lib/validation";
@@ -20,27 +20,26 @@ export async function createClientIntake(formData: FormData): Result {
     const body = Object.fromEntries(formData.entries());
     
     // Parse form data with Zod schema
-    const parsedForm = intakeFormSchema.parse(body);
-    const parsed = intakeSchema.parse(body);
+    const parsed = intakeFormSchema.parse(body);
 
     const supabase = createServiceRoleSupabase();
 
     // Normalize phone number
     let normalizedPhone: string | null = null;
-    if (parsedForm.phone) {
+    if (parsed.phone) {
       try {
-        normalizedPhone = normalizePhone(parsedForm.phone);
-      } catch (error) {
+        normalizedPhone = normalizePhone(parsed.phone);
+      } catch {
         return { ok: false, error: "Invalid phone number format" };
       }
     }
 
     // Execute all database operations atomically
     const params: CreateClientIntakeParams = {
-      p_coach_id: parsed.coach_id,
+      p_coach_id: "default-coach-id", // TODO: Get from auth context
       p_email: parsed.email,
-      p_first_name: splitName(parsed.name).first_name,
-      p_last_name: splitName(parsed.name).last_name,
+      p_first_name: splitName(parsed.full_name).first_name,
+      p_last_name: splitName(parsed.full_name).last_name ?? "",
       p_phone: normalizedPhone
     };
     
@@ -56,14 +55,14 @@ export async function createClientIntake(formData: FormData): Result {
         to: parsed.email, 
         session: { title: "Welcome", starts_at: new Date().toISOString() } 
       });
-    } catch (emailError) {
-      console.warn('Failed to send welcome email:', emailError);
-      // Don't fail the entire operation if email fails
-    }
+          } catch (_emailError) {
+        console.warn('Failed to send welcome email:', _emailError);
+        // Don't fail the entire operation if email fails
+      }
 
     return { ok: true };
-  } catch (e: unknown) {
-    const errorMessage = e instanceof Error ? e.message : 'Unknown error occurred';
+  } catch (_e: unknown) {
+    const errorMessage = _e instanceof Error ? _e.message : 'Unknown error occurred';
     return { ok: false, error: errorMessage ?? "intake failed" };
   }
 }

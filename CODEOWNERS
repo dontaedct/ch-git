@@ -1,0 +1,57 @@
+# CODEOWNERS - Critical Surface Protection
+#
+# This file defines code ownership for critical areas that require
+# mandatory review before changes can be merged.
+#
+# Syntax: path-pattern @username-or-team
+# Note: @dontaedct is the repository owner
+
+# GitHub workflows and CI/CD
+/.github/** @dontaedct
+
+# Build, deployment, and automation scripts
+/scripts/** @dontaedct
+
+# Database migrations and schema
+/supabase/** @dontaedct
+
+# Infrastructure and deployment configuration
+/infra/** @dontaedct
+
+# Git hooks and development automation
+/.husky/** @dontaedct
+
+# Environment and configuration schemas
+**/env*.ts @dontaedct
+**/env*.js @dontaedct
+**/config*.ts @dontaedct
+**/config*.js @dontaedct
+
+# Backup and restore logic
+**/*backup* @dontaedct
+**/*restore* @dontaedct
+**/*recovery* @dontaedct
+
+# Security and authentication
+/lib/auth/** @dontaedct
+**/auth.ts @dontaedct
+**/auth.js @dontaedct
+
+# Package management and dependencies
+/package.json @dontaedct
+/package-lock.json @dontaedct
+/yarn.lock @dontaedct
+/pnpm-lock.yaml @dontaedct
+
+# TypeScript and build configuration
+/tsconfig*.json @dontaedct
+/next.config* @dontaedct
+/vercel.json @dontaedct
+
+# Policy enforcement and safety systems
+**/policy*.ts @dontaedct
+**/guard*.ts @dontaedct
+**/safety*.ts @dontaedct
+
+# Registry systems (sources of truth)
+/lib/registry/** @dontaedct

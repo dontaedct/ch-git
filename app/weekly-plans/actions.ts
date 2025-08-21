@@ -5,9 +5,8 @@ import { createServerClient } from '@/lib/supabase/server'
 import { revalidatePath } from "next/cache";
 import { sanitizeText } from "@/lib/sanitize";
 import { paginationSchema, type PaginatedResponse } from "@/lib/validation";
-import { applyPagination } from "@/lib/utils";
-import { WeeklyPlan } from "@/lib/supabase/types";
-import { Client } from "@/lib/supabase/types";
+
+import { WeeklyPlan, Client, WeeklyPlanUpdate } from "@/lib/supabase/types";
 
 export type ActionResult<T> = 
   | { ok: true; data: T }
@@ -37,19 +36,27 @@ export async function getWeeklyPlans(
       .eq("coach_id", user.id)
       .order("week_start_date", { ascending: false });
 
-    const { data, total } = await applyPagination<WeeklyPlan>(
-      baseQuery,
-      validatedPage,
-      validatedPageSize
-    );
+    // Get total count first
+    const { count: totalCount } = await supabase
+      .from("weekly_plans")
+      .select("*", { count: "exact", head: true })
+      .eq("coach_id", user.id);
+
+    // Apply pagination
+    const offset = (validatedPage - 1) * validatedPageSize;
+    const { data, error } = await baseQuery
+      .select("*")
+      .range(offset, offset + validatedPageSize - 1);
+
+    if (error) throw error;
 
     return { 
       ok: true, 
       data: {
-        data,
+        data: data ?? [],
         page: validatedPage,
         pageSize: validatedPageSize,
-        total,
+        total: totalCount ?? 0,
       }
     };
   } catch {
@@ -145,7 +152,7 @@ export async function createWeeklyPlan(formData: FormData): Promise<ActionResult
   }
 }
 
-export async function updateWeeklyPlan(planId: string, updates: Record<string, unknown>): Promise<ActionResult<void>> {
+export async function updateWeeklyPlan(planId: string, updates: WeeklyPlanUpdate): Promise<ActionResult<void>> {
   try {
     const supabase = await createServerClient();
     const { data: { user } } = await supabase.auth.getUser();
@@ -197,19 +204,27 @@ export async function getClients(
       .eq("coach_id", user.id)
       .order("first_name", { ascending: true });
 
-    const { data, total } = await applyPagination<Client>(
-      baseQuery,
-      validatedPage,
-      validatedPageSize
-    );
+    // Get total count first
+    const { count: totalCount } = await supabase
+      .from("clients")
+      .select("*", { count: "exact", head: true })
+      .eq("coach_id", user.id);
+
+    // Apply pagination
+    const offset = (validatedPage - 1) * validatedPageSize;
+    const { data, error } = await baseQuery
+      .select("*")
+      .range(offset, offset + validatedPageSize - 1);
+
+    if (error) throw error;
 
     return { 
       ok: true, 
       data: {
-        data,
+        data: data ?? [],
         page: validatedPage,
         pageSize: validatedPageSize,
-        total,
+        total: totalCount ?? 0,
       }
     };
   } catch {

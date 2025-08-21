@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Calendar, Clock, MapPin, Users, Edit, Trash2 } from 'lucide-react'
 import SessionForm from './session-form'
+
 import InvitePanel from './invite-panel'
 import RSVPPanel from './rsvp-panel'
 
@@ -149,7 +150,7 @@ export default function SessionList({
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Clock className="w-4 h-4" />
-                  <span>{formatDuration(session.duration_minutes)}</span>
+                  <span>{formatDuration(session.duration_minutes ?? 0)}</span>
                 </div>
                 
                 {session.location && (

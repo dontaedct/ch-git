@@ -9,14 +9,14 @@ export interface TraceContext {
   spanId: string;
   parentId?: string;
   operation: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
 }
 
 export interface TraceEvent {
   level: 'debug' | 'info' | 'warn' | 'error';
   message: string;
   context?: TraceContext;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   timestamp: string;
 }
 
@@ -34,6 +34,7 @@ export interface AITraceMetadata {
 
 export class Tracer {
   private enabled: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private logger?: any;
   
   constructor(enabled: boolean = true) {
@@ -47,7 +48,7 @@ export class Tracer {
     }
   }
   
-  trace(operation: string, metadata?: Record<string, any>): TraceContext {
+  trace(operation: string, metadata?: Record<string, unknown>): TraceContext {
     const context: TraceContext = {
       traceId: this.generateId(),
       spanId: this.generateId(),
@@ -76,7 +77,7 @@ export class Tracer {
   traceAIFlagTransition(transition: 'enabled' | 'disabled', reason?: string): TraceContext {
     return this.traceAI('ai_flag_transition', {
       transition,
-      reason: reason || 'manual_change'
+      reason: reason ?? 'manual_change'
     });
   }
   
@@ -100,7 +101,7 @@ export class Tracer {
 
 // Export singleton instance
 export const tracer = new Tracer();
-export const trace = (op: string, meta?: Record<string, any>) => tracer.trace(op, meta);
+export const trace = (op: string, meta?: Record<string, unknown>) => tracer.trace(op, meta);
 export const traceAI = (op: string, meta?: AITraceMetadata) => tracer.traceAI(op, meta);
 
 // Export the new transition tracking function

@@ -3,6 +3,9 @@ import { z } from "zod";
 // Re-export phone validation utilities
 export { normalizePhone } from "./phone";
 
+// Utility schemas
+export const zUUID = z.string().uuid();
+
 // Pagination schemas
 export const paginationSchema = z.object({
   page: z.number().int().min(1).default(1),
@@ -19,8 +22,11 @@ export type PaginatedResponse<T> = {
 // Intake schemas
 export const intakeSchema = z.object({
   full_name: z.string().min(1),
+  name: z.string().min(1), // Add name field for backward compatibility
   email: z.string().email(),
-  consent: z.union([z.literal(true), z.string()]).transform(v => v === true || v === "on" || v === "true" || v === "1"),
+  phone: z.string().optional(),
+  coach_id: z.string().uuid().optional(), // Add coach_id field
+  consent: z.union([z.literal(true), z.string()]).transform(v => v === true || v === "on" || v === "true" || v === "1" || v === "1"),
 });
 
 export const intakeFormSchema = intakeSchema; // Alias for backward compatibility
@@ -37,15 +43,24 @@ export const sessionSchema = z.object({
   stripe_link: z.string().url().optional().nullable(),
 });
 
+// Create session schema (for form submissions)
+export const createSessionSchema = sessionSchema;
+
+// Toggle task schema
+export const toggleTaskSchema = z.object({
+  taskId: z.string().uuid(),
+  completed: z.boolean(),
+});
+
 // Weekly plan schema (minimal shape)
 export const weeklyPlanSchema = z.object({
   client_id: z.string().uuid(),
   coach_id: z.string().uuid(),
   week_start_date: z.string().datetime(),
-  week_end_date: z.string().datetime(),
+  week_end_date: z.string().datetime().optional(),
   title: z.string().min(1),
   description: z.string().nullable().optional(),
-  goals: z.array(z.string()).optional(),
+  goals: z.array(z.string()).default([]), // Provide safe default
   tasks: z.array(z.object({
     id: z.string(),
     title: z.string(),
@@ -55,14 +70,15 @@ export const weeklyPlanSchema = z.object({
     custom_schedule: z.string().nullable().optional(),
     completed: z.boolean(),
     notes: z.string().nullable().optional(),
-  })).optional(),
-  status: z.enum(['active', 'completed', 'archived']).optional(),
+  })).default([]), // Provide safe default
+  status: z.enum(['draft', 'approved', 'sent', 'active', 'completed']).optional(),
 });
 
 // Check-in schema (minimal shape)
 export const checkInSchema = z.object({
   client_id: z.string().uuid(),
   coach_id: z.string().uuid(),
+  week_start_date: z.string().datetime(), // Add missing required field
   weekly_plan_id: z.string().uuid().nullable().optional(),
   check_in_date: z.string().datetime(),
   mood_rating: z.number().int().min(1).max(5),

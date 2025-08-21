@@ -5,7 +5,9 @@ import { createClient } from '@/lib/supabase/client'
 import { Client, CheckInInsert } from '@/lib/supabase/types'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+
 import { sanitizeText } from '@/lib/sanitize'
+import { getWeekStartDate } from '@/lib/utils'
 
 export default function CheckInPage() {
   const [client, setClient] = useState<Client | null>(null)
@@ -26,7 +28,7 @@ export default function CheckInPage() {
         .single()
 
       if (clientData) {
-        setClient(clientData)
+        setClient(clientData as Client)
       }
     } catch {
       setError('Failed to load client data')
@@ -66,6 +68,7 @@ export default function CheckInPage() {
       const checkInData: CheckInInsert = {
         client_id: client!.id,
         coach_id: client!.coach_id,
+        week_start_date: getWeekStartDate(), // Use utility function for proper week start
         check_in_date: new Date().toISOString(),
         mood_rating: parseInt(formData.get('mood_rating') as string) as 1 | 2 | 3 | 4 | 5,
         energy_level: parseInt(formData.get('energy_level') as string) as 1 | 2 | 3 | 4 | 5,
@@ -73,7 +76,7 @@ export default function CheckInPage() {
         water_intake_liters: formData.get('water_intake_liters') ? parseFloat(formData.get('water_intake_liters') as string) : null,
         weight_kg: formData.get('weight_kg') ? parseFloat(formData.get('weight_kg') as string) : null,
         body_fat_percentage: formData.get('body_fat_percentage') ? parseFloat(formData.get('body_fat_percentage') as string) : null,
-        notes: sanitizeText(formData.get('notes')),
+        notes: sanitizeText(formData.get('notes') as string | null),
       }
 
       const { error: insertError } = await supabase
@@ -97,7 +100,7 @@ export default function CheckInPage() {
           })
 
         if (metricError) {
-          if (process.env.NODE_ENV !== "production") {
+          if (process.env.NODE_ENV !== 'production') {
             console.warn('Failed to save progress metric:', metricError)
           }
         }

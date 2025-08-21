@@ -11,6 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Users, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { isDevelopment } from '@/lib/env-client'
 
 interface RSVPPanelProps {
   session: Session
@@ -72,7 +73,7 @@ export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
       )
       setOpen(false)
     } catch (error) {
-      if (process.env.NODE_ENV !== "production") {
+      if (isDevelopment()) {
         console.error('Failed to save RSVPs:', error)
       }
     } finally {

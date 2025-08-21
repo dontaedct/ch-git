@@ -10,7 +10,7 @@ import * as path from 'path';
 
 interface TaskRunnerOptions {
   task: string;
-  input: any;
+  input: unknown;
   outputFile?: string;
   verbose?: boolean;
 }
@@ -19,7 +19,9 @@ async function runTask(options: TaskRunnerOptions): Promise<void> {
   const { task, input, outputFile, verbose = false } = options;
   
   if (verbose) {
+    // eslint-disable-next-line no-console
     console.log(`🚀 Running AI task: ${task}`);
+    // eslint-disable-next-line no-console
     console.log(`📥 Input:`, JSON.stringify(input, null, 2));
   }
   
@@ -48,14 +50,19 @@ async function runTask(options: TaskRunnerOptions): Promise<void> {
     fs.writeFileSync(outputPath, JSON.stringify(outputData, null, 2));
     
     if (verbose) {
+      // eslint-disable-next-line no-console
       console.log(`✅ Task completed successfully`);
+      // eslint-disable-next-line no-console
       console.log(`📁 Output written to: ${outputPath}`);
+      // eslint-disable-next-line no-console
       console.log(`📊 Result:`, JSON.stringify(result, null, 2));
     } else {
+      // eslint-disable-next-line no-console
       console.log(`✅ Task '${task}' completed. Output: ${outputPath}`);
     }
     
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(`❌ Error running task ${task}:`, error);
     process.exit(1);
   }
@@ -94,12 +101,14 @@ if (import.meta.url === `file://${process.argv[1]}` || require.main === module) 
   }
   
   if (!task) {
+    // eslint-disable-next-line no-console
     console.error('Usage: tsx runTask.ts --task=<task_name> [--input=<json_input>] [--out=<file_path>] [--verbose]');
+    // eslint-disable-next-line no-console
     console.error('Supported tasks: incident_triage, spec_writer');
     process.exit(1);
   }
   
-  let parsedInput: any;
+  let parsedInput: unknown;
   
   if (input) {
     try {
@@ -114,6 +123,7 @@ if (import.meta.url === `file://${process.argv[1]}` || require.main === module) 
           parsedInput = input; // Treat as raw text
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`❌ Error reading input file ${input}:`, error);
         process.exit(1);
       }

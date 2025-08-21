@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createServerClient } from "@/lib/supabase/server";
+
 import { requireUser } from "@/lib/auth/guard";
 import { ok, fail } from "@/lib/errors";
 import { withSentry } from "@/lib/sentry-wrapper";
@@ -12,8 +12,7 @@ export const revalidate = 60;
 
 async function GETHandler(req: NextRequest): Promise<NextResponse> {
   try {
-    const user = await requireUser();
-    const supabase = await createServerClient();
+    const { user, supabase } = await requireUser();
 
     // Parse and validate pagination parameters
     const { searchParams } = new URL(req.url);
@@ -26,9 +25,9 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
     });
 
     // Build the base query
-    const baseQuery = supabase
+    const baseQuery = (await supabase)
       .from("sessions")
-      .select("*")
+      .select("*", { count: "exact" })
       .eq("coach_id", user.id)
       .order("starts_at", { ascending: false });
 

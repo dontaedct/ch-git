@@ -7,7 +7,7 @@ import { fail } from '@/lib/errors'
 import { error as logError } from '@/lib/logger'
 import { sanitizeText } from '@/lib/sanitize'
 import { paginationSchema, type PaginatedResponse } from '@/lib/validation'
-import { applyPagination } from '@/lib/utils'
+
 
 export type ActionResult<T> = 
   | { ok: true; data: T }
@@ -37,19 +37,27 @@ export async function getSessions(
       .eq("coach_id", user.id)
       .order("starts_at", { ascending: false });
 
-    const { data, total } = await applyPagination<Session>(
-      baseQuery,
-      validatedPage,
-      validatedPageSize
-    );
+    // Get total count first
+    const { count: totalCount } = await supabase
+      .from("sessions")
+      .select("*", { count: "exact", head: true })
+      .eq("coach_id", user.id);
+
+    // Apply pagination
+    const offset = (validatedPage - 1) * validatedPageSize;
+    const { data, error } = await baseQuery
+      .select("*")
+      .range(offset, offset + validatedPageSize - 1);
+
+    if (error) throw error;
 
     return { 
       ok: true, 
       data: {
-        data,
+        data: data ?? [],
         page: validatedPage,
         pageSize: validatedPageSize,
-        total,
+        total: totalCount ?? 0,
       }
     };
   } catch {
@@ -84,12 +92,19 @@ export async function createSession(formData: FormData): Promise<{ ok: boolean; 
       return { ok: false, error: 'Not authenticated' }
     }
 
+    // Validate location against allowed values
+    const allowedLocations = ['field', 'gym', 'track', 'other'] as const
+    type ValidLocation = typeof allowedLocations[number]
+    const validatedLocation: ValidLocation = allowedLocations.includes(location as ValidLocation) ? location as ValidLocation : 'other'
+
     const sessionData: SessionInsert = {
       title: sanitizeText(title),
       description: sanitizeText(description),
+      type: 'private', // Default to private session
+      capacity: maxParticipants || 1, // Use maxParticipants or default to 1
       duration_minutes: durationMinutes,
       max_participants: maxParticipants || null,
-      location: sanitizeText(location),
+      location: validatedLocation,
       notes: sanitizeText(notes),
       starts_at: startTime.toISOString(),
       ends_at: endTime.toISOString(),
@@ -135,6 +150,11 @@ export async function updateSession(
       return { ok: false, error: 'Missing required fields' }
     }
 
+    // Validate location against allowed values
+    const allowedLocations = ['field', 'gym', 'track', 'other'] as const
+    type ValidLocation = typeof allowedLocations[number]
+    const validatedLocation: ValidLocation = allowedLocations.includes(location as ValidLocation) ? location as ValidLocation : 'other'
+
     // Calculate start and end times
     const startTime = new Date(startsAt)
     const endTime = new Date(startTime.getTime() + durationMinutes * 60 * 1000)
@@ -144,7 +164,7 @@ export async function updateSession(
       description: sanitizeText(description),
       duration_minutes: durationMinutes,
       max_participants: maxParticipants || null,
-      location: sanitizeText(location),
+      location: validatedLocation,
       notes: sanitizeText(notes),
       starts_at: startTime.toISOString(),
       ends_at: endTime.toISOString(),

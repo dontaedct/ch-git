@@ -36,7 +36,7 @@ export class OpenAIProviderAdapter implements AIProvider {
       return {
         success: result.ok,
         data: result.data,
-        error: result.error || 'No error message',
+        error: result.error ?? 'No error message',
         provider: this.name,
         timestamp: new Date().toISOString()
       };
@@ -65,7 +65,7 @@ export class StubProvider implements AIProvider {
 }
 
 export function getProvider(providerName?: string): AIProvider {
-  const provider = providerName || process.env.AI_PROVIDER || 'openai';
+  const provider = providerName ?? process.env.AI_PROVIDER ?? 'openai';
   
   // Use mock provider if no OpenAI API key is set or if OpenAI SDK is not available
   if (!process.env.OPENAI_API_KEY && provider === 'openai') {

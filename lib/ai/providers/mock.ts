@@ -4,7 +4,7 @@
  * Deterministic mock responses for offline evaluation
  */
 
-import type { AIOptions, AIResult } from '../types';
+import type { AIOptions, AIResult } from '@/lib/ai/types';
 
 export interface MockTaskResponse {
   ok: boolean;
@@ -49,7 +49,7 @@ export async function runJSON(
       default:
         mockData = {
           message: `Mock response for task: ${taskName}`,
-          input: input,
+          input,
           timestamp: new Date().toISOString()
         };
     }
@@ -73,7 +73,7 @@ export async function runJSON(
 export class MockProvider {
   name = "mock";
   
-  async execute(task: string, input: unknown, options?: AIOptions): Promise<AIResult> {
+  async execute(task: string, input: unknown, _options?: AIOptions): Promise<AIResult> {
     const result = await runJSON(task, { parse: (data) => data }, input);
     
     return {

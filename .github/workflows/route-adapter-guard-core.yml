@@ -1,0 +1,85 @@
+name: route-adapter-guard-core
+
+on:
+  workflow_call: {}         # Reusable by other workflows
+  workflow_dispatch: {}     # Manual run to "prime" the workflow on main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - name: Determine base/head (supports dispatch and call)
+        id: basehead
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -n "${{ inputs.base_sha || '' }}" && -n "${{ inputs.head_sha || '' }}" ]]; then
+            echo "base=${{ inputs.base_sha }}" >> $GITHUB_OUTPUT
+            echo "head=${{ inputs.head_sha }}" >> $GITHUB_OUTPUT
+          else
+            # Manual dispatch on main: diff last 1 against merge-base with origin/main
+            git fetch origin main --depth=1 || true
+            BASE=$(git merge-base HEAD origin/main || echo "HEAD^")
+            echo "base=$BASE" >> $GITHUB_OUTPUT
+            echo "head=HEAD"  >> $GITHUB_OUTPUT
+          fi
+
+      - name: Compute changed files
+        id: diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="${{ steps.basehead.outputs.base }}"
+          HEAD="${{ steps.basehead.outputs.head }}"
+          CHANGED=$(git diff --name-only "$BASE...$HEAD")
+          echo "$CHANGED" | sed '/^$/d' | tee changed_files.txt
+          echo "files<<EOF" >> $GITHUB_OUTPUT
+          cat changed_files.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Decide if UI PR (enforce only when relevant)
+        id: decide
+        shell: bash
+        run: |
+          UI_PATTERNS='^(components/ui/|app/.*\.(tsx|ts)|styles/|design/)'
+          if grep -Eq "$UI_PATTERNS" changed_files.txt; then
+            echo "ui_pr=true" >> $GITHUB_OUTPUT
+          else
+            echo "ui_pr=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Enforce route/adapter guard
+        if: ${{ steps.decide.outputs.ui_pr == 'true' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          PROTECTED_REGEX='^(app/\(core\)/adapters/|lib/db/|supabase/|prisma/|migrations/)'
+          if grep -Eq "$PROTECTED_REGEX" changed_files.txt; then
+            echo "❌ UI PR cannot modify adapters/DB/supabase/prisma/migrations."
+            grep -E "$PROTECTED_REGEX" changed_files.txt || true
+            exit 1
+          fi
+          # Catch route/page renames
+          git diff --name-status "$BASE...$HEAD" > name_status.txt
+          if grep -E '^R[0-9]*\s+app/.*/(route|page)\.tsx\s+app/.*/(route|page)\.tsx' name_status.txt >/dev/null; then
+            echo "❌ Route/page rename detected in UI change. Open a separate infra PR."
+            grep -E '^R[0-9]*\s+app/.*/(route|page)\.tsx' name_status.txt || true
+            exit 1
+          fi
+          echo "✅ Guard passed."
+
+      - name: No-op (not UI related)
+        if: ${{ steps.decide.outputs.ui_pr != 'true' }}
+        run: echo "Non-UI changes → guard skipped."

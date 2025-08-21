@@ -16,8 +16,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
   const logger = createRouteLogger('GET', '/api/clients');
   
   try {
-    const user = await requireUser();
-    const supabase = await createServerClient();
+    const { user, supabase } = await requireUser();
 
     // Parse and validate pagination parameters
     const { searchParams } = new URL(req.url);
@@ -30,7 +29,7 @@ async function GETHandler(req: NextRequest): Promise<NextResponse> {
     });
 
     // Build the base query
-    const baseQuery = supabase
+    const baseQuery = (await supabase)
       .from("clients")
       .select("*")
       .eq("coach_id", user.id)

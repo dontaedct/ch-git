@@ -10,8 +10,7 @@ export const revalidate = 60;
 
 async function GETHandler(req: Request): Promise<NextResponse> {
   try {
-    const user = await requireUser();
-    const supabase = await createServerClient();
+    const { user, supabase } = await requireUser();
 
     const { searchParams } = new URL(req.url);
     const path = mediaPathSchema.parse(searchParams.get("path"));
@@ -19,10 +18,10 @@ async function GETHandler(req: Request): Promise<NextResponse> {
     // validate ownership via client id inside path
     const parts = path.split("/");
     const client_id = parts[1]; // client/<client_id>/...
-    const { data: okClient, error: cErr } = await supabase.from("clients").select("id").eq("id", client_id).eq("coach_id", user.id).single();
+    const { data: okClient, error: cErr } = await (await supabase).from("clients").select("id").eq("id", client_id).eq("coach_id", user.id).single();
     if (cErr || !okClient) return NextResponse.json(fail("forbidden", "FORBIDDEN"), { status: 403 });
 
-    const { data, error } = await supabase.storage.from("media").createSignedUrl(path, 60); // 60s
+    const { data, error } = await (await supabase).storage.from("media").createSignedUrl(path, 60); // 60s
     if (error) return NextResponse.json(fail(error.message, "STORAGE_ERROR"), { status: 500 });
 
     return NextResponse.json(ok({ url: data.signedUrl }));

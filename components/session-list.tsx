@@ -149,7 +149,7 @@ export default function SessionList({
                 
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Clock className="w-4 h-4" />
-                  <span>{formatDuration(session.duration_minutes)}</span>
+                  <span>{formatDuration(session.duration_minutes ?? 0)}</span>
                 </div>
                 
                 {session.location && (

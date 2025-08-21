@@ -20,16 +20,15 @@ export async function createClientIntake(formData: FormData): Result {
     const body = Object.fromEntries(formData.entries());
     
     // Parse form data with Zod schema
-    const parsedForm = intakeFormSchema.parse(body);
-    const parsed = intakeSchema.parse(body);
+    const parsed = intakeFormSchema.parse(body);
 
     const supabase = createServiceRoleSupabase();
 
     // Normalize phone number
     let normalizedPhone: string | null = null;
-    if (parsedForm.phone) {
+    if (parsed.phone) {
       try {
-        normalizedPhone = normalizePhone(parsedForm.phone);
+        normalizedPhone = normalizePhone(parsed.phone);
       } catch (error) {
         return { ok: false, error: "Invalid phone number format" };
       }
@@ -37,10 +36,10 @@ export async function createClientIntake(formData: FormData): Result {
 
     // Execute all database operations atomically
     const params: CreateClientIntakeParams = {
-      p_coach_id: parsed.coach_id,
+      p_coach_id: "default-coach-id", // TODO: Get from auth context
       p_email: parsed.email,
-      p_first_name: splitName(parsed.name).first_name,
-      p_last_name: splitName(parsed.name).last_name,
+      p_first_name: splitName(parsed.full_name).first_name,
+      p_last_name: splitName(parsed.full_name).last_name ?? "",
       p_phone: normalizedPhone
     };
     

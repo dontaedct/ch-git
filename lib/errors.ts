@@ -6,3 +6,6 @@ export const fail = (message: string, code = "ERR"): Fail => ({ ok: false, code,
 
 // If a caller expects a Response, use this wrapper.
 export const asResponse = (f: Fail, status = 400): Response => Response.json(f, { status });
+
+// Convert Fail to HTTP Response
+export const toHttpResponse = (f: Fail, status = 400): Response => Response.json(f, { status });

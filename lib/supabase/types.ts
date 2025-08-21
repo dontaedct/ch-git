@@ -26,7 +26,7 @@ export type Session = {
   coach_id: string;
   title: string;
   type: "group" | "private";
-  location: "field" | "gym" | "track" | "other";
+  location: "field" | "gym" | "track" | "other" | "Gym Studio A" | "Outdoor Track" | "Yoga Studio";
   starts_at: string;
   ends_at?: string | null;
   capacity: number;
@@ -50,16 +50,20 @@ export type WeeklyPlan = {
   description?: string;
   plan_json: unknown;
   tasks?: Array<{
+    id: string;
     title: string;
     category: string;
     frequency: string;
     completed?: boolean;
+    description?: string;
   }>;
   goals?: Array<{
+    id: string;
+    title: string;
     description: string;
     target: string;
   }>;
-  status: "draft" | "approved" | "sent";
+  status: "draft" | "approved" | "sent" | "active" | "completed";
   created_at?: string;
   updated_at?: string | null;
   notes?: string | null;
@@ -114,3 +118,79 @@ export type SessionUpdate = Partial<Omit<Session, 'id' | 'created_at'>>;
 export type WeeklyPlanUpdate = Partial<Omit<WeeklyPlan, 'id' | 'created_at'>>;
 export type CheckInUpdate = Partial<Omit<CheckIn, 'id' | 'created_at'>>;
 export type ProgressMetricUpdate = Partial<Omit<ProgressMetric, 'created_at'>>;
+
+export type Trainer = {
+  id: string;
+  coach_id: string;
+  name: string;
+  email: string;
+  phone?: string | null;
+  specialties?: string[] | null;
+  bio?: string | null;
+  hourly_rate?: number | null;
+  certifications?: string[] | null;
+  business_name?: string | null;
+  years_experience?: number | null;
+  website?: string | null;
+  created_at: string;
+  updated_at?: string | null;
+};
+
+export type TrainerInsert = Omit<Trainer, 'id' | 'created_at'>;
+export type TrainerUpdate = Partial<Omit<Trainer, 'id' | 'created_at'>>;
+
+export type Invite = {
+  id: string;
+  coach_id: string;
+  client_id: string;
+  email: string;
+  status: 'pending' | 'accepted' | 'declined';
+  expires_at: string;
+  created_at: string;
+  updated_at?: string | null;
+};
+
+export type InviteInsert = Omit<Invite, 'id' | 'created_at'>;
+export type InviteUpdate = Partial<Omit<Invite, 'id' | 'created_at'>>;
+
+export type Attendance = {
+  id: string;
+  session_id: string;
+  client_id: string;
+  status: 'confirmed' | 'declined' | 'pending';
+  notes?: string | null;
+  created_at: string;
+  updated_at?: string | null;
+};
+
+export type AttendanceInsert = Omit<Attendance, 'id' | 'created_at'>;
+export type AttendanceUpdate = Partial<Omit<Attendance, 'id' | 'created_at'>>;
+
+export type Media = {
+  id: string;
+  client_id: string;
+  coach_id: string;
+  path: string;
+  filename: string;
+  mime_type: string;
+  size_bytes: number;
+  created_at: string;
+  updated_at?: string | null;
+};
+
+export type MediaInsert = Omit<Media, 'id' | 'created_at'>;
+export type MediaUpdate = Partial<Omit<Media, 'id' | 'created_at'>>;
+
+export type EmailLog = {
+  id: string;
+  to_email: string;
+  subject: string;
+  template: string;
+  status: 'sent' | 'failed' | 'pending';
+  error_message?: string | null;
+  created_at: string;
+  updated_at?: string | null;
+};
+
+export type EmailLogInsert = Omit<EmailLog, 'id' | 'created_at'>;
+export type EmailLogUpdate = Partial<Omit<EmailLog, 'id' | 'created_at'>>;

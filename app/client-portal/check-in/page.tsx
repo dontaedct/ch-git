@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Client, CheckInInsert } from '@/lib/supabase/types'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { getClientEnv } from '@/lib/env-client'
+
 import { sanitizeText } from '@/lib/sanitize'
 import { getWeekStartDate } from '@/lib/utils'
 
@@ -100,7 +100,7 @@ export default function CheckInPage() {
           })
 
         if (metricError) {
-          if (!env.BUILD_ENV || env.BUILD_ENV !== 'production') {
+          if (process.env.NODE_ENV !== 'production') {
             console.warn('Failed to save progress metric:', metricError)
           }
         }

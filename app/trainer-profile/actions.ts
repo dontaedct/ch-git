@@ -1,7 +1,7 @@
 "use server";
 
 import { createServerClient } from "@/lib/supabase/server";
-import { getUserOrFail } from "@/lib/auth/guard";
+import { getUserOrFail } from "@/lib/auth/context";
 import { sanitizeText } from "@/lib/sanitize";
 import { trainerProfileSchema } from "@/lib/validation";
 import type { Trainer } from "@/lib/supabase/types";

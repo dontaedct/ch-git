@@ -32,6 +32,32 @@ export async function createServerSupabase() {
 /** Back-compat alias for old imports */
 export const createServerClient = createServerSupabase;
 
+/** Create server client with custom cookies getter */
+export async function createServerClientWithCookies(getCookies: () => ReturnType<typeof cookies>) {
+  const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = getEnv();
+  const cookieStore = await getCookies();
+  
+  return createSSRServerClient(
+    NEXT_PUBLIC_SUPABASE_URL,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    {
+      cookies: {
+        get: (name: string) => cookieStore.get(name)?.value,
+        set: (name: string, value: string, options: CookieOptions) => {
+          cookieStore.set({ name, value, ...options });
+        },
+        remove: (name: string, options: CookieOptions) => {
+          cookieStore.set({ name, value: "", ...options });
+        },
+      },
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    }
+  );
+}
+
 /** Service-role client (server-only) for intake/cron jobs */
 export function createServiceRoleSupabase() {
   const { NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = getEnv();

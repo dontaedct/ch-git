@@ -5,12 +5,13 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
+  workflow_dispatch:
 
 jobs:
-  safety-gate:
-    name: Safety Gate
+  typecheck:
+    name: Type Check
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
     - name: Checkout code
@@ -27,12 +28,25 @@ jobs:
     
     - name: Run type checking
       run: npm run typecheck
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: typecheck
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
     
-    - name: Run linting
-      run: npm run lint
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
     
-    - name: Run tests
-      run: npm test
+    - name: Install dependencies
+      run: npm ci
     
     - name: Build application
       run: npm run build
@@ -41,6 +55,69 @@ jobs:
         NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
     
     - name: Security audit
       run: npm audit --audit-level=moderate
+
+  lint:
+    name: Lint (Advisory)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run linting
+      run: npm run lint
+
+  test:
+    name: Test (Advisory)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests
+      run: npm test

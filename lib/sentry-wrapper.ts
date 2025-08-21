@@ -19,8 +19,11 @@ export function withSentry(handler: RouteHandler): RouteHandler {
       }
       
       // Return NextResponse using existing error handling
-      const httpResponse = toHttpResponse(error);
-      return NextResponse.json(httpResponse.body, { status: httpResponse.status });
+      if (error instanceof Error) {
+        const httpResponse = toHttpResponse({ ok: false, code: "INTERNAL_ERROR", message: error.message });
+        return NextResponse.json(httpResponse.body, { status: httpResponse.status });
+      }
+      return NextResponse.json({ ok: false, code: "INTERNAL_ERROR", message: "Unknown error" }, { status: 500 });
     }
   };
 }

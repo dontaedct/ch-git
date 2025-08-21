@@ -8,7 +8,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createRealSupabaseClient } from "@/lib/supabase/server";
 import { run as aiRun } from "@/lib/ai";
-import { logger } from "@/lib/logger";
+import { logger, createRouteLogger } from "@/lib/logger";
 import { isAIEnabled } from "@/lib/ai/flags";
 
 // Force Node.js runtime for AI operations (never Edge)
@@ -23,7 +23,7 @@ export async function POST(
   { params }: { params: { taskName: string } }
 ) {
   const startTime = Date.now();
-  const routeLogger = logger.withOperation(`route:POST:/api/ai/tasks/${params.taskName}`);
+  const routeLogger = createRouteLogger('POST', `/api/ai/tasks/${params.taskName}`);
   
   try {
     // AI feature flag guard - deny by default

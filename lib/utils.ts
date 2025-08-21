@@ -36,7 +36,7 @@ export function debounce<T extends (...args: unknown[]) => unknown>(
  * @returns Object with paginated query and total count
  */
 export async function applyPagination<T>(
-  query: { count: () => Promise<{ count: number | null; error: unknown }>; range: (from: number, to: number) => Promise<{ data: T[] | null; error: unknown }> },
+  query: any,
   page: number,
   pageSize: number
 ): Promise<{ data: T[]; total: number }> {

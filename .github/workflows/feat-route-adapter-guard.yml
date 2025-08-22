@@ -14,23 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  call-core:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-
-      - name: Compute base/head SHAs for this PR
-        id: shas
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          echo "base_sha=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
-          echo "head_sha=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
-
-      # IMPORTANT: reusable workflow must be referenced as owner/repo@ref
-      - name: Call core guard (reusable workflow on main)
-        uses: dontaedct/ch-git/.github/workflows/route-adapter-guard-core.yml@main
-        with:
-          base_sha: ${{ steps.shas.outputs.base_sha || '' }}
-          head_sha: ${{ steps.shas.outputs.head_sha || '' }}
+  route-adapter-guard:
+    uses: dontaedct/ch-git/.github/workflows/route-adapter-guard-core.yml@main
+    with:
+      base_sha: ${{ github.event.pull_request.base.sha || '' }}
+      head_sha: ${{ github.event.pull_request.head.sha || '' }}
+    secrets: inherit

@@ -1,0 +1,53 @@
+{
+  "global": {
+    "performance": 0.8,
+    "accessibility": 0.9,
+    "best-practices": 0.8,
+    "seo": 0.8,
+    "first-contentful-paint": 2000,
+    "largest-contentful-paint": 2500,
+    "cumulative-layout-shift": 0.1,
+    "total-blocking-time": 300,
+    "speed-index": 3000
+  },
+  "routes": {
+    "/": {
+      "performance": 0.85,
+      "first-contentful-paint": 1500,
+      "largest-contentful-paint": 2000
+    },
+    "/intake": {
+      "performance": 0.9,
+      "first-contentful-paint": 1200,
+      "largest-contentful-paint": 1800,
+      "description": "Public landing page - must be fast for conversion"
+    },
+    "/sessions": {
+      "performance": 0.75,
+      "first-contentful-paint": 2500,
+      "largest-contentful-paint": 3500,
+      "description": "Authenticated dashboard - can be slower due to auth overhead"
+    },
+    "/client-portal": {
+      "performance": 0.8,
+      "first-contentful-paint": 2000,
+      "largest-contentful-paint": 2800,
+      "description": "Client-facing portal - balanced performance for user experience"
+    }
+  },
+  "components": {
+    "ui": {
+      "bundle-size": 500000,
+      "description": "UI component library should stay under 500KB"
+    },
+    "data": {
+      "bundle-size": 300000,
+      "description": "Data layer should stay under 300KB"
+    }
+  },
+  "notes": {
+    "enforcement": "LHCI currently soft-fail (continue-on-error: true)",
+    "hard-fail-date": "2025-01-27",
+    "rollback": "Toggle LHCI soft/hard by continue-on-error in .github/workflows/design-safety.yml"
+  }
+}

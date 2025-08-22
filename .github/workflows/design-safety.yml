@@ -259,12 +259,5 @@ jobs:
           path: .cache/design-safety/
           retention-days: 30
 
-      - name: Commit cache to PR branch (if permitted)
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "Attempting to commit cache to PR branch..."
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .cache/design-safety/
-          git commit -m "Update design safety cache [skip ci]" || echo "No changes to commit"
-          git push || echo "Push failed (may not have write access)"
+      # Note: Cache data is uploaded as artifacts above
+      # No need to commit cache files to git since they're ignored by .gitignore

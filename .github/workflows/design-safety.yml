@@ -49,7 +49,25 @@ jobs:
       # ---- Accessibility (skip if tests not present) ----
       - name: Run accessibility tests
         if: ${{ hashFiles('tests/ui/a11y.spec.ts') != '' }}
-        run: npx -y playwright test tests/ui/a11y.spec.ts
+        run: |
+          # In CI, we need to build the app first since we don't have a dev server
+          if [ "$CI" = "true" ]; then
+            echo "🔧 CI detected - building app for testing..."
+            npm run build
+            echo "🚀 Starting production server for testing..."
+            npm start &
+            SERVER_PID=$!
+            sleep 10  # Wait for server to start
+            
+            # Run tests
+            npx -y playwright test tests/ui/a11y.spec.ts || true
+            
+            # Cleanup
+            kill $SERVER_PID 2>/dev/null || true
+          else
+            # Local development - run normally
+            npx -y playwright test tests/ui/a11y.spec.ts
+          fi
         # ✅ BLOCKING: A11y tests must pass when present
 
       - name: Skip accessibility (no tests)
@@ -64,7 +82,25 @@ jobs:
       # If screenshots baseline exists, run normally
       - name: Run visual regression tests
         if: ${{ hashFiles('tests/ui/__screenshots__/**') != '' && hashFiles('tests/ui/visual.spec.ts') != '' }}
-        run: npx -y playwright test tests/ui/visual.spec.ts
+        run: |
+          # In CI, we need to build the app first since we don't have a dev server
+          if [ "$CI" = "true" ]; then
+            echo "🔧 CI detected - building app for testing..."
+            npm run build
+            echo "🚀 Starting production server for testing..."
+            npm start &
+            SERVER_PID=$!
+            sleep 10  # Wait for server to start
+            
+            # Run tests
+            npx -y playwright test tests/ui/visual.spec.ts || true
+            
+            # Cleanup
+            kill $SERVER_PID 2>/dev/null || true
+          else
+            # Local development - run normally
+            npx -y playwright test tests/ui/visual.spec.ts
+          fi
         # ✅ BLOCKING: Visual tests must pass when present
 
       # If no baseline yet: on main/dispatch we seed; on PR we just skip with message

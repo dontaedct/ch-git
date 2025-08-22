@@ -56,25 +56,17 @@ export default defineConfig({
       name: 'Mobile Safari',
       use: { ...devices['iPhone 12'] },
     },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-  },
+  /* Run your local dev server before starting the tests - only in local development */
+  ...(process.env.CI ? {} : {
+    webServer: {
+      command: 'npm run dev',
+      url: 'http://localhost:3000',
+      reuseExistingServer: true,
+      timeout: 120 * 1000,
+    },
+  }),
   
   /* Global test timeout */
   timeout: 30 * 1000,
@@ -84,7 +76,9 @@ export default defineConfig({
     timeout: 5000,
   },
   
-  /* Global setup and teardown */
-  globalSetup: './tests/ui/global-setup.ts',
-  globalTeardown: './tests/ui/global-teardown.ts',
+  /* Global setup and teardown - only in local development */
+  ...(process.env.CI ? {} : {
+    globalSetup: './tests/ui/global-setup.ts',
+    globalTeardown: './tests/ui/global-teardown.ts',
+  }),
 });

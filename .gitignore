@@ -9,3 +9,6 @@ build/
 .env.test.local
 .env.production.local
 .backups/
+
+# Design safety cache
+.cache/

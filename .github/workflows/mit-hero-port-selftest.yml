@@ -1,0 +1,40 @@
+name: MIT Hero Port Self-Test
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  self-test:
+    name: Design Safety Self-Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run design safety check
+        run: npm run design:check
+
+      - name: Check for visual baselines
+        run: |
+          if [ ! -d "tests/ui/__screenshots__" ]; then
+            echo "⚠️  No visual baselines found. Run this workflow on main or via dispatch to seed baselines."
+            exit 1
+          fi
+          echo "✅ Visual baselines found"
+
+      - name: Success message
+        if: success()
+        run: echo "🎉 Design Safety Module self-test passed!"

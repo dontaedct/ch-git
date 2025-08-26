@@ -1,5 +1,31 @@
 import type { NextConfig } from "next";
 
+// Initialize environment validation early
+try {
+  // Only validate in non-test builds to avoid CI issues
+  if (process.env.NODE_ENV !== "test") {
+    // Use dynamic import with require for CommonJS compatibility
+    const { validateCriticalEnv } = require("./lib/config/requireEnv");
+    const result = validateCriticalEnv({ throwOnError: false });
+    
+    if (!result.isValid) {
+      console.warn("⚠️  Environment validation warnings:", result.errors);
+    }
+    
+    if (result.warnings.length > 0) {
+      console.warn("⚠️  Environment validation warnings:", result.warnings);
+    }
+  }
+} catch (error) {
+  // Don't fail the build for env validation errors in development
+  if (process.env.NODE_ENV === "production") {
+    console.error("❌ Environment validation failed:", error);
+    process.exit(1);
+  } else {
+    console.warn("⚠️  Environment validation skipped:", error);
+  }
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig: NextConfig = {
   // GUARANTEED CI UNBLOCK: skip ESLint in builds

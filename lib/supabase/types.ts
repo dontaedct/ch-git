@@ -194,3 +194,16 @@ export type EmailLog = {
 
 export type EmailLogInsert = Omit<EmailLog, 'id' | 'created_at'>;
 export type EmailLogUpdate = Partial<Omit<EmailLog, 'id' | 'created_at'>>;
+
+export type FeatureFlag = {
+  id: string;
+  tenant_id: string;
+  key: string;
+  enabled: boolean;
+  payload: Record<string, unknown>;
+  created_at: string;
+  updated_at?: string | null;
+};
+
+export type FeatureFlagInsert = Omit<FeatureFlag, 'id' | 'created_at'>;
+export type FeatureFlagUpdate = Partial<Omit<FeatureFlag, 'id' | 'created_at'>>;

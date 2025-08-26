@@ -18,6 +18,8 @@
     "doctor:safe": "tsx scripts/doctor.ts --timeout 60000",
     "doctor:test": "node scripts/test-doctor.js",
     "ci": "npm run lint && npm run typecheck && npm run test && npm run build",
+    "check:env": "tsx scripts/check-env.ts",
+    "security:secrets": "tsx scripts/security-secrets.ts",
     "prepare": "node -e \"process.exit(process.env.CI?0:1)\" || husky install",
     "rename:symbol": "tsx scripts/rename.ts symbol",
     "rename:import": "tsx scripts/rename.ts import",

@@ -1,6 +1,8 @@
-// Feature flags registry - All feature flags and their states
+// Feature flags registry - Legacy fallback for file-based flags
+// NOTE: This is now deprecated in favor of Supabase feature_flags table
+// Use lib/flags/server.ts for server-side flag access
 export const flags = {
-  // Core features
+  // Core features (migrated to Supabase)
   features: {
     'client-portal': true,
     'weekly-plans': true,
@@ -9,7 +11,7 @@ export const flags = {
     'email-notifications': true,
   },
   
-  // Experimental features
+  // Experimental features (migrated to Supabase)
   experimental: {
     'advanced-analytics': false,
     'mobile-app': false,
@@ -17,7 +19,7 @@ export const flags = {
     'social-features': false,
   },
   
-  // Environment-specific flags
+  // Environment-specific flags (migrated to Supabase)
   environment: {
     'debug-mode': process.env.NODE_ENV === 'development',
     'beta-features': process.env.NODE_ENV === 'development',

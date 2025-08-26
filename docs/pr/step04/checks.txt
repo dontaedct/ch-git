@@ -1,0 +1,129 @@
+# Step 04 - Webhook Security CI Checks
+
+## Required Commands to Run
+
+### 1. Webhook Security Tests
+```bash
+npm run test:webhooks
+```
+**Expected Output**: All webhook security tests pass
+**Success Criteria**: 100% test pass rate
+
+### 2. HMAC Verification Tests
+```bash
+npm run test:webhooks -- --testNamePattern="verifyHmac"
+```
+**Expected Output**: HMAC signature verification tests pass
+**Success Criteria**: All HMAC tests pass
+
+### 3. Idempotency Tests
+```bash
+npm run test:webhooks -- --testNamePattern="idempotency"
+```
+**Expected Output**: Idempotency tests pass
+**Success Criteria**: Duplicate request handling works
+
+### 4. Replay Protection Tests
+```bash
+npm run test:webhooks -- --testNamePattern="replay"
+```
+**Expected Output**: Replay protection tests pass
+**Success Criteria**: Replay attacks prevented
+
+### 5. Integration Tests
+```bash
+npm run test:webhooks -- --testNamePattern="integration"
+```
+**Expected Output**: Integration tests pass
+**Success Criteria**: End-to-end webhook flow works
+
+### 6. Security Validation
+```bash
+npm run test:webhooks -- --testNamePattern="security"
+```
+**Expected Output**: Security tests pass
+**Success Criteria**: Security requirements met
+
+### 7. Error Handling Tests
+```bash
+npm run test:webhooks -- --testNamePattern="error"
+```
+**Expected Output**: Error handling tests pass
+**Success Criteria**: Graceful error handling
+
+## CI Pipeline Integration
+
+### Package.json Scripts
+- `test:webhooks` - Run all webhook security tests
+- `test` - Run all tests including webhook tests
+
+### Test Categories
+- **HMAC Verification**: Signature validation tests
+- **Idempotency**: Duplicate request handling
+- **Replay Protection**: Replay attack prevention
+- **Integration**: End-to-end webhook testing
+- **Security**: Security-focused test cases
+- **Error Handling**: Error scenario testing
+
+## Expected CI Results
+
+### Webhook Security Tests
+- All HMAC verification tests pass
+- Idempotency tests pass
+- Replay protection tests pass
+- Integration tests pass
+- Security tests pass
+- Error handling tests pass
+
+### Test Coverage
+- HMAC signature verification: 100%
+- Idempotency patterns: 100%
+- Replay protection: 100%
+- Integration flows: 100%
+- Security scenarios: 100%
+- Error handling: 100%
+
+## Manual Verification Steps
+
+1. **HMAC Tests**: Verify signature verification works
+2. **Idempotency**: Test duplicate request handling
+3. **Replay Protection**: Test replay attack prevention
+4. **Integration**: Test end-to-end webhook flow
+5. **Security**: Verify security requirements
+
+## Success Criteria
+
+- ✅ HMAC signature verification functional
+- ✅ Idempotency patterns implemented
+- ✅ Replay protection active
+- ✅ Comprehensive test coverage
+- ✅ Integration testing working
+- ✅ Security best practices followed
+
+## Webhook Security Features
+
+### Signature Verification
+- ✅ HMAC signature validation
+- ✅ Multiple algorithm support
+- ✅ Stripe webhook verification
+- ✅ Generic webhook support
+
+### Idempotency
+- ✅ Duplicate request detection
+- ✅ Database-level idempotency
+- ✅ Event deduplication
+- ✅ Safe retry handling
+
+### Replay Protection
+- ✅ Timestamp validation
+- ✅ Time window enforcement
+- ✅ Event ID tracking
+- ✅ Replay detection
+
+## Notes
+
+- This is a documentation-only PR
+- No application behavior changes
+- Focus on webhook security
+- Foundation for subsequent hardening steps
+- Enhanced security posture

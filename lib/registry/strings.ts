@@ -19,7 +19,7 @@ export const systemStrings = {
   navFullBrand: 'Another Level — Coach Hub',
   
   // System names (for future rename capability)
-  aiSystem: 'MIT Hero',
+  aiSystem: 'OSS Hero',
   guardianSystem: 'Guardian',
   designSystem: 'Design Guardian',
 } as const;

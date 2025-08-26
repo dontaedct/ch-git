@@ -1,4 +1,4 @@
-name: MIT Hero Design Safety
+name: OSS Hero Design Safety
 
 on:
   pull_request:

@@ -44,6 +44,10 @@ jobs:
         run: echo "No component-contract-auditor yet; skipping ui:contracts step."
 
       # ---- Accessibility (skip if tests not present) ----
+      - name: Install Playwright browsers
+        if: ${{ hashFiles('tests/ui/a11y.spec.ts') != '' }}
+        run: npx -y playwright install --with-deps
+
       - name: Run accessibility tests
         if: ${{ hashFiles('tests/ui/a11y.spec.ts') != '' }}
         run: npx -y playwright test tests/ui/a11y.spec.ts

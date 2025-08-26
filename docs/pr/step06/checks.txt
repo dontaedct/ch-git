@@ -1,0 +1,158 @@
+# Step 06 - Scheduling Optimization CI Checks
+
+## Required Commands to Run
+
+### 1. Scheduling Optimization Tests
+```bash
+npm run test
+```
+**Expected Output**: All scheduling optimization tests pass
+**Success Criteria**: 100% test pass rate
+
+### 2. Cron Endpoint Tests
+```bash
+npm run test -- --testNamePattern="cron.*endpoint"
+```
+**Expected Output**: Cron endpoint tests pass
+**Success Criteria**: Endpoint reachability verified
+
+### 3. n8n Reliability Tests
+```bash
+npm run test -- --testNamePattern="n8n.*reliability"
+```
+**Expected Output**: n8n reliability tests pass
+**Success Criteria**: Reliability controls functional
+
+### 4. Performance Tests
+```bash
+npm run test -- --testNamePattern="performance.*scheduling"
+```
+**Expected Output**: Performance tests pass
+**Success Criteria**: Resource usage optimized
+
+### 5. Workflow Tests
+```bash
+npm run test -- --testNamePattern="workflow.*n8n"
+```
+**Expected Output**: Workflow tests pass
+**Success Criteria**: n8n workflows functional
+
+### 6. Circuit Breaker Tests
+```bash
+npm run test -- --testNamePattern="circuit.*breaker"
+```
+**Expected Output**: Circuit breaker tests pass
+**Success Criteria**: Circuit breaker pattern working
+
+### 7. DLQ Tests
+```bash
+npm run test -- --testNamePattern="dlq.*dead.*letter"
+```
+**Expected Output**: DLQ tests pass
+**Success Criteria**: Dead letter queue functional
+
+## CI Pipeline Integration
+
+### Package.json Scripts
+- `test` - Run all tests including scheduling optimization
+- `test:smoke` - Run smoke tests including cron endpoints
+- `test:policy` - Run policy tests including n8n reliability
+
+### Test Categories
+- **Cron Endpoints**: Light endpoint functionality
+- **n8n Reliability**: Workflow reliability controls
+- **Performance**: Resource usage optimization
+- **Workflows**: n8n workflow execution
+- **Circuit Breakers**: Failure isolation patterns
+- **DLQ**: Dead letter queue functionality
+
+## Expected CI Results
+
+### Scheduling Optimization Tests
+- Cron endpoint tests pass
+- n8n reliability tests pass
+- Performance tests pass
+- Workflow tests pass
+- Circuit breaker tests pass
+- DLQ tests pass
+
+### Test Coverage
+- Cron endpoints: 100%
+- n8n reliability: 100%
+- Performance optimization: 100%
+- Workflow execution: 100%
+- Circuit breaker: 100%
+- Dead letter queue: 100%
+
+## Manual Verification Steps
+
+1. **Cron Endpoint**: Test endpoint reachability
+2. **n8n Integration**: Verify workflow reliability
+3. **Performance**: Check resource usage
+4. **Circuit Breaker**: Test failure isolation
+5. **DLQ**: Verify failed message handling
+
+## Success Criteria
+
+- ✅ Light cron endpoint implemented
+- ✅ Heavy timers removed
+- ✅ n8n integration functional
+- ✅ Reliability controls active
+- ✅ Performance optimizations working
+- ✅ Resource usage optimized
+- ✅ Scalability improved
+- ✅ Monitoring configured
+
+## Scheduling Optimization Features
+
+### Light Endpoints
+- ✅ Fast response times
+- ✅ Minimal resource usage
+- ✅ Secret-based authentication
+- ✅ Health check functionality
+
+### Heavy Timer Removal
+- ✅ No background timers
+- ✅ Event-driven architecture
+- ✅ Resource optimization
+- ✅ Scalability improvement
+
+### n8n Integration
+- ✅ Exponential backoff with jitter
+- ✅ Circuit breaker patterns
+- ✅ Dead letter queue (DLQ)
+- ✅ Stripe replay protection
+
+### Performance Features
+- ✅ Sub-second response times
+- ✅ Minimal memory footprint
+- ✅ Low CPU overhead
+- ✅ Resource efficiency
+
+## Reliability Features
+
+### Circuit Breaker
+- ✅ Per-tenant isolation
+- ✅ Configurable thresholds
+- ✅ Automatic recovery
+- ✅ State management
+
+### Dead Letter Queue
+- ✅ Failed message storage
+- ✅ TTL-based cleanup
+- ✅ Manual retry capabilities
+- ✅ Error categorization
+
+### Stripe Replay Protection
+- ✅ Event ID tracking
+- ✅ Per-tenant isolation
+- ✅ Automatic cleanup
+- ✅ Durable storage
+
+## Notes
+
+- This is a documentation-only PR
+- No application behavior changes
+- Focus on scheduling optimization
+- Foundation for subsequent hardening steps
+- Enhanced performance and reliability

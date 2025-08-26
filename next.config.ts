@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   // GUARANTEED CI UNBLOCK: skip ESLint in builds
   eslint: { ignoreDuringBuilds: true },
 
-  // OPTIONAL CI UNBLOCK: also skip TS build errors (remove later when you want strict CI)
-  typescript: { ignoreBuildErrors: true },
+  // TypeScript build errors are now enforced for strict CI
+  typescript: { ignoreBuildErrors: false },
 
   async headers() {
     const isPreview = process.env.VERCEL_ENV === 'preview';

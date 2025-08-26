@@ -1,0 +1,169 @@
+# Step 08 - CSP/Headers CI Checks
+
+## Required Commands to Run
+
+### 1. CSP and Security Header Tests
+```bash
+npm run test:csp
+```
+**Expected Output**: All CSP and security header tests pass
+**Success Criteria**: 100% test pass rate
+
+### 2. Security Header Validation
+```bash
+npm run security:headers
+```
+**Expected Output**: Security header validation passes
+**Success Criteria**: All routes have required headers
+
+### 3. Security Header Test
+```bash
+npm run security:headers:test
+```
+**Expected Output**: Security header tests pass
+**Success Criteria**: Header validation tests pass
+
+### 4. CSP Violation Tests
+```bash
+npm run test -- --testNamePattern="csp.*violation"
+```
+**Expected Output**: CSP violation tests pass
+**Success Criteria**: Violation reporting functional
+
+### 5. Nonce Generation Tests
+```bash
+npm run test -- --testNamePattern="nonce.*generation"
+```
+**Expected Output**: Nonce generation tests pass
+**Success Criteria**: Nonce security validated
+
+### 6. Environment CSP Tests
+```bash
+npm run test -- --testNamePattern="environment.*csp"
+```
+**Expected Output**: Environment CSP tests pass
+**Success Criteria**: Production vs preview CSP working
+
+### 7. Route Header Tests
+```bash
+npm run test -- --testNamePattern="route.*header"
+```
+**Expected Output**: Route header tests pass
+**Success Criteria**: All critical routes have headers
+
+## CI Pipeline Integration
+
+### Package.json Scripts
+- `test:csp` - Run CSP and security header tests
+- `security:headers` - Validate security headers
+- `security:headers:test` - Test security header validation
+- `test:smoke` - Run smoke tests including security headers
+
+### Test Categories
+- **CSP Tests**: Content Security Policy validation
+- **Security Headers**: Core security header testing
+- **Route Coverage**: Critical route header testing
+- **Nonce Generation**: Nonce security validation
+- **Environment CSP**: Production vs preview testing
+- **Violation Reporting**: CSP violation handling
+- **Header Validation**: Automated header validation
+
+## Expected CI Results
+
+### CSP and Security Header Tests
+- Production CSP tests pass
+- Preview CSP tests pass
+- Security header tests pass
+- Route header tests pass
+- Nonce generation tests pass
+- Environment CSP tests pass
+- Violation reporting tests pass
+
+### Test Coverage
+- CSP directives: 100%
+- Security headers: 100%
+- Route coverage: 100%
+- Nonce generation: 100%
+- Environment configuration: 100%
+- Violation reporting: 100%
+- Header validation: 100%
+
+## Manual Verification Steps
+
+1. **CSP Configuration**: Verify production and preview CSP
+2. **Security Headers**: Check all required headers present
+3. **Route Testing**: Test critical routes for headers
+4. **Nonce Generation**: Verify nonce security
+5. **Violation Reporting**: Test CSP violation handling
+
+## Success Criteria
+
+- ✅ Strict CSP implemented for production
+- ✅ Report-only CSP for preview environment
+- ✅ Comprehensive security headers active
+- ✅ Nonce generation and validation working
+- ✅ CSP violation reporting functional
+- ✅ Automated testing comprehensive
+- ✅ Route coverage complete
+- ✅ Environment-specific configuration active
+
+## CSP/Headers Features
+
+### Content Security Policy
+- ✅ Strict production CSP
+- ✅ Report-only preview CSP
+- ✅ Nonce-based script/style loading
+- ✅ Third-party service access control
+- ✅ Frame protection
+
+### Security Headers
+- ✅ X-Content-Type-Options: nosniff
+- ✅ X-Frame-Options: DENY
+- ✅ X-XSS-Protection: 1; mode=block
+- ✅ Referrer-Policy: strict-origin-when-cross-origin
+- ✅ Permissions-Policy: restrictive permissions
+
+### Testing Infrastructure
+- ✅ Comprehensive CSP tests
+- ✅ Security header validation
+- ✅ Route coverage testing
+- ✅ Nonce generation tests
+- ✅ Environment-specific testing
+
+### Validation and Monitoring
+- ✅ Automated header validation
+- ✅ CSP violation reporting
+- ✅ Security monitoring
+- ✅ Regression testing
+- ✅ Compliance validation
+
+## Security Features
+
+### CSP Protection
+- ✅ XSS prevention
+- ✅ Code injection protection
+- ✅ Data exfiltration prevention
+- ✅ Clickjacking protection
+- ✅ MIME sniffing protection
+
+### Header Security
+- ✅ Content type protection
+- ✅ Frame embedding protection
+- ✅ XSS protection
+- ✅ Privacy protection
+- ✅ Permission restrictions
+
+### Nonce Security
+- ✅ Cryptographically secure nonces
+- ✅ Unique nonces per request
+- ✅ CSP integration
+- ✅ Format validation
+- ✅ Security validation
+
+## Notes
+
+- This is a documentation-only PR
+- No application behavior changes
+- Focus on CSP and security headers
+- Foundation for subsequent hardening steps
+- Enhanced security posture

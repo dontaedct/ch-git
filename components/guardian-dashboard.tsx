@@ -66,10 +66,17 @@ export function GuardianDashboard() {
 
   const triggerBackup = async () => {
     try {
-      const response = await fetch('/api/guardian/backup', { method: 'POST' });
+      const response = await fetch('/api/guardian/backup-intent', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: 'Manual backup from dashboard' })
+      });
       if (response.ok) {
         // Refresh health data after backup
         setTimeout(fetchHealth, 2000);
+      } else if (response.status === 429) {
+        const data = await response.json();
+        alert(`Rate limited: ${data.message}. Retry after ${data.retryAfter} seconds.`);
       }
     } catch (err) {
       console.error('Backup failed:', err);
@@ -78,10 +85,17 @@ export function GuardianDashboard() {
 
   const triggerEmergencyBackup = async () => {
     try {
-      const response = await fetch('/api/guardian/emergency', { method: 'POST' });
+      const response = await fetch('/api/guardian/backup-intent', { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: 'Emergency backup from dashboard' })
+      });
       if (response.ok) {
         // Refresh health data after emergency backup
         setTimeout(fetchHealth, 2000);
+      } else if (response.status === 429) {
+        const data = await response.json();
+        alert(`Rate limited: ${data.message}. Retry after ${data.retryAfter} seconds.`);
       }
     } catch (err) {
       console.error('Emergency backup failed:', err);
@@ -91,9 +105,9 @@ export function GuardianDashboard() {
   useEffect(() => {
     fetchHealth();
     
-    // Auto-refresh every 30 seconds
-    const interval = setInterval(fetchHealth, 30000);
-    return () => clearInterval(interval);
+    // Note: Auto-refresh removed in Step 6 - Guardian is now externally scheduled
+    // Use Vercel Cron or n8n to call /api/guardian/heartbeat endpoint
+    // See docs/hardening/STEP6_GUARDIAN_THIN.md for scheduling examples
   }, []);
 
   const getStatusIcon = (status: string) => {

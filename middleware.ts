@@ -44,24 +44,8 @@ export function middleware(req: NextRequest) {
 
   const res = NextResponse.next();
 
-  // Force-relaxed CSP only on Vercel Preview to allow hydration & vercel.live
-  if (process.env.VERCEL_ENV === "preview") {
-    const previewCsp = [
-      "default-src 'self'",
-      "img-src 'self' data: blob:",
-      "media-src 'self' blob:",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live",
-      "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live",
-      "style-src 'self' 'unsafe-inline'",
-      "connect-src 'self' https: wss: https://vercel.live https://*.vercel.live wss://vercel.live wss://*.vercel.live",
-      "frame-ancestors 'none'",
-      "base-uri 'self'",
-    ].join("; ") + ";";
-
-    // remove any prior CSP and set our relaxed one
-    res.headers.delete("Content-Security-Policy");
-    res.headers.set("Content-Security-Policy", previewCsp);
-  }
+  // CSP is now handled in next.config.ts headers() function
+  // No need to override here as it would conflict with the configuration
 
   return res;
 }

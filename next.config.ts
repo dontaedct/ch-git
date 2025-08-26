@@ -36,19 +36,60 @@ const nextConfig: NextConfig = {
 
   async headers() {
     const isPreview = process.env.VERCEL_ENV === 'preview';
+    const isProduction = process.env.NODE_ENV === 'production';
+    
+    // Strict production CSP - no unsafe-inline/unsafe-eval
+    const productionCsp = [
+      "default-src 'self'",
+      "script-src 'self' 'nonce-{NONCE}'",
+      "script-src-elem 'self' 'nonce-{NONCE}'",
+      "style-src 'self' 'nonce-{NONCE}'",
+      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in",
+      "media-src 'self' blob:",
+      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://api.stripe.com https://*.sentry.io wss://*.supabase.co",
+      "font-src 'self' data:",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'",
+      "upgrade-insecure-requests"
+    ].join("; ") + ";";
+
+    // Preview CSP with report-only for learning
+    const previewCsp = [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live",
+      "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live",
+      "style-src 'self' 'unsafe-inline'",
+      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in",
+      "media-src 'self' blob:",
+      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://api.stripe.com https://*.sentry.io https://vercel.live https://*.vercel.live wss://*.supabase.co wss://vercel.live wss://*.vercel.live",
+      "font-src 'self' data:",
+      "object-src 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+      "frame-ancestors 'none'"
+    ].join("; ") + ";";
     
     return [
       {
         source: "/(.*)",
         headers: [
-          // keep any security headers EXCEPT CSP for now
+          // Core security headers
           { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-XSS-Protection", value: "1; mode=block" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          // Add CSP with unsafe-inline only for preview builds
-          ...(isPreview ? [{
-            key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
-          }] : []),
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+          
+          // CSP configuration
+          ...(isProduction && !isPreview ? [
+            { key: "Content-Security-Policy", value: productionCsp }
+          ] : []),
+          
+          ...(isPreview ? [
+            { key: "Content-Security-Policy-Report-Only", value: previewCsp }
+          ] : []),
         ],
       },
     ];

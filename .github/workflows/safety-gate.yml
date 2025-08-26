@@ -2,9 +2,9 @@ name: Safety Gate
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, oss-hero-main ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, develop, oss-hero-main ]
   workflow_dispatch:
 
 jobs:

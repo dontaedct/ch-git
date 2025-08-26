@@ -38,4 +38,8 @@
 
 - **Missing baselines**: Run `npx playwright test tests/ui/visual.spec.ts --update-snapshots` on main
 - **Import violations**: Move business logic out of UI components
+<<<<<<< HEAD
 - **Contract failures**: Check component prop interfaces and exports
+=======
+- **Contract failures**: Check component prop interfaces and exports
+>>>>>>> origin/main

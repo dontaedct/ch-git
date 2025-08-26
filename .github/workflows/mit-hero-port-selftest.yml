@@ -37,4 +37,8 @@ jobs:
 
       - name: Success message
         if: success()
+<<<<<<< HEAD
         run: echo "🎉 Design Safety Module self-test passed!"
+=======
+        run: echo "🎉 Design Safety Module self-test passed!"
+>>>>>>> origin/main

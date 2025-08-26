@@ -2,6 +2,40 @@
 
 A drop-in design safety layer that enforces architectural boundaries, accessibility standards, visual consistency, and performance budgets in any micro-app.
 
+<<<<<<< HEAD
+=======
+## Enforcement Levels
+
+| Check Type | Previous Level | Current Level | Rollback Method |
+|------------|----------------|---------------|-----------------|
+| **Type Checking** | Advisory | ✅ **Required** | Remove from workflow |
+| **ESLint** | Advisory | ✅ **Required** | Remove from workflow |
+| **UI Contracts** | Advisory | ✅ **Required** | Remove from workflow |
+| **Accessibility** | Advisory | ✅ **Required** (when tests exist) | Remove from workflow |
+| **Visual Regression** | Advisory | ✅ **Required** (when tests exist) | Remove from workflow |
+| **LHCI Performance** | Advisory | 🟡 **Soft-Fail** (hard-fail in 14d) | Toggle `continue-on-error` in workflow |
+
+### Rollback Procedures
+
+**Immediate Rollback (Emergency):**
+```bash
+# Toggle LHCI soft/hard by continue-on-error in workflow
+# Edit .github/workflows/design-safety.yml
+# Change continue-on-error: true to false (or remove line)
+```
+
+**Gradual Rollback:**
+1. Remove specific check from workflow
+2. Set `continue-on-error: true` for that step
+3. Re-enable when issues are resolved
+
+**Full Rollback:**
+```bash
+# Comment out entire design-safety job in workflow
+# Or set continue-on-error: true for all steps
+```
+
+>>>>>>> origin/main
 ## What This Module Enforces
 
 ### 🛡️ Design Guardian

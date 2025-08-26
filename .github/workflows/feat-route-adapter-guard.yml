@@ -14,6 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+<<<<<<< HEAD
   call-core:
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -63,3 +64,11 @@ jobs:
           else
             echo "ℹ️  Not a PR - skipping boundary checks"
           fi
+=======
+  route-adapter-guard:
+    uses: dontaedct/ch-git/.github/workflows/route-adapter-guard-core.yml@main
+    with:
+      base_sha: ${{ github.event.pull_request.base.sha || '' }}
+      head_sha: ${{ github.event.pull_request.head.sha || '' }}
+    secrets: inherit
+>>>>>>> origin/main

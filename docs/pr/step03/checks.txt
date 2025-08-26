@@ -1,0 +1,134 @@
+# Step 03 - Environment Validation CI Checks
+
+## Required Commands to Run
+
+### 1. Environment Variable Check
+```bash
+npm run check:env
+```
+**Expected Output**: Environment validation results
+**Success Criteria**: All critical variables validated
+
+### 2. Security Secrets Validation
+```bash
+npm run security:secrets
+```
+**Expected Output**: Security secrets validation
+**Success Criteria**: No exposed secrets detected
+
+### 3. Environment Check Endpoint
+```bash
+curl http://localhost:3000/api/env-check
+```
+**Expected Output**: Environment status without secrets
+**Success Criteria**: Endpoint returns status information
+
+### 4. Production Validation Test
+```bash
+NODE_ENV=production npm run check:env
+```
+**Expected Output**: Production-specific validation
+**Success Criteria**: Additional production requirements validated
+
+### 5. Development Validation Test
+```bash
+NODE_ENV=development npm run check:env
+```
+**Expected Output**: Development validation
+**Success Criteria**: Development-appropriate validation
+
+### 6. Missing Variable Test
+```bash
+unset NEXT_PUBLIC_SUPABASE_URL && npm run check:env
+```
+**Expected Output**: Validation error for missing variable
+**Success Criteria**: Fail-fast behavior on missing critical variables
+
+### 7. Restore Environment
+```bash
+export NEXT_PUBLIC_SUPABASE_URL="https://example.supabase.co"
+```
+**Expected Output**: Environment variable restored
+**Success Criteria**: Normal validation resumes
+
+## CI Pipeline Integration
+
+### Package.json Scripts
+- `check:env` - Environment variable validation
+- `security:secrets` - Security secrets validation
+
+### Environment Variables Required
+- `NODE_ENV` - Application environment
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anon key
+- `SENTRY_DSN` - Optional Sentry DSN
+- `RESEND_API_KEY` - Optional Resend API key
+- `RESEND_FROM` - Optional Resend from email
+
+### Production Requirements
+- `SENTRY_DSN` - Required in production
+- `RESEND_API_KEY` - Required in production
+- `RESEND_FROM` - Required in production
+
+## Expected CI Results
+
+### Environment Validation
+- All critical variables present
+- No missing required variables
+- Production-specific validation passing
+- Security checks operational
+
+### API Endpoint
+- Environment check endpoint accessible
+- No secrets exposed in response
+- Status information provided
+- Health check functionality
+
+### Security Validation
+- No exposed secrets detected
+- Development values not in production
+- Public variables properly configured
+- Security warnings addressed
+
+## Manual Verification Steps
+
+1. **Environment Check**: Verify `npm run check:env` passes
+2. **Security Validation**: Test `npm run security:secrets`
+3. **API Endpoint**: Test environment check endpoint
+4. **Production Test**: Verify production validation
+5. **Fail-fast Test**: Test missing variable handling
+
+## Success Criteria
+
+- ✅ Environment validation module functional
+- ✅ Fail-fast validation working
+- ✅ Production-specific validation active
+- ✅ Security checks operational
+- ✅ API endpoint providing status
+- ✅ Integration with application startup
+
+## Environment Validation Features
+
+### Critical Variables
+- ✅ `NODE_ENV` - Application environment
+- ✅ `NEXT_PUBLIC_SUPABASE_URL` - Supabase URL
+- ✅ `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anon key
+
+### Optional Variables
+- ✅ `SENTRY_DSN` - Sentry configuration
+- ✅ `RESEND_API_KEY` - Resend API key
+- ✅ `RESEND_FROM` - Resend from email
+
+### Security Features
+- ✅ Development value detection
+- ✅ Exposed secret detection
+- ✅ Production-specific validation
+- ✅ Security warning system
+
+## Notes
+
+- This is a documentation-only PR
+- No application behavior changes
+- Focus on environment safety
+- Foundation for subsequent hardening steps
+- Enhanced security awareness

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Session } from '@/lib/types'
-import { sessions } from '@/data/sessions'
+import { ClientWithFullName } from '@/app/adapters/clientService'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -12,7 +12,9 @@ import SessionForm from './session-form'
 import InvitePanel from './invite-panel'
 import RSVPPanel from './rsvp-panel'
 
-interface SessionListProps {
+export type SessionListProps = {
+  sessions: Session[]
+  clients: ClientWithFullName[]
   onEditSession?: (session: Session) => void
   onDeleteSession?: (sessionId: string) => void
   onInviteClients?: (sessionId: string, clientIds: string[], message: string) => void
@@ -20,6 +22,8 @@ interface SessionListProps {
 }
 
 export default function SessionList({
+  sessions,
+  clients,
   onEditSession,
   onDeleteSession,
   onInviteClients,
@@ -182,11 +186,13 @@ export default function SessionList({
                 
                 <InvitePanel
                   sessionId={session.id}
+                  clients={clients}
                   onInvite={handleInvite}
                 />
                 
                 <RSVPPanel
                   session={session}
+                  clients={clients}
                   onUpdateRSVP={handleRSVPUpdate}
                 />
                 

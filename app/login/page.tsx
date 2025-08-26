@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+// TODO: Replace with authService adapter when created
+// import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 
 export default function LoginPage() {
@@ -9,7 +10,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const supabase = createClient()
+  // const supabase = createClient() // This line is commented out as per the edit hint
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -17,17 +18,19 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
+      // This part of the code will need to be updated to use the authService adapter
+      // when the adapter is created. For now, it's a placeholder.
+      // const { error } = await supabase.auth.signInWithPassword({
+      //   email,
+      //   password,
+      // })
 
-      if (error) {
-        setError(error.message)
-      } else {
+      // if (error) {
+      //   setError(error.message)
+      // } else {
         // Use window.location for client-side navigation
         window.location.href = '/'
-      }
+      // }
     } catch {
       setError('An unexpected error occurred')
     } finally {
@@ -41,16 +44,18 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      })
+      // This part of the code will need to be updated to use the authService adapter
+      // when the adapter is created. For now, it's a placeholder.
+      // const { error } = await supabase.auth.signUp({
+      //   email,
+      //   password,
+      // })
 
-      if (error) {
-        setError(error.message)
-      } else {
+      // if (error) {
+      //   setError(error.message)
+      // } else {
         setError('Check your email for the confirmation link!')
-      }
+      // }
     } catch {
       setError('An unexpected error occurred')
     } finally {

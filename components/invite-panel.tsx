@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-// Client type is imported but not currently used in this component
-import { getClientsWithFullName } from '@/data/clients'
+import { ClientWithFullName } from '@/app/adapters/clientService'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -13,19 +12,18 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Search, Mail, Users, MessageSquare } from 'lucide-react'
 import { isDevelopment } from '@/lib/env-client'
 
-interface InvitePanelProps {
+export type InvitePanelProps = {
   sessionId: string
+  clients: ClientWithFullName[]
   onInvite: (sessionId: string, clientIds: string[], message: string) => void
 }
 
-export default function InvitePanel({ sessionId, onInvite }: InvitePanelProps) {
+export default function InvitePanel({ sessionId, clients, onInvite }: InvitePanelProps) {
   const [open, setOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedClients, setSelectedClients] = useState<Set<string>>(new Set())
   const [message, setMessage] = useState('')
   const [sending, setSending] = useState(false)
-
-  const clients = getClientsWithFullName()
   
   const filteredClients = searchQuery.trim() === '' ? clients : clients.filter((c) => 
     c.fullName.toLowerCase().includes(searchQuery.toLowerCase()) || 

@@ -2,7 +2,7 @@
 
 import { Project, SyntaxKind, Node, ts } from 'ts-morph';
 import { glob } from 'fast-glob';
-import { blue, green, red, yellow, cyan } from 'picocolors';
+import pc from 'picocolors';
 import leven from 'leven';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -40,7 +40,7 @@ class DoctorRunner {
   }
 
   async run(): Promise<void> {
-    console.log(blue('🔍 Running TypeScript doctor...'));
+    console.log(pc.blue('🔍 Running TypeScript doctor...'));
     
     // Build exports index
     await this.buildExportsIndex();
@@ -49,11 +49,11 @@ class DoctorRunner {
     const diagnostics = await this.runTypeScriptDiagnostics();
     
     if (diagnostics.length === 0) {
-      console.log(green('✅ No TypeScript errors found!'));
+      console.log(pc.green('✅ No TypeScript errors found!'));
       return;
     }
 
-    console.log(red(`❌ Found ${diagnostics.length} TypeScript errors:`));
+    console.log(pc.red(`❌ Found ${diagnostics.length} TypeScript errors:`));
     
     // Group diagnostics by type
     const moduleErrors = diagnostics.filter(d => d.code === 2307);
@@ -62,33 +62,33 @@ class DoctorRunner {
 
     // Process module errors (TS2307)
     if (moduleErrors.length > 0) {
-      console.log(cyan(`\n📦 Module resolution errors (${moduleErrors.length}):`));
+      console.log(pc.cyan(`\n📦 Module resolution errors (${moduleErrors.length}):`));
       await this.processModuleErrors(moduleErrors);
     }
 
     // Process export errors (TS2724)
     if (exportErrors.length > 0) {
-      console.log(cyan(`\n📤 Export member errors (${exportErrors.length}):`));
+      console.log(pc.cyan(`\n📤 Export member errors (${exportErrors.length}):`));
       await this.processExportErrors(exportErrors);
     }
 
     // Show other errors
     if (otherErrors.length > 0) {
-      console.log(cyan(`\n⚠️  Other errors (${otherErrors.length}):`));
+      console.log(pc.cyan(`\n⚠️  Other errors (${otherErrors.length}):`));
       otherErrors.forEach(error => {
         console.log(`  ${error.file}:${error.line}:${error.character} - ${error.message}`);
       });
     }
 
     // Summary
-    console.log(cyan(`\n💡 Run 'npm run doctor:fix' to automatically apply suggested fixes`));
+    console.log(pc.cyan(`\n💡 Run 'npm run doctor:fix' to automatically apply suggested fixes`));
     
     // Check dev script for double-start pattern
     await this.checkDevScript();
   }
 
   private async buildExportsIndex(): Promise<void> {
-    console.log(blue('  Building exports index...'));
+    console.log(pc.blue('  Building exports index...'));
     
     const sourceFiles = this.project.getSourceFiles();
     
@@ -312,7 +312,7 @@ class DoctorRunner {
       const devScript = packageJson.scripts?.dev;
       
       if (!devScript) {
-        console.log(red('❌ No "dev" script found in package.json'));
+        console.log(pc.red('❌ No "dev" script found in package.json'));
         return;
       }
       
@@ -324,15 +324,15 @@ class DoctorRunner {
       
       // Check for correct single-launcher pattern
       if (!devScript.includes('node scripts/dev-bootstrap.js')) {
-        console.log(yellow('⚠️  Dev script should use single launcher: "dev": "node scripts/dev-bootstrap.js"'));
+        console.log(pc.yellow('⚠️  Dev script should use single launcher: "dev": "node scripts/dev-bootstrap.js"'));
       } else {
-        console.log(green('✅ Dev script uses single launcher'));
+        console.log(pc.green('✅ Dev script uses single launcher'));
       }
     } catch (error) {
       if (error instanceof Error && error.message.startsWith('Doctor:')) {
         throw error;
       }
-      console.log(yellow('⚠️  Could not verify dev script (package.json read error)'));
+      console.log(pc.yellow('⚠️  Could not verify dev script (package.json read error)'));
     }
   }
 }
@@ -350,7 +350,7 @@ async function main() {
   try {
     await runner.run();
   } catch (error) {
-    console.error(red(`❌ Error: ${error}`));
+    console.error(pc.red(`❌ Error: ${error}`));
     process.exit(1);
   }
 }

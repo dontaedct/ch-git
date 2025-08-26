@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Session, RSVPRecord } from '@/lib/types'
-import { getClientsWithFullName } from '@/data/clients'
+import { ClientWithFullName } from '@/app/adapters/clientService'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -13,19 +13,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Users, CheckCircle, XCircle, Clock } from 'lucide-react'
 import { isDevelopment } from '@/lib/env-client'
 
-interface RSVPPanelProps {
+export type RSVPPanelProps = {
   session: Session
+  clients: ClientWithFullName[]
   onUpdateRSVP: (sessionId: string, clientId: string, status: RSVPRecord['status'], notes?: string) => void
 }
 
-export default function RSVPPanel({ session, onUpdateRSVP }: RSVPPanelProps) {
+export default function RSVPPanel({ session, clients, onUpdateRSVP }: RSVPPanelProps) {
   const [open, setOpen] = useState(false)
   const [localRSVPs, setLocalRSVPs] = useState<Record<string, RSVPRecord>>({})
   const [selectedClient, setSelectedClient] = useState<string | null>(null)
   // editingNotes state is not currently used but kept for future functionality
   const [saving, setSaving] = useState(false)
-
-  const clients = getClientsWithFullName()
 
   useEffect(() => {
     // Initialize with empty RSVPs for all clients

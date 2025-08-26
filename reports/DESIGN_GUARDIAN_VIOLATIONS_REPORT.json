@@ -1,0 +1,112 @@
+{
+  "report_metadata": {
+    "title": "Design Guardian Violations Report",
+    "timestamp": "2025-01-27T00:00:00Z",
+    "version": "1.0.0",
+    "mode": "required",
+    "description": "Current violations found by Design Guardian ESLint + import boundaries + token guards"
+  },
+  "summary": {
+    "total_violations": 7,
+    "critical_violations": 7,
+    "warning_violations": 0,
+    "files_affected": 4,
+    "components_affected": 3
+  },
+  "violations_by_category": {
+    "inline_styles": {
+      "count": 7,
+      "severity": "error",
+      "description": "Components using inline styles instead of Tailwind utilities or CSS classes"
+    }
+  },
+  "violations_by_file": {
+    "app/ai/live/page.tsx": {
+      "line": 15,
+      "rule": "react/forbid-component-props",
+      "severity": "error",
+      "message": "Avoid inline styles. Use Tailwind utilities or CSS classes. To allow, add: /* eslint-disable-next-line react/forbid-component-props */",
+      "category": "inline_styles"
+    },
+    "app/debug/snapshot/page.tsx": {
+      "lines": [39, 52, 147],
+      "rule": "react/forbid-component-props",
+      "severity": "error",
+      "message": "Avoid inline styles. Use Tailwind utilities or CSS classes. To allow, add: /* eslint-disable-next-line react/forbid-component-props */",
+      "category": "inline_styles"
+    },
+    "components/ui/progress.tsx": {
+      "line": 25,
+      "rule": "react/forbid-component-props",
+      "severity": "error",
+      "message": "UI components cannot use inline styles. Use Tailwind utilities or CSS classes.",
+      "category": "inline_styles"
+    },
+    "components/ui/sidebar.tsx": {
+      "lines": [191, 632],
+      "rule": "react/forbid-component-props",
+      "severity": "error",
+      "message": "UI components cannot use inline styles. Use Tailwind utilities or CSS classes.",
+      "category": "inline_styles"
+    },
+    "components/ui/sonner.tsx": {
+      "line": 13,
+      "rule": "react/forbid-component-props",
+      "severity": "error",
+      "message": "UI components cannot use inline styles. Use Tailwind utilities or CSS classes.",
+      "category": "inline_styles"
+    }
+  },
+  "violations_by_severity": {
+    "error": [
+      "app/ai/live/page.tsx:15",
+      "app/debug/snapshot/page.tsx:39",
+      "app/debug/snapshot/page.tsx:52",
+      "app/debug/snapshot/page.tsx:147",
+      "components/ui/progress.tsx:25",
+      "components/ui/sidebar.tsx:191",
+      "components/ui/sidebar.tsx:632",
+      "components/ui/sonner.tsx:13"
+    ],
+    "warning": []
+  },
+  "recommendations": {
+    "immediate_actions": [
+      "Fix all inline styles in components/ui/* files (errors block in required mode)",
+      "Convert app-level inline styles to Tailwind utilities",
+      "Add controlled exceptions via comments where inline styles are necessary"
+    ],
+    "next_phase": [
+      "Fix all violations to enable advisory mode for development",
+      "Implement import boundary validation for data layer imports",
+      "Add Tailwind token validation for class strings"
+    ]
+  },
+  "design_guardian_status": {
+    "current_mode": "required",
+    "policies_active": [
+      "eslint-design-required.config.cjs",
+      "import-boundaries.cjs", 
+      "token-guards.cjs"
+    ],
+    "eslint_integration": "active",
+    "toggle_available": true,
+    "mode_toggle_working": true
+  },
+  "compliance_summary": {
+    "raw_hex_colors": "no_violations_found",
+    "inline_styles": "7_violations_found",
+    "icon_system": "no_violations_found",
+    "font_system": "no_violations_found",
+    "import_boundaries": "no_violations_found",
+    "tailwind_tokens": "no_violations_found"
+  },
+  "system_status": {
+    "advisory_mode": "working",
+    "required_mode": "working",
+    "mode_toggle": "working",
+    "npm_scripts": "working",
+    "eslint_integration": "working",
+    "policy_files": "working"
+  }
+}

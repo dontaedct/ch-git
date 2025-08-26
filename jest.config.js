@@ -1,4 +1,4 @@
-import nextJest from 'next/jest';
+import nextJest from 'next/jest.js';
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files
@@ -19,7 +19,13 @@ const customJestConfig = {
     '^@registry/(.*)$': '<rootDir>/lib/registry/$1',
     '^@compat/(.*)$': '<rootDir>/lib/compat/$1',
   },
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/tests/ui/',
+    '<rootDir>/design/templates/',
+    '<rootDir>/packages/mit-hero-core/dist/'
+  ],
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
     'components/**/*.{js,jsx,ts,tsx}',

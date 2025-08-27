@@ -113,7 +113,7 @@ class EmergencyRecoveryTester {
         });
     }
 
-    async testMITHeroEmergency() {
+    async testOSSHeroEmergency() {
         // Test OSS Hero emergency recovery
         return new Promise((resolve, reject) => {
             const child = spawn('node', ['scripts/oss-hero-unified-integration.js', 'emergency-recovery'], {
@@ -164,7 +164,7 @@ class EmergencyRecoveryTester {
         await this.runTest('Guardian Emergency Backup', () => this.testGuardianEmergency());
 
         // Test 3: OSS Hero Emergency Recovery
-        await this.runTest('OSS Hero Emergency Recovery', () => this.testMITHeroEmergency());
+        await this.runTest('OSS Hero Emergency Recovery', () => this.testOSSHeroEmergency());
 
         // Summary
         console.log('');

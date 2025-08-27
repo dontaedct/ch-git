@@ -88,4 +88,30 @@ export default [
       '@typescript-eslint/no-unused-vars': 'warn',
     },
   },
+  // Custom rule to prevent server-only env vars in client code (excludes server-only files)
+  {
+    files: [
+      'app/**/*.{ts,tsx}',
+      'components/**/*.{ts,tsx}',
+      'hooks/**/*.{ts,tsx}',
+      'types/**/*.{ts,tsx}'
+    ],
+    ignores: [
+      'app/api/**/*.{ts,tsx}',
+      'app/_debug/**/*.{ts,tsx}',
+      'app/probe/**/*.{ts,tsx}',
+      'app/status/**/*.{ts,tsx}',
+      'app/test-simple/**/*.{ts,tsx}',
+      'app/global-error.tsx'
+    ],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'MemberExpression[object.name="process"][property.name="env"]',
+          message: 'Direct process.env access is forbidden. Use @lib/env functions instead.',
+        },
+      ],
+    },
+  },
 ];

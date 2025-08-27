@@ -3,8 +3,7 @@ name: CI
 on:
   push:
     branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+  # Removed pull_request trigger to avoid redundancy with other workflows
   schedule:
     # Weekly slow type checking (runs every Monday at 2 AM UTC)
     - cron: '0 2 * * 1'
@@ -12,6 +11,7 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
 
     strategy:
       matrix:

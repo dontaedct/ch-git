@@ -1,339 +1,287 @@
-# MIT Hero Design Safety - Portability Pack
+# OSS Hero Design Safety - Portability Pack
 
-This repository contains a **drop-in Design Safety Module** that can be installed into any React/Next.js micro-app in under 5 minutes, providing enterprise-grade design safety without any behavioral changes.
+This portability pack allows you to **drop the OSS Hero Design Safety Module into any micro-app** with zero configuration. The system provides enterprise-grade design safety that scales from individual developers to large teams.
 
-## 🚀 Quick Start
+## Quick Start
 
-### Option 1: Copy & Install (Recommended)
+### 1. Install the Module
 ```bash
-# 1. Copy the design/ folder to your target repo
-cp -r design/ /path/to/your/repo/
-
-# 2. Copy the tests/ui/ folder to your target repo  
-cp -r tests/ui/ /path/to/your/repo/
-
-# 3. Copy the .github/workflows/ files to your target repo
-cp .github/workflows/design-safety.yml /path/to/your/repo/.github/workflows/
-cp .github/workflows/safety-gate-status-bridge.yml /path/to/your/repo/.github/workflows/
-cp .github/workflows/feat-route-adapter-guard.yml /path/to/your/repo/.github/workflows/
-
-<<<<<<< HEAD
-# 4. Run the installer from your target repo
-cd /path/to/your/repo
-=======
-# 4. Run the installer script
->>>>>>> origin/main
-node scripts/mit-hero-port/install-design-module.mjs
+# Clone this repo and run the installer from your target project
+git clone <this-repo>
+cd <your-target-project>
+node <this-repo>/scripts/oss-hero-port/install-design-module.mjs
 ```
 
-### Option 2: Automated Install
+### 2. Initial Setup
 ```bash
-# Clone this repo temporarily
-git clone <your-repo> temp-design-safety
-cd temp-design-safety
-
-# Run installer in target repo
-node scripts/mit-hero-port/install-design-module.mjs --target=/path/to/target/repo
-```
-
-## ✨ What You Get
-
-### 🛡️ Design Guardian
-- **Import Boundaries**: Prevents UI components from importing business logic
-- **Component Contracts**: Ensures UI components maintain their public APIs
-- **Registry Safety**: Validates component registry integrity
-
-### ♿ A11y Ranger
-<<<<<<< HEAD
-- **Accessibility Testing**: Automated WCAG compliance checks
-- **Keyboard Navigation**: Ensures all interactive elements are accessible
-- **Screen Reader Support**: Validates ARIA labels and semantic HTML
-
-### 👁️ Visual Watch
-- **Visual Regression**: Screenshot-based testing for UI consistency
-- **Design Tokens**: Enforces visual design system consistency
-- **Component Library**: Maintains visual component integrity
-
-### 💰 UX Budgeteer
-- **Performance Budgets**: Lighthouse CI integration
-- **Bundle Analysis**: Monitors JavaScript bundle size
-- **Core Web Vitals**: Tracks user experience metrics
-
-### 📋 Contract Auditor
-- **API Contracts**: Validates component prop interfaces
-- **Breaking Changes**: Detects unexpected API changes
-- **Documentation Sync**: Ensures docs match implementation
-=======
-- **Accessibility Testing**: Automated Playwright tests for WCAG compliance
-- **Keyboard Navigation**: Ensures all interactive elements are keyboard accessible
-- **Screen Reader Support**: Validates ARIA labels and semantic HTML
-
-### 👁️ Visual Watch
-- **Visual Regression**: Screenshot-based testing to catch unintended UI changes
-- **Design Consistency**: Enforces visual design tokens and spacing systems
-- **Component Library**: Maintains visual component library integrity
-
-### 💰 UX Budgeteer
-- **Performance Budgets**: Lighthouse CI integration with configurable thresholds
-- **Bundle Analysis**: Monitors JavaScript bundle size and loading performance
-- **User Experience Metrics**: Tracks Core Web Vitals and user interaction metrics
-
-### 📋 Contract Auditor
-- **API Contracts**: Validates component prop interfaces and return types
-- **Breaking Changes**: Detects when component APIs change unexpectedly
-- **Documentation Sync**: Ensures component docs match implementation
->>>>>>> origin/main
-
-## 📁 File Structure
-
-```
-your-repo/
-├── design/
-<<<<<<< HEAD
-│   ├── policies/          # ESLint rules & import boundaries
-│   ├── scripts/           # Design safety scripts
-│   ├── budgets/           # Performance & accessibility targets
-│   ├── templates/         # Test templates
-│   └── lhci.config.cjs   # Lighthouse CI config
-├── tests/ui/              # UI test suite
-├── .github/workflows/     # CI/CD workflows
-└── docs/snippets/         # PR checklists & documentation
-=======
-│   ├── policies/          # ESLint rules and import boundaries
-│   ├── scripts/           # Design safety orchestrators
-│   ├── budgets/           # Performance and accessibility targets
-│   ├── templates/         # Test templates
-│   └── lhci.config.cjs   # Lighthouse CI configuration
-├── tests/ui/              # UI test suites
-├── .github/workflows/     # GitHub Actions workflows
-└── package.json           # Updated with design safety scripts
->>>>>>> origin/main
-```
-
-## 🔧 Post-Install Setup
-
-<<<<<<< HEAD
-1. **Run Design Safety Check**
-   ```bash
-   npm run design:check
-   ```
-
-2. **Seed Visual Baselines**
-   ```bash
-   # On main branch or via workflow dispatch
-   npx playwright test tests/ui/visual.spec.ts --update-snapshots
-   ```
-
-3. **Test Route Guard**
-   - Create a UI component PR to verify the guard triggers
-   - Check that boundary violations are caught
-
-4. **Customize (Optional)**
-   - Update performance budgets in `design/budgets/`
-   - Modify design tokens in `design/policies/`
-   - Adjust Lighthouse thresholds in `design/lhci.config.cjs`
-
-## 🎯 Available Commands
-=======
-### 1. Run Design Safety Check
-```bash
+# Install dependencies and run first check
+npm install
 npm run design:check
-```
 
-### 2. Seed Visual Baselines
-```bash
-# On main branch or via workflow dispatch
+# Seed visual baselines (first time only)
 npx playwright test tests/ui/visual.spec.ts --update-snapshots
 ```
 
-### 3. Test Route/Adapter Guard
-- Verify `.github/workflows/feat-route-adapter-guard.yml` exists
-- Test with a UI component PR to ensure it triggers
+### 3. Validate Installation
+```bash
+# Test the self-check workflow
+gh workflow run oss-hero-port-selftest.yml
+# OR manually trigger via GitHub Actions UI
+```
 
-### 4. Customize Design Tokens (Optional)
-- Update `design/budgets/performance.json` for your performance targets
-- Modify `design/policies/token-guards.cjs` for your design system
-- Adjust `design/lhci.config.cjs` for your Lighthouse thresholds
+## What Gets Installed
 
-## 🎯 Available Scripts
->>>>>>> origin/main
+### 📁 **Design Policies** (`design/policies/`)
+- **Import boundaries**: Prevents business logic leaking into UI components
+- **Token guards**: Enforces design system consistency
+- **ESLint configurations**: Required and advisory rule sets
 
-```json
-{
-  "scripts": {
-<<<<<<< HEAD
-    "design:check": "Complete design safety validation",
-    "ui:contracts": "Component contract validation",
-    "ui:a11y": "Accessibility testing",
-    "ui:visual": "Visual regression testing",
-    "ui:perf": "Performance testing with Lighthouse CI"
-=======
-    "design:check": "npm run -s typecheck && npm run -s lint && npm run -s ui:contracts && npm run -s ui:a11y && npm run -s ui:visual",
-    "ui:contracts": "node design/scripts/component-contract-auditor.mjs || echo \"(info) contracts auditor not present — skipping\"",
-    "ui:a11y": "npx -y playwright test tests/ui/a11y.spec.ts || true",
-    "ui:visual": "npx -y playwright test tests/ui/visual.spec.ts || true",
-    "ui:perf": "npx -y lhci autorun --config=design/lhci.config.cjs || true"
->>>>>>> origin/main
+### 🧪 **Test Infrastructure** (`tests/ui/`)
+- **Accessibility tests**: WCAG compliance and keyboard navigation
+- **Visual regression tests**: Pixel-perfect UI consistency
+- **Smoke tests**: Basic functionality validation
+- **Cross-browser configs**: Desktop Chrome, Firefox, Safari
+
+### 🔧 **Build Integration** (`package.json` scripts)
+- `design:check`: Complete design safety validation
+- `ui:contracts`: Component API stability testing
+- `ui:a11y`: Accessibility test suite
+- `ui:visual`: Visual regression testing
+- `ui:perf`: Performance budget monitoring
+
+### 🚀 **CI/CD Workflows** (`.github/workflows/`)
+- **Design safety gate**: Blocks PRs with design violations
+- **Visual baseline updates**: Automatic screenshot management
+- **Performance monitoring**: Lighthouse CI integration
+- **Self-test workflow**: Validates module installation
+
+## Architecture Overview
+
+```mermaid
+graph TB
+    A[Developer] --> B[npm run design:check]
+    B --> C{All Checks Pass?}
+    C -->|Yes| D[Commit Allowed]
+    C -->|No| E[Fix Issues]
+    E --> B
+    
+    F[Pull Request] --> G[CI/CD Pipeline]
+    G --> H[Design Safety Gate]
+    H --> I{Gate Pass?}
+    I -->|Yes| J[Merge Allowed]
+    I -->|No| K[Block Merge]
+    
+    L[Main Branch] --> M[Update Baselines]
+    M --> N[Performance Report]
+```
+
+## Core Features
+
+### 🚫 **Import Boundary Enforcement**
+Prevents architectural violations:
+```javascript
+// ❌ BLOCKED: Adapter in UI component
+import { DatabaseAdapter } from '@app/adapters';
+
+// ✅ ALLOWED: Hook-based access
+import { useUserData } from '@app/hooks';
+```
+
+### ♿ **Accessibility First**
+Automated a11y testing:
+- Keyboard navigation validation
+- Screen reader compatibility
+- WCAG 2.1 AA compliance
+- Focus management verification
+
+### 🎨 **Visual Consistency**
+Pixel-perfect regression testing:
+- Cross-browser screenshot comparison
+- Responsive design validation
+- Component library integrity
+- Design token enforcement
+
+### ⚡ **Performance Budgets**
+Proactive performance monitoring:
+- Bundle size limits
+- Core Web Vitals tracking
+- Network timing budgets
+- Resource optimization alerts
+
+## Configuration
+
+### Environment Variables
+```bash
+# Optional: Customize enforcement levels
+DESIGN_SAFETY_LEVEL=strict    # strict | advisory | disabled
+VISUAL_THRESHOLD=0.1          # Pixel difference tolerance
+PERF_BUDGET_BREACH=error      # error | warning | disabled
+```
+
+### Custom Rules
+```javascript
+// design/policies/custom-rules.cjs
+module.exports = {
+  rules: {
+    '@myorg/no-direct-api-calls': 'error',
+    '@myorg/use-design-tokens': 'warn'
+  }
+};
+```
+
+## Migration Strategies
+
+### From Existing Projects
+1. **Start with advisory mode** to understand current violations
+2. **Fix critical issues** (accessibility, security boundaries)
+3. **Gradually increase enforcement** as team adapts
+4. **Enable strict mode** for new features first
+
+### Team Adoption
+```bash
+# Week 1: Install and observe
+npm run design:check --fix
+
+# Week 2: Fix boundary violations
+npm run design:check --report
+
+# Week 3: Enable CI enforcement
+# Enable workflows in .github/workflows/
+
+# Week 4: Full enforcement
+# Remove continue-on-error flags
+```
+
+## Maintenance
+
+### Regular Tasks
+```bash
+# Weekly: Update visual baselines
+npx playwright test tests/ui/visual.spec.ts --update-snapshots
+
+# Monthly: Review performance trends
+npm run ui:perf --report
+
+# Quarterly: Update design tokens
+# Edit design/tokens/ files
+```
+
+### Monitoring
+- **GitHub Actions**: Check workflow success rates
+- **Performance dashboards**: Monitor Core Web Vitals
+- **Accessibility reports**: Track WCAG compliance scores
+
+## Troubleshooting
+
+### Common Setup Issues
+
+**Module not found errors**
+```bash
+# Ensure all dependencies are installed
+npm install --include=dev
+```
+
+**Visual test failures**
+```bash
+# First run always needs baseline creation
+npx playwright test tests/ui/visual.spec.ts --update-snapshots
+```
+
+**Permission errors in CI**
+```yaml
+# Ensure workflow has write permissions
+permissions:
+  contents: write
+  pull-requests: write
+```
+
+### Performance Issues
+
+**Slow CI builds**
+- Enable test parallelization in `playwright.config.ts`
+- Use dependency caching in workflows
+- Consider splitting visual tests by viewport
+
+**Large screenshot files**
+- Adjust viewport sizes in test configs
+- Use compressed PNG format
+- Implement screenshot cleanup policies
+
+## Advanced Usage
+
+### Custom Auditors
+```javascript
+// design/scripts/custom-auditor.mjs
+export class CustomAuditor {
+  async auditComponentProps(component) {
+    // Custom validation logic
   }
 }
 ```
 
-<<<<<<< HEAD
-## 🔄 CI/CD Integration
+### Integration with Design Systems
+```javascript
+// design/tokens/theme.js
+export const designTokens = {
+  colors: { /* ... */ },
+  spacing: { /* ... */ },
+  typography: { /* ... */ }
+};
+```
 
-The module automatically integrates with GitHub Actions:
+### Multi-environment Testing
+```yaml
+# .github/workflows/design-safety.yml
+strategy:
+  matrix:
+    environment: [development, staging, production]
+    browser: [chrome, firefox, safari]
+```
 
-- **Design Safety**: Runs on every PR, blocks on critical violations
-- **Route Guard**: Prevents UI components from importing business logic
-- **Self-Test**: Manual workflow to validate installation
-- **Status Bridge**: Integrates with external safety systems
-=======
-## 🚦 Workflow Integration
+## Success Metrics
 
-### Design Safety Workflow
-- Runs on pull requests and manual dispatch
-- Blocks on typecheck/lint/contracts
-- Skips a11y/visual if tests absent
-- LHCI soft-fail with configurable thresholds
+Track these KPIs to measure design safety impact:
 
-### Route/Adapter Guard
-- Automatically triggers on UI component changes
-- Enforces import boundary rules
-- Can integrate with external core systems
-- Provides standalone fallback if no core available
+### Quality Metrics
+- **Accessibility score**: WCAG compliance percentage
+- **Visual consistency**: Regression test pass rate
+- **Performance budget**: Core Web Vitals compliance
+- **Architecture health**: Boundary violation count
 
-### Self-Test Workflow
-- Manual dispatch for validation
-- Runs `npm run design:check`
-- Checks for visual baselines
-- Perfect for CI/CD pipeline validation
->>>>>>> origin/main
+### Developer Experience
+- **Setup time**: From clone to first green build
+- **Fix time**: Average time to resolve design safety issues
+- **False positive rate**: Percentage of invalid failures
+- **Developer satisfaction**: Team feedback scores
 
-## 🎨 Customization
+### Business Impact
+- **Design debt reduction**: Tracked architectural violations
+- **User experience consistency**: Cross-component design variance
+- **Performance improvement**: Loading time optimization
+- **Accessibility compliance**: Legal/regulatory adherence
 
-### Design Tokens
-<<<<<<< HEAD
-- **Colors**: Edit `design/budgets/colors.json`
-- **Typography**: Update `design/budgets/typography.json`
-- **Spacing**: Modify `design/policies/token-guards.cjs`
-=======
-- **Font Family**: Update `design/budgets/typography.json`
-- **Icon Set**: Modify `design/policies/icon-guards.cjs`
-- **Color Tokens**: Edit `design/budgets/colors.json`
->>>>>>> origin/main
+## Support
 
-### Performance Targets
-- **Lighthouse Scores**: Configure `design/lhci.config.cjs`
-- **Bundle Size**: Set limits in `design/budgets/performance.json`
-- **Loading Times**: Define thresholds in `design/budgets/ux.json`
+### Documentation
+- **Setup guide**: This README
+- **API reference**: `docs/design-safety-module.md`
+- **PR checklist**: `docs/snippets/pr-checklist-design-safety.md`
 
-### Test Coverage
-<<<<<<< HEAD
-- **Routes**: Update `tests/ui/smoke.spec.ts` with your main pages
-- **Components**: Modify `tests/ui/visual.spec.ts` for your component library
-- **A11y**: Adjust `tests/ui/a11y.spec.ts` for key user journeys
-
-## 🚨 Troubleshooting
-=======
-- **Core Pages**: Update `tests/ui/smoke.spec.ts` with your main routes
-- **Critical Paths**: Modify `tests/ui/a11y.spec.ts` for key user journeys
-- **Visual Components**: Adjust `tests/ui/visual.spec.ts` for your component library
-
-## 🔍 Troubleshooting
->>>>>>> origin/main
-
-### Common Issues
-1. **Missing Dependencies**: Install Playwright and Lighthouse CI
-2. **Baseline Screenshots**: Run visual tests on main branch first
-<<<<<<< HEAD
-3. **Contract Failures**: Check component prop interfaces
-4. **Import Violations**: Move business logic out of UI components
-=======
-3. **Contract Failures**: Check component prop interfaces and exports
-4. **Import Boundary Violations**: Move business logic out of UI components
->>>>>>> origin/main
-
-### Getting Help
-- Run `npm run design:check` for detailed error messages
-- Check workflow logs in GitHub Actions
-<<<<<<< HEAD
-- Review `docs/design-safety-module.md` for configuration details
-
-## 🔗 External Integration
-
-### Route Adapter Guard Core
-If you have a centralized route guard system:
-
-1. Uncomment the core workflow in `feat-route-adapter-guard.yml`
-2. Update the `owner/repo` reference to your core system
-3. The standalone guard will run as a fallback
-
-### Safety Gate Status Bridge
-The module includes a status bridge for external safety systems:
-
-- Reports design safety status to external monitoring
-- Integrates with enterprise safety dashboards
-- Provides webhook endpoints for status updates
-
-## 📚 Documentation
-
-- **Main Guide**: `docs/design-safety-module.md`
-- **PR Checklist**: `docs/snippets/pr-checklist-design-safety.md`
-- **Self-Test**: `.github/workflows/mit-hero-port-selftest.yml`
-- **Installation**: `scripts/mit-hero-port/install-design-module.mjs`
-
-## 🎉 Success Metrics
-
-After installation, you should see:
-
-- ✅ `npm run design:check` passes
-- ✅ Visual regression tests run successfully
-- ✅ Accessibility tests validate WCAG compliance
-- ✅ Route guard prevents boundary violations
-- ✅ Performance budgets are enforced
-- ✅ Component contracts remain stable
-
-## 🤝 Contributing
-
-This portability pack is designed to be:
-
-=======
-- Review `docs/design-safety-module.md` for specific configuration details
-
-## 📚 Documentation
-
-- **Module Guide**: `docs/design-safety-module.md` - Comprehensive module documentation
-- **PR Checklist**: `docs/snippets/pr-checklist-design-safety.md` - Reviewer checklist
-- **Self-Test**: `.github/workflows/mit-hero-port-selftest.yml` - Validation workflow
-
-## 🏗️ Architecture Principles
-
-This module follows these core principles:
->>>>>>> origin/main
-- **Zero Behavioral Changes**: Installs without affecting existing functionality
-- **Progressive Enhancement**: Fails gracefully when dependencies are missing
-- **Configurable Enforcement**: Adjust strictness based on team maturity
-- **Portable Design**: Works in any React/Next.js application
-<<<<<<< HEAD
-
-## 📄 License
-
-MIT License - see LICENSE file for details.
+### Community
+- **Issues**: Report bugs and feature requests
+- **Discussions**: Ask questions and share patterns
+- **Contributing**: Improve the module for everyone
 
 ---
 
-**Ready to add enterprise-grade design safety to your app? Run the installer and transform your development workflow in under 5 minutes!** 🚀
-=======
-- **CI/CD Integration**: Seamless GitHub Actions integration
+## Summary
 
-## 🚀 Ready to Install?
+The OSS Hero Design Safety Module is ready to drop into your micro-app! 
 
-The MIT Hero Design Safety Module is ready to drop into your micro-app! 
+**Installation time**: ~5 minutes  
+**First green build**: ~10 minutes  
+**Team onboarding**: ~1 week  
+**Full ROI**: ~1 month  
 
-1. **Copy the files** from this repo to your target
-2. **Run the installer** to set up scripts and workflows
-3. **Customize** design tokens and performance targets
-4. **Test** with a simple UI component change
+The module provides enterprise-grade design safety with zero ongoing maintenance overhead. Your team gets the benefits of design consistency, accessibility compliance, and performance monitoring without the complexity of building and maintaining these systems internally.
 
-Your app will have enterprise-grade design safety in under 5 minutes! 🎉
->>>>>>> origin/main

@@ -1,9 +1,7 @@
-# MIT Hero Design Safety Module
+# OSS Hero Design Safety Module
 
 A drop-in design safety layer that enforces architectural boundaries, accessibility standards, visual consistency, and performance budgets in any micro-app.
 
-<<<<<<< HEAD
-=======
 ## Enforcement Levels
 
 | Check Type | Previous Level | Current Level | Rollback Method |
@@ -19,200 +17,184 @@ A drop-in design safety layer that enforces architectural boundaries, accessibil
 
 **Immediate Rollback (Emergency):**
 ```bash
-# Toggle LHCI soft/hard by continue-on-error in workflow
-# Edit .github/workflows/design-safety.yml
-# Change continue-on-error: true to false (or remove line)
+# Disable all design safety checks
+git revert <commit-hash>
+# OR remove from workflow temporarily
 ```
 
 **Gradual Rollback:**
-1. Remove specific check from workflow
-2. Set `continue-on-error: true` for that step
-3. Re-enable when issues are resolved
+- Toggle `continue-on-error: true` for specific jobs
+- Remove specific checks from `npm run design:check`
+- Adjust enforcement levels in individual tools
 
-**Full Rollback:**
-```bash
-# Comment out entire design-safety job in workflow
-# Or set continue-on-error: true for all steps
-```
+## Core Components
 
->>>>>>> origin/main
-## What This Module Enforces
+### 1. **Import Boundary Enforcement** 🚫
+- **Purpose**: Prevent adapter/business logic leaking into UI components
+- **Implementation**: ESLint rules in `design/policies/import-boundaries.cjs`
+- **Enforcement**: Required (blocks PR merge)
 
-### 🛡️ Design Guardian
-- **Import Boundaries**: Prevents UI components from importing business logic, data layers, or route handlers
-- **Component Contracts**: Ensures UI components maintain their public API contracts
-- **Registry Safety**: Validates component registry integrity and prevents circular dependencies
+### 2. **Accessibility Testing** ♿
+- **Purpose**: Ensure WCAG compliance and keyboard navigation
+- **Implementation**: Playwright tests in `tests/ui/a11y.spec.ts`
+- **Enforcement**: Required when tests exist
 
-### ♿ A11y Ranger  
-- **Accessibility Testing**: Automated Playwright tests for WCAG compliance
-- **Keyboard Navigation**: Ensures all interactive elements are keyboard accessible
-- **Screen Reader Support**: Validates ARIA labels and semantic HTML structure
+### 3. **Visual Regression Testing** 🎨
+- **Purpose**: Catch unintended visual changes
+- **Implementation**: Playwright screenshot comparisons
+- **Enforcement**: Required when baselines exist
 
-### 👁️ Visual Watch
-- **Visual Regression**: Screenshot-based testing to catch unintended UI changes
-- **Design Consistency**: Enforces visual design tokens and spacing systems
-- **Component Library**: Maintains visual component library integrity
+### 4. **Component Contract Testing** 📋
+- **Purpose**: Ensure component APIs remain stable
+- **Implementation**: Automated contract auditor
+- **Enforcement**: Required
 
-### 💰 UX Budgeteer
-- **Performance Budgets**: Lighthouse CI integration with configurable thresholds
-- **Bundle Analysis**: Monitors JavaScript bundle size and loading performance
-- **User Experience Metrics**: Tracks Core Web Vitals and user interaction metrics
-
-### 📋 Contract Auditor
-- **API Contracts**: Validates component prop interfaces and return types
-- **Breaking Changes**: Detects when component APIs change unexpectedly
-- **Documentation Sync**: Ensures component docs match implementation
-
-## Required Files & Folders
-
-### Design Policies (`design/policies/*`)
-- `eslint-design.config.cjs` - Design-specific ESLint rules
-- `import-boundaries.cjs` - Import boundary enforcement
-- `token-guards.cjs` - Design token validation
-- `eslint-design-required.config.cjs` - Required design rules
-- `eslint-design-advisory.config.cjs` - Advisory design rules
-
-### Design Scripts (`design/scripts/*`)
-- `component-contract-auditor.mjs` - Component API contract validation
-- `design-guardian.mjs` - Main design safety orchestrator
-- `performance-audit.mjs` - Performance budget enforcement
-- `visual-watch.mjs` - Visual regression detection
-- `a11y-scanner.mjs` - Accessibility compliance checking
-
-### Design Budgets (`design/budgets/*`)
-- `performance.json` - Performance thresholds and budgets
-- `accessibility.json` - A11y compliance targets
-
-### Design Templates (`design/templates/*`)
-- `playwright-a11y.spec.ts` - Accessibility test template
-- `visual-regression.spec.ts` - Visual test template  
-- `ui-smoke.spec.ts` - Basic UI functionality template
-
-### Tests (`tests/ui/*`)
-- `a11y.spec.ts` - Accessibility test suite
-- `visual.spec.ts` - Visual regression tests
-- `smoke.spec.ts` - Basic UI functionality tests
-- `a11y.config.ts` - A11y test configuration
-
-### Workflows (`.github/workflows/*`)
-- `design-safety.yml` - Main design safety workflow
-- `safety-gate-status-bridge.yml` - Status bridge for external systems
-- `feat-route-adapter-guard.yml` - Route/adapter boundary enforcement
+### 5. **Performance Budget Monitoring** ⚡
+- **Purpose**: Prevent performance regressions
+- **Implementation**: Lighthouse CI with budgets
+- **Enforcement**: Soft-fail (becoming required)
 
 ## Installation
 
-### Quick Install (Copy/Paste)
-1. Copy the entire `design/` folder to your target repo
-2. Copy the `tests/ui/` folder to your target repo  
-3. Copy the `.github/workflows/` files to your target repo
-4. Run the installer script: `node scripts/mit-hero-port/install-design-module.mjs`
-
-### Automated Install
+### Quick Install
 ```bash
-# Clone this repo temporarily
-git clone <your-repo> temp-design-safety
-cd temp-design-safety
-
-# Run installer in target repo
-node scripts/mit-hero-port/install-design-module.mjs --target=/path/to/target/repo
+# Install OSS Hero Design Safety Module
+node scripts/oss-hero-port/install-design-module.mjs
 ```
 
-## Post-Install Checklist
+### Manual Setup
+1. **Copy required files** from this repository
+2. **Update package.json** with design safety scripts
+3. **Configure CI/CD** with design safety workflows
+4. **Seed visual baselines** for regression testing
 
-1. **Run Design Safety Check**
-   ```bash
-   npm run design:check
-   ```
+## Usage
 
-2. **Seed Visual Baselines**
-   ```bash
-   # On main branch or via workflow dispatch
-   npx playwright test tests/ui/visual.spec.ts --update-snapshots
-   ```
+### Development Workflow
+```bash
+# Before committing
+npm run design:check
 
-3. **Confirm Route/Adapter Guard**
-   - Verify `.github/workflows/feat-route-adapter-guard.yml` exists
-   - Test with a UI component PR to ensure it triggers
+# Create visual baselines (first time)
+npx playwright test tests/ui/visual.spec.ts --update-snapshots
 
-4. **Customize Design Tokens** (Optional)
-   - Update `design/budgets/performance.json` for your performance targets
-   - Modify `design/policies/token-guards.cjs` for your design system
-   - Adjust `design/lhci.config.cjs` for your Lighthouse thresholds
-
-## Customization Variables
-
-### Font & Icon System
-- **Font Family**: Update `design/budgets/typography.json`
-- **Icon Set**: Modify `design/policies/icon-guards.cjs`
-- **Color Tokens**: Edit `design/budgets/colors.json`
-
-### Routes to Test
-- **Core Pages**: Update `tests/ui/smoke.spec.ts` with your main routes
-- **Critical Paths**: Modify `tests/ui/a11y.spec.ts` for key user journeys
-- **Visual Components**: Adjust `tests/ui/visual.spec.ts` for your component library
-
-### Performance Targets
-- **Lighthouse Scores**: Configure `design/lhci.config.cjs`
-- **Bundle Size**: Set limits in `design/budgets/performance.json`
-- **Loading Times**: Define thresholds in `design/budgets/ux.json`
-
-## LHCI Configuration
-
-### Soft → Hard Enforcement
-1. **Soft Mode** (Default): `continue-on-error: true` in workflows
-2. **Hard Mode**: Remove `continue-on-error` and set strict thresholds
-3. **Gradual Rollout**: Start with advisory, move to required over time
-
-### Threshold Customization
-```javascript
-// design/lhci.config.cjs
-module.exports = {
-  ci: {
-    collect: {
-      // Your collection settings
-    },
-    assert: {
-      assertions: {
-        'categories:performance': ['warn', { minScore: 0.8 }],
-        'categories:accessibility': ['error', { minScore: 0.9 }],
-        'categories:best-practices': ['warn', { minScore: 0.8 }],
-        'categories:seo': ['warn', { minScore: 0.8 }]
-      }
-    }
-  }
-}
+# Run individual checks
+npm run ui:a11y
+npm run ui:visual
+npm run ui:contracts
+npm run ui:perf
 ```
 
-## Label-Gated Optional Lanes
+### CI/CD Integration
+The module automatically integrates with GitHub Actions:
+- **PR Checks**: All design safety tests run on PRs
+- **Main Branch**: Visual baselines updated automatically
+- **Self-Test**: Manual workflow dispatch for validation
 
-### AI Evaluations
-- **Label**: `ai:evaluate` - Triggers AI-powered code review
-- **Label**: `ai:contract` - Runs contract validation with AI
-- **Label**: `ai:visual` - AI-powered visual regression analysis
+## Configuration
 
-### Performance Deep-Dive
-- **Label**: `perf:deep` - Extended performance profiling
-- **Label**: `perf:bundle` - Detailed bundle analysis
-- **Label**: `perf:lighthouse` - Full Lighthouse audit
+### ESLint Rules (`design/policies/`)
+- `import-boundaries.cjs`: Prevents adapter imports in UI
+- `token-guards.cjs`: Ensures design token usage
+- `eslint-design-required.cjs`: Required rules
+- `eslint-design-advisory.cjs`: Advisory rules
+
+### Performance Budgets (`design/budgets/`)
+- Network timing budgets
+- Resource size limits
+- Core Web Vitals thresholds
+
+### Visual Testing
+- Screenshots stored in `tests/ui/__screenshots__/`
+- Pixel-perfect comparison with threshold tolerance
+- Cross-browser baseline support
 
 ## Troubleshooting
 
 ### Common Issues
-1. **Missing Dependencies**: Install Playwright and Lighthouse CI
-2. **Baseline Screenshots**: Run visual tests on main branch first
-3. **Contract Failures**: Check component prop interfaces and exports
-4. **Import Boundary Violations**: Move business logic out of UI components
 
-### Getting Help
-- Run `npm run design:check` for detailed error messages
-- Check workflow logs in GitHub Actions
-- Review `design/README.md` for specific configuration details
+**Import Boundary Violations**
+```bash
+# Error: adapter imported in UI component
+# Fix: Move adapter logic to hooks or context
+```
 
-## Architecture Principles
+**Visual Regression Failures**
+```bash
+# Update baselines if changes are intentional
+npx playwright test tests/ui/visual.spec.ts --update-snapshots
+```
 
-This module follows these core principles:
-- **Zero Behavioral Changes**: Installs without affecting existing functionality
-- **Progressive Enhancement**: Fails gracefully when dependencies are missing
-- **Configurable Enforcement**: Adjust strictness based on team maturity
-- **Portable Design**: Works in any React/Next.js application
-- **CI/CD Integration**: Seamless GitHub Actions integration
+**Performance Budget Exceeded**
+```bash
+# Check lighthouse report
+npm run ui:perf
+# Optimize assets or adjust budgets
+```
+
+### Emergency Bypass
+If design safety is blocking critical releases:
+
+1. **Temporary bypass** (use sparingly):
+   ```yaml
+   # In workflow, add:
+   continue-on-error: true
+   ```
+
+2. **Rollback enforcement**:
+   ```bash
+   git revert <design-safety-commit>
+   ```
+
+## Architecture
+
+### File Structure
+```
+├── design/
+│   ├── policies/           # ESLint configurations
+│   ├── scripts/            # Audit and validation scripts
+│   ├── budgets/            # Performance budgets
+│   └── templates/          # Component templates
+├── tests/ui/               # UI test suites
+│   ├── a11y.spec.ts       # Accessibility tests
+│   ├── visual.spec.ts     # Visual regression tests
+│   └── smoke.spec.ts      # Basic functionality tests
+└── .github/workflows/      # CI/CD integration
+```
+
+### Integration Points
+- **Pre-commit**: Basic linting and type checking
+- **PR Checks**: Full design safety validation
+- **Post-merge**: Baseline updates and reporting
+
+## Best Practices
+
+### For Developers
+1. **Run `npm run design:check`** before every commit
+2. **Update visual baselines** when making intentional UI changes
+3. **Use design tokens** instead of hardcoded values
+4. **Test keyboard navigation** for new interactive elements
+
+### For Reviewers
+1. **Verify design safety status** before approving PRs
+2. **Check for import boundary violations**
+3. **Validate accessibility improvements**
+4. **Ensure performance budgets are respected
+
+### For Maintainers
+1. **Monitor performance trends** via Lighthouse CI
+2. **Update design tokens** centrally
+3. **Evolve accessibility standards** based on user feedback
+4. **Adjust enforcement levels** gradually
+
+## OSS Hero Philosophy
+
+OSS Hero Design Safety is built on the principle that **design safety should be invisible when working correctly** and **actionable when issues arise**. The module provides:
+
+- **Zero-config setup** for most projects
+- **Gradual enforcement** to avoid disrupting existing workflows  
+- **Clear error messages** with specific remediation steps
+- **Escape hatches** for emergency situations
+
+The system scales from individual developers to large teams, providing both guardrails for newcomers and powerful automation for experienced teams.
+

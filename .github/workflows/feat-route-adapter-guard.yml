@@ -14,61 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-<<<<<<< HEAD
-  call-core:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
-
-      - name: Compute base/head SHAs for this PR
-        id: shas
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          echo "base_sha=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_OUTPUT"
-          echo "head_sha=${{ github.event.pull_request.head.sha }}" >> "$GITHUB_OUTPUT"
-
-      # Option 1: Use external core (uncomment and update owner/repo if you have one)
-      # - name: Call core guard (reusable workflow on main)
-      #   uses: owner/repo/.github/workflows/route-adapter-guard-core.yml@main
-      #   with:
-      #     base_sha: ${{ steps.shas.outputs.base_sha || '' }}
-      #     head_sha: ${{ steps.shas.outputs.head_sha || '' }}
-
-      # Option 2: Standalone route/adapter guard (runs if no core specified)
-      - name: Standalone route/adapter guard
-        run: |
-          echo "🔍 Checking for route/adapter boundary violations..."
-          
-          # Get changed files in this PR
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            echo "base_sha: ${{ steps.shas.outputs.base_sha }}"
-            echo "head_sha: ${{ steps.shas.outputs.head_sha }}"
-            
-            # Check for UI components importing business logic
-            if git diff --name-only ${{ steps.shas.outputs.base_sha }} ${{ steps.shas.outputs.head_sha }} | grep -E "\.(tsx|ts)$" | xargs grep -l "from.*[aA]dapter\|from.*[dD]ata\|from.*[bB]usiness" 2>/dev/null; then
-              echo "❌ Route/Adapter boundary violation detected!"
-              echo "UI components should not import adapters, data layers, or business logic."
-              exit 1
-            fi
-            
-            # Check for route handlers importing UI components
-            if git diff --name-only ${{ steps.shas.outputs.base_sha }} ${{ steps.shas.outputs.head_sha }} | grep -E "app/.*/page\.tsx$" | xargs grep -l "from.*components" 2>/dev/null; then
-              echo "❌ Route/Component boundary violation detected!"
-              echo "Route handlers should not import UI components directly."
-              exit 1
-            fi
-            
-            echo "✅ No route/adapter boundary violations detected"
-          else
-            echo "ℹ️  Not a PR - skipping boundary checks"
-          fi
-=======
   route-adapter-guard:
     uses: dontaedct/ch-git/.github/workflows/route-adapter-guard-core.yml@main
     with:
       base_sha: ${{ github.event.pull_request.base.sha || '' }}
       head_sha: ${{ github.event.pull_request.head.sha || '' }}
     secrets: inherit
->>>>>>> origin/main

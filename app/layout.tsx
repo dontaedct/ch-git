@@ -1,6 +1,3 @@
-import DebugOverlay from './_debug/DebugOverlay';
-import HydrationProbe from './_debug/HydrationProbe';
-import LoopDetector from './_debug/LoopDetector';
 import { Suspense } from 'react';
 import PageBoot from '@/components/ui/skeletons/PageBoot';
 import { getPublicEnv } from '@/lib/env';
@@ -24,9 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         background: '#fff',
         color: '#111'
       }}>
-        {getPublicEnv().NEXT_PUBLIC_DEBUG === '1' ? <DebugOverlay /> : null}
-        <HydrationProbe />
-        <LoopDetector />
+
         {isSafeMode && (
           <div style={{
             position: 'fixed',

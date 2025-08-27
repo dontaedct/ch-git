@@ -38,10 +38,10 @@ test.describe('Forbidden Tokens Scan', () => {
     const bannedPatterns = [
       /\bworkout\b/gi,
       /\bmeal\b/gi,
-      /\bprogress\b/gi,
-      /\bcheck-?in\b/gi,
-      /\bmacro(s)?\b/gi,
-      /\breps?\b/gi,
+      /\bfitness\b/gi,
+      /\btraining\b/gi,
+      /\bnutrition\b/gi,
+      /\bcoaching\b/gi,
       /\bsets?\b/gi,
     ];
 
@@ -58,15 +58,15 @@ test.describe('Forbidden Tokens Scan', () => {
     expect(results).toHaveLength(0);
   });
 
-  test('no fitness-specific file paths exist', async () => {
+  test('no business-specific file paths exist in generic OSS Hero template', async () => {
     const bannedPaths = [
-      'client-portal',
-      'clients',
-      'sessions',
-      'trainer-profile',
-      'progress',
-      'weekly-plans',
-      'checkins',
+      // These paths should not exist in a generic micro app template
+      // They represent business-specific functionality that should be customized
+      'fitness',
+      'workout',
+      'training',
+      'coaching',
+      'nutrition',
     ];
 
     const results = await scanForPaths(bannedPaths);

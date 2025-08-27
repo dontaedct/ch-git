@@ -26,8 +26,8 @@ test.describe('OSS Hero Design Safety - Accessibility Tests', () => {
     expect(main).toBeTruthy();
   });
 
-  test('client portal should meet accessibility standards', async ({ page }) => {
-    await page.goto('/client-portal');
+  test('intake page should meet accessibility standards', async ({ page }) => {
+    await page.goto('/intake');
     
     // Check that the page loads
     await expect(page.locator('body')).toBeVisible();
@@ -35,6 +35,22 @@ test.describe('OSS Hero Design Safety - Accessibility Tests', () => {
     // Check for proper content structure
     const content = await page.locator('main, [role="main"], .content, .main').first();
     expect(content).toBeTruthy();
+    
+    // Check for form accessibility
+    const formElements = await page.locator('input, textarea, select').all();
+    for (const element of formElements) {
+      // Each form element should have a label or aria-label
+      const id = await element.getAttribute('id');
+      const ariaLabel = await element.getAttribute('aria-label');
+      const ariaLabelledby = await element.getAttribute('aria-labelledby');
+      
+      if (id) {
+        const label = await page.locator(`label[for="${id}"]`).count();
+        expect(label > 0 || ariaLabel || ariaLabelledby).toBeTruthy();
+      } else {
+        expect(ariaLabel || ariaLabelledby).toBeTruthy();
+      }
+    }
   });
 
   test('should have proper alt text for images', async ({ page }) => {

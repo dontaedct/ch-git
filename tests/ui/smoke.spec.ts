@@ -97,13 +97,13 @@ test.describe('Design Safety - UI Smoke Tests', () => {
   });
 });
 
-test.describe('New Pages - Adapter Integration Tests', () => {
+test.describe('OSS Hero Micro App - Core Pages Integration Tests', () => {
   test('pages render correctly', async ({ page }) => {
     const testPaths = [
-      { path: '/progress', title: 'Progress Dashboard' },
-      { path: '/clients', title: 'Client Management' },
-      { path: '/clients/invite', title: 'Invite Clients' },
-      { path: '/sessions', title: 'Sessions' }
+      { path: '/', title: 'Micro App Template' },
+      { path: '/intake', title: 'Micro App Template' },
+      { path: '/login', title: 'Micro App Template' },
+      { path: '/status', title: 'Micro App Template' }
     ];
 
     for (const { path, title } of testPaths) {
@@ -120,11 +120,11 @@ test.describe('New Pages - Adapter Integration Tests', () => {
     }
   });
 
-  test('progress dashboard displays client data', async ({ page }) => {
-    await page.goto('/progress');
+  test('status page displays system information', async ({ page }) => {
+    await page.goto('/status');
     await page.waitForLoadState('networkidle');
     
-    // Check that client information is displayed
+    // Check that system status information is displayed
     const clientName = await page.locator('h2').first();
     expect(await clientName.isVisible()).toBe(true);
     

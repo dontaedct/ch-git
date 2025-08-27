@@ -15,32 +15,42 @@ test.describe('OSS Hero Design Safety - Visual Regression Tests', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('should match client-portal page visual baseline', async ({ page }) => {
-    await page.goto('/client-portal');
+  test('should match homepage visual baseline', async ({ page }) => {
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
     
     // Take screenshot and compare with baseline
-    await expect(page).toHaveScreenshot('client-portal-baseline.png', {
+    await expect(page).toHaveScreenshot('homepage-baseline.png', {
       maxDiffPixelRatio: 0.01
     });
   });
 
-  test('should match weekly-plans page visual baseline', async ({ page }) => {
-    await page.goto('/weekly-plans');
+  test('should match intake page visual baseline', async ({ page }) => {
+    await page.goto('/intake');
     await page.waitForLoadState('networkidle');
     
     // Take screenshot and compare with baseline
-    await expect(page).toHaveScreenshot('weekly-plans-baseline.png', {
+    await expect(page).toHaveScreenshot('intake-baseline.png', {
       maxDiffPixelRatio: 0.01
     });
   });
 
-  test('should match trainer-profile page visual baseline', async ({ page }) => {
-    await page.goto('/trainer-profile');
+  test('should match login page visual baseline', async ({ page }) => {
+    await page.goto('/login');
     await page.waitForLoadState('networkidle');
     
     // Take screenshot and compare with baseline
-    await expect(page).toHaveScreenshot('trainer-profile-baseline.png', {
+    await expect(page).toHaveScreenshot('login-baseline.png', {
+      maxDiffPixelRatio: 0.01
+    });
+  });
+
+  test('should match status page visual baseline', async ({ page }) => {
+    await page.goto('/status');
+    await page.waitForLoadState('networkidle');
+    
+    // Take screenshot and compare with baseline
+    await expect(page).toHaveScreenshot('status-baseline.png', {
       maxDiffPixelRatio: 0.01
     });
   });
@@ -56,10 +66,10 @@ test.describe('OSS Hero Design Safety - Visual Regression Tests', () => {
       await page.setViewportSize(breakpoint);
       await page.waitForTimeout(500); // Wait for layout to settle
       
-      await page.goto('/client-portal');
+      await page.goto('/');
       await page.waitForLoadState('networkidle');
       
-      await expect(page).toHaveScreenshot(`client-portal-${breakpoint.name}-baseline.png`, {
+      await expect(page).toHaveScreenshot(`homepage-${breakpoint.name}-baseline.png`, {
         maxDiffPixelRatio: 0.01
       });
     }

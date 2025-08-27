@@ -44,20 +44,20 @@ test.describe('Design Safety - Accessibility Mock Tests', () => {
   });
 
   test('should have proper test structure for critical screens', () => {
-    // Test that we have the right test structure planned
+    // Test that we have the right test structure planned for OSS Hero micro app
     const expectedScreens = [
       'homepage',
-      'client-portal', 
-      'trainer-profile',
-      'weekly-plans'
+      'intake',
+      'login',
+      'status'
     ];
     
-    // This test validates our test planning
+    // This test validates our test planning for OSS Hero template
     expect(expectedScreens).toHaveLength(4);
     expect(expectedScreens).toContain('homepage');
-    expect(expectedScreens).toContain('client-portal');
-    expect(expectedScreens).toContain('trainer-profile');
-    expect(expectedScreens).toContain('weekly-plans');
+    expect(expectedScreens).toContain('intake');
+    expect(expectedScreens).toContain('login');
+    expect(expectedScreens).toContain('status');
   });
 
   test('should have keyboard navigation test structure', () => {

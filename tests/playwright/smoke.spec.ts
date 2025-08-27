@@ -123,8 +123,8 @@ test.describe('Application Smoke Tests', () => {
     }
   });
 
-  test('client portal should be accessible', async ({ page }) => {
-    await page.goto('/client-portal');
+  test('intake page should be accessible', async ({ page }) => {
+    await page.goto('/intake');
     
     // Check that the page loads
     await expect(page).toHaveTitle(/Micro App Template/);
@@ -132,25 +132,25 @@ test.describe('Application Smoke Tests', () => {
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
     
-    // Check for client portal specific content
-    const portalContent = page.locator('text=client').or(
-      page.locator('text=Client')
+    // Check for intake specific content
+    const intakeContent = page.locator('text=welcome').or(
+      page.locator('text=Welcome')
     ).or(
-      page.locator('text=portal')
+      page.locator('text=form')
     ).or(
-      page.locator('text=Portal')
+      page.locator('text=Form')
     ).or(
-      page.locator('text=dashboard')
+      page.locator('input[type="text"]')
     ).or(
-      page.locator('text=Dashboard')
+      page.locator('input[type="email"]')
     );
     
     // At least one of these should be present
-    await expect(portalContent.first()).toBeVisible({ timeout: 10000 });
+    await expect(intakeContent.first()).toBeVisible({ timeout: 10000 });
   });
 
-  test('sessions page should be accessible', async ({ page }) => {
-    await page.goto('/sessions');
+  test('status page should be accessible', async ({ page }) => {
+    await page.goto('/status');
     
     // Check that the page loads
     await expect(page).toHaveTitle(/Micro App Template/);
@@ -158,99 +158,21 @@ test.describe('Application Smoke Tests', () => {
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
     
-    // Check for sessions-specific content
-    const sessionsContent = page.locator('text=session').or(
-      page.locator('text=Session')
+    // Check for status-specific content
+    const statusContent = page.locator('text=status').or(
+      page.locator('text=Status')
     ).or(
-      page.locator('text=meeting')
+      page.locator('text=health')
     ).or(
-      page.locator('text=Meeting')
+      page.locator('text=Health')
     ).or(
-      page.locator('text=appointment')
+      page.locator('text=system')
     ).or(
-      page.locator('text=Appointment')
+      page.locator('text=System')
     );
     
     // At least one of these should be present
-    await expect(sessionsContent.first()).toBeVisible({ timeout: 10000 });
-  });
-
-  test('weekly plans page should be accessible', async ({ page }) => {
-    await page.goto('/weekly-plans');
-    
-    // Check that the page loads
-    await expect(page).toHaveTitle(/Micro App Template/);
-    
-    // Check for basic page structure
-    await expect(page.locator('body')).toBeVisible();
-    
-    // Check for weekly plans specific content
-    const plansContent = page.locator('text=plan').or(
-      page.locator('text=Plan')
-    ).or(
-      page.locator('text=weekly')
-    ).or(
-      page.locator('text=Weekly')
-    ).or(
-      page.locator('text=schedule')
-    ).or(
-      page.locator('text=Schedule')
-    );
-    
-    // At least one of these should be present
-    await expect(plansContent.first()).toBeVisible({ timeout: 10000 });
-  });
-
-  test('trainer profile page should be accessible', async ({ page }) => {
-    await page.goto('/trainer-profile');
-    
-    // Check that the page loads
-    await expect(page).toHaveTitle(/Micro App Template/);
-    
-    // Check for basic page structure
-    await expect(page.locator('body')).toBeVisible();
-    
-    // Check for trainer profile specific content
-    const profileContent = page.locator('text=trainer').or(
-      page.locator('text=Trainer')
-    ).or(
-      page.locator('text=profile')
-    ).or(
-      page.locator('text=Profile')
-    ).or(
-      page.locator('text=coach')
-    ).or(
-      page.locator('text=Coach')
-    );
-    
-    // At least one of these should be present
-    await expect(profileContent.first()).toBeVisible({ timeout: 10000 });
-  });
-
-  test('progress page should be accessible', async ({ page }) => {
-    await page.goto('/progress');
-    
-    // Check that the page loads
-    await expect(page).toHaveTitle(/Micro App Template/);
-    
-    // Check for basic page structure
-    await expect(page.locator('body')).toBeVisible();
-    
-    // Check for progress specific content
-    const progressContent = page.locator('text=progress').or(
-      page.locator('text=Progress')
-    ).or(
-      page.locator('text=tracking')
-    ).or(
-      page.locator('text=Tracking')
-    ).or(
-      page.locator('text=metrics')
-    ).or(
-      page.locator('text=Metrics')
-    );
-    
-    // At least one of these should be present
-    await expect(progressContent.first()).toBeVisible({ timeout: 10000 });
+    await expect(statusContent.first()).toBeVisible({ timeout: 10000 });
   });
 
   test('API endpoints should respond correctly', async ({ request }) => {

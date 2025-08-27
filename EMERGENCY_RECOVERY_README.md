@@ -1,11 +1,11 @@
 # Emergency Recovery System
 
-The Emergency Recovery System provides automated backup and recovery capabilities for the Micro App Template. It integrates Guardian backup system with MIT Hero autonomous recovery to automatically detect and fix system issues.
+The Emergency Recovery System provides automated backup and recovery capabilities for the Micro App Template. It integrates Guardian backup system with OSS Hero autonomous recovery to automatically detect and fix system issues.
 
 ## Features
 
 - **Automated Backups**: Guardian system creates regular backups
-- **Issue Detection**: MIT Hero monitors system health
+- **Issue Detection**: OSS Hero monitors system health
 - **Auto-Recovery**: Automatic restoration from backups
 - **Manual Recovery**: Manual recovery procedures
 

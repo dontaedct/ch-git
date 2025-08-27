@@ -159,12 +159,13 @@ class CoachHubPruner {
       for (const file of this.filesToRemove) {
         if (existsSync(file)) {
           const backupPath = join(this.backupDir, file);
-          mkdirSync(backupPath.split('/').slice(0, -1).join('/'), { recursive: true });
-          
-          if (existsSync(file)) {
-            const content = readFileSync(file, 'utf8');
-            writeFileSync(backupPath, content);
+          const backupDir = backupPath.split('/').slice(0, -1).join('/');
+          if (backupDir) {
+            mkdirSync(backupDir, { recursive: true });
           }
+          
+          const content = readFileSync(file, 'utf8');
+          writeFileSync(backupPath, content);
         }
       }
       
@@ -179,7 +180,10 @@ class CoachHubPruner {
       for (const file of filesToRefactor) {
         if (existsSync(file)) {
           const backupPath = join(this.backupDir, file);
-          mkdirSync(backupPath.split('/').slice(0, -1).join('/'), { recursive: true });
+          const backupDir = backupPath.split('/').slice(0, -1).join('/');
+          if (backupDir) {
+            mkdirSync(backupDir, { recursive: true });
+          }
           const content = readFileSync(file, 'utf8');
           writeFileSync(backupPath, content);
         }

@@ -1,5 +1,48 @@
 # Change Journal
 
+## 2025-08-25 - OSS Hero Hardening Step 13: Developer Ergonomics & Script Hygiene
+
+**What**: Improved developer experience through script organization, ESM/CJS hygiene enforcement, and comprehensive troubleshooting support with minimal top-level commands and organized tool namespace
+
+**Why**: Reduce cognitive load for developers, maintain consistent ESM usage, and provide self-service troubleshooting to improve productivity and reduce support burden
+
+**Scope**:
+- Reorganized package.json scripts with only 7 essential top-level commands and moved advanced commands under `tool:*` namespace
+- Created comprehensive `npm run help` command with 6 organized sections: Essential Flows, Common Tools, Dev Management, Refactoring, Testing, UI/Design
+- Enhanced ESM/CJS hygiene with pre-commit check blocking `require()` in `.js` files and removed duplicate `.js` files with `.mjs` equivalents
+- Improved README.md with one-command development setup and comprehensive troubleshooting section covering ESM errors, missing envs, TypeScript issues, server problems, security concerns, and database issues
+- Created `docs/hardening/STEP13_DX.md` documenting script reorganization, help system implementation, and ESM enforcement patterns
+- Maintained all existing functionality while improving discoverability and reducing cognitive load
+
+**Migration**:
+- Use `npm run help` to discover new command organization and available tools
+- Access advanced commands under `tool:*` namespace (e.g., `npm run tool:doctor`, `npm run tool:security:secrets`)
+- Follow one-command setup: `git clone && npm install && cp .env.example .env.local && npm run dev`
+- Reference troubleshooting section in README.md for common issues and solutions
+- Ensure any `.js` files use proper ESM syntax or rename to `.mjs` for clarity
+
+**Impact**:
+- Reduced cognitive load with only 7 essential top-level commands vs. previous scattered structure
+- Improved discoverability through organized help system with 6 logical categories
+- Enforced ESM consistency with pre-commit protection against CommonJS usage
+- Enhanced developer onboarding with clear setup instructions and troubleshooting guide
+- Maintained all existing functionality while improving organization and accessibility
+- Zero breaking changes - all commands preserved under new organization
+
+**Files Modified**:
+- `package.json` - Script reorganization with minimal top-level commands and tool:* namespace
+- `scripts/help.mjs` - New comprehensive help system with organized command categories
+- `scripts/pre-commit-esm-check.mjs` - Enhanced ESM enforcement with CommonJS pattern detection
+- `README.md` - Improved developer experience with one-command setup and troubleshooting guide
+- `docs/hardening/STEP13_DX.md` - Complete documentation of Step 13 implementation and patterns
+
+**Files Removed**:
+- `scripts/build-robust.js` - Duplicate of .mjs version
+- `scripts/dev-bootstrap.js` - Duplicate of .mjs version
+- `scripts/dev-manager.js` - Duplicate of .mjs version
+- `scripts/guardian.js` - Duplicate of .mjs version
+- `scripts/pre-commit-check.js` - Duplicate of .mjs version
+
 ## 2025-08-25 - OSS Hero Hardening Step 12: Template Isolation & Packaging
 
 **What**: Isolated demo routes from core template and created minimal, reusable template for new micro applications with scaffold script and comprehensive documentation

@@ -4,10 +4,11 @@ on:
   schedule:
     # Weekly dependency check and slow type checking (runs every Monday at 2 AM UTC)
     - cron: '0 2 * * 1'
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch: # Allow manual triggering (but not on PRs)
 
 jobs:
   dependency-check:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     
     steps:
@@ -48,6 +49,7 @@ jobs:
           #   ${{ secrets.SLACK_WEBHOOK_URL }}
 
   slow-types:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     
     steps:

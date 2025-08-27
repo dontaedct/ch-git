@@ -1,66 +1,162 @@
 #!/usr/bin/env node
 
 /**
- * Pre-commit check to ensure no require() statements in .js files
- * Enforces ESM usage in the codebase
+ * Pre-commit ESM check - blocks require() in .js files
+ * 
+ * This script ensures that .js files use ESM syntax (import/export) 
+ * and blocks CommonJS require() statements to maintain ESM hygiene.
  */
 
-import fs from 'node:fs';
-import path from 'node:path';
-import { execSync } from 'node:child_process';
+import { readFileSync, readdirSync, statSync } from 'fs';
+import { join, extname } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-console.log('🔍 Checking for require() statements in .js files...');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const projectRoot = join(__dirname, '..');
 
-// Get list of staged .js files
-let stagedFiles = [];
-try {
-  const output = execSync('git diff --cached --name-only --diff-filter=ACMR', { encoding: 'utf8' });
-  stagedFiles = output.trim().split('\n').filter(file => file.endsWith('.js'));
-} catch (error) {
-  console.log('ℹ️  No staged files or not in a git repository');
-  process.exit(0);
+// Directories to scan
+const SCAN_DIRS = [
+  'scripts',
+  'lib',
+  'app',
+  'components',
+  'data',
+  'hooks',
+  'types'
+];
+
+// Files to exclude
+const EXCLUDE_PATTERNS = [
+  /\.backup$/,
+  /\.cjs$/,
+  /\.mjs$/,
+  /\.ts$/,
+  /\.tsx$/,
+  /node_modules/,
+  /\.git/,
+  /dist/,
+  /build/,
+  /\.next/
+];
+
+// Patterns that indicate CommonJS usage
+const COMMONJS_PATTERNS = [
+  /require\s*\(/,
+  /module\.exports/,
+  /exports\./,
+  /__dirname/,
+  /__filename/
+];
+
+function shouldExcludeFile(filePath) {
+  return EXCLUDE_PATTERNS.some(pattern => pattern.test(filePath));
 }
 
-if (stagedFiles.length === 0) {
-  console.log('✅ No .js files staged for commit');
-  process.exit(0);
-}
-
-console.log(`📁 Checking ${stagedFiles.length} staged .js files...`);
-
-let hasErrors = false;
-
-for (const file of stagedFiles) {
-  if (!fs.existsSync(file)) {
-    continue; // File was deleted
-  }
-
+function scanDirectory(dirPath, results = []) {
   try {
-    const content = fs.readFileSync(file, 'utf8');
+    const items = readdirSync(dirPath);
     
-    // Check for require() statements
-    const requireMatches = content.match(/require\s*\(/g);
-    if (requireMatches) {
-      console.error(`❌ ${file}: Found ${requireMatches.length} require() statement(s)`);
-      console.error(`   Convert to ESM import or rename to .cjs for CommonJS`);
-      hasErrors = true;
-    } else {
-      console.log(`✅ ${file}: No require() statements found`);
+    for (const item of items) {
+      const fullPath = join(dirPath, item);
+      const relativePath = fullPath.replace(projectRoot, '').replace(/\\/g, '/');
+      
+      if (shouldExcludeFile(relativePath)) {
+        continue;
+      }
+      
+      const stat = statSync(fullPath);
+      
+      if (stat.isDirectory()) {
+        scanDirectory(fullPath, results);
+      } else if (extname(item) === '.js') {
+        results.push(relativePath);
+      }
     }
   } catch (error) {
-    console.error(`❌ ${file}: Error reading file - ${error.message}`);
-    hasErrors = true;
+    console.warn(`Warning: Could not scan directory ${dirPath}:`, error.message);
+  }
+  
+  return results;
+}
+
+function checkFileForCommonJS(filePath) {
+  try {
+    const fullPath = join(projectRoot, filePath);
+    const content = readFileSync(fullPath, 'utf8');
+    const lines = content.split('\n');
+    const issues = [];
+    
+    lines.forEach((line, index) => {
+      COMMONJS_PATTERNS.forEach(pattern => {
+        if (pattern.test(line)) {
+          issues.push({
+            line: index + 1,
+            pattern: pattern.source,
+            content: line.trim()
+          });
+        }
+      });
+    });
+    
+    return issues;
+  } catch (error) {
+    console.warn(`Warning: Could not read file ${filePath}:`, error.message);
+    return [];
   }
 }
 
-if (hasErrors) {
-  console.error('\n🚫 Commit blocked: Found require() statements in .js files');
-  console.error('   Solutions:');
-  console.error('   1. Convert to ESM: const x = require("y") → import x from "y"');
-  console.error('   2. Rename to .cjs: mv file.js file.cjs');
-  console.error('   3. Use .mjs extension for ESM scripts');
+function main() {
+  console.log('🔍 Checking for CommonJS usage in .js files...\n');
+  
+  const jsFiles = [];
+  SCAN_DIRS.forEach(dir => {
+    const dirPath = join(projectRoot, dir);
+    if (statSync(dirPath).isDirectory()) {
+      jsFiles.push(...scanDirectory(dirPath));
+    }
+  });
+  
+  let totalIssues = 0;
+  const filesWithIssues = [];
+  
+  for (const file of jsFiles) {
+    const issues = checkFileForCommonJS(file);
+    if (issues.length > 0) {
+      filesWithIssues.push({ file, issues });
+      totalIssues += issues.length;
+    }
+  }
+  
+  if (filesWithIssues.length === 0) {
+    console.log('✅ All .js files use proper ESM syntax!');
+    process.exit(0);
+  }
+  
+  console.log(`❌ Found ${totalIssues} CommonJS usage(s) in ${filesWithIssues.length} file(s):\n`);
+  
+  filesWithIssues.forEach(({ file, issues }) => {
+    console.log(`📁 ${file}:`);
+    issues.forEach(issue => {
+      console.log(`   Line ${issue.line}: ${issue.pattern} - "${issue.content}"`);
+    });
+    console.log('');
+  });
+  
+  console.log('💡 To fix these issues:');
+  console.log('   • Convert require() to import statements');
+  console.log('   • Convert module.exports to export statements');
+  console.log('   • Use import.meta.url instead of __dirname/__filename');
+  console.log('   • Consider renaming .js files to .mjs for clarity');
+  console.log('');
+  console.log('🔧 Quick fixes:');
+  console.log('   • Run: npm run tool:doctor:fix');
+  console.log('   • Use: npm run tool:rename:symbol for systematic changes');
+  
   process.exit(1);
 }
 
-console.log('\n✅ All .js files are ESM-compliant');
-process.exit(0);
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}

@@ -1,5 +1,54 @@
 # Change Journal
 
+## 2025-08-27 - OSS Hero Post-Step 14 Cleanup & De-Fat
+
+**What**: Performed comprehensive repository cleanup to remove dead files, unused dependencies, and optimize the codebase while maintaining all protected areas and functionality
+
+**Why**: Reduce repository bloat, improve maintainability, and optimize package size for better developer experience and deployment efficiency
+
+**Scope**:
+- Added analysis tools: knip, ts-prune, depcheck, eslint-plugin-unused-imports for comprehensive dead code detection
+- Quarantined 13 high-confidence unused files to `.trash/2025-08-27/` including test artifacts, typo files, and generated cache files
+- Removed 11 unused dependencies: @supabase/auth-helpers-nextjs, stripe, uuid, and 8 unused devDependencies
+- Removed 1 unused npm script: `help`
+- Added 5 new analysis scripts under `tool:scan:*` namespace for ongoing maintenance
+- Created comprehensive cleanup reports in `docs/reports/cleanup-2025-08-27/`
+- Protected all critical areas: /app/**, /lib/**, /supabase/**, /tests/**, /examples/**, CI workflows, database migrations
+- Maintained zero breaking changes - all functionality preserved
+
+**Migration**:
+- Use `npm run tool:scan:all` to run comprehensive cleanup analysis
+- Reference `docs/reports/cleanup-2025-08-27/CANDIDATES.md` for detailed cleanup candidates
+- Restore quarantined files from `.trash/2025-08-27/` if needed
+- Follow `docs/reports/cleanup-2025-08-27/SUMMARY.md` for impact assessment
+- Consider removing analysis tools after validation if not needed for ongoing maintenance
+
+**Impact**:
+- Reduced package size by ~66 packages and ~849KB of cache files
+- Improved repository cleanliness by removing dead files and unused dependencies
+- Added comprehensive analysis tools for ongoing maintenance
+- Maintained all security features and protected areas
+- Zero breaking changes - all functionality validated and preserved
+- Enhanced developer experience with cleaner, more maintainable codebase
+
+**Files Modified**:
+- `package.json` - Removed unused dependencies and scripts, added analysis tools
+- `knip.json` - New configuration for dead code analysis
+- `docs/CHANGE_JOURNAL.md` - Added cleanup entry
+
+**Files Created**:
+- `docs/reports/cleanup-2025-08-27/CANDIDATES.md` - Comprehensive cleanup candidates report
+- `docs/reports/cleanup-2025-08-27/SUMMARY.md` - Cleanup summary and impact assessment
+- `docs/reports/cleanup-2025-08-27/knip-report.txt` - Knip analysis results
+- `docs/reports/cleanup-2025-08-27/tsprune-report.txt` - ts-prune analysis results
+- `docs/reports/cleanup-2025-08-27/depcheck-report.txt` - depcheck analysis results
+- `.trash/2025-08-27/` - Quarantine directory for removed files
+
+**Files Removed**:
+- 13 high-confidence unused files (quarantined)
+- 11 unused dependencies
+- 1 unused npm script
+
 ## 2025-08-25 - OSS Hero Hardening Step 14: Final Readiness Gate & Release Notes
 
 **What**: Completed final readiness gate with comprehensive CI validation, version bump to v0.2.0, and comprehensive release notes for OSS Hero Hardened template

@@ -26,7 +26,8 @@ const customJestConfig = {
     '<rootDir>/tests/playwright/',
     '<rootDir>/design/templates/',
     '<rootDir>/packages/mit-hero-core/dist/',
-    '<rootDir>/attic/'
+    '<rootDir>/attic/',
+    '<rootDir>/examples/'
   ],
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',

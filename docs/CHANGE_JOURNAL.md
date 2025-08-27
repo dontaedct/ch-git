@@ -1,5 +1,56 @@
 # Change Journal
 
+## 2025-08-25 - OSS Hero Hardening Step 12: Template Isolation & Packaging
+
+**What**: Isolated demo routes from core template and created minimal, reusable template for new micro applications with scaffold script and comprehensive documentation
+
+**Why**: Reduce template complexity, improve reusability, and provide clear separation between core functionality and demonstration code for better maintainability
+
+**Scope**:
+- Moved demo routes to `examples/` directory: auto-save-demo, guardian-demo, design-system, ai-live, test-routes
+- Removed debug routes: debug/, _debug/ for cleaner core template
+- Created `bin/create-micro-app.mjs` scaffold script for generating new micro apps
+- Built `TEMPLATE_README.md` with comprehensive quickstart guide and per-client setup steps
+- Established minimal template structure with only essential routes: /login, /operability, /api/health, /api/ping, /api/webhooks
+- Created `docs/hardening/STEP12_TEMPLATE.md` documenting template isolation process and usage
+- Maintained all security features: RLS, CSP headers, bundle analysis, environment variable protection
+
+**Migration**:
+- Use `node bin/create-micro-app.mjs <app-name>` to create new micro apps from template
+- Copy `env.example` to `.env.local` and configure Supabase credentials
+- Run `npm install && npm run dev` to start development
+- Access demo functionality in `examples/` directory for reference
+- Follow `TEMPLATE_README.md` for complete setup and customization guide
+
+**Impact**:
+- Reduced core template complexity by removing demo and debug routes
+- Improved template reusability with automated scaffold script
+- Better organization with clear separation between core and demo functionality
+- Enhanced developer experience with comprehensive documentation and quickstart guide
+- Maintained all security hardening measures from previous steps
+- Zero breaking changes - all demos preserved in examples/ directory
+
+**Files Modified**:
+- `bin/create-micro-app.mjs` - New scaffold script for creating micro apps
+- `TEMPLATE_README.md` - Comprehensive template documentation and quickstart guide
+- `docs/hardening/STEP12_TEMPLATE.md` - Step 12 implementation documentation
+- `examples/auto-save-demo/page.tsx` - Moved from app/auto-save-demo/
+- `examples/guardian-demo/page.tsx` - Moved from app/guardian-demo/
+- `examples/design-system/page.tsx` - Moved from app/design-system/
+- `examples/ai-live/page.tsx` - Moved from app/ai/live/
+- `examples/test-routes/` - Consolidated test routes from app/test*, app/test-probe*, app/test-simple*
+
+**Files Removed**:
+- `app/auto-save-demo/` - Moved to examples/
+- `app/guardian-demo/` - Moved to examples/
+- `app/design-system/` - Moved to examples/
+- `app/ai/` - Moved to examples/
+- `app/test/` - Moved to examples/
+- `app/test-probe/` - Moved to examples/
+- `app/test-simple/` - Moved to examples/
+- `app/debug/` - Removed debug routes
+- `app/_debug/` - Removed debug routes
+
 ## 2025-08-25 - OSS Hero Hardening Step 11: Secrets & Bundle Leakage Guard
 
 **What**: Implemented comprehensive guardrails to prevent server-only secrets from leaking into client bundles with ESLint rules, bundle analyzer, and automated testing

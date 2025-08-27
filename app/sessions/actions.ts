@@ -7,6 +7,7 @@ import { fail } from '@/lib/errors'
 import { error as logError } from '@/lib/logger'
 import { sanitizeText } from '@/lib/sanitize'
 import { paginationSchema, type PaginatedResponse } from '@/lib/validation'
+import { getEnv } from '@/lib/env'
 
 
 export type ActionResult<T> = 
@@ -120,7 +121,7 @@ export async function createSession(formData: FormData): Promise<{ ok: boolean; 
       return { ok: false, error: 'Failed to create session' }
     }
 
-    if (process.env.NODE_ENV === "production") {
+    if (getEnv().NODE_ENV === "production") {
       revalidatePath('/sessions')
     }
     return { ok: true }
@@ -180,7 +181,7 @@ export async function updateSession(
       return { ok: false, error: 'Failed to update session' }
     }
 
-    if (process.env.NODE_ENV === "production") {
+    if (getEnv().NODE_ENV === "production") {
       revalidatePath('/sessions')
     }
     return { ok: true }
@@ -204,7 +205,7 @@ export async function deleteSession(sessionId: string): Promise<{ ok: boolean; e
       return { ok: false, error: 'Failed to delete session' }
     }
 
-    if (process.env.NODE_ENV === "production") {
+    if (getEnv().NODE_ENV === "production") {
       revalidatePath('/sessions')
     }
     return { ok: true }

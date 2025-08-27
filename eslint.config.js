@@ -88,21 +88,48 @@ export default [
       '@typescript-eslint/no-unused-vars': 'warn',
     },
   },
-  // Custom rule to prevent server-only env vars in client code (excludes server-only files)
+  // Server-only files can use process.env (must come before client rule)
   {
     files: [
-      'app/**/*.{ts,tsx}',
-      'components/**/*.{ts,tsx}',
-      'hooks/**/*.{ts,tsx}',
-      'types/**/*.{ts,tsx}'
-    ],
-    ignores: [
       'app/api/**/*.{ts,tsx}',
       'app/_debug/**/*.{ts,tsx}',
       'app/probe/**/*.{ts,tsx}',
       'app/status/**/*.{ts,tsx}',
       'app/test-simple/**/*.{ts,tsx}',
-      'app/global-error.tsx'
+      'app/global-error.tsx',
+      'lib/**/*.{ts,tsx}',
+      'scripts/**/*.{ts,tsx,mjs}',
+      'middleware.ts',
+      'next.config.ts',
+      'playwright.config.ts',
+      'sentry.server.config.ts',
+      'sentry.client.config.ts'
+    ],
+    rules: {
+      'no-restricted-syntax': 'off',
+    },
+  },
+  // Custom rule to prevent server-only env vars in client code only
+  {
+    files: [
+      'app/client-portal/**/*.{ts,tsx}',
+      'app/sessions/**/*.{ts,tsx}',
+      'app/weekly-plans/**/*.{ts,tsx}',
+      'app/clients/**/*.{ts,tsx}',
+      'app/login/**/*.{ts,tsx}',
+      'app/operability/**/*.{ts,tsx}',
+      'app/progress/**/*.{ts,tsx}',
+      'app/trainer-profile/**/*.{ts,tsx}',
+      'app/auto-save-demo/**/*.{ts,tsx}',
+      'app/guardian-demo/**/*.{ts,tsx}',
+      'app/intake/**/*.{ts,tsx}',
+      'app/ai/**/*.{ts,tsx}',
+      'app/layout.tsx',
+      'app/page.tsx',
+      'app/error.tsx',
+      'components/**/*.{ts,tsx}',
+      'hooks/**/*.{ts,tsx}',
+      'types/**/*.{ts,tsx}'
     ],
     rules: {
       'no-restricted-syntax': [

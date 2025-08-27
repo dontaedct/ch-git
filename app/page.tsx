@@ -1,6 +1,8 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
+import { getPublicEnv } from '@/lib/env';
+
 export default function Home() {
   return (
     <main style={{padding:24,fontFamily:'ui-sans-serif,system-ui'}}>
@@ -13,7 +15,7 @@ export default function Home() {
       <ul style={{lineHeight:'1.9'}}>
         <li><a href="/api/health">/api/health</a> (JSON)</li>
         <li><a href="/probe">/probe</a> (probe page)</li>
-        {process.env.NEXT_PUBLIC_ENABLE_AI_LIVE === '1' && (
+        {getPublicEnv().NEXT_PUBLIC_ENABLE_AI_LIVE === '1' && (
           <li><a href="/ai/live">/ai/live</a> (AI Live)</li>
         )}
         <li><a href="/sessions">/sessions</a> (if implemented)</li>

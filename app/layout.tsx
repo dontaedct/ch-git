@@ -3,6 +3,7 @@ import HydrationProbe from './_debug/HydrationProbe';
 import LoopDetector from './_debug/LoopDetector';
 import { Suspense } from 'react';
 import PageBoot from '@/components/ui/skeletons/PageBoot';
+import { getPublicEnv } from '@/lib/env';
 
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const dynamic = 'force-dynamic';
@@ -11,7 +12,7 @@ export const fetchCache = 'default-no-store';
 
 export const metadata = { title: "Coach Hub", description: "Personal training management platform" };
 
-const isSafeMode = process.env.NEXT_PUBLIC_SAFE_MODE === '1';
+const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -23,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         background: '#fff',
         color: '#111'
       }}>
-        {process.env.NEXT_PUBLIC_DEBUG === '1' ? <DebugOverlay /> : null}
+        {getPublicEnv().NEXT_PUBLIC_DEBUG === '1' ? <DebugOverlay /> : null}
         <HydrationProbe />
         <LoopDetector />
         {isSafeMode && (

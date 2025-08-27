@@ -9,6 +9,7 @@ import Link from 'next/link'
 
 import { sanitizeText } from '@/lib/sanitize'
 import { getWeekStartDate } from '@/lib/utils'
+import { getPublicEnv } from '@/lib/env'
 
 // Local type definitions to avoid direct supabase imports
 interface Client {
@@ -41,7 +42,7 @@ export default function CheckInPage() {
   // TODO: Replace with checkInService adapter when created
   // const supabase = createClient()
   const router = useRouter()
-  const DISABLE = process.env.NEXT_PUBLIC_DISABLE_REDIRECTS === '1';
+  const DISABLE = getPublicEnv().NEXT_PUBLIC_DISABLE_REDIRECTS === '1';
 
   const loadClientData = useCallback(async (userId: string) => {
     try {

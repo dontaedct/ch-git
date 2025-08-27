@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { getPublicEnv } from '@/lib/env';
 
 export default function DebugSnapshotPage() {
   return (
@@ -64,10 +65,10 @@ export default function DebugSnapshotPage() {
           </CardHeader>
           <CardContent>
             <div style={{ fontSize: '14px', fontFamily: 'monospace' }}>
-              <div>NODE_ENV: {process.env.NODE_ENV}</div>
-              <div>VERCEL_ENV: {process.env.VERCEL_ENV ?? 'not set'}</div>
-              <div>DEBUG: {process.env.NEXT_PUBLIC_DEBUG ?? 'not set'}</div>
-              <div>SAFE_MODE: {process.env.NEXT_PUBLIC_SAFE_MODE ?? 'not set'}</div>
+              <div>NODE_ENV: {getPublicEnv().NODE_ENV ?? 'not set'}</div>
+              <div>VERCEL_ENV: {getPublicEnv().VERCEL_ENV ?? 'not set'}</div>
+              <div>DEBUG: {getPublicEnv().NEXT_PUBLIC_DEBUG ?? 'not set'}</div>
+              <div>SAFE_MODE: {getPublicEnv().NEXT_PUBLIC_SAFE_MODE ?? 'not set'}</div>
               <div>Timestamp: {new Date().toISOString()}</div>
             </div>
           </CardContent>

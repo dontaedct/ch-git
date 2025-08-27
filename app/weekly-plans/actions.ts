@@ -5,6 +5,7 @@ import { createServerClient } from '@/lib/supabase/server'
 import { revalidatePath } from "next/cache";
 import { sanitizeText } from "@/lib/sanitize";
 import { paginationSchema, type PaginatedResponse } from "@/lib/validation";
+import { getEnv } from '@/lib/env';
 
 import { WeeklyPlan, Client, WeeklyPlanUpdate } from "@/lib/supabase/types";
 
@@ -143,7 +144,7 @@ export async function createWeeklyPlan(formData: FormData): Promise<ActionResult
       return { ok: false, error: error.message };
     }
 
-    if (process.env.NODE_ENV === "production") {
+    if (getEnv().NODE_ENV === "production") {
       revalidatePath("/weekly-plans");
     }
     return { ok: true, data: { id: data.id } };
@@ -171,7 +172,7 @@ export async function updateWeeklyPlan(planId: string, updates: WeeklyPlanUpdate
       return { ok: false, error: error.message };
     }
 
-    if (process.env.NODE_ENV === "production") {
+    if (getEnv().NODE_ENV === "production") {
       revalidatePath("/weekly-plans");
     }
     return { ok: true, data: undefined };

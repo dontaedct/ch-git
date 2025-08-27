@@ -1,5 +1,42 @@
 # Change Journal
 
+## 2025-08-25 - OSS Hero Hardening Step 11: Secrets & Bundle Leakage Guard
+
+**What**: Implemented comprehensive guardrails to prevent server-only secrets from leaking into client bundles with ESLint rules, bundle analyzer, and automated testing
+
+**Why**: Ensure sensitive environment variables like API keys and service role tokens never reach the browser, preventing security vulnerabilities and data breaches
+
+**Scope**:
+- Added custom ESLint rule in `eslint.config.js` to block direct `process.env` access in client code with autofix suggestions
+- Created `scripts/bundle-analyzer.mjs` for comprehensive bundle analysis detecting server-only environment variables in client bundles
+- Implemented `tests/bundle-secrets.spec.ts` for automated validation of bundle security with detailed error reporting
+- Updated CI pipeline in `package.json` to include bundle analysis step (`npm run security:bundle`)
+- Created comprehensive documentation in `docs/hardening/STEP11_SECRETS.md` with do/don't examples and security guidelines
+- Established environment variable classification system with server-only, client-allowed, and safe Node.js categories
+- Added detailed error handling with fix suggestions for bundle analysis failures and ESLint violations
+
+**Migration**:
+- Run `npm run security:bundle` to analyze existing bundles for server-only secrets
+- Update any client code using direct `process.env` access to use `@lib/env` functions instead
+- Add new environment variables to appropriate classification arrays in bundle analyzer and tests
+- Configure ESLint rules for your development environment to catch violations early
+- Review bundle analysis reports before each deployment to ensure no secrets are leaked
+
+**Impact**:
+- Prevents server-only secrets from reaching client bundles through comprehensive static analysis
+- Provides clear developer guidelines with explicit do/don't patterns for environment variable usage
+- Automates security validation in CI pipeline with detailed error reporting and fix suggestions
+- Establishes environment variable classification system for ongoing security management
+- Zero breaking changes - all guardrails are additive and provide helpful error messages
+- Comprehensive documentation and testing ensure long-term maintainability and security compliance
+
+**Files Modified**:
+- `eslint.config.js` - Added custom ESLint rule to block direct process.env access in client code
+- `scripts/bundle-analyzer.mjs` - New bundle analyzer script for detecting server-only secrets
+- `tests/bundle-secrets.spec.ts` - New comprehensive test suite for bundle security validation
+- `package.json` - Added security:bundle script and updated CI pipeline
+- `docs/hardening/STEP11_SECRETS.md` - Complete documentation with security guidelines and examples
+
 ## 2025-08-25 - OSS Hero Hardening Step 10: n8n Reliability Controls
 
 **What**: Implemented comprehensive reliability controls for n8n workflows including exponential backoff with jitter, per-tenant circuit breakers, dead letter queues, parametrized concurrency limits, and Stripe replay protection

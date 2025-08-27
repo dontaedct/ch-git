@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createServerClient } from '@/lib/supabase/server'
 import { toggleTaskSchema } from '@/lib/validation'
+import { getEnv } from '@/lib/env'
 
 export async function toggleTaskCompletion(planId: string, taskId: string, completed: boolean) {
   const supabase = await createServerClient()
@@ -58,7 +59,7 @@ const updatedTasks = (plan.tasks ?? []).map((t: PortalTile) =>
     throw new Error(updateErr.message)
   }
 
-  if (process.env.NODE_ENV === "production") {
+  if (getEnv().NODE_ENV === "production") {
     revalidatePath('/client-portal')
   }
 }

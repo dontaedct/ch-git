@@ -10,7 +10,11 @@
       "Bash(mkdir:*)",
       "Bash(python:*)",
       "Bash(node:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git log:*)",
+      "Bash(gh pr create:*)"
     ],
     "deny": [],
     "ask": []

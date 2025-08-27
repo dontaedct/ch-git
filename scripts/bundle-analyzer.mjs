@@ -22,7 +22,7 @@ const SERVER_ONLY_ENVS = [
   'AI_MODEL',
   'AI_TEMPERATURE',
   'AI_MAX_TOKENS',
-  'DEFAULT_COACH_ID',
+
   'AI_ENABLED',
 ];
 

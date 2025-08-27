@@ -5,7 +5,7 @@ const ServerSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
-  DEFAULT_COACH_ID: z.string().uuid().optional(),
+
   NODE_ENV: z.enum(["development","test","production"]).default("development"),
 });
 
@@ -23,7 +23,7 @@ export function getEnv() {
       NEXT_PUBLIC_SUPABASE_URL: 'http://localhost:54321',
       NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fallback-key',
       SUPABASE_SERVICE_ROLE_KEY: undefined,
-      DEFAULT_COACH_ID: undefined,
+
       NODE_ENV: 'development' as const,
     };
   } else {

@@ -20,7 +20,6 @@ const SERVER_ONLY_ENVS = [
   'AI_MODEL',
   'AI_TEMPERATURE',
   'AI_MAX_TOKENS',
-  'DEFAULT_COACH_ID',
   'AI_ENABLED',
 ];
 
@@ -274,7 +273,7 @@ describe('Bundle Secrets Guard', () => {
         'AI_MODEL',
         'AI_TEMPERATURE',
         'AI_MAX_TOKENS',
-        'DEFAULT_COACH_ID',
+
         'AI_ENABLED',
         
         // Client-allowed (should be in ALLOWED_CLIENT_ENVS)

@@ -55,4 +55,4 @@ jobs:
         run: npm ci
       
       - name: Run comprehensive type checking (skipLibCheck: false)
-        run: npm run typecheck:slow
+        run: npm run tool:typecheck:slow

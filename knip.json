@@ -1,0 +1,41 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": [
+    "app/**/*.{ts,tsx}",
+    "scripts/**/*.{ts,mjs}",
+    "middleware.ts",
+    "next.config.ts"
+  ],
+  "project": [
+    "**/*.{ts,tsx,mjs,js}"
+  ],
+  "ignore": [
+    "examples/**",
+    "tests/**", 
+    "docs/**",
+    "scripts/legacy/**",
+    "n8n/**",
+    "supabase/migrations/**",
+    "node_modules/**",
+    ".next/**",
+    "dist/**",
+    "build/**",
+    "playwright-report/**",
+    "test-results/**",
+    ".lighthouseci/**",
+    "artifacts/**",
+    "reports/**",
+    ".github/**"
+  ],
+  "ignoreDependencies": [
+    "@types/*"
+  ],
+  "ignoreBinaries": [
+    "next",
+    "tsx",
+    "tsc",
+    "eslint",
+    "jest",
+    "playwright"
+  ]
+}

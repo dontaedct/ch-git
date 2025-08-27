@@ -1,8 +1,5 @@
 // @deprecated Use @data/* imports instead
 // This file provides backward compatibility during migrations
 
-/** @deprecated Use @data/clients instead */
-export * from '@data/clients';
-
-/** @deprecated Use @data/sessions instead */
-export * from '@data/sessions';
+// Note: CoachHub domain data exports have been removed as part of the domain cleanup
+// This file is kept for potential future data layer compatibility

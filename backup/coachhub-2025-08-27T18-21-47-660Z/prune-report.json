@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-08-27T18:21:47.660Z",
+  "filesRemoved": [],
+  "filesRefactored": [],
+  "scanResults": [],
+  "buildResults": {
+    "lint": false,
+    "typecheck": false,
+    "build": false
+  },
+  "errors": [
+    "Failed to create backup: Error: EISDIR: illegal operation on a directory, read"
+  ]
+}

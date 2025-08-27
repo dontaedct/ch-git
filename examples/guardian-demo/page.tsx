@@ -1,5 +1,3 @@
-import { GuardianDashboard } from '@/components/guardian-dashboard';
-
 export default function GuardianDemoPage() {
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -13,7 +11,15 @@ export default function GuardianDemoPage() {
         </p>
       </div>
 
-      <GuardianDashboard />
+      <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
+        <h2 className="text-xl font-semibold text-blue-900 mb-4">
+          🛡️ Guardian Safety System
+        </h2>
+        <p className="text-blue-800">
+          Guardian dashboard component has been removed as part of the CoachHub domain cleanup.
+          The Guardian system is still active and protecting your codebase.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">

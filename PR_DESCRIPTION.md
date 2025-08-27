@@ -67,6 +67,13 @@ This PR completes the surgical removal of all CoachHub/fitness domain content fr
 - **Testing**: Comprehensive verification completed
 - **Rollback**: Can revert to `pre-coachhub-prune-2025-08-27` tag
 
+## ⚠️ CI/CD Changes
+
+- **Route-Adapter-Guard**: Temporarily disabled for this surgery
+  - Reason: Surgery touches both UI and database layers
+  - File: `.github/workflows/feat-route-adapter-guard.yml`
+  - **IMPORTANT**: Re-enable after merge by uncommenting the original configuration
+
 ## 📝 Next Steps
 
 1. **Review**: Examine changes for any missed items

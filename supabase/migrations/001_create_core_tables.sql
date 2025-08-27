@@ -1,4 +1,4 @@
--- Master migration: Create core tables for Coach Hub
+-- Master migration: Create core tables for Micro App Template
 -- This migration creates the essential tables needed for the check-in flow
 -- Run this migration in your Supabase project to set up the database schema
 

@@ -1,6 +1,6 @@
 # System Blueprint & Component Catalog
 
-**Organization/Studio:** Another Level — Coach Hub  
+**Organization/Studio:** Your Organization — Micro App Template
 **Version:** 1.0.0  
 **Date:** 2024-12-19  
 **Commit Snapshot:** 3499655016c84a51d6c8981804d1743164a330eb  
@@ -19,8 +19,7 @@
 
 ## 1. Executive Summary
 
-### What This System Is
-Another Level — Coach Hub is a **multi-tenant, AI-ready fitness coaching platform** that enables trainers to manage clients, deliver personalized training plans, track progress, and communicate—all from a single streamlined web application. The system is built as a **modular, event-driven platform** with enterprise-grade security, automated workflows, and cross-industry adaptability.
+Your Organization — Micro App Template is a **multi-tenant, AI-ready micro web application template** that enables developers to quickly build and deploy custom applications for clients. It provides a modern, production-ready foundation with comprehensive tooling.
 
 ### What Makes It Unique
 1. **Registry-Driven Architecture**: Centralized configuration management for routes, tables, emails, and feature flags

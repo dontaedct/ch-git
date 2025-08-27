@@ -1,8 +1,6 @@
-# Auto-Save System Documentation
+# Auto-Save System
 
-## Overview
-
-The Coach Hub Auto-Save System is a comprehensive solution that automatically saves user work and provides intelligent recovery across browser sessions, crashes, and page refreshes. It's designed to work seamlessly with any form, input, or content-editable element.
+The Micro App Template Auto-Save System is a comprehensive solution that automatically saves user work and provides intelligent recovery across browser sessions, crashes, and page refreshes. It's designed to work
 
 ## Features
 

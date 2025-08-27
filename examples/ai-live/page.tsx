@@ -12,7 +12,7 @@ export default function AILivePage() {
         Coming soon. This route is intentionally public.
       </p>
       <p style={{opacity:0.6,fontSize:14}}>
-        <Link href="/" style={{color:'#0066cc',textDecoration:'none'}}>← Back to Coach Hub</Link>
+        <Link href="/" style={{color:'#0066cc',textDecoration:'none'}}>← Back to Micro App</Link>
       </p>
     </main>
   );

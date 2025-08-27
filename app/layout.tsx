@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'default-no-store';
 
-export const metadata = { title: "Coach Hub", description: "Personal training management platform" };
+export const metadata = { title: "Micro App Template", description: "A modern micro web application template" };
 
 const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
 

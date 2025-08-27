@@ -10,7 +10,7 @@ import os from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 // Configuration
-const LOCK_FILE = path.join(os.tmpdir(), 'coach-hub-dev.lock');
+const LOCK_FILE = path.join(os.tmpdir(), 'micro-app-dev.lock');
 const PORT_RANGE = [9999, ...Array.from({ length: 11 }, (_, i) => 3000 + i)]; // 9999, 3000..3010
 const REQUESTED_PORT = process.env.PORT ? Number(process.env.PORT) : null;
 

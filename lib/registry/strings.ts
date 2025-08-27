@@ -1,22 +1,22 @@
 // System strings registry - All system names, brand references, and user-facing text
 export const systemStrings = {
   // Core application names
-  appName: 'Coach Hub',
-  organizationName: 'Another Level',
-  fullBrand: 'Another Level — Coach Hub',
+  appName: 'Micro App Template',
+  organizationName: 'Your Organization',
+  fullBrand: 'Your Organization — Micro App',
   
   // Email and communication
-  emailFrom: 'Coach Hub <no-reply@example.com>',
-  welcomeMessage: 'Welcome to Another Level — Coach Hub',
-  transactionalFooter: 'This is a transactional message from Another Level — Coach Hub.',
+  emailFrom: 'Micro App <no-reply@example.com>',
+  welcomeMessage: 'Welcome to Your Micro App',
+  transactionalFooter: 'This is a transactional message from Your Micro App.',
   
   // Page titles and metadata
-  pageTitle: 'Coach Hub',
-  pageDescription: 'Personal training management platform',
+  pageTitle: 'Micro App Template',
+  pageDescription: 'A modern micro web application template',
   
   // Navigation and UI
-  navBrand: 'Coach Hub',
-  navFullBrand: 'Another Level — Coach Hub',
+  navBrand: 'Micro App',
+  navFullBrand: 'Your Organization — Micro App',
   
   // System names (for future rename capability)
   aiSystem: 'OSS Hero',

@@ -6,7 +6,7 @@ export async function GET(req: Request) {
   
   const result = await sendEmail({
     to,
-    subject: "Coach Hub test",
+    subject: "Micro App test",
     html: "<p>It works.</p>"
   });
   

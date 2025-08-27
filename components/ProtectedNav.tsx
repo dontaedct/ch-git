@@ -11,12 +11,8 @@ export function ProtectedNav() {
           <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-sm">CH</span>
           </div>
-          <span className="hidden sm:inline text-lg font-semibold tracking-tight text-gray-800">
-            Coach Hub
-          </span>
-          <span className="sm:hidden text-lg font-semibold tracking-tight text-gray-800">
-            Coach Hub
-          </span>
+          <span className="hidden sm:inline text-sm font-medium tracking-tight text-gray-800">Your Organization — Micro App</span>
+          <span className="sm:hidden text-sm font-medium tracking-tight text-gray-800">Micro App</span>
         </Link>
         
         <nav aria-label="Primary" className="flex items-center gap-2 sm:gap-4">

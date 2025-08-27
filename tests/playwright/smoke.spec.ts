@@ -11,7 +11,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/');
     
     // Check that the page loads without errors
-    await expect(page).toHaveTitle(/Coach Hub/);
+    await expect(page).toHaveTitle(/Micro App Template/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
@@ -43,7 +43,7 @@ test.describe('Application Smoke Tests', () => {
     
     // Check that the page loads (may be 404)
     const title = await page.title();
-    expect(title).toMatch(/Coach Hub|404/);
+    expect(title).toMatch(/Micro App Template|404/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
@@ -68,7 +68,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/login');
     
     // Check that the page loads
-    await expect(page).toHaveTitle(/Coach Hub/);
+    await expect(page).toHaveTitle(/Micro App Template/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
@@ -98,7 +98,7 @@ test.describe('Application Smoke Tests', () => {
     
     // Check that the page loads (may be 404)
     const title = await page.title();
-    expect(title).toMatch(/Coach Hub|404/);
+    expect(title).toMatch(/Micro App Template|404/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
@@ -127,7 +127,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/client-portal');
     
     // Check that the page loads
-    await expect(page).toHaveTitle(/Coach Hub/);
+    await expect(page).toHaveTitle(/Micro App Template/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
@@ -153,7 +153,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/sessions');
     
     // Check that the page loads
-    await expect(page).toHaveTitle(/Coach Hub/);
+    await expect(page).toHaveTitle(/Micro App Template/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
@@ -179,7 +179,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/weekly-plans');
     
     // Check that the page loads
-    await expect(page).toHaveTitle(/Coach Hub/);
+    await expect(page).toHaveTitle(/Micro App Template/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
@@ -205,7 +205,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/trainer-profile');
     
     // Check that the page loads
-    await expect(page).toHaveTitle(/Coach Hub/);
+    await expect(page).toHaveTitle(/Micro App Template/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();
@@ -231,7 +231,7 @@ test.describe('Application Smoke Tests', () => {
     await page.goto('/progress');
     
     // Check that the page loads
-    await expect(page).toHaveTitle(/Coach Hub/);
+    await expect(page).toHaveTitle(/Micro App Template/);
     
     // Check for basic page structure
     await expect(page.locator('body')).toBeVisible();

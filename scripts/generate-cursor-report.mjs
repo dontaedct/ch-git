@@ -1,10 +1,10 @@
+#!/usr/bin/env node
+
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-#!/usr/bin/env node
 
 /**
  * Cursor AI Report Generator
@@ -395,7 +395,7 @@ ${this.generateImpactSection(healthStatus)}
 
 ${sessionEntry}
 
-**Context**: This is from a Next.js 14 + TypeScript + Supabase fitness training platform called Coach Hub. The codebase is currently in ${healthStatus.overallHealth.toLowerCase()} health with ${healthStatus.criticalIssues} critical issues and ${healthStatus.styleWarnings} style warnings.
+**Context**: This is from a Next.js 14 + TypeScript + Supabase micro web application template. The codebase is currently in ${healthStatus.overallHealth.toLowerCase()} health with ${healthStatus.criticalIssues} critical issues and ${healthStatus.styleWarnings} style warnings.
 
 **Request**: Please analyze this session report and provide insights on:
 1. The technical approach used
@@ -410,9 +410,7 @@ ${sessionEntry}
 }
 
 // Run the generator
-if (import.meta.main) {
-  const generator = new CursorAIReportGenerator();
-  generator.generateReport();
-}
+const generator = new CursorAIReportGenerator();
+generator.generateReport();
 
 export default CursorAIReportGenerator;

@@ -51,7 +51,7 @@ class AutoSaveManager {
     this.config = {
       debounceMs: 2000, // Increased from 1000ms for better performance
       maxEntries: 100,
-      storageKey: 'coach-hub-auto-save',
+      storageKey: 'micro-app-auto-save',
       enableRecovery: true,
       storageOptions: {
         persistent: true,

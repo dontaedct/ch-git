@@ -1,71 +1,37 @@
-# Supabase RPC Functions
+# Supabase Setup for Micro App Template
 
-This directory contains SQL migrations for Supabase RPC functions that provide atomic database operations.
+## Overview
 
-## Deployment
+This directory contains the Supabase configuration for the Micro App Template. The template includes a complete database setup with authentication, RLS policies, and example tables.
 
-### Option 1: Supabase Dashboard (Recommended for development)
+## Database Schema
 
-1. Go to your Supabase project dashboard
-2. Navigate to SQL Editor
-3. Copy and paste the contents of `supabase/migrations/create_client_intake_rpc.sql`
-4. Click "Run" to execute the migration
+The template includes core tables that can be customized for specific client applications:
 
-### Option 2: Supabase CLI
+- **Users**: Authentication and user management
+- **Sessions**: Example data structure for client customization
+- **Clients**: Example client management structure
+- **Progress**: Example progress tracking structure
 
-If you have the Supabase CLI installed:
+## Setup Instructions
 
-```bash
-# Link your project (if not already linked)
-supabase link --project-ref YOUR_PROJECT_REF
+1. **Create Supabase Project**: Create a new Supabase project
+2. **Run Migrations**: Apply the migration files in `/migrations/`
+3. **Configure Environment**: Set up environment variables
+4. **Test Connection**: Verify database connectivity
 
-# Apply migrations
-supabase db push
-```
+## Migration Files
 
-## Core Tables Migration
+- `001_create_core_tables.sql`: Creates all essential tables needed for the Micro App Template, including example data structures.
 
-### `001_create_core_tables.sql`
+## RLS Policies
 
-**Purpose**: Creates all essential tables needed for the Coach Hub platform, including the check-in flow.
+The template includes Row Level Security (RLS) policies to ensure data isolation between users. All tables have appropriate policies configured.
 
-**What it creates**:
-1. `clients` - Client profiles linked to coaches
-2. `check_ins` - Daily client check-ins with weekly tracking via `week_start_date`
-3. `progress_metrics` - Client progress data like weight and measurements
-4. `weekly_plans` - Weekly training plans for clients
-5. `sessions` - Group and private training sessions
-6. `trainers` - Trainer profile information
+## Customization
 
-**Key Features**:
-- **week_start_date**: Required field for weekly progress tracking (Monday start)
-- **Row Level Security**: All tables have proper RLS policies
-- **Indexes**: Performance-optimized for common queries
-- **Constraints**: Data validation and referential integrity
+This template provides a foundation that can be customized for specific client applications. The database schema and policies can be modified to match client requirements.
 
-**Run this first** before using other RPC functions.
+## Documentation
 
-## Functions
-
-**Purpose**: Atomic intake flow that handles both client creation/update and email logging in a single transaction.
-
-**Parameters**:
-- `p_coach_id` (UUID): The coach's ID
-- `p_email` (TEXT): Client's email address
-- `p_first_name` (TEXT): Client's first name
-- `p_last_name` (TEXT): Client's last name
-- `p_phone` (TEXT, optional): Client's phone number
-
-**What it does**:
-1. Upserts client record (inserts new or updates existing)
-2. Logs email activity in email_logs table
-3. All operations execute atomically - if any fail, all are rolled back
-
-**Security**: Uses `SECURITY DEFINER` to run with elevated privileges, but only allows authenticated users and service role to execute.
-
-## Benefits
-
-- **Atomicity**: All database operations succeed or fail together
-- **Performance**: Single database round-trip instead of multiple
-- **Reliability**: No partial state if operations fail
-- **Maintainability**: Business logic centralized in database function
+See `/docs/DB_INTEGRATION_COMPLETE.md` for detailed integration information.

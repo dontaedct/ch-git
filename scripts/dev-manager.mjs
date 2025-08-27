@@ -8,10 +8,10 @@ import os from 'node:os';
 import { execSync } from 'node:child_process';
 import net from 'node:net';
 
-const LOCK_FILE = path.join(os.tmpdir(), 'coach-hub-dev.lock');
+const LOCK_FILE = path.join(os.tmpdir(), 'micro-app-dev.lock');
 
 function showHelp() {
-  console.log('🔧 Coach Hub Dev Manager');
+  console.log('🔧 Micro App Dev Manager');
   console.log('');
   console.log('Usage: node scripts/dev-manager.mjs <command>');
   console.log('');

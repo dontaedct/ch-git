@@ -61,7 +61,12 @@
     "tool:scan:tsprune": "ts-prune",
     "tool:scan:depcheck": "depcheck",
     "tool:scan:eslint-unused": "eslint --ext .ts,.tsx --rule 'unused-imports/no-unused-imports: error' .",
-    "tool:scan:all": "npm run tool:scan:knip && npm run tool:scan:tsprune && npm run tool:scan:depcheck && npm run tool:scan:eslint-unused"
+    "tool:scan:all": "npm run tool:scan:knip && npm run tool:scan:tsprune && npm run tool:scan:depcheck && npm run tool:scan:eslint-unused",
+    "cursor:auto": "node scripts/generate-cursor-report.mjs",
+    "cursor:report": "node scripts/generate-cursor-report.mjs",
+    "cursor:header": "node scripts/cursor-ai-universal-header.mjs",
+    "cursor:health": "node scripts/generate-cursor-report.mjs 'Health check'",
+    "cursor:session": "node scripts/generate-cursor-report.mjs 'Development session'"
   },
   "dependencies": {
     "@playwright/test": "^1.55.0",

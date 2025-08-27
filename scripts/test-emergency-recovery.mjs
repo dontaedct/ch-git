@@ -6,7 +6,7 @@
  * This script tests the emergency recovery functionality:
  * 1. Tests Guardian health endpoint
  * 2. Tests Guardian emergency backup
- * 3. Tests MIT Hero emergency recovery
+ * 3. Tests emergency recovery systems
  * 
  * Follows universal header rules
  */

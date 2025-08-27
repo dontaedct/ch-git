@@ -1,8 +1,8 @@
 /**
- * @fileoverview MIT Hero Design Safety - Accessibility Test Configuration
+ * @fileoverview Design Safety - Accessibility Test Configuration
  * @description Configuration for axe-core accessibility testing in advisory mode
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author Design Safety Module
  */
 
 import { AxeBuilder } from '@axe-core/playwright';

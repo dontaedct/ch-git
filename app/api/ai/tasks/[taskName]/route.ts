@@ -1,5 +1,5 @@
 /**
- * 🧠 MIT HERO SYSTEM - AI Task Execution API
+ * 🧠 AI SYSTEM - AI Task Execution API
  * 
  * Universal Header Compliant API endpoint for AI task execution
  * with strict JSON output, rate limiting, and auth checks.

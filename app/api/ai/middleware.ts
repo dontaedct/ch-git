@@ -1,5 +1,5 @@
 /**
- * 🧠 MIT HERO SYSTEM - AI API Rate Limiting
+ * 🧠 AI SYSTEM - AI API Rate Limiting
  * 
  * AI-specific rate limiting middleware with modest caps
  * to prevent abuse while maintaining functionality.

@@ -1,13 +1,13 @@
 /**
- * @fileoverview MIT Hero Design Safety - UI Smoke Tests
+ * @fileoverview Design Safety - UI Smoke Tests
  * @description Basic UI functionality testing for design safety module
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author Design Safety Module
  */
 
 import { test, expect } from '@playwright/test';
 
-test.describe('MIT Hero Design Safety - UI Smoke Tests', () => {
+test.describe('Design Safety - UI Smoke Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the page under test
     await page.goto('/');

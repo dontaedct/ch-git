@@ -1,13 +1,13 @@
 /**
- * @fileoverview MIT Hero UI Smoke Test Template
+ * @fileoverview OSS Hero UI Smoke Test Template
  * @description Basic UI functionality testing template for design safety
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 import { test, expect } from '@playwright/test';
 
-test.describe('MIT Hero Design Safety - UI Smoke Tests', () => {
+test.describe('OSS Hero Design Safety - UI Smoke Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the page under test
     await page.goto('/');

@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * @fileoverview MIT Hero Design Guardian
+ * @fileoverview OSS Hero Design Guardian
  * @description Main design safety runner for UI components and design system
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 import { execSync } from 'child_process';
@@ -212,7 +212,7 @@ class DesignGuardian {
    * Show current status
    */
   showStatus() {
-    console.log('🎨 MIT Hero Design Guardian Status');
+    console.log('🎨 OSS Hero Design Guardian Status');
     console.log('=====================================');
     console.log(`📊 Current Mode: ${this.currentMode}`);
     console.log(`🔧 Configuration: ${CONFIG_PATHS.eslint}`);

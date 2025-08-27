@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * @fileoverview MIT Hero Visual Watch
+ * @fileoverview OSS Hero Visual Watch
  * @description Visual regression testing and monitoring for design safety
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 import { readFileSync, existsSync } from 'fs';
@@ -22,7 +22,7 @@ class VisualWatch {
   }
 
   async captureBaseline() {
-    console.log('📸 MIT Hero Visual Watch: Capturing baseline screenshots...');
+    console.log('📸 OSS Hero Visual Watch: Capturing baseline screenshots...');
     
     try {
       // Capture component screenshots
@@ -40,7 +40,7 @@ class VisualWatch {
   }
 
   async compareVisuals() {
-    console.log('🔍 MIT Hero Visual Watch: Comparing visual changes...');
+    console.log('🔍 OSS Hero Visual Watch: Comparing visual changes...');
     
     try {
       // Compare component screenshots
@@ -92,7 +92,7 @@ class VisualWatch {
       return await this.compareVisuals();
     }
     
-    console.log('MIT Hero Visual Watch - Available commands:');
+    console.log('OSS Hero Visual Watch - Available commands:');
     console.log('  --baseline  Capture baseline screenshots');
     console.log('  --compare   Compare visual changes');
     console.log('  --help      Show this help message');

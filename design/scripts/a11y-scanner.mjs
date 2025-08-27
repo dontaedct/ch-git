@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * @fileoverview MIT Hero A11y Scanner
+ * @fileoverview OSS Hero A11y Scanner
  * @description Accessibility scanning and validation for design safety
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 import { readFileSync, existsSync } from 'fs';
@@ -21,7 +21,7 @@ class A11yScanner {
   }
 
   async scanAccessibility() {
-    console.log('♿ MIT Hero A11y Scanner: Checking accessibility...');
+    console.log('♿ OSS Hero A11y Scanner: Checking accessibility...');
     
     try {
       // Check color contrast
@@ -66,7 +66,7 @@ class A11yScanner {
       return await this.scanAccessibility();
     }
     
-    console.log('MIT Hero A11y Scanner - Available commands:');
+    console.log('OSS Hero A11y Scanner - Available commands:');
     console.log('  --scan      Scan accessibility issues');
     console.log('  --help      Show this help message');
     

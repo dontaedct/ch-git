@@ -25,7 +25,7 @@ const customJestConfig = {
     '<rootDir>/tests/ui/',
     '<rootDir>/tests/playwright/',
     '<rootDir>/design/templates/',
-    '<rootDir>/packages/mit-hero-core/dist/',
+
     '<rootDir>/attic/',
     '<rootDir>/examples/'
   ],

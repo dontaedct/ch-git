@@ -1,14 +1,14 @@
 /**
- * @fileoverview MIT Hero Design Safety - Accessibility Mock Tests
+ * @fileoverview Design Safety - Accessibility Mock Tests
  * @description Mock accessibility tests to demonstrate the setup (no server required)
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author Design Safety Module
  */
 
 import { test, expect } from '@playwright/test';
 import { createAxeBuilder, advisoryModeConfig } from './a11y.config';
 
-test.describe('MIT Hero Design Safety - Accessibility Mock Tests', () => {
+test.describe('Design Safety - Accessibility Mock Tests', () => {
   test('should have proper accessibility configuration', () => {
     // Test that our configuration is properly set up
     expect(advisoryModeConfig.failOnViolations).toBe(false);

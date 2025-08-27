@@ -1,13 +1,13 @@
 /**
- * @fileoverview MIT Hero Visual Regression Test Template
+ * @fileoverview OSS Hero Visual Regression Test Template
  * @description Visual regression testing template for design safety
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 import { test, expect } from '@playwright/test';
 
-test.describe('MIT Hero Design Safety - Visual Regression Tests', () => {
+test.describe('OSS Hero Design Safety - Visual Regression Tests', () => {
   test.beforeEach(async ({ page }) => {
     // Navigate to the page under test
     await page.goto('/');

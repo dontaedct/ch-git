@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * @fileoverview MIT Hero Performance Audit
+ * @fileoverview OSS Hero Performance Audit
  * @description Performance monitoring and auditing for design safety
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 import { readFileSync, existsSync } from 'fs';
@@ -22,7 +22,7 @@ class PerformanceAudit {
   }
 
   async auditPerformance() {
-    console.log('⚡ MIT Hero Performance Audit: Checking performance metrics...');
+    console.log('⚡ OSS Hero Performance Audit: Checking performance metrics...');
     
     try {
       // Check bundle size
@@ -67,7 +67,7 @@ class PerformanceAudit {
       return await this.auditPerformance();
     }
     
-    console.log('MIT Hero Performance Audit - Available commands:');
+    console.log('OSS Hero Performance Audit - Available commands:');
     console.log('  --audit     Run performance audit');
     console.log('  --help      Show this help message');
     

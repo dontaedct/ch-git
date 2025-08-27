@@ -140,10 +140,11 @@
     "depcheck": "^1.4.7",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
-    "eslint-plugin-unused-imports": "^4.2.0",
+
     "husky": "^9.1.7",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
+
     "knip": "^5.63.0",
     "papaparse": "^5.5.3",
     "tailwindcss": "^3.4.17",

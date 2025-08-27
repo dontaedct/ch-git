@@ -5,8 +5,16 @@ type Ok = { ok: true; id?: string; skipped?: true };
 type Fail = { ok: false; code: string; message: string };
 export type EmailResult = Ok | Fail;
 
-const KEY = process.env.RESEND_API_KEY ?? "";
-const FROM = process.env.RESEND_FROM ?? "Micro App <no-reply@example.com>";
+const KEY = process.env.RESEND_API_KEY;
+const FROM = process.env.RESEND_FROM;
+
+// Validate required environment variables
+if (!KEY) {
+  console.warn('RESEND_API_KEY environment variable is required for email functionality');
+}
+if (!FROM) {
+  console.warn('RESEND_FROM environment variable is required for email functionality');
+}
 const resend = KEY ? new Resend(KEY) : null;
 
 function htmlWrap(inner: string) {
@@ -20,6 +28,7 @@ function htmlWrap(inner: string) {
 
 async function actuallySend(to: string, subject: string, html: string): Promise<EmailResult> {
   if (!resend) return { ok: true, skipped: true }; // safe in dev without keys
+  if (!FROM) return { ok: false, code: "CONFIG_ERROR", message: "RESEND_FROM environment variable is required" };
   try {
     const r = await resend.emails.send({ from: FROM, to, subject, html });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -5,7 +5,6 @@ export async function requireUser() {
   
   // Dev-only tracing
   if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
-    // eslint-disable-next-line no-console
     console.log('🔐 Auth Guard: Checking user authentication...');
   }
   
@@ -13,14 +12,12 @@ export async function requireUser() {
   
   if (error || !data?.user) {
     if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
-      // eslint-disable-next-line no-console
       console.warn('❌ Auth Guard: Authentication failed', { error: error?.message });
     }
     throw new Error("Unauthorized");
   }
   
   if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === '1') {
-    // eslint-disable-next-line no-console
     console.log('✅ Auth Guard: User authenticated', { userId: data.user.id });
   }
   

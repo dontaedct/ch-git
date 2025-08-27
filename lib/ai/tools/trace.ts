@@ -34,7 +34,6 @@ export interface AITraceMetadata {
 
 export class Tracer {
   private enabled: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private logger?: any;
   
   constructor(enabled: boolean = true) {

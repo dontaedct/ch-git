@@ -64,7 +64,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Run comprehensive type checking (skipLibCheck: false)
+      - name: "Run comprehensive type checking (skipLibCheck: false)"
         run: npm run typecheck:slow
       
       - name: Comment on PR if this is a PR workflow

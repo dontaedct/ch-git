@@ -54,5 +54,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Run comprehensive type checking (skipLibCheck: false)
+      - name: "Run comprehensive type checking (skipLibCheck: false)"
         run: npm run tool:typecheck:slow

@@ -9,10 +9,8 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 // Safety guard: only import OpenAI if available
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let OpenAI: any = null;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   OpenAI = require('openai');
 } catch {
   console.warn('OpenAI SDK not available, provider will use mock mode');
@@ -57,7 +55,6 @@ export interface OpenAIResponse {
 }
 
 export class OpenAIProvider {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private client: any;
   private config: OpenAIConfig;
   private universalHeader: string | null = null;
@@ -118,14 +115,20 @@ export class OpenAIProvider {
       
       const userMessage = `Task: ${taskPrompt}\n\nInput: ${JSON.stringify(input, null, 2)}`;
       
+      // Validate required environment variables
+      const model = process.env.AI_MODEL;
+      if (!model) {
+        throw new Error('AI_MODEL environment variable is required');
+      }
+
       const response = await this.chat({
-        model: process.env.AI_MODEL ?? 'gpt-4o-mini',
+        model,
         messages: [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        temperature: opts?.temperature ?? Number(process.env.AI_TEMPERATURE) ?? 0.2,
-        max_tokens: opts?.maxTokens ?? Number(process.env.AI_MAX_TOKENS) ?? 4000,
+        temperature: opts?.temperature ?? Number(process.env.AI_TEMPERATURE || '0.2'),
+        max_tokens: opts?.maxTokens ?? Number(process.env.AI_MAX_TOKENS || '4000'),
         response_format: { type: 'json_object' }
       });
       

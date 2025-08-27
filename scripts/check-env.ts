@@ -89,7 +89,11 @@ function main() {
   console.log("================================\n");
   
   // Show current environment context
-  console.log(`Environment: ${process.env.NODE_ENV || "undefined"}`);
+  const nodeEnv = process.env.NODE_ENV;
+  if (!nodeEnv) {
+    console.warn('⚠️  NODE_ENV environment variable is not set');
+  }
+  console.log(`Environment: ${nodeEnv || "not-set"}`);
   console.log(`CI Mode: ${options.ci ? "enabled" : "disabled"}`);
   console.log(`Production Mode: ${options.production ? "enabled" : "disabled"}`);
   console.log("");

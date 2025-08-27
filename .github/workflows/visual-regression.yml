@@ -7,4 +7,4 @@ jobs:
   info:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Run MIT Hero Design Safety on main to seed baselines first."
+      - run: echo "Run Design Safety on main to seed baselines first."

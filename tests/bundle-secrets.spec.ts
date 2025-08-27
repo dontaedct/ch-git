@@ -44,6 +44,7 @@ const SAFE_NODE_ENVS = [
   'NODE_ENV',
   'VERCEL_ENV',
   'CI',
+  '__NEXT_TURBOPACK_PERSISTENT_CACHE',
 ];
 
 function getAllowedEnvs() {

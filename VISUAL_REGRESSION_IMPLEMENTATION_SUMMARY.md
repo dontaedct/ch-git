@@ -1,7 +1,7 @@
 # Visual Regression Testing Implementation Summary
 
 ## Overview
-Successfully implemented visual regression tests using Playwright's `toHaveScreenshot` functionality for the MIT Hero Design Safety module. The implementation provides automated visual testing of hero pages with configurable thresholds and CI integration.
+Successfully implemented visual regression tests using Playwright's `toHaveScreenshot` functionality for the OSS Hero Design Safety module. The implementation provides automated visual testing of hero pages with configurable thresholds and CI integration.
 
 ## Implementation Details
 
@@ -172,4 +172,4 @@ The visual regression testing implementation successfully provides:
 4. **Cross-browser Validation** ensuring visual consistency
 5. **Developer Experience** with clear documentation and tooling
 
-The system is ready for production use and provides a solid foundation for maintaining visual quality across the MIT Hero Design Safety module.
+The system is ready for production use and provides a solid foundation for maintaining visual quality across the OSS Hero Design Safety module.

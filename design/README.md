@@ -1,8 +1,8 @@
-# MIT Hero Design Safety Module
+# OSS Hero Design Safety Module
 
 ## Overview
 
-The MIT Hero Design Safety Module provides comprehensive design governance for UI components and design systems. It enforces design contracts, import boundaries, and design token usage through ESLint rules and automated validation.
+The OSS Hero Design Safety Module provides comprehensive design governance for UI components and design systems. It enforces design contracts, import boundaries, and design token usage through ESLint rules and automated validation.
 
 ## 🎯 Design Guardian Features
 
@@ -293,7 +293,7 @@ npm run design:guardian:advisory
 - [Lucide React Icons](https://lucide.dev/guide/packages/lucide-react)
 - [Geist Font](https://vercel.com/font/geist)
 - [ESLint Rules](https://eslint.org/docs/rules/)
-- [MIT Hero System](../README.md)
+- [OSS Hero System](../README.md)
 
 ## 🤝 Contributing
 
@@ -307,5 +307,5 @@ When modifying design policies:
 
 ---
 
-**MIT Hero Design Safety Module v1.0.0**
+**OSS Hero Design Safety Module v1.0.0**
 *Enforcing design excellence through automated governance*

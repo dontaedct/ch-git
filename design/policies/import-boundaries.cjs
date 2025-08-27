@@ -1,8 +1,8 @@
 /**
- * @fileoverview MIT Hero Design Safety Import Boundaries
+ * @fileoverview OSS Hero Design Safety Import Boundaries
  * @description Enforces clean import architecture for design system
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 module.exports = {

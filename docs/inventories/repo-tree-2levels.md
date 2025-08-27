@@ -85,7 +85,7 @@ my-app/
 │   └── validation/               # Validation utilities
 ├── logs/                         # Application logs
 ├── packages/                     # Monorepo packages
-│   └── mit-hero-core/            # Core package (legacy)
+│   └── oss-hero-core/            # Core package (legacy)
 ├── reports/                      # Analysis reports
 ├── scripts/                      # Build and utility scripts
 ├── supabase/                     # Database configuration
@@ -115,4 +115,4 @@ my-app/
 - **Testing**: Jest and Playwright test setup with visual regression testing
 - **Database**: Supabase integration with migration management
 - **AI Integration**: Dedicated AI utilities and evaluation systems
-- **Legacy Code**: Some MIT Hero references in packages/ (to be cleaned up)
+- **Legacy Code**: Some OSS Hero references in packages/ (to be cleaned up)

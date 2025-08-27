@@ -1,8 +1,8 @@
 /**
- * @fileoverview MIT Hero Design Safety Token Guards
+ * @fileoverview OSS Hero Design Safety Token Guards
  * @description Protects design tokens and prevents unsafe overrides
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 module.exports = {

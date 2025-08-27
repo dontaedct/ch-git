@@ -2,7 +2,7 @@
 
 ## 🎯 Objective Completed
 
-Successfully implemented guard checks to prevent accidental route renames and adapter mutations in UI PRs, following Universal Header and MIT Hero rules.
+Successfully implemented guard checks to prevent accidental route renames and adapter mutations in UI PRs, following Universal Header and OSS Hero rules.
 
 ## 🔧 Implementation Details
 
@@ -167,7 +167,7 @@ npm run rename:table -- old_table new_table
 ## 🔍 Integration Points
 
 ### 1. **Design Safety Workflow**
-- Integrated into existing MIT Hero Design Safety module
+- Integrated into existing OSS Hero Design Safety module
 - Runs on all PRs with design/component changes
 - Positioned early in pipeline for fast feedback
 
@@ -176,7 +176,7 @@ npm run rename:table -- old_table new_table
 - Uses proper npm scripts for safe operations
 - Maintains architectural integrity
 
-### 3. **MIT Hero Rules Adherence**
+### 3. **OSS Hero Rules Adherence**
 - Minimal diffs approach
 - Comprehensive testing
 - Clear documentation
@@ -229,7 +229,7 @@ feat(guardian): route freeze + adapter mutation detector for UI PRs
 - Implement comprehensive protection for UI-only PRs
 - Add test suite with 7 scenarios (100% pass rate)
 - Create detailed documentation and usage guide
-- Integrate with existing MIT Hero Design Safety module
+- Integrate with existing OSS Hero Design Safety module
 
 Protected areas: app/**, app/adapters/**, lib/db/**, supabase/**, lib/supabase/**
 Guard behavior: UI-only PRs pass, mixed changes fail with clear guidance
@@ -241,7 +241,7 @@ Guard behavior: UI-only PRs pass, mixed changes fail with clear guidance
 - ✅ **Integration**: Seamlessly added to existing workflow
 - ✅ **Documentation**: Comprehensive user guide created
 - ✅ **Testing**: Automated test suite with npm scripts
-- ✅ **Compliance**: Follows Universal Header and MIT Hero rules
+- ✅ **Compliance**: Follows Universal Header and OSS Hero rules
 - ✅ **User Experience**: Clear error messages and fix instructions
 
 ---

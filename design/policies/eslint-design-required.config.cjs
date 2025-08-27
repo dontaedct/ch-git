@@ -1,8 +1,8 @@
 /**
- * @fileoverview MIT Hero Design Safety ESLint Configuration - Required Mode
+ * @fileoverview OSS Hero Design Safety ESLint Configuration - Required Mode
  * @description Portable design safety rules for UI components and design system (errors block)
  * @version 1.0.0
- * @author MIT Hero Design Safety Module
+ * @author OSS Hero Design Safety Module
  */
 
 module.exports = {

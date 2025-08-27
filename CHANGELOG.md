@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- **feat(design):** scaffold MIT Hero Design Safety Module (portable)
+- **feat(design):** scaffold OSS Hero Design Safety Module (portable)
   - Added design safety policies (ESLint, import boundaries, token guards)
   - Added performance budgets (Lighthouse CI, bundle limits)
   - Added design guardian scripts (contracts, accessibility, visual, performance)
@@ -29,4 +29,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial project setup
-- MIT Hero Design Safety Module foundation
+- OSS Hero Design Safety Module foundation

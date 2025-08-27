@@ -133,7 +133,7 @@ npm run design:guardian:toggle
 - ✅ No RLS weakening
 - ✅ No secrets/keys/env exposure
 - ✅ Non-destructive ESLint integration
-- ✅ Maintains existing MIT Hero capabilities
+- ✅ Maintains existing OSS Hero capabilities
 - ✅ Follows Universal Header conventions
 
 ## 📈 Impact Assessment

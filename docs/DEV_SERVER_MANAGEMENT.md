@@ -2,7 +2,7 @@
 
 ## Overview
 
-The enhanced MIT hero system now includes automatic process locking and conflict resolution to prevent multiple dev servers from running simultaneously.
+The enhanced OSS hero system now includes automatic process locking and conflict resolution to prevent multiple dev servers from running simultaneously.
 
 ## Features
 
@@ -127,4 +127,4 @@ For issues or questions:
 
 ---
 
-**MIT Hero System v2.0** - Automatic conflict resolution for development workflows.
+**OSS Hero System v2.0** - Automatic conflict resolution for development workflows.

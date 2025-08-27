@@ -79,7 +79,7 @@ This document establishes the baseline health and safety gates for the OSS Hero 
 4. **Module Resolution**: Scripts directory excluded from TS compilation
 
 ### Medium Priority
-1. **Legacy References**: MIT Hero references in packages/ directory
+1. **Legacy References**: OSS Hero references in packages/ directory
 2. **Backup Files**: Multiple .backup files in git status
 3. **Dependency Management**: Some packages may need version updates
 
@@ -150,7 +150,7 @@ This document establishes the baseline health and safety gates for the OSS Hero 
 2. **Enable TypeScript Strictness**: Step 2 focus
 3. **Remove Build Bypasses**: Ensure proper error handling
 4. **Establish Test Coverage**: Comprehensive testing strategy
-5. **Clean Legacy Code**: Remove MIT Hero references
+5. **Clean Legacy Code**: Remove OSS Hero references
 
 ## Files Created/Modified
 

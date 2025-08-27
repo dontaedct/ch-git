@@ -2,7 +2,7 @@
 
 ## Overview
 
-Successfully implemented automated accessibility testing with Playwright + axe-core for the MIT Hero Design Safety project. The system is configured in **advisory mode** to report violations without failing tests, allowing for gradual improvement of accessibility standards.
+Successfully implemented automated accessibility testing with Playwright + axe-core for the OSS Hero Design Safety project. The system is configured in **advisory mode** to report violations without failing tests, allowing for gradual improvement of accessibility standards.
 
 ## What Was Implemented
 

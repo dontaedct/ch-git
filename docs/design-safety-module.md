@@ -2,6 +2,8 @@
 
 A drop-in design safety layer that enforces architectural boundaries, accessibility standards, visual consistency, and performance budgets in any micro-app.
 
+<<<<<<< HEAD
+=======
 ## Enforcement Levels
 
 | Check Type | Previous Level | Current Level | Rollback Method |
@@ -33,6 +35,7 @@ A drop-in design safety layer that enforces architectural boundaries, accessibil
 # Or set continue-on-error: true for all steps
 ```
 
+>>>>>>> origin/main
 ## What This Module Enforces
 
 ### 🛡️ Design Guardian

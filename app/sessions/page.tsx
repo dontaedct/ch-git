@@ -1,26 +1,51 @@
 export const dynamic = "force-dynamic";
 
-import Link from 'next/link';
+import SessionList from "@/components/session-list";
+import { listSessions, updateSession, deleteSession } from "@/app/adapters/sessionService";
+import { getClientsWithFullName } from "@/app/adapters/clientService";
+import { updateRSVP } from "@/app/adapters/sessionService";
 
 export default async function SessionsPage() {
+  const sessions = await listSessions();
+  const clients = await getClientsWithFullName();
+
+  async function onEditSession(data: Parameters<typeof updateSession>[1]) {
+    "use server";
+    if (data.id) {
+      await updateSession(data.id, data);
+      // optionally: revalidatePath('/sessions');
+    }
+  }
+
+  async function onDeleteSession(sessionId: string) {
+    "use server";
+    await deleteSession(sessionId);
+    // optionally: revalidatePath('/sessions');
+  }
+
+  async function onInviteClients(_sessionId: string, _clientIds: string[], _message: string) {
+    "use server";
+    // This would call the clientService.inviteClient function
+    // For now, just handling the invitation data
+  }
+
+  async function onUpdateRSVP(sessionId: string, clientId: string, status: string, notes?: string) {
+    "use server";
+    await updateRSVP(sessionId, clientId, status, notes);
+    // optionally: revalidatePath('/sessions');
+  }
+
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Group Sessions</h1>
-          <p className="text-lg text-gray-600">
-            Join our community training sessions and connect with fellow fitness enthusiasts.
-          </p>
-        </div>
-        
-        <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
-          <p className="text-gray-600 mb-4">
-            Sessions functionality is coming soon. This page will show available group training sessions.
-          </p>
-          <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
-            ← Back to Home
-          </Link>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <SessionList
+          sessions={sessions}
+          clients={clients}
+          onEditSession={onEditSession}
+          onDeleteSession={onDeleteSession}
+          onInviteClients={onInviteClients}
+          onUpdateRSVP={onUpdateRSVP}
+        />
       </div>
     </div>
   );

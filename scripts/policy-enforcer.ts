@@ -233,7 +233,7 @@ class PolicyEnforcer {
 }
 
 // Run the enforcer
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const enforcer = new PolicyEnforcer();
   enforcer.run().catch(error => {
     console.error('Policy enforcer failed:', error);

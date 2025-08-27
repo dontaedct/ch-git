@@ -1,94 +1,81 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
-import { createClient } from '@/lib/supabase/client'
-import { Client, WeeklyPlan, CheckIn, ProgressMetric } from '@/lib/supabase/types'
-import { Progress } from '@/components/ui/progress'
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
-import { isDevelopment } from '@/lib/env-client'
-
-interface ProgressDashboardProps {
-  clientId: string
+// Local type definitions to avoid direct supabase imports
+export interface Client {
+  id: string
+  first_name?: string | null
+  last_name?: string | null
+  full_name?: string | null
+  email?: string | null
+  created_at?: string | null
 }
 
-export default function ProgressDashboard({ clientId }: ProgressDashboardProps) {
-  const [client, setClient] = useState<Client | null>(null)
-  const [weeklyPlan, setWeeklyPlan] = useState<WeeklyPlan | null>(null)
-  const [checkIns, setCheckIns] = useState<CheckIn[]>([])
-  const [progressMetrics, setProgressMetrics] = useState<ProgressMetric[]>([])
-  const [loading, setLoading] = useState(true)
-  const supabase = createClient()
+export interface WeeklyPlan {
+  id: string
+  tasks?: Array<{
+    id: string
+    title: string
+    category: string
+    frequency: string
+    completed: boolean
+  }>
+  goals?: Array<{
+    id: string
+    title: string
+    description: string
+    target: string
+  }>
+}
 
-  const loadClientData = useCallback(async () => {
-    try {
-      // Load client profile
-      const { data: clientData } = await supabase
-        .from('clients')
-        .select('*')
-        .eq('id', clientId)
-        .single()
+export interface CheckIn {
+  id: string
+  check_in_date?: string | null
+  mood_rating?: number | null
+  energy_level?: number | null
+  sleep_hours?: number | null
+  water_intake_liters?: number | null
+  weight_kg?: number | null
+  body_fat_percentage?: number | null
+  notes?: string | null
+}
 
-      if (clientData) {
-        // Type guard to ensure this is a Client
-        if (typeof clientData === 'object' && clientData && 'id' in clientData && 'coach_id' in clientData) {
-          setClient(clientData as Client)
-        }
-      }
+export interface ProgressMetric {
+  id: string
+  metric_date?: string | null
+  weight_kg?: number | null
+  body_fat_percentage?: number | null
+}
 
-      // Load weekly plan
-      const { data: planData } = await supabase
-        .from('weekly_plans')
-        .select('*')
-        .eq('client_id', clientId)
-        .eq('status', 'active')
-        .order('week_start_date', { ascending: false })
-        .limit(1)
-        .single()
+import { Progress } from '@/components/ui/progress'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'
 
-      if (planData && typeof planData === 'object' && 'id' in planData && 'coach_id' in planData) {
-        setWeeklyPlan(planData as WeeklyPlan)
-      }
+export type ProgressDashboardProps = {
+  clientId: string
+  client: Client | null
+  weeklyPlan: WeeklyPlan | null
+  checkIns: CheckIn[]
+  progressMetrics: ProgressMetric[]
+  loading?: boolean
+  onLogProgress?: (data: {
+    clientId: string
+    moodRating?: number
+    energyLevel?: number
+    sleepHours?: number
+    waterIntakeLiters?: number
+    weightKg?: number
+    bodyFatPercentage?: number
+    notes?: string
+  }) => void
+}
 
-      // Load check-ins
-      const { data: checkInData } = await supabase
-        .from('check_ins')
-        .select('*')
-        .eq('client_id', clientId)
-        .order('check_in_date', { ascending: false })
-        .limit(30)
-
-      if (checkInData && Array.isArray(checkInData) && checkInData.every(item => 
-        item && typeof item === 'object' && 'id' in item && 'coach_id' in item
-      )) {
-        setCheckIns(checkInData as CheckIn[])
-      }
-
-      // Load progress metrics
-      const { data: metricsData } = await supabase
-        .from('progress_metrics')
-        .select('*')
-        .eq('client_id', clientId)
-        .order('metric_date', { ascending: true })
-        .limit(60)
-
-      if (metricsData && Array.isArray(metricsData) && metricsData.every(item => 
-        item && typeof item === 'object' && 'id' in item && 'coach_id' in item
-      )) {
-        setProgressMetrics(metricsData as ProgressMetric[])
-      }
-    } catch (err) {
-      if (isDevelopment()) {
-        console.error('Failed to load client data:', err)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }, [clientId, supabase])
-
-  useEffect(() => {
-    loadClientData()
-  }, [clientId, loadClientData])
-
+export default function ProgressDashboard({ 
+  client, 
+  weeklyPlan, 
+  checkIns, 
+  progressMetrics, 
+  loading = false,
+  onLogProgress: _onLogProgress
+}: ProgressDashboardProps) {
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -156,9 +143,8 @@ export default function ProgressDashboard({ clientId }: ProgressDashboardProps) 
             <p className="text-gray-600">{client.email}</p>
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-500">Member since</p>
-            <p className="font-medium">
-              {new Date(client.created_at).toLocaleDateString()}
+            <p className="text-sm text-gray-500">
+              Member since {client.created_at ? new Date(client.created_at).toLocaleDateString() : 'Unknown'}
             </p>
           </div>
         </div>

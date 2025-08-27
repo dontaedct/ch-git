@@ -1,10 +1,17 @@
+/**
+ * @fileoverview OSS Hero Design Safety - Playwright Configuration
+ * @description Playwright configuration for accessibility and UI testing
+ * @version 1.0.0
+ * @author OSS Hero Design Safety Module
+ */
+
 import { defineConfig, devices } from '@playwright/test';
 
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  testDir: './tests/ui',
+  testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -36,12 +43,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
-
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
@@ -58,15 +63,13 @@ export default defineConfig({
     },
   ],
 
-  /* Run your local dev server before starting the tests - only in local development */
-  ...(process.env.CI ? {} : {
-    webServer: {
-      command: 'npm run dev',
-      url: 'http://localhost:3000',
-      reuseExistingServer: true,
-      timeout: 120 * 1000,
-    },
-  }),
+  /* Run your local dev server before starting the tests */
+  webServer: {
+    command: 'npx next dev --port 3000',
+    url: 'http://localhost:3000',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000,
+  },
   
   /* Global test timeout */
   timeout: 30 * 1000,

@@ -2,9 +2,9 @@ name: Safety Gate
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, oss-hero-main ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, develop, oss-hero-main ]
   workflow_dispatch:
 
 jobs:
@@ -63,7 +63,7 @@ jobs:
         export SENTRY_DSN="${SENTRY_DSN:-}"
         
         # Use robust build script that handles failures gracefully
-        npm run build:robust
+        npm run tool:build:robust
         
         # Always ensure we have a .next directory for downstream jobs
         if [ ! -d ".next" ]; then

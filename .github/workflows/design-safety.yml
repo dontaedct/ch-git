@@ -1,4 +1,4 @@
-name: MIT Hero Design Safety
+name: OSS Hero Design Safety
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: read
-  pull-requests: read
+  pull-requests: write
 
 jobs:
   design-safety:
@@ -30,51 +30,33 @@ jobs:
 
       - name: Run type checking
         run: npm run -s typecheck
-        # ✅ BLOCKING: Type checking must pass
 
       - name: Run linting
         run: npm run -s lint
-        # ✅ BLOCKING: ESLint must pass
 
-      # ---- Contracts (BLOCKING) ----
+      # ---- Contracts (required if auditor exists) ----
       - name: Run design guardian contracts check
         if: ${{ hashFiles('design/scripts/component-contract-auditor.mjs') != '' }}
         run: npm run -s ui:contracts
-        # ✅ BLOCKING: UI contracts must pass
 
       - name: Skip contracts (auditor not yet installed)
         if: ${{ hashFiles('design/scripts/component-contract-auditor.mjs') == '' }}
         run: echo "No component-contract-auditor yet; skipping ui:contracts step."
 
       # ---- Accessibility (skip if tests not present) ----
+      - name: Install Playwright browsers
+        if: ${{ hashFiles('tests/ui/a11y.spec.ts') != '' }}
+        run: npx -y playwright install --with-deps
+
       - name: Run accessibility tests
         if: ${{ hashFiles('tests/ui/a11y.spec.ts') != '' }}
-        run: |
-          # In CI, we need to build the app first since we don't have a dev server
-          if [ "$CI" = "true" ]; then
-            echo "🔧 CI detected - building app for testing..."
-            npm run build
-            echo "🚀 Starting production server for testing..."
-            npm start &
-            SERVER_PID=$!
-            sleep 10  # Wait for server to start
-            
-            # Run tests
-            npx -y playwright test tests/ui/a11y.spec.ts || true
-            
-            # Cleanup
-            kill $SERVER_PID 2>/dev/null || true
-          else
-            # Local development - run normally
-            npx -y playwright test tests/ui/a11y.spec.ts
-          fi
-        # ✅ BLOCKING: A11y tests must pass when present
+        run: npx -y playwright test tests/ui/a11y.spec.ts
 
       - name: Skip accessibility (no tests)
         if: ${{ hashFiles('tests/ui/a11y.spec.ts') == '' }}
         run: echo "No a11y tests found; skipping."
 
-      # ---- Visuals (skip if tests not present) ----
+      # ---- Visuals (seed or run depending on baseline presence) ----
       - name: Install Playwright browsers
         if: ${{ hashFiles('tests/ui/visual.spec.ts') != '' }}
         run: npx -y playwright install --with-deps
@@ -82,26 +64,7 @@ jobs:
       # If screenshots baseline exists, run normally
       - name: Run visual regression tests
         if: ${{ hashFiles('tests/ui/__screenshots__/**') != '' && hashFiles('tests/ui/visual.spec.ts') != '' }}
-        run: |
-          # In CI, we need to build the app first since we don't have a dev server
-          if [ "$CI" = "true" ]; then
-            echo "🔧 CI detected - building app for testing..."
-            npm run build
-            echo "🚀 Starting production server for testing..."
-            npm start &
-            SERVER_PID=$!
-            sleep 10  # Wait for server to start
-            
-            # Run tests
-            npx -y playwright test tests/ui/visual.spec.ts || true
-            
-            # Cleanup
-            kill $SERVER_PID 2>/dev/null || true
-          else
-            # Local development - run normally
-            npx -y playwright test tests/ui/visual.spec.ts
-          fi
-        # ✅ BLOCKING: Visual tests must pass when present
+        run: npx -y playwright test tests/ui/visual.spec.ts
 
       # If no baseline yet: on main/dispatch we seed; on PR we just skip with message
       - name: Seed visual baselines on main/dispatch
@@ -112,152 +75,22 @@ jobs:
         if: ${{ hashFiles('tests/ui/__screenshots__/**') == '' && hashFiles('tests/ui/visual.spec.ts') != '' && github.event_name == 'pull_request' && github.ref != 'refs/heads/main' }}
         run: echo "No visual baselines yet; run this workflow on main or via dispatch to seed."
 
-      # ---- LHCI (SOFT-FAIL today, will hard-fail in 14 days) ----
-      - name: Run Lighthouse CI Performance Tests
+      # ---- LHCI (soft-fail for 2 weeks, then we'll flip it) ----
+      - name: Run Lighthouse CI Performance Tests (soft-fail)
         if: ${{ hashFiles('design/lhci.config.cjs') != '' }}
-        run: npx -y lhci autorun --config=design/lhci.config.cjs
         continue-on-error: true
-        # 🟡 SOFT-FAIL: LHCI runs but doesn't block merge
-        # TODO: Remove continue-on-error on 2025-01-27 (14 days from now)
+        run: npx -y lhci autorun --config=design/lhci.config.cjs
 
-      - name: LHCI Soft-Fail Notice
-        if: ${{ hashFiles('design/lhci.config.cjs') != '' }}
-        run: |
-          echo "⚠️  LHCI is currently SOFT-FAIL (continue-on-error: true)"
-          echo "📅 Will become HARD-FAIL on 2025-01-27"
-          echo "🔧 Rollback: toggle LHCI soft/hard by continue-on-error in workflow"
-
-      # ---- Generate Design Safety Summaries ----
-      - name: Create cache directory
-        run: mkdir -p .cache/design-safety
-
-      - name: Generate ESLint summary
-        run: |
-          echo "Generating ESLint summary..."
-          npm run -s lint 2>&1 | tee eslint-output.txt || true
-          
-          # Count errors and warnings
-          ERRORS=$(grep -c "error" eslint-output.txt || echo "0")
-          WARNINGS=$(grep -c "warning" eslint-output.txt || echo "0")
-          
-          # Create summary JSON
-          cat > .cache/design-safety/eslint-summary.json << EOF
-          {
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "status": "$([ $ERRORS -eq 0 ] && echo "PASSED" || echo "FAILED")",
-            "metrics": {
-              "eslintErrors": $ERRORS,
-              "eslintWarnings": $WARNINGS
-            },
-            "violations": []
-          }
-          EOF
-
-      - name: Generate contract validation summary
-        if: ${{ hashFiles('design/scripts/component-contract-auditor.mjs') != '' }}
-        run: |
-          echo "Generating contract validation summary..."
-          npm run -s ui:contracts 2>&1 | tee contracts-output.txt || true
-          
-          # Create summary JSON (basic structure for now)
-          cat > .cache/design-safety/contracts-summary.json << EOF
-          {
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "status": "PASSED",
-            "metrics": {
-              "contractViolations": 0
-            },
-            "violations": []
-          }
-          EOF
-
-      - name: Generate accessibility summary
-        if: ${{ hashFiles('tests/ui/a11y.spec.ts') != '' }}
-        run: |
-          echo "Generating accessibility summary..."
-          # Run a11y tests and capture output
-          npx -y playwright test tests/ui/a11y.spec.ts --reporter=json 2>&1 | tee a11y-output.txt || true
-          
-          # Create summary JSON (basic structure for now)
-          cat > .cache/design-safety/a11y-summary.json << EOF
-          {
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "status": "PASSED",
-            "metrics": {
-              "a11yIssues": 0
-            },
-            "violations": []
-          }
-          EOF
-
-      - name: Generate visual regression summary
-        if: ${{ hashFiles('tests/ui/visual.spec.ts') != '' }}
-        run: |
-          echo "Generating visual regression summary..."
-          # Create summary JSON (basic structure for now)
-          cat > .cache/design-safety/visual-summary.json << EOF
-          {
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "status": "PASSED",
-            "metrics": {
-              "visualDiffs": 0
-            },
-            "violations": []
-          }
-          EOF
-
-      - name: Generate LHCI summary
-        if: ${{ hashFiles('design/lhci.config.cjs') != '' }}
-        run: |
-          echo "Generating LHCI summary..."
-          # Create summary JSON (basic structure for now)
-          cat > .cache/design-safety/lhci-summary.json << EOF
-          {
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "status": "PASSED",
-            "metrics": {
-              "lhciScore": 0
-            },
-            "violations": []
-          }
-          EOF
-
-      - name: Generate combined design safety summary
-        run: |
-          echo "Generating combined design safety summary..."
-          
-          # Read individual summaries and combine them
-          cat > .cache/design-safety/design-safety-summary.json << EOF
-          {
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "workflow": "design-safety",
-            "runId": "${{ github.run_id }}",
-            "ref": "${{ github.ref }}",
-            "sha": "${{ github.sha }}",
-            "sections": {
-              "designGuardian": {
-                "eslint": "$(cat .cache/design-safety/eslint-summary.json | jq -r '.status' 2>/dev/null || echo 'UNKNOWN')",
-                "contracts": "$(cat .cache/design-safety/contracts-summary.json | jq -r '.status' 2>/dev/null || echo 'UNKNOWN')"
-              },
-              "a11yRanger": {
-                "status": "$(cat .cache/design-safety/a11y-summary.json | jq -r '.status' 2>/dev/null || echo 'UNKNOWN')"
-              },
-              "visualWatch": {
-                "status": "$(cat .cache/design-safety/visual-summary.json | jq -r '.status' 2>/dev/null || echo 'UNKNOWN')"
-              },
-              "uxBudgeteer": {
-                "status": "$(cat .cache/design-safety/lhci-summary.json | jq -r '.status' 2>/dev/null || echo 'UNKNOWN')"
-              }
-            }
-          }
-          EOF
-
-      - name: Upload design safety summaries as artifacts
-        uses: actions/upload-artifact@v4
+      # ---- PR comment on failure ----
+      - name: Comment top violations (on failure)
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
         with:
-          name: design-safety-summaries
-          path: .cache/design-safety/
-          retention-days: 30
-
-      # Note: Cache data is uploaded as artifacts above
-      # No need to commit cache files to git since they're ignored by .gitignore
+          script: |
+            const body = "❌ **Design Safety** failed. See logs for details.\n\nTip: run `npm run design:check` locally.";
+            await github.rest.issues.createComment({ 
+              owner: context.repo.owner, 
+              repo: context.repo.repo, 
+              issue_number: context.payload.pull_request.number, 
+              body 
+            });

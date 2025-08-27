@@ -10,7 +10,7 @@
     "moduleResolution": "Bundler",
     "jsx": "preserve",
     "strict": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "skipLibCheck": true,
     "noEmit": true,
     "esModuleInterop": true,
@@ -58,7 +58,7 @@
       "types",
       "node_modules/@types"
     ],
-    "allowJs": true,
+    "allowJs": false,
     "incremental": true,
     "plugins": [
       {

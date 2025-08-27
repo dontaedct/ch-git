@@ -2,9 +2,26 @@
 
 import { useState, useEffect } from "react";
 import { createTrainerProfile, updateTrainerProfile, getTrainerProfile } from "./actions";
-import { Trainer } from "@/lib/supabase/types";
+// TODO: Replace with trainerService adapter when created
+// import { Trainer } from "@/lib/supabase/types";
 import Link from 'next/link';
 import { isDevelopment } from '@/lib/env-client';
+
+// Local type definition to avoid direct supabase import
+interface Trainer {
+  id: string
+  first_name?: string | null
+  last_name?: string | null
+  full_name?: string | null
+  email?: string | null
+  bio?: string | null
+  specialties?: string[] | null
+  certifications?: string[] | null
+  business_name?: string | null
+  years_experience?: number | null
+  hourly_rate?: number | null
+  website?: string | null
+}
 
 export default function TrainerProfilePage() {
   const [profile, setProfile] = useState<Partial<Trainer>>({});

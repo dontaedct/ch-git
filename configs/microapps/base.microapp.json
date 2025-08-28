@@ -208,6 +208,60 @@
             "placeholder": "Share any additional context, requirements, or questions..."
           }
         ]
+      },
+      {
+        "id": "step4",
+        "title": "Partnership Preferences",
+        "questions": [
+          {
+            "id": "communication-style",
+            "text": "How do you prefer to communicate during projects?",
+            "type": "select",
+            "required": true,
+            "options": [
+              {
+                "value": "frequent",
+                "label": "Daily check-ins and updates"
+              },
+              {
+                "value": "regular",
+                "label": "Weekly status meetings"
+              },
+              {
+                "value": "milestone",
+                "label": "Milestone-based updates"
+              },
+              {
+                "value": "minimal",
+                "label": "Minimal but essential updates"
+              }
+            ]
+          },
+          {
+            "id": "support-preferences",
+            "text": "What type of ongoing support interests you most?",
+            "type": "chips-multi",
+            "required": false,
+            "options": [
+              {
+                "value": "training",
+                "label": "Team Training"
+              },
+              {
+                "value": "documentation",
+                "label": "Documentation"
+              },
+              {
+                "value": "maintenance",
+                "label": "Ongoing Maintenance"
+              },
+              {
+                "value": "optimization",
+                "label": "Performance Optimization"
+              }
+            ]
+          }
+        ]
       }
     ],
     "progress": {
@@ -228,8 +282,8 @@
       "tone": "professional"
     },
     "planDeck": {
-      "primaryCount": 1,
-      "alternatesCount": 2
+      "primaryCount": 2,
+      "alternatesCount": 1
     },
     "sections": [
       "whatYouGet",

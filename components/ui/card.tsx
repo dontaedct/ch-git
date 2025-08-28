@@ -8,8 +8,8 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card"
       className={cn(
         "bg-background text-foreground flex flex-col",
-        "rounded-[var(--card-border-radius)] border-[var(--card-border-width)] border-border",
-        "shadow-[var(--card-shadow)]",
+        "rounded-[var(--card-border-radius)] border-[var(--border-width-hairline)] border-[var(--border-color-hairline)]",
+        "shadow-[var(--elevation-sm)]",
         className
       )}
       {...props}
@@ -25,7 +25,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
         "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5",
         "p-[var(--card-padding)] pb-0",
         "has-data-[slot=card-action]:grid-cols-[1fr_auto]",
-        "[&:has(+[data-slot=card-content])]:border-b [&:has(+[data-slot=card-content])]:border-border [&:has(+[data-slot=card-content])]:pb-[var(--card-padding)]",
+        "[&:has(+[data-slot=card-content])]:border-b [&:has(+[data-slot=card-content])]:border-[var(--border-color-hairline)] [&:has(+[data-slot=card-content])]:pb-[var(--card-padding)]",
         className
       )}
       {...props}
@@ -82,7 +82,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card-footer"
       className={cn(
         "flex items-center p-[var(--card-padding)] pt-0",
-        "[&:has([data-slot=card-content]+&)]:border-t [&:has([data-slot=card-content]+&)]:border-border [&:has([data-slot=card-content]+&)]:pt-[var(--card-padding)]",
+        "[&:has([data-slot=card-content]+&)]:border-t [&:has([data-slot=card-content]+&)]:border-[var(--border-color-hairline)] [&:has([data-slot=card-content]+&)]:pt-[var(--card-padding)]",
         className
       )}
       {...props}

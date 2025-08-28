@@ -214,7 +214,7 @@ const PDFPreview = React.forwardRef<HTMLDivElement, PDFPreviewProps>(
         ref={ref}
         className={cn(
           'relative overflow-hidden rounded-[var(--card-border-radius)]',
-          'border border-border bg-background',
+          'border border-[var(--border-color-hairline)] bg-background',
           className
         )}
         style={{ width, height }}

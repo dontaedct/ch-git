@@ -87,7 +87,22 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
       root.style.setProperty(`--border-radius-${key}`, value);
     });
     
-    // Shadow tokens
+    // Border tokens
+    Object.entries(tokens.borders.width).forEach(([key, value]) => {
+      root.style.setProperty(`--border-width-${key}`, value);
+    });
+    
+    const borderColors = isDark ? tokens.borders.color.dark : tokens.borders.color.light;
+    Object.entries(borderColors).forEach(([key, value]) => {
+      root.style.setProperty(`--border-color-${key}`, value);
+    });
+    
+    // Elevation tokens (new material elevation system)
+    Object.entries(tokens.elevation).forEach(([key, value]) => {
+      root.style.setProperty(`--elevation-${key}`, value);
+    });
+    
+    // Shadow tokens (legacy)
     Object.entries(tokens.shadows).forEach(([key, value]) => {
       root.style.setProperty(`--shadow-${key}`, value);
     });
@@ -170,7 +185,7 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
       root.style.setProperty(`--container-${key}`, value);
     });
     
-  }, [semanticColors, tokens]);
+  }, [semanticColors, tokens, isDark]);
   
   // Update CSS variables when theme changes
   useEffect(() => {

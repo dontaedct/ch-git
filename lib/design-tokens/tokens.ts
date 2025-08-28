@@ -209,6 +209,28 @@ export interface DesignTokens {
     '4xl': string;
   };
   
+  // Border system - Hairline borders for material feel
+  borders: {
+    width: {
+      none: string;
+      hairline: string;
+      thin: string;
+      thick: string;
+    };
+    color: {
+      light: {
+        hairline: string;
+        subtle: string;
+        strong: string;
+      };
+      dark: {
+        hairline: string;
+        subtle: string;
+        strong: string;
+      };
+    };
+  };
+  
   // Border radius
   borderRadius: {
     none: string;
@@ -220,7 +242,14 @@ export interface DesignTokens {
     full: string;
   };
   
-  // Shadows
+  // Elevation system - Soft shadows with consistent depth
+  elevation: {
+    sm: string;
+    md: string;
+    lg: string;
+  };
+  
+  // Legacy shadows (kept for backward compatibility)
   shadows: {
     xs: string;
     sm: string;
@@ -399,6 +428,28 @@ export const designTokens: DesignTokens = {
     '4xl': '6rem',
   },
   
+  // Border system - Hairline borders for material feel
+  borders: {
+    width: {
+      none: '0',
+      hairline: '1px',        // Primary hairline border
+      thin: '2px',            // Slightly thicker for focus states
+      thick: '4px',           // For emphasis or selection
+    },
+    color: {
+      light: {
+        hairline: 'rgb(0 0 0 / 0.08)',   // Very low-alpha for hairlines
+        subtle: 'rgb(0 0 0 / 0.12)',     // Subtle borders for cards/sections  
+        strong: 'rgb(0 0 0 / 0.18)',     // Stronger borders for focus/active
+      },
+      dark: {
+        hairline: 'rgb(255 255 255 / 0.08)',  // Dark theme hairline
+        subtle: 'rgb(255 255 255 / 0.12)',    // Dark theme subtle
+        strong: 'rgb(255 255 255 / 0.18)',    // Dark theme strong
+      },
+    },
+  },
+  
   borderRadius: {
     none: '0',
     sm: '0.125rem',
@@ -409,6 +460,14 @@ export const designTokens: DesignTokens = {
     full: '9999px',
   },
   
+  // Elevation system - Soft shadows with consistent depth
+  elevation: {
+    sm: '0 1px 2px 0 rgb(0 0 0 / 0.03), 0 1px 3px 0 rgb(0 0 0 / 0.04)',     // Cards, chips
+    md: '0 2px 4px 0 rgb(0 0 0 / 0.04), 0 6px 12px 0 rgb(0 0 0 / 0.06)',    // Dropdowns, popovers  
+    lg: '0 8px 16px 0 rgb(0 0 0 / 0.06), 0 12px 24px 0 rgb(0 0 0 / 0.08)',  // Modals, drawers
+  },
+  
+  // Legacy shadows (kept for backward compatibility)
   shadows: {
     xs: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
     sm: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
@@ -500,8 +559,8 @@ export const designTokens: DesignTokens = {
     card: {
       borderRadius: '0.75rem',
       padding: '1.5rem',
-      shadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
-      borderWidth: '1px',
+      shadow: '0 1px 2px 0 rgb(0 0 0 / 0.03), 0 1px 3px 0 rgb(0 0 0 / 0.04)',  // Using elevation.sm
+      borderWidth: '1px',  // Using hairline border
     },
     chip: {
       height: '1.75rem',
@@ -516,13 +575,13 @@ export const designTokens: DesignTokens = {
     },
     stepper: {
       size: '2rem',
-      borderWidth: '2px',
+      borderWidth: '1px',  // Using hairline border instead of 2px
       connectorHeight: '1px',
     },
     toast: {
       borderRadius: '0.5rem',
       padding: '1rem',
-      shadow: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+      shadow: '0 8px 16px 0 rgb(0 0 0 / 0.06), 0 12px 24px 0 rgb(0 0 0 / 0.08)',  // Using elevation.lg
       maxWidth: '20rem',
     },
   },

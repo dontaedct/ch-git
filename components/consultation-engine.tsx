@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Clock, CheckCircle, ArrowRight, Download, Mail } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { usePdfExport } from '@/hooks/use-pdf-export'
+import { useN8nEvents } from '@/lib/n8n-events'
 
 // Types based on the config structure
 interface Plan {
@@ -90,6 +92,35 @@ export function ConsultationEngine({
 }: ConsultationEngineProps) {
   const [selectedPlan, setSelectedPlan] = useState<string>('')
   
+  // N8N event system
+  const n8nEvents = useN8nEvents()
+  
+  // PDF export functionality
+  const { generatePdf, requestEmail } = usePdfExport({
+    filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`,
+    onSuccess: (blob) => {
+      // Emit PDF download event
+      n8nEvents.emitPdfDownload({
+        source: 'consultation-engine',
+        planId: selectedPlan,
+        clientName,
+        size: blob.size,
+        filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`
+      })
+    },
+    onEmailRequest: (blob) => {
+      // Emit email request event
+      n8nEvents.emitEmailRequest({
+        source: 'consultation-engine',
+        planId: selectedPlan,
+        clientName,
+        blob,
+        size: blob.size,
+        filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`
+      })
+    }
+  })
+  
   // Plan selection logic
   const selectedPlans = useMemo(() => {
     const eligible = catalog.plans.filter(plan => {
@@ -139,20 +170,12 @@ export function ConsultationEngine({
       : answers['primary-goals'] as string
     const timeline = answers['timeline'] as string
     
-    let tone = 'professional'
-    switch (template.summary.tone) {
-      case 'friendly':
-        tone = 'friendly and approachable'
-        break
-      case 'direct':
-        tone = 'direct and focused'
-        break
-    }
+    // Note: tone variable available for future summary customization
     
     return `Based on your questionnaire responses, we've identified you as a ${companySize} ${businessType} company focused on ${goals}. With your ${timeline} timeline, we recommend a strategic approach that balances immediate needs with long-term growth objectives. Our recommendations are tailored specifically to businesses in your situation, ensuring maximum impact and sustainable results.`
-  }, [answers, template.summary.tone])
+  }, [answers])
   
-  const getCurrentPlan = () => selectedPlans.find(p => p.id === selectedPlan) || primaryPlan
+  const getCurrentPlan = () => selectedPlans.find(p => p.id === selectedPlan) ?? primaryPlan
   
   const renderPlanSection = (section: PlanCardSection, plan: Plan) => {
     const content = plan.content[section]
@@ -207,8 +230,26 @@ export function ConsultationEngine({
   
   const currentPlan = getCurrentPlan()
   
+  const handlePdfDownload = async () => {
+    try {
+      await generatePdf('consultation-content')
+      onComplete?.(selectedPlan, 'download')
+    } catch (error) {
+      console.error('PDF download failed:', error)
+    }
+  }
+
+  const handleEmailRequest = async () => {
+    try {
+      await requestEmail('consultation-content')
+      onComplete?.(selectedPlan, 'email')
+    } catch (error) {
+      console.error('Email request failed:', error)
+    }
+  }
+  
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-8">
+    <div id="consultation-content" className="max-w-4xl mx-auto p-6 space-y-8">
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-2">
@@ -306,7 +347,7 @@ export function ConsultationEngine({
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                         <CheckCircle className="w-4 h-4" />
-                        What's Included
+                        What&apos;s Included
                       </div>
                       <div className="pl-6 space-y-1">
                         {currentPlan.includes.map((item, index) => (
@@ -340,7 +381,16 @@ export function ConsultationEngine({
         <Button 
           size="lg" 
           className="flex-1"
-          onClick={() => onComplete?.(selectedPlan, 'book')}
+          onClick={() => {
+            // Emit booking request event
+            n8nEvents.emitBookingRequest({
+              source: 'consultation-engine',
+              planId: selectedPlan,
+              clientName,
+              bookingUrl: template.actions.bookingUrl
+            })
+            onComplete?.(selectedPlan, 'book')
+          }}
         >
           {template.actions.bookCtaLabel}
         </Button>
@@ -350,7 +400,7 @@ export function ConsultationEngine({
             <Button 
               variant="outline" 
               size="lg"
-              onClick={() => onComplete?.(selectedPlan, 'download')}
+              onClick={handlePdfDownload}
             >
               <Download className="w-4 h-4 mr-2" />
               PDF
@@ -361,7 +411,7 @@ export function ConsultationEngine({
             <Button 
               variant="outline" 
               size="lg"
-              onClick={() => onComplete?.(selectedPlan, 'email')}
+              onClick={handleEmailRequest}
             >
               <Mail className="w-4 h-4 mr-2" />
               Email

@@ -1,102 +1,177 @@
-import Link from 'next/link';
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { ConsultationEngine } from '@/components/consultation-engine'
+
+// Type for Plan Card Sections
+type PlanCardSection = 'whatYouGet' | 'whyThisFits' | 'timeline' | 'nextSteps'
+
+// Demo configuration - in real app this would come from microapp config
+const demoConfig = {
+  catalog: {
+    id: 'consultation-plans',
+    name: 'Consultation Plans',
+    plans: [
+      {
+        id: 'foundation',
+        title: 'Foundation Strategy',
+        description: 'Essential business foundation and core systems setup',
+        priceBand: '$5K-15K',
+        includes: ['Business process analysis', 'Core system recommendations', 'Initial automation setup', '3-month roadmap'],
+        timeline: '4-6 weeks',
+        tier: 'foundation' as const,
+        eligibleIf: { 'company-size': ['startup', 'small'] } as Record<string, string[]>,
+        content: {
+          whatYouGet: 'A comprehensive foundation strategy including business process analysis, core system recommendations, and initial automation setup to streamline your operations.',
+          whyThisFits: 'Perfect for growing businesses that need to establish solid operational foundations before scaling further.',
+          timeline: '4-6 weeks with weekly check-ins and milestone reviews',
+          nextSteps: 'Schedule a consultation to discuss your specific needs and customize the approach'
+        }
+      },
+      {
+        id: 'growth',
+        title: 'Growth Acceleration',
+        description: 'Advanced systems and processes for scaling businesses',
+        priceBand: '$15K-35K',
+        includes: ['Advanced automation workflows', 'Integration architecture', 'Performance optimization', 'Team training program', '6-month roadmap'],
+        timeline: '6-8 weeks',
+        tier: 'growth' as const,
+        eligibleIf: { 'company-size': ['small', 'medium'], 'primary-goals': ['growth', 'efficiency'] } as Record<string, string[]>,
+        content: {
+          whatYouGet: 'Complete growth acceleration package with advanced automation, integration architecture, and comprehensive team training program.',
+          whyThisFits: 'Ideal for businesses ready to scale rapidly with sophisticated systems and processes in place.',
+          timeline: '6-8 weeks with bi-weekly sprints and continuous optimization',
+          nextSteps: 'Book a strategy session to map out your growth trajectory and system requirements'
+        }
+      },
+      {
+        id: 'quick-start',
+        title: 'Quick Start Package',
+        description: 'Rapid implementation for urgent needs',
+        priceBand: '$3K-8K',
+        includes: ['Rapid assessment', 'Priority fixes', 'Quick wins implementation', '30-day support'],
+        timeline: '2-3 weeks',
+        tier: 'foundation' as const,
+        eligibleIf: { 'timeline': ['urgent'] } as Record<string, string[]>,
+        content: {
+          whatYouGet: 'Fast-track solution focused on immediate priority fixes and quick wins to address urgent business needs.',
+          whyThisFits: 'Perfect when you need results quickly and have specific urgent challenges to address.',
+          timeline: '2-3 weeks with daily progress updates and immediate implementation',
+          nextSteps: 'Contact us immediately to discuss your urgent requirements and timeline'
+        }
+      }
+    ],
+    defaults: {
+      fallbackPlan: 'foundation',
+      preferHigherTier: true
+    }
+  },
+  template: {
+    summary: {
+      minWords: 80,
+      maxWords: 150,
+      tone: 'professional' as const
+    },
+    planDeck: {
+      primaryCount: 1,
+      alternatesCount: 3
+    },
+    sections: ['whatYouGet', 'whyThisFits', 'timeline', 'nextSteps'] as PlanCardSection[],
+    actions: {
+      downloadPdf: true,
+      emailCopy: true,
+      bookCtaLabel: 'Schedule Consultation',
+      bookingUrl: 'https://calendly.com/example/consultation'
+    }
+  }
+}
 
 export default function ConsultationPage() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [answers, setAnswers] = useState<Record<string, unknown>>({})
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // Try to get answers from localStorage or URL params
+    const savedAnswers = localStorage.getItem('questionnaire-answers')
+    
+    if (savedAnswers) {
+      try {
+        const parsed = JSON.parse(savedAnswers)
+        setAnswers(parsed)
+      } catch (error) {
+        console.warn('Failed to parse saved answers:', error)
+      }
+    }
+    
+    // Also check URL params for demo data
+    const params = Object.fromEntries(searchParams.entries())
+    if (Object.keys(params).length > 0) {
+      setAnswers(prev => ({ ...prev, ...params }))
+    }
+    
+    // Set demo data if no answers found
+    if (!savedAnswers && Object.keys(params).length === 0) {
+      setAnswers({
+        'business-type': 'saas',
+        'company-size': 'startup',
+        'primary-goals': ['growth', 'automation'],
+        'timeline': 'soon'
+      })
+    }
+    
+    setIsLoading(false)
+  }, [searchParams])
+
+  const handleComplete = (planId: string, action: string) => {
+    if (action === 'book') {
+      // Open booking URL
+      if (demoConfig.template.actions.bookingUrl) {
+        window.open(demoConfig.template.actions.bookingUrl, '_blank')
+      }
+    } else if (action === 'download') {
+      // Trigger PDF download
+      console.log('Downloading PDF for plan:', planId)
+    } else if (action === 'email') {
+      // Request email copy
+      console.log('Requesting email copy for plan:', planId)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your consultation...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-2xl mx-auto px-6">
-        <div className="mb-8">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto py-6">
+        <div className="mb-6">
           <Link 
             href="/questionnaire"
-            className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+            className="text-primary hover:text-primary/80 font-medium text-sm inline-flex items-center gap-2"
           >
             ← Back to questionnaire
           </Link>
         </div>
         
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-6">
-              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
-                <div className="w-3 h-2 border-b-2 border-l-2 border-white transform -rotate-45 -translate-y-0.5"></div>
-              </div>
-            </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Your consultation is confirmed!
-            </h1>
-            <p className="text-lg text-gray-600 mb-8">
-              Thank you for your interest. We&apos;ll be in touch within 24 hours to schedule your free consultation.
-            </p>
-          </div>
-
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-            <h2 className="text-lg font-medium text-blue-900 mb-4">What happens next?</h2>
-            <div className="space-y-3 text-blue-800">
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-                  <span className="text-white text-sm font-bold">1</span>
-                </div>
-                <div>
-                  <p className="font-medium">Email confirmation</p>
-                  <p className="text-sm text-blue-700">You&apos;ll receive a confirmation email with next steps shortly.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-                  <span className="text-white text-sm font-bold">2</span>
-                </div>
-                <div>
-                  <p className="font-medium">Schedule call</p>
-                  <p className="text-sm text-blue-700">Our team will reach out to schedule your consultation at a convenient time.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center mt-0.5 flex-shrink-0">
-                  <span className="text-white text-sm font-bold">3</span>
-                </div>
-                <div>
-                  <p className="font-medium">Consultation</p>
-                  <p className="text-sm text-blue-700">We&apos;ll discuss your needs and how we can help you achieve your goals.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="border border-gray-200 rounded-lg p-6 mb-8">
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Consultation details</h3>
-            <div className="space-y-2 text-sm text-gray-600">
-              <p><strong>Duration:</strong> 30-45 minutes</p>
-              <p><strong>Format:</strong> Video call or phone (your choice)</p>
-              <p><strong>Cost:</strong> Completely free, no obligations</p>
-              <p><strong>Focus:</strong> Understanding your needs and providing initial recommendations</p>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link 
-              href="/"
-              className="flex-1 text-center px-6 py-3 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              Back to home
-            </Link>
-            <Link 
-              href="/login"
-              className="flex-1 text-center px-6 py-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-            >
-              Create account
-            </Link>
-          </div>
-        </div>
-
-        <div className="mt-8 text-center">
-          <p className="text-sm text-gray-500 mb-2">
-            Need help or have questions?
-          </p>
-          <p className="text-sm">
-            <span className="text-gray-500">Email us at </span>
-            <span className="text-blue-600 font-medium">hello@consultation.app</span>
-          </p>
-        </div>
+        <ConsultationEngine
+          answers={answers}
+          catalog={demoConfig.catalog}
+          template={demoConfig.template}
+          onComplete={handleComplete}
+          timestamp={new Date().toISOString()}
+        />
       </div>
     </div>
-  );
+  )
 }

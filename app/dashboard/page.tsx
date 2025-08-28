@@ -1,17 +1,16 @@
 import { redirect } from 'next/navigation';
-import { requireUser } from '@/lib/auth/guard';
+import { requireClient } from '@/lib/auth/guard';
 import { getPublicEnv } from '@/lib/env';
 import Link from 'next/link';
 
 export default async function DashboardPage() {
   const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
   
-  let user = null;
+  let client = null;
   
   if (!isSafeMode) {
     try {
-      const authResult = await requireUser();
-      user = authResult.user;
+      client = await requireClient();
     } catch {
       redirect('/login');
     }
@@ -30,8 +29,13 @@ export default async function DashboardPage() {
                 </span>
               )}
               <span className="text-sm text-gray-600">
-                {user?.email ?? 'demo@example.com'}
+                {client?.email ?? 'demo@example.com'}
               </span>
+              {client?.role && (
+                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
+                  {client.role.toUpperCase()}
+                </span>
+              )}
               <Link 
                 href="/login"
                 className="text-sm text-blue-600 hover:text-blue-700 font-medium"
@@ -46,7 +50,7 @@ export default async function DashboardPage() {
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Welcome{user?.email ? ` back` : ' to your dashboard'}
+            Welcome{client?.email ? ` back` : ' to your dashboard'}
           </h2>
           <p className="text-gray-600">
             Manage your consultations and account settings from here.

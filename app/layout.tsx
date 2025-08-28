@@ -4,6 +4,8 @@ import { getPublicEnv } from '@/lib/env';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TokensProvider } from '@/lib/design-tokens/provider';
 import { AuthProvider } from '@/lib/auth/auth-context';
+import { GlobalNav } from '@/components/GlobalNav';
+import { requireClient } from '@/lib/auth/guard';
 
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const dynamic = 'force-dynamic';
@@ -14,7 +16,18 @@ export const metadata = { title: "Micro App Template", description: "A modern mi
 
 const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Try to get client info for navigation
+  let client = null;
+  
+  if (!isSafeMode) {
+    try {
+      client = await requireClient();
+    } catch {
+      // No client authenticated, continue without
+    }
+  }
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body style={{ 
@@ -32,27 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           <TokensProvider>
             <AuthProvider>
-              {isSafeMode && (
-                <div style={{
-                  position: 'fixed',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  zIndex: 9998,
-                  padding: '6px 10px',
-                  fontSize: 12,
-                  background: '#d4edda',
-                  borderBottom: '1px solid #c3e6cb',
-                  color: '#155724'
-                }}>
-                  🛡️ SAFE MODE • Bypassing auth guards and heavy data fetches
-                </div>
-              )}
-              <div style={{ paddingTop: 0 }}>
-                <Suspense fallback={<PageBoot />}>
-                  {children}
-                </Suspense>
-              </div>
+              <GlobalNav client={client} isSafeMode={isSafeMode} />
+              <Suspense fallback={<PageBoot />}>
+                {children}
+              </Suspense>
             </AuthProvider>
           </TokensProvider>
         </ThemeProvider>

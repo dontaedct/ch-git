@@ -18,29 +18,11 @@ export default async function ModulesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-semibold text-gray-900">Modules Editor</h1>
-            <div className="flex items-center gap-4">
-              {isSafeMode && (
-                <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded">
-                  SAFE MODE
-                </span>
-              )}
-              <span className="text-sm text-gray-600">
-                {client?.email ?? 'demo@example.com'}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
             Configure Consultation Modules
-          </h2>
+          </h1>
           <p className="text-gray-600">
             Toggle modules on or off to customize what appears in your consultation plans.
             Changes will be reflected in all new consultations generated.

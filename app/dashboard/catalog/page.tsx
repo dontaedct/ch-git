@@ -18,7 +18,7 @@ import { Plan, PlanCatalog } from '@/types/config'
 // Use the CatalogOverrides type from actions
 // Remove duplicate interface definitions
 
-export default function CatalogOverridesPage() {
+function CatalogOverridesPage() {
   const [baseCatalog, setBaseCatalog] = useState<PlanCatalog | null>(null)
   const [overrides, setOverrides] = useState<CatalogOverrides>({})
   const [loading, setLoading] = useState(true)
@@ -203,15 +203,17 @@ export default function CatalogOverridesPage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Catalog Overrides</h1>
-          <p className="text-muted-foreground mt-1">
-            Customize plan titles, includes, and price bands per client
-          </p>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Catalog Overrides</h1>
+              <p className="text-gray-600">
+                Customize plan titles, includes, and price bands per client
+              </p>
+            </div>
         <div className="flex gap-2">
           {hasAnyOverrides() && (
             <Button
@@ -398,6 +400,12 @@ export default function CatalogOverridesPage() {
           )
         })}
       </Tabs>
+        </div>
+      </div>
     </div>
   )
+}
+
+export default function CatalogPage() {
+  return <CatalogOverridesPage />
 }

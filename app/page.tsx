@@ -8,7 +8,7 @@ import { CheckCircle, Users, ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background pt-0">
       {/* Hero Section - Balanced typography with subtle background treatment */}
       <section className="relative overflow-hidden">
         {/* Subtle gradient background */}

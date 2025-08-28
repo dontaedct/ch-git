@@ -3,7 +3,7 @@ import { requireClient } from '@/lib/auth/guard';
 import { getPublicEnv } from '@/lib/env';
 import Link from 'next/link';
 import { getDashboardStats, getActiveOverrides, hasActiveOverrides } from '@/lib/config/service';
-import { Settings, FileText, Package, BarChart3, AlertCircle, CheckCircle, ArrowUpRight, Activity, Calendar, Database, Webhook, ExternalLink, LogOut } from 'lucide-react';
+import { Settings, FileText, Package, BarChart3, AlertCircle, CheckCircle, ArrowUpRight, Activity, Calendar, Database, Webhook, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ConfigRevertButton } from '@/components/config-revert-button';
@@ -27,51 +27,22 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-gray-200/80 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 py-5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">Dashboard</h1>
-              {isSafeMode && (
-                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                  <AlertCircle className="w-3 h-3 mr-1" />
-                  Safe Mode
-                </Badge>
-              )}
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">
-                  {client?.email ?? 'demo@example.com'}
-                </p>
-                {client?.role && (
-                  <Badge variant="outline" className="mt-1 text-xs">
-                    {client.role.toUpperCase()}
-                  </Badge>
-                )}
-              </div>
-              <Link 
-                href="/login"
-                className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors px-3 py-2 rounded-lg hover:bg-gray-100/80 font-medium"
-              >
-                <LogOut className="w-4 h-4" />
-                Sign out
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
         {/* Welcome Section */}
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
             Welcome{client?.email ? ` back` : ' to your dashboard'}
-          </h2>
+          </h1>
           <p className="text-gray-600 text-lg leading-relaxed">
             Manage your consultations and account settings from here.
           </p>
+          {isSafeMode && (
+            <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-300 mt-3">
+              <AlertCircle className="w-3 h-3 mr-1" />
+              Safe Mode Active
+            </Badge>
+          )}
         </div>
 
         {/* Key Metrics */}

@@ -144,13 +144,203 @@ body {
   }
 }
 
-/* Basic utility classes */
-.container-page {
-  @apply max-w-4xl mx-auto px-6;
+/* Grid & Layout System */
+@layer components {
+  /* Container utilities with responsive gutters */
+  .container-grid {
+    @apply max-w-grid mx-auto px-gutter-xs sm:px-gutter-sm md:px-gutter-md lg:px-gutter-lg xl:px-gutter-xl;
+  }
+  
+  .container-page {
+    @apply max-w-container-page mx-auto px-gutter-xs sm:px-gutter-sm md:px-gutter-md lg:px-gutter-lg xl:px-gutter-xl;
+  }
+
+  .container-prose {
+    @apply max-w-container-prose mx-auto px-gutter-xs sm:px-gutter-sm md:px-gutter-md;
+  }
+  
+  /* 12-column grid system */
+  .grid-12 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-grid-12;
+    gap: var(--grid-gutter-xs);
+  }
+  
+  @screen sm {
+    .grid-12 {
+      gap: var(--grid-gutter-sm);
+    }
+  }
+  
+  @screen md {
+    .grid-12 {
+      gap: var(--grid-gutter-md);
+    }
+  }
+  
+  @screen lg {
+    .grid-12 {
+      gap: var(--grid-gutter-lg);
+    }
+  }
+  
+  @screen xl {
+    .grid-12 {
+      gap: var(--grid-gutter-xl);
+    }
+  }
+  
+  /* Column span utilities */
+  .col-span-full { @apply col-span-12; }
+  .col-span-half { @apply col-span-6; }
+  .col-span-third { @apply col-span-4; }
+  .col-span-quarter { @apply col-span-3; }
+  
+  /* Section spacing utilities */
+  .section {
+    @apply py-section-lg;
+  }
+  
+  .section-tight {
+    @apply py-section-sm;
+  }
+  
+  .section-loose {
+    @apply py-section-xl;
+  }
+  
+  /* Vertical rhythm utilities */
+  .rhythm {
+    margin-bottom: var(--section-rhythm-default);
+  }
+  
+  .rhythm-tight {
+    margin-bottom: var(--section-rhythm-tight);
+  }
+  
+  .rhythm-loose {
+    margin-bottom: var(--section-rhythm-loose);
+  }
+  
+  /* Layout stack utilities for mobile-first design */
+  .stack {
+    @apply flex flex-col gap-gutter-md;
+  }
+  
+  .stack-sm {
+    @apply flex flex-col gap-gutter-sm;
+  }
+  
+  .stack-lg {
+    @apply flex flex-col gap-gutter-lg;
+  }
+  
+  /* Auto-responsive grid (no manual breakpoint management) */
+  .grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--grid-gutter-md);
+  }
+  
+  .grid-auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--grid-gutter-md);
+  }
+  
+  /* Mobile-optimized grid for narrow devices (≤360px) */
+  @media (max-width: 360px) {
+    .grid-auto-fit {
+      grid-template-columns: 1fr;
+      gap: var(--grid-gutter-sm);
+    }
+    
+    .grid-auto-fill {
+      grid-template-columns: 1fr;
+      gap: var(--grid-gutter-sm);
+    }
+    
+    .container-grid,
+    .container-page {
+      padding-left: var(--grid-gutter-xs);
+      padding-right: var(--grid-gutter-xs);
+    }
+    
+    /* Ensure sections maintain rhythm even on very narrow screens */
+    .section {
+      padding-top: var(--section-spacing-md);
+      padding-bottom: var(--section-spacing-md);
+    }
+    
+    .section-tight {
+      padding-top: var(--section-spacing-sm);
+      padding-bottom: var(--section-spacing-sm);
+    }
+    
+    .section-loose {
+      padding-top: var(--section-spacing-lg);
+      padding-bottom: var(--section-spacing-lg);
+    }
+  }
+  
+  /* Ensure buttons stack nicely on narrow devices */
+  @media (max-width: 480px) {
+    .flex.flex-col.sm\\:flex-row {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .flex.flex-col.sm\\:flex-row > * {
+      width: 100%;
+      justify-content: center;
+    }
+  }
 }
 
-.container-prose {
-  @apply max-w-3xl mx-auto px-6;
+/* CLS (Cumulative Layout Shift) Prevention */
+@layer components {
+  /* Ensure containers maintain layout stability */
+  .container-grid,
+  .container-page,
+  .container-prose {
+    /* Reserve space for containers to prevent layout shift */
+    min-height: 1px;
+  }
+  
+  /* Grid containers should maintain their structure */
+  .grid-12,
+  .grid-auto-fit,
+  .grid-auto-fill {
+    /* Prevent layout shift by maintaining grid structure */
+    contain: layout style;
+  }
+  
+  /* Section elements should have consistent spacing */
+  .section,
+  .section-tight,
+  .section-loose {
+    /* Prevent cumulative layout shift in sections */
+    contain: layout;
+  }
+  
+  /* Image and media elements should reserve space */
+  img,
+  video,
+  iframe,
+  embed,
+  object {
+    /* Prevent layout shift from media loading */
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Buttons and interactive elements should maintain consistent sizing */
+  button,
+  [role="button"],
+  .btn,
+  .button {
+    /* Prevent layout shift from interactive elements */
+    contain: layout style;
+  }
 }
 
 /* Force all elements to respect viewport width */

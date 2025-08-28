@@ -219,34 +219,36 @@ export function ConsultationPageClient() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container-prose py-6">
-        <div className="mb-6">
-          <Link 
-            href="/questionnaire"
-            className="text-primary hover:text-primary/80 font-medium text-caption tracking-wide inline-flex items-center gap-2"
-          >
-            ← Back to questionnaire
-          </Link>
+      <section className="section-tight">
+        <div className="container-grid">
+          <div className="mb-6">
+            <Link 
+              href="/questionnaire"
+              className="text-primary hover:text-primary/80 font-medium text-caption tracking-wide inline-flex items-center gap-2"
+            >
+              ← Back to questionnaire
+            </Link>
+          </div>
+          
+          {config && (
+            <Suspense fallback={
+              <div className="flex flex-col items-center justify-center py-section-lg">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+                <p className="text-caption text-muted-foreground">Loading consultation engine...</p>
+              </div>
+            }>
+              <ConsultationEngine
+                answers={answers}
+                catalog={config.catalog}
+                template={config.template}
+                onComplete={handleComplete}
+                timestamp={new Date().toISOString()}
+                clientName="Demo Client"
+              />
+            </Suspense>
+          )}
         </div>
-        
-        {config && (
-          <Suspense fallback={
-            <div className="flex flex-col items-center justify-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
-              <p className="text-caption text-muted-foreground">Loading consultation engine...</p>
-            </div>
-          }>
-            <ConsultationEngine
-              answers={answers}
-              catalog={config.catalog}
-              template={config.template}
-              onComplete={handleComplete}
-              timestamp={new Date().toISOString()}
-              clientName="Demo Client"
-            />
-          </Suspense>
-        )}
-      </div>
+      </section>
       <Toaster />
     </div>
   )

@@ -95,6 +95,47 @@ export interface ComponentTokens {
   };
 }
 
+export interface LayoutTokens {
+  grid: {
+    columns: number;
+    maxWidth: string;
+    gutters: {
+      xs: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+    };
+    breakpoints: {
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+    };
+  };
+  section: {
+    spacing: {
+      xs: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+      '2xl': string;
+    };
+    rhythm: {
+      default: string;
+      tight: string;
+      loose: string;
+    };
+  };
+  container: {
+    prose: string;
+    page: string;
+    grid: string;
+    full: string;
+  };
+}
+
 export interface DesignTokens {
   // Color scales
   neutral: ColorScale;
@@ -207,6 +248,9 @@ export interface DesignTokens {
       smooth: string;
     };
   };
+  
+  // Layout & Grid System
+  layout: LayoutTokens;
   
   // Component-specific tokens
   components: ComponentTokens;
@@ -389,6 +433,48 @@ export const designTokens: DesignTokens = {
       'ease-in-out': 'ease-in-out',
       bounce: 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
       smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+  },
+  
+  // Layout & Grid System
+  layout: {
+    grid: {
+      columns: 12,
+      maxWidth: '1120px', // ~1120px for disciplined layout
+      gutters: {
+        xs: '16px',  // Mobile gutters
+        sm: '20px',  // Small tablet gutters
+        md: '24px',  // Standard gutters (as requested)
+        lg: '32px',  // Desktop gutters
+        xl: '40px',  // Large desktop gutters
+      },
+      breakpoints: {
+        sm: '640px',  // Mobile-first breakpoints
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+      },
+    },
+    section: {
+      spacing: {
+        xs: '24px',   // Tight section spacing
+        sm: '32px',   // Small section spacing
+        md: '48px',   // Medium section spacing
+        lg: '72px',   // Default section spacing (as requested)
+        xl: '96px',   // Large section spacing
+        '2xl': '128px', // Extra large section spacing
+      },
+      rhythm: {
+        default: '72px',  // Default vertical rhythm (as requested)
+        tight: '48px',    // Tight vertical rhythm
+        loose: '96px',    // Loose vertical rhythm
+      },
+    },
+    container: {
+      prose: '65ch',    // Content width optimized for reading
+      page: '1200px',   // Page container width
+      grid: '1120px',   // Grid container width (matches grid max-width)
+      full: '100%',     // Full width container
     },
   },
   

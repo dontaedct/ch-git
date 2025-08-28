@@ -144,6 +144,32 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
     root.style.setProperty(`--toast-shadow`, tokens.components.toast.shadow);
     root.style.setProperty(`--toast-max-width`, tokens.components.toast.maxWidth);
     
+    // Layout tokens - Grid
+    root.style.setProperty(`--grid-columns`, tokens.layout.grid.columns.toString());
+    root.style.setProperty(`--grid-max-width`, tokens.layout.grid.maxWidth);
+    
+    Object.entries(tokens.layout.grid.gutters).forEach(([key, value]) => {
+      root.style.setProperty(`--grid-gutter-${key}`, value);
+    });
+    
+    Object.entries(tokens.layout.grid.breakpoints).forEach(([key, value]) => {
+      root.style.setProperty(`--grid-breakpoint-${key}`, value);
+    });
+    
+    // Layout tokens - Section
+    Object.entries(tokens.layout.section.spacing).forEach(([key, value]) => {
+      root.style.setProperty(`--section-spacing-${key}`, value);
+    });
+    
+    Object.entries(tokens.layout.section.rhythm).forEach(([key, value]) => {
+      root.style.setProperty(`--section-rhythm-${key}`, value);
+    });
+    
+    // Layout tokens - Container
+    Object.entries(tokens.layout.container).forEach(([key, value]) => {
+      root.style.setProperty(`--container-${key}`, value);
+    });
+    
   }, [semanticColors, tokens]);
   
   // Update CSS variables when theme changes

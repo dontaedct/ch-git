@@ -92,6 +92,15 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
       root.style.setProperty(`--shadow-${key}`, value);
     });
     
+    // Motion tokens
+    Object.entries(tokens.motion.duration).forEach(([key, value]) => {
+      root.style.setProperty(`--motion-duration-${key}`, value);
+    });
+    
+    Object.entries(tokens.motion.easing).forEach(([key, value]) => {
+      root.style.setProperty(`--motion-ease-${key}`, value);
+    });
+    
     // Component tokens - Button
     Object.entries(tokens.components.button.height).forEach(([key, value]) => {
       root.style.setProperty(`--button-height-${key}`, value);

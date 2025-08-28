@@ -167,6 +167,26 @@ export interface DesignTokens {
     xl: string;
   };
   
+  // Motion & Animation
+  motion: {
+    duration: {
+      '75': string;
+      '100': string;
+      '150': string;
+      '200': string;
+      '300': string;
+      '500': string;
+    };
+    easing: {
+      linear: string;
+      'ease-in': string;
+      'ease-out': string;
+      'ease-in-out': string;
+      bounce: string;
+      smooth: string;
+    };
+  };
+  
   // Component-specific tokens
   components: ComponentTokens;
 }
@@ -309,6 +329,25 @@ export const designTokens: DesignTokens = {
     md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
     lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
     xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+  },
+  
+  motion: {
+    duration: {
+      '75': '75ms',
+      '100': '100ms',
+      '150': '150ms',
+      '200': '200ms',
+      '300': '300ms',
+      '500': '500ms',
+    },
+    easing: {
+      linear: 'linear',
+      'ease-in': 'ease-in',
+      'ease-out': 'ease-out',
+      'ease-in-out': 'ease-in-out',
+      bounce: 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
+      smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    },
   },
   
   components: {

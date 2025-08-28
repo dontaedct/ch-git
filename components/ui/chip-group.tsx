@@ -173,11 +173,17 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
     return (
       <div
         ref={ref}
-        className={cn('flex flex-wrap gap-2', className)}
+        className={cn('flex flex-wrap gap-1.5', className)}
         role="group"
         aria-label={ariaLabel}
         aria-describedby={ariaDescribedBy}
         onKeyDown={handleKeyDown}
+        style={{
+          '--chip-height': '1.75rem',
+          '--chip-padding': '0.375rem 0.75rem',
+          '--chip-font-size': '0.875rem',
+          '--chip-border-radius': '0.5rem',
+        } as React.CSSProperties}
         {...props}
       >
         {allOptions.map((option, index) => (
@@ -190,27 +196,28 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
             disabled={disabled || option.disabled}
             tabIndex={focusedIndex === index ? 0 : -1}
             className={cn(
-              'inline-flex items-center gap-1 h-[var(--chip-height)] px-[var(--chip-padding)]',
+              'inline-flex items-center gap-1.5 h-[var(--chip-height)] px-[var(--chip-padding)]',
               'text-[var(--chip-font-size)] font-medium rounded-[var(--chip-border-radius)]',
-              'border transition-colors focus-visible:outline-none focus-visible:ring-2',
-              'focus-visible:ring-ring focus-visible:ring-offset-2',
+              'border transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2',
+              'focus-visible:ring-ring focus-visible:ring-offset-1',
               'disabled:pointer-events-none disabled:opacity-50',
+              'hover:scale-[1.02] active:scale-[0.98]',
               isSelected(option.value)
-                ? 'bg-primary text-primary-foreground border-primary'
-                : 'bg-background text-foreground border-border hover:bg-accent hover:text-accent-foreground'
+                ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                : 'bg-background text-foreground border-border hover:bg-accent hover:text-accent-foreground hover:border-accent-foreground/20'
             )}
             onClick={() => toggleChip(option.value)}
             aria-pressed={isSelected(option.value)}
             aria-disabled={disabled || option.disabled}
           >
             {option.label}
-            {isSelected(option.value) && (
+            {multiple && isSelected(option.value) && (
               <svg
-                className="w-3 h-3"
+                className="w-3 h-3 flex-shrink-0"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                strokeWidth={2}
+                strokeWidth={2.5}
                 aria-hidden="true"
               >
                 <path
@@ -219,6 +226,9 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
                   d="m4.5 12.75 6 6 9-13.5"
                 />
               </svg>
+            )}
+            {!multiple && isSelected(option.value) && (
+              <div className="w-2 h-2 bg-current rounded-full flex-shrink-0" aria-hidden="true" />
             )}
           </button>
         ))}
@@ -247,18 +257,20 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
                     'h-[var(--chip-height)] px-[var(--chip-padding)]',
                     'text-[var(--chip-font-size)] rounded-[var(--chip-border-radius)]',
                     'border border-border bg-background text-foreground',
-                    'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
-                    'min-w-24'
+                    'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1',
+                    'min-w-20 transition-all duration-150'
                   )}
                   placeholder={customPlaceholder}
                 />
                 <button
                   type="button"
                   onClick={handleAddCustom}
-                  className="inline-flex items-center justify-center h-6 w-6 rounded text-xs bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="inline-flex items-center justify-center h-5 w-5 rounded text-xs bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-150 hover:scale-110"
                   aria-label="Add custom option"
                 >
-                  ✓
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
                 </button>
                 <button
                   type="button"
@@ -266,10 +278,12 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
                     setIsAddingCustom(false)
                     setCustomValue('')
                   }}
-                  className="inline-flex items-center justify-center h-6 w-6 rounded text-xs bg-secondary text-secondary-foreground hover:bg-secondary/90"
+                  className="inline-flex items-center justify-center h-5 w-5 rounded text-xs bg-secondary text-secondary-foreground hover:bg-secondary/90 transition-all duration-150 hover:scale-110"
                   aria-label="Cancel"
                 >
-                  ✕
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
                 </button>
               </div>
             ) : (
@@ -279,19 +293,20 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
                 disabled={disabled}
                 tabIndex={focusedIndex === allOptions.length ? 0 : -1}
                 className={cn(
-                  'inline-flex items-center gap-1 h-[var(--chip-height)] px-[var(--chip-padding)]',
+                  'inline-flex items-center gap-1.5 h-[var(--chip-height)] px-[var(--chip-padding)]',
                   'text-[var(--chip-font-size)] font-medium rounded-[var(--chip-border-radius)]',
                   'border-dashed border-2 border-border text-muted-foreground',
-                  'hover:border-primary hover:text-primary transition-colors',
+                  'hover:border-primary hover:text-primary hover:bg-primary/5 transition-all duration-150',
                   'focus-visible:outline-none focus-visible:ring-2',
-                  'focus-visible:ring-ring focus-visible:ring-offset-2',
-                  'disabled:pointer-events-none disabled:opacity-50'
+                  'focus-visible:ring-ring focus-visible:ring-offset-1',
+                  'disabled:pointer-events-none disabled:opacity-50',
+                  'hover:scale-[1.02] active:scale-[0.98]'
                 )}
                 onClick={() => setIsAddingCustom(true)}
                 aria-label="Add custom option"
               >
                 <svg
-                  className="w-3 h-3"
+                  className="w-3 h-3 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

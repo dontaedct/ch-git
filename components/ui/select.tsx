@@ -24,23 +24,63 @@ function SelectValue({
   return <SelectPrimitive.Value data-slot="select-value" {...props} />
 }
 
+export interface SelectTriggerProps
+  extends React.ComponentProps<typeof SelectPrimitive.Trigger> {
+  size?: "sm" | "default" | "lg"
+  variant?: "default" | "error" | "success" | "warning"
+  label?: string
+  helper?: string
+  error?: string
+  success?: string
+  warning?: string
+}
+
 function SelectTrigger({
   className,
   size = "default",
+  variant = "default",
+  label,
+  helper,
+  error,
+  success,
+  warning,
   children,
+  id,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-  size?: "sm" | "default"
-}) {
-  return (
+}: SelectTriggerProps) {
+  const generatedId = React.useId()
+  const triggerId = id ?? generatedId
+  const helperId = `${triggerId}-helper`
+  const errorId = `${triggerId}-error`
+  
+  // Determine variant based on validation state
+  const effectiveVariant = error ? 'error' : success ? 'success' : warning ? 'warning' : variant
+  const validationMessage = error ?? success ?? warning
+  
+  const triggerElement = (
     <SelectPrimitive.Trigger
+      id={triggerId}
       data-slot="select-trigger"
       data-size={size}
       aria-label="Select option"
       className={cn(
-        "border-input data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:ring-destructive dark:bg-input/30 dark:hover:bg-input/50 flex w-fit items-center justify-between gap-2 rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 data-[size=default]:h-9 data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "data-[placeholder]:text-muted-foreground [&_svg:not([class*='text-'])]:text-muted-foreground flex w-full items-center justify-between gap-2 rounded-md border bg-background px-3 py-2 text-sm whitespace-nowrap shadow-xs transition-colors outline-none disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        // Size variants
+        size === "sm" && "h-8 px-2 py-1 text-xs",
+        size === "default" && "h-9 px-3 py-2 text-sm",
+        size === "lg" && "h-10 px-4 py-3 text-base",
+        // Color variants
+        effectiveVariant === "default" && "border-input hover:border-input/80 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20",
+        effectiveVariant === "error" && "border-destructive bg-destructive/5 focus-visible:border-destructive focus-visible:ring-2 focus-visible:ring-destructive/20",
+        effectiveVariant === "success" && "border-green-500 bg-green-50 dark:bg-green-950 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/20",
+        effectiveVariant === "warning" && "border-yellow-500 bg-yellow-50 dark:bg-yellow-950 focus-visible:border-yellow-500 focus-visible:ring-2 focus-visible:ring-yellow-500/20",
         className
       )}
+      aria-describedby={cn(
+        helper && helperId,
+        validationMessage && errorId
+      )}
+      aria-invalid={error ? 'true' : 'false'}
       {...props}
     >
       {children}
@@ -48,6 +88,57 @@ function SelectTrigger({
         <ChevronDownIcon className="size-4 opacity-50" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
+  )
+  
+  if (!label && !helper && !validationMessage) {
+    return triggerElement
+  }
+  
+  return (
+    <div className="space-y-1.5">
+      {label && (
+        <label
+          htmlFor={triggerId}
+          className="text-sm font-medium text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          {label}
+        </label>
+      )}
+      {triggerElement}
+      {helper && !validationMessage && (
+        <p id={helperId} className="text-xs text-muted-foreground">
+          {helper}
+        </p>
+      )}
+      {validationMessage && (
+        <p
+          id={errorId}
+          className={cn(
+            "text-xs font-medium flex items-center gap-1",
+            error && "text-destructive",
+            success && "text-green-600 dark:text-green-400",
+            warning && "text-yellow-600 dark:text-yellow-400"
+          )}
+        >
+          {error && (
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.268 16.5c-.77.833.192 2.5 1.732 2.5z" />
+            </svg>
+          )}
+          {success && (
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          )}
+          {warning && (
+            <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          )}
+          {validationMessage}
+        </p>
+      )}
+    </div>
   )
 }
 

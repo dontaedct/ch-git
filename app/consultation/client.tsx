@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ConsultationEngine } from '@/components/consultation-engine'
 import { Toaster } from '@/components/ui/sonner'
 import { setupN8nEventListeners } from '@/lib/n8n-events'
+import { getRuntimeConfig } from '@/lib/config/modules'
 
 // Type for Plan Card Sections
 type PlanCardSection = 'whatYouGet' | 'whyThisFits' | 'timeline' | 'nextSteps'
@@ -94,48 +95,76 @@ export function ConsultationPageClient() {
   const _router = useRouter()
   const searchParams = useSearchParams()
   const [answers, setAnswers] = useState<Record<string, unknown>>({})
+  const [config, setConfig] = useState<typeof demoConfig | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Set up N8N event listeners for debugging
-    setupN8nEventListeners()
-    
-    // Try to get answers from localStorage or URL params
-    const savedAnswers = localStorage.getItem('questionnaire-answers')
-    
-    if (savedAnswers) {
+    const loadConfigAndAnswers = async () => {
+      // Set up N8N event listeners for debugging
+      setupN8nEventListeners()
+      
       try {
-        const parsed = JSON.parse(savedAnswers)
-        setAnswers(parsed)
+        // Load runtime config with client-specific overrides
+        // TODO: Get actual client ID from auth context
+        const runtimeConfig = await getRuntimeConfig('demo-client-id')
+        
+        // Use runtime config if available, otherwise fall back to demo config
+        const finalConfig = runtimeConfig ?? demoConfig
+        setConfig(finalConfig as typeof demoConfig)
+        
+        // Try to get answers from localStorage or URL params
+        const savedAnswers = localStorage.getItem('questionnaire-answers')
+        
+        if (savedAnswers) {
+          try {
+            const parsed = JSON.parse(savedAnswers)
+            setAnswers(parsed)
+          } catch (error) {
+            console.warn('Failed to parse saved answers:', error)
+          }
+        }
+        
+        // Also check URL params for demo data
+        const params = Object.fromEntries(searchParams.entries())
+        if (Object.keys(params).length > 0) {
+          setAnswers(prev => ({ ...prev, ...params }))
+        }
+        
+        // Set demo data if no answers found
+        if (!savedAnswers && Object.keys(params).length === 0) {
+          setAnswers({
+            'business-type': 'saas',
+            'company-size': 'startup',
+            'primary-goals': ['growth', 'automation'],
+            'timeline': 'soon'
+          })
+        }
       } catch (error) {
-        console.warn('Failed to parse saved answers:', error)
+        console.error('Failed to load config:', error)
+        // Fall back to demo config on error
+        setConfig(demoConfig)
+        
+        // Set demo answers
+        setAnswers({
+          'business-type': 'saas',
+          'company-size': 'startup',
+          'primary-goals': ['growth', 'automation'],
+          'timeline': 'soon'
+        })
+      } finally {
+        setIsLoading(false)
       }
     }
     
-    // Also check URL params for demo data
-    const params = Object.fromEntries(searchParams.entries())
-    if (Object.keys(params).length > 0) {
-      setAnswers(prev => ({ ...prev, ...params }))
-    }
-    
-    // Set demo data if no answers found
-    if (!savedAnswers && Object.keys(params).length === 0) {
-      setAnswers({
-        'business-type': 'saas',
-        'company-size': 'startup',
-        'primary-goals': ['growth', 'automation'],
-        'timeline': 'soon'
-      })
-    }
-    
-    setIsLoading(false)
+    loadConfigAndAnswers()
   }, [searchParams])
 
   const handleComplete = (planId: string, action: string) => {
     if (action === 'book') {
       // Open booking URL
-      if (demoConfig.template.actions.bookingUrl) {
-        window.open(demoConfig.template.actions.bookingUrl, '_blank')
+      const bookingUrl = config?.template?.actions?.bookingUrl ?? demoConfig.template.actions.bookingUrl
+      if (bookingUrl) {
+        window.open(bookingUrl, '_blank')
       }
     } else if (action === 'download') {
       // Trigger PDF download
@@ -169,14 +198,16 @@ export function ConsultationPageClient() {
           </Link>
         </div>
         
-        <ConsultationEngine
-          answers={answers}
-          catalog={demoConfig.catalog}
-          template={demoConfig.template}
-          onComplete={handleComplete}
-          timestamp={new Date().toISOString()}
-          clientName="Demo Client"
-        />
+        {config && (
+          <ConsultationEngine
+            answers={answers}
+            catalog={config.catalog}
+            template={config.template}
+            onComplete={handleComplete}
+            timestamp={new Date().toISOString()}
+            clientName="Demo Client"
+          />
+        )}
       </div>
       <Toaster />
     </div>

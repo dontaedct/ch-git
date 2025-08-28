@@ -74,6 +74,29 @@ export async function getRuntimeConfig(clientId?: string) {
     if (overrides.plan_catalog_overrides && Object.keys(overrides.plan_catalog_overrides).length > 0) {
       mergedConfig.catalog = { ...mergedConfig.catalog as Record<string, unknown>, ...overrides.plan_catalog_overrides }
     }
+
+    // Apply new catalog overrides if present
+    if (overrides.catalog_overrides && Object.keys(overrides.catalog_overrides).length > 0) {
+      const baseCatalog = mergedConfig.catalog as { plans: Array<Record<string, unknown>> }
+      if (baseCatalog?.plans) {
+        const mergedPlans = baseCatalog.plans.map((plan: Record<string, unknown>) => {
+          const planOverride = overrides.catalog_overrides[plan.id as string]
+          if (!planOverride) return plan
+          
+          return {
+            ...plan,
+            ...(planOverride.title && { title: planOverride.title }),
+            ...(planOverride.includes && { includes: planOverride.includes }),
+            ...(planOverride.priceBand && { priceBand: planOverride.priceBand })
+          }
+        })
+        
+        mergedConfig.catalog = {
+          ...baseCatalog,
+          plans: mergedPlans
+        }
+      }
+    }
     
     return mergedConfig
   } catch (error) {

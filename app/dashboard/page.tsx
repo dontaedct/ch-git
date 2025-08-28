@@ -148,13 +148,16 @@ export default async function DashboardPage() {
                   <p className="text-sm text-gray-600">Configure consultation modules</p>
                 </Link>
                 
-                <div className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group cursor-pointer">
+                <Link 
+                  href="/dashboard/catalog"
+                  className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group"
+                >
                   <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-orange-200 transition-colors">
                     <div className="w-4 h-4 bg-orange-600 rounded"></div>
                   </div>
-                  <h4 className="font-medium text-gray-900 mb-1">Account settings</h4>
-                  <p className="text-sm text-gray-600">Manage your account preferences</p>
-                </div>
+                  <h4 className="font-medium text-gray-900 mb-1">Catalog Overrides</h4>
+                  <p className="text-sm text-gray-600">Customize plan titles and content</p>
+                </Link>
               </div>
             </div>
           </div>

@@ -22,22 +22,38 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
     const completedSteps = steps.filter(step => step.status === 'complete').length
     const currentStepIndex = steps.findIndex(step => step.status === 'current')
     const progressPercentage = ((completedSteps + (currentStepIndex >= 0 ? 0.5 : 0)) / steps.length) * 100
+    const ariaLiveRef = React.useRef<HTMLDivElement>(null)
+    const [prevCurrentStep, setPrevCurrentStep] = React.useState(currentStepIndex)
+
+    // Update aria-live region when current step changes
+    React.useEffect(() => {
+      if (currentStepIndex !== prevCurrentStep && ariaLiveRef.current) {
+        const currentStep = steps[currentStepIndex]
+        if (currentStep) {
+          const stepLabel = currentStep.label ?? `Step ${currentStepIndex + 1}`
+          ariaLiveRef.current.textContent = `Now on ${stepLabel}. ${currentStep.description ?? ''} Step ${currentStepIndex + 1} of ${steps.length}.`
+        }
+        setPrevCurrentStep(currentStepIndex)
+      }
+    }, [currentStepIndex, prevCurrentStep, steps])
 
     return (
-      <div
-        ref={ref}
-        className={cn(
-          'stepper',
-          orientation === 'horizontal' ? 'flex items-center w-full' : 'flex flex-col h-full',
-          className
-        )}
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={steps.length}
-        aria-valuenow={completedSteps}
-        aria-valuetext={`Step ${currentStepIndex + 1} of ${steps.length}`}
-        {...props}
-      >
+      <>
+        <div aria-live="polite" aria-atomic="true" className="sr-only" ref={ariaLiveRef} />
+        <div
+          ref={ref}
+          className={cn(
+            'stepper',
+            orientation === 'horizontal' ? 'flex items-center w-full' : 'flex flex-col h-full',
+            className
+          )}
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={steps.length}
+          aria-valuenow={completedSteps}
+          aria-valuetext={`Step ${currentStepIndex + 1} of ${steps.length}`}
+          {...props}
+        >
         {orientation === 'horizontal' ? (
           <>
             {/* Progress bar */}
@@ -176,7 +192,8 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
             ))}
           </div>
         )}
-      </div>
+        </div>
+      </>
     )
   }
 )

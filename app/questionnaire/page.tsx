@@ -2,8 +2,11 @@
 
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { QuestionnaireEngine } from '@/components/questionnaire-engine'
+import { Suspense, lazy } from 'react'
 import configData from '@/configs/microapps/base.microapp.json'
+
+// Lazy load the QuestionnaireEngine component
+const QuestionnaireEngine = lazy(() => import('@/components/questionnaire-engine').then(module => ({ default: module.QuestionnaireEngine })))
 
 export default function QuestionnairePage() {
   const router = useRouter()
@@ -38,11 +41,18 @@ export default function QuestionnairePage() {
         </div>
         
         <div className="bg-card rounded-lg shadow-sm border border-border p-8">
-          <QuestionnaireEngine
-            config={configData.questionnaire}
-            onComplete={handleComplete}
-            onAnalyticsEvent={handleAnalyticsEvent}
-          />
+          <Suspense fallback={
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+              <p className="text-muted-foreground">Loading questionnaire...</p>
+            </div>
+          }>
+            <QuestionnaireEngine
+              config={configData.questionnaire}
+              onComplete={handleComplete}
+              onAnalyticsEvent={handleAnalyticsEvent}
+            />
+          </Suspense>
         </div>
       </div>
     </div>

@@ -124,4 +124,32 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    
+    /* Remove specific animations that can be distracting */
+    .animate-spin {
+      animation: none;
+    }
+    
+    .animate-pulse {
+      animation: none;
+      opacity: 1;
+    }
+    
+    /* Focus indicators should remain visible for reduced motion users */
+    :focus-visible {
+      outline: 2px solid hsl(var(--ring)) !important;
+      outline-offset: 2px !important;
+    }
+  }
 }

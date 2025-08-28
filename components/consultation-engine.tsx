@@ -95,6 +95,8 @@ export function ConsultationEngine({
   const [selectedPlan, setSelectedPlan] = useState<string>('')
   const [isEmailModalOpen, setIsEmailModalOpen] = useState(false)
   const [currentPdfBlob, setCurrentPdfBlob] = useState<Blob | undefined>()
+  const ariaLiveRef = React.useRef<HTMLDivElement>(null)
+  const [prevSelectedPlan, setPrevSelectedPlan] = React.useState('')
   
   // N8N event system
   const n8nEvents = useN8nEvents()
@@ -177,6 +179,17 @@ export function ConsultationEngine({
       })
     }
   }, [primaryPlan, selectedPlan, selectedPlans])
+
+  // Update aria-live region when selected plan changes
+  useEffect(() => {
+    if (selectedPlan !== prevSelectedPlan && selectedPlan && ariaLiveRef.current) {
+      const currentPlan = selectedPlans.find(p => p.id === selectedPlan)
+      if (currentPlan) {
+        ariaLiveRef.current.textContent = `Selected plan: ${currentPlan.title}. ${currentPlan.description}`
+      }
+      setPrevSelectedPlan(selectedPlan)
+    }
+  }, [selectedPlan, prevSelectedPlan, selectedPlans])
   
   // Generate summary based on answers
   const summary = useMemo(() => {
@@ -284,6 +297,8 @@ export function ConsultationEngine({
   
   return (
     <div id="consultation-content" className="max-w-4xl mx-auto p-6 space-y-8">
+      <div aria-live="polite" aria-atomic="true" className="sr-only" ref={ariaLiveRef} />
+      
       {/* Header */}
       <div className="text-center space-y-4">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-2">

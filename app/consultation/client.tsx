@@ -1,13 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense, lazy } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { ConsultationEngine } from '@/components/consultation-engine'
 import { Toaster } from '@/components/ui/sonner'
 import { setupN8nEventListeners } from '@/lib/n8n-events'
 import { getRuntimeConfig } from '@/lib/config/modules'
 import { getClientSettings, onSettingsChange, applyClientOverrides } from '@/lib/config/client-settings'
+
+// Lazy load the ConsultationEngine component
+const ConsultationEngine = lazy(() => import('@/components/consultation-engine').then(module => ({ default: module.ConsultationEngine })))
 
 // Type for Plan Card Sections
 type PlanCardSection = 'whatYouGet' | 'whyThisFits' | 'timeline' | 'nextSteps'
@@ -228,14 +230,21 @@ export function ConsultationPageClient() {
         </div>
         
         {config && (
-          <ConsultationEngine
-            answers={answers}
-            catalog={config.catalog}
-            template={config.template}
-            onComplete={handleComplete}
-            timestamp={new Date().toISOString()}
-            clientName="Demo Client"
-          />
+          <Suspense fallback={
+            <div className="flex flex-col items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
+              <p className="text-muted-foreground">Loading consultation engine...</p>
+            </div>
+          }>
+            <ConsultationEngine
+              answers={answers}
+              catalog={config.catalog}
+              template={config.template}
+              onComplete={handleComplete}
+              timestamp={new Date().toISOString()}
+              clientName="Demo Client"
+            />
+          </Suspense>
         )}
       </div>
       <Toaster />

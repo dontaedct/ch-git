@@ -342,3 +342,147 @@ describe('TabsUnderline Keyboard Interactions', () => {
     expect(tab2).toHaveClass('focus-visible:ring-2')
   })
 })
+
+describe('Stepper Keyboard Interactions', () => {
+  const mockSteps = [
+    { id: '1', label: 'Step 1', description: 'First step', status: 'complete' as const },
+    { id: '2', label: 'Step 2', description: 'Second step', status: 'current' as const },
+    { id: '3', label: 'Step 3', description: 'Third step', status: 'upcoming' as const },
+    { id: '4', label: 'Step 4', description: 'Fourth step', status: 'upcoming' as const },
+  ]
+
+  beforeEach(() => {
+    document.documentElement.style.setProperty('--stepper-size', '2rem')
+    document.documentElement.style.setProperty('--stepper-border-width', '2px')
+    document.documentElement.style.setProperty('--stepper-connector-height', '2px')
+  })
+
+  it('should have proper ARIA attributes', () => {
+    const { Stepper } = require('@/components/ui/stepper')
+    
+    render(
+      <Stepper
+        steps={mockSteps}
+        showLabels={true}
+      />
+    )
+
+    const progressbar = screen.getByRole('progressbar')
+    expect(progressbar).toHaveAttribute('aria-valuemin', '0')
+    expect(progressbar).toHaveAttribute('aria-valuemax', '4')
+    expect(progressbar).toHaveAttribute('aria-valuenow', '1') // completed steps
+    expect(progressbar).toHaveAttribute('aria-valuetext', 'Step 2 of 4')
+  })
+
+  it('should mark current step with aria-current', () => {
+    const { Stepper } = require('@/components/ui/stepper')
+    
+    render(
+      <Stepper
+        steps={mockSteps}
+        showLabels={true}
+      />
+    )
+
+    const stepElements = screen.getByRole('progressbar').querySelectorAll('[aria-current]')
+    expect(stepElements).toHaveLength(1)
+    expect(stepElements[0]).toHaveAttribute('aria-current', 'step')
+  })
+
+  it('should display step progress correctly', () => {
+    const { Stepper } = require('@/components/ui/stepper')
+    
+    render(
+      <Stepper
+        steps={mockSteps}
+        showLabels={true}
+      />
+    )
+
+    const progressbar = screen.getByRole('progressbar')
+    const progressFill = progressbar.querySelector('.bg-primary')
+    
+    // Should show 37.5% progress (1.5 / 4 steps = 37.5%)
+    expect(progressFill).toHaveStyle('width: 37.5%')
+  })
+
+  it('should handle steps without labels', () => {
+    const { Stepper } = require('@/components/ui/stepper')
+    const stepsWithoutLabels = mockSteps.map(step => ({ ...step, label: undefined }))
+    
+    render(
+      <Stepper
+        steps={stepsWithoutLabels}
+        showLabels={false}
+      />
+    )
+
+    expect(screen.queryByText('Step 1')).not.toBeInTheDocument()
+    expect(screen.queryByText('First step')).not.toBeInTheDocument()
+    
+    // Should still have the step indicators
+    const progressbar = screen.getByRole('progressbar')
+    expect(progressbar).toBeInTheDocument()
+  })
+
+  it('should display vertical layout correctly', () => {
+    const { Stepper } = require('@/components/ui/stepper')
+    
+    render(
+      <Stepper
+        steps={mockSteps}
+        orientation="vertical"
+        showLabels={true}
+      />
+    )
+
+    const progressbar = screen.getByRole('progressbar')
+    expect(progressbar).toHaveClass('flex-col', 'h-full')
+    
+    // Should still have proper ARIA attributes
+    expect(progressbar).toHaveAttribute('aria-valuetext', 'Step 2 of 4')
+  })
+
+  it('should handle all completed steps', () => {
+    const { Stepper } = require('@/components/ui/stepper')
+    const completedSteps = mockSteps.map(step => ({ ...step, status: 'complete' as const }))
+    
+    render(
+      <Stepper
+        steps={completedSteps}
+        showLabels={true}
+      />
+    )
+
+    const progressbar = screen.getByRole('progressbar')
+    expect(progressbar).toHaveAttribute('aria-valuenow', '4') // all completed
+    expect(progressbar).toHaveAttribute('aria-valuetext', 'Step -1 of 4') // no current step
+    
+    // Progress should be 100%
+    const progressFill = progressbar.querySelector('.bg-primary')
+    expect(progressFill).toHaveStyle('width: 100%')
+  })
+
+  it('should handle no completed steps', () => {
+    const { Stepper } = require('@/components/ui/stepper')
+    const upcomingSteps = mockSteps.map((step, index) => ({ 
+      ...step, 
+      status: index === 0 ? 'current' as const : 'upcoming' as const 
+    }))
+    
+    render(
+      <Stepper
+        steps={upcomingSteps}
+        showLabels={true}
+      />
+    )
+
+    const progressbar = screen.getByRole('progressbar')
+    expect(progressbar).toHaveAttribute('aria-valuenow', '0') // no completed
+    expect(progressbar).toHaveAttribute('aria-valuetext', 'Step 1 of 4')
+    
+    // Progress should be 12.5% (0.5 / 4 = 12.5%)
+    const progressFill = progressbar.querySelector('.bg-primary')
+    expect(progressFill).toHaveStyle('width: 12.5%')
+  })
+})

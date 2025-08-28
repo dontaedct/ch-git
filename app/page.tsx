@@ -2,56 +2,61 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-6 py-16">
+    <main className="min-h-screen bg-background">
+      <div className="container-prose py-16">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-6 md:text-5xl">
+          <h1 className="text-display-lg mb-6">
             Get the consultation you need
           </h1>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto md:text-xl">
+          <p className="text-body-lg text-muted-foreground mb-8 measure mx-auto">
             Professional consultation services tailored to your needs. Start your journey with a free consultation today.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link 
-              href="/questionnaire"
-              className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-            >
-              Start free consultation
-            </Link>
-            <Link 
-              href="/login"
-              className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-blue-600 bg-white border border-blue-600 rounded-lg hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
-            >
-              Sign in
-            </Link>
+            <Button asChild size="lg" className="text-lg px-8 py-4">
+              <Link href="/questionnaire">
+                Start free consultation
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="text-lg px-8 py-4">
+              <Link href="/login">
+                Sign in
+              </Link>
+            </Button>
           </div>
         </div>
         
-        <div className="mt-16 pt-16 border-t border-gray-200">
+        <div className="mt-16 pt-16 border-t border-border">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <div className="w-6 h-6 bg-blue-600 rounded"></div>
+              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-6 h-6 bg-primary rounded"></div>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Expert guidance</h3>
-              <p className="text-gray-600">Professional consultation from experienced experts in their field.</p>
+              <h3 className="text-h4 mb-2">Expert guidance</h3>
+              <p className="text-body-sm text-muted-foreground measure-narrow mx-auto">
+                Professional consultation from experienced experts in their field.
+              </p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <div className="w-6 h-6 bg-green-600 rounded"></div>
+              <div className="w-12 h-12 bg-success/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-6 h-6 bg-success rounded"></div>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Personalized approach</h3>
-              <p className="text-gray-600">Tailored solutions that match your specific requirements and goals.</p>
+              <h3 className="text-h4 mb-2">Personalized approach</h3>
+              <p className="text-body-sm text-muted-foreground measure-narrow mx-auto">
+                Tailored solutions that match your specific requirements and goals.
+              </p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <div className="w-6 h-6 bg-purple-600 rounded"></div>
+              <div className="w-12 h-12 bg-info/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <div className="w-6 h-6 bg-info rounded"></div>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Results focused</h3>
-              <p className="text-gray-600">Proven methodology designed to deliver measurable outcomes.</p>
+              <h3 className="text-h4 mb-2">Results focused</h3>
+              <p className="text-body-sm text-muted-foreground measure-narrow mx-auto">
+                Proven methodology designed to deliver measurable outcomes.
+              </p>
             </div>
           </div>
         </div>

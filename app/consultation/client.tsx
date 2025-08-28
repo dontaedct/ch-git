@@ -211,7 +211,7 @@ export function ConsultationPageClient() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading your consultation...</p>
+          <p className="text-caption text-muted-foreground">Loading your consultation...</p>
         </div>
       </div>
     )
@@ -219,11 +219,11 @@ export function ConsultationPageClient() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-6">
+      <div className="container-prose py-6">
         <div className="mb-6">
           <Link 
             href="/questionnaire"
-            className="text-primary hover:text-primary/80 font-medium text-sm inline-flex items-center gap-2"
+            className="text-primary hover:text-primary/80 font-medium text-caption tracking-wide inline-flex items-center gap-2"
           >
             ← Back to questionnaire
           </Link>
@@ -233,7 +233,7 @@ export function ConsultationPageClient() {
           <Suspense fallback={
             <div className="flex flex-col items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
-              <p className="text-muted-foreground">Loading consultation engine...</p>
+              <p className="text-caption text-muted-foreground">Loading consultation engine...</p>
             </div>
           }>
             <ConsultationEngine

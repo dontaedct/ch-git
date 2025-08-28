@@ -19,7 +19,10 @@
       "Bash(npx next dev:*)",
       "Bash(npm install:*)",
       "Bash(timeout:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(npm test)",
+      "Bash(npm test:*)",
+      "Bash(del validate-contrast.js)"
     ],
     "deny": [],
     "ask": []

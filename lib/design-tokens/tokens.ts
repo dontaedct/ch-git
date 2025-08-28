@@ -106,11 +106,12 @@ export interface DesignTokens {
     dark: SemanticColors;
   };
   
-  // Typography
+  // Typography - Enhanced for Apple/Linear-grade quality
   typography: {
     fontFamily: {
       sans: string;
       mono: string;
+      display: string;
     };
     fontSize: {
       xs: string;
@@ -121,17 +122,37 @@ export interface DesignTokens {
       '2xl': string;
       '3xl': string;
       '4xl': string;
+      '5xl': string;
+      '6xl': string;
     };
     fontWeight: {
+      light: string;
       normal: string;
       medium: string;
       semibold: string;
       bold: string;
+      extrabold: string;
     };
     lineHeight: {
+      none: string;
       tight: string;
+      snug: string;
       normal: string;
       relaxed: string;
+      loose: string;
+    };
+    letterSpacing: {
+      tighter: string;
+      tight: string;
+      normal: string;
+      wide: string;
+      wider: string;
+      widest: string;
+    };
+    measure: {
+      narrow: string;
+      base: string;
+      wide: string;
     };
   };
   
@@ -240,11 +261,11 @@ export const designTokens: DesignTokens = {
       border: neutralScale[200],
       input: neutralScale[200],
       ring: accentScale[600],
-      destructive: '#ef4444',
+      destructive: '#dc2626', // Darker red for better contrast (was #ef4444)
       destructiveForeground: '#ffffff',
-      success: '#22c55e',
+      success: '#15803d', // Even darker green for WCAG AA compliance (was #16a34a)
       successForeground: '#ffffff',
-      warning: '#f59e0b',
+      warning: '#c2410c', // Darker orange for WCAG AA compliance (was #d97706)
       warningForeground: '#ffffff',
       info: accentScale[500],
       infoForeground: '#ffffff',
@@ -263,11 +284,11 @@ export const designTokens: DesignTokens = {
       border: neutralScale[800],
       input: neutralScale[800],
       ring: accentScale[400],
-      destructive: '#ef4444',
+      destructive: '#dc2626', // Consistent with light theme
       destructiveForeground: '#ffffff',
-      success: '#22c55e',
+      success: '#15803d', // Consistent with light theme
       successForeground: '#ffffff',
-      warning: '#f59e0b',
+      warning: '#c2410c', // Consistent with light theme
       warningForeground: '#ffffff',
       info: accentScale[400],
       infoForeground: '#ffffff',
@@ -277,28 +298,49 @@ export const designTokens: DesignTokens = {
   typography: {
     fontFamily: {
       sans: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      mono: 'ui-monospace, SFMono-Regular, "Cascadia Code", Consolas, monospace',
+      mono: 'ui-monospace, SFMono-Regular, "SF Mono", "Cascadia Code", Consolas, monospace',
+      display: 'system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif',
     },
     fontSize: {
-      xs: '0.75rem',
-      sm: '0.875rem', 
-      base: '1rem',
-      lg: '1.125rem',
-      xl: '1.25rem',
-      '2xl': '1.5rem',
-      '3xl': '1.875rem',
-      '4xl': '2.25rem',
+      xs: '0.75rem',     // 12px
+      sm: '0.875rem',    // 14px
+      base: '1rem',      // 16px - base size
+      lg: '1.125rem',    // 18px - 1.125x
+      xl: '1.25rem',     // 20px - 1.25x
+      '2xl': '1.5rem',   // 24px - 1.5x
+      '3xl': '1.875rem', // 30px - 1.875x
+      '4xl': '2.25rem',  // 36px - 2.25x
+      '5xl': '3rem',     // 48px - 3x
+      '6xl': '4rem',     // 64px - 4x
     },
     fontWeight: {
+      light: '300',
       normal: '400',
       medium: '500',
       semibold: '600',
       bold: '700',
+      extrabold: '800',
     },
     lineHeight: {
+      none: '1',
       tight: '1.25',
+      snug: '1.375',
       normal: '1.5',
-      relaxed: '1.75',
+      relaxed: '1.625',
+      loose: '2',
+    },
+    letterSpacing: {
+      tighter: '-0.05em',
+      tight: '-0.025em',
+      normal: '0em',
+      wide: '0.025em',
+      wider: '0.05em',
+      widest: '0.1em',
+    },
+    measure: {
+      narrow: '45ch',  // ~45-55 characters for narrow content
+      base: '65ch',    // ~60-72 characters for optimal readability
+      wide: '80ch',    // ~75-85 characters for wide content
     },
   },
   

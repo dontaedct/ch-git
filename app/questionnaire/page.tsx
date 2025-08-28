@@ -30,11 +30,11 @@ export default function QuestionnairePage() {
   
   return (
     <div className="min-h-screen bg-background py-12">
-      <div className="max-w-4xl mx-auto px-6">
+      <div className="container-prose">
         <div className="mb-8">
           <Link 
             href="/"
-            className="text-primary hover:text-primary/80 font-medium text-sm"
+            className="text-primary hover:text-primary/80 font-medium text-caption tracking-wide inline-flex items-center gap-2"
           >
             ← Back to home
           </Link>
@@ -44,7 +44,7 @@ export default function QuestionnairePage() {
           <Suspense fallback={
             <div className="flex flex-col items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4"></div>
-              <p className="text-muted-foreground">Loading questionnaire...</p>
+              <p className="text-caption text-muted-foreground">Loading questionnaire...</p>
             </div>
           }>
             <QuestionnaireEngine

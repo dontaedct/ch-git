@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
+import { emitLeadStartedQuestionnaire, emitLeadCompletedQuestionnaire } from '@/lib/webhooks/emitter'
 
 interface QuestionOption {
   value: string
@@ -138,6 +139,15 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
       questionnaireId: config.id,
       totalQuestions: allQuestions.length
     })
+    
+    // Emit webhook event for lead started questionnaire
+    emitLeadStartedQuestionnaire({
+      questionnaireId: config.id,
+      source: 'questionnaire-engine',
+      userId: 'demo-user' // TODO: Get from auth context
+    }).catch(error => {
+      console.warn('Failed to emit lead started questionnaire event:', error)
+    })
   }, [config.id, allQuestions.length, onAnalyticsEvent])
   
   // Auto-save to localStorage
@@ -227,6 +237,16 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
         totalQuestions: visibleQuestions.length,
         answeredQuestions: answeredQuestions,
         completionRate: progressPercent
+      })
+      
+      // Emit webhook event for lead completed questionnaire
+      emitLeadCompletedQuestionnaire({
+        questionnaireId: config.id,
+        answers: normalizedAnswers,
+        source: 'questionnaire-engine',
+        userId: 'demo-user' // TODO: Get from auth context
+      }).catch(error => {
+        console.warn('Failed to emit lead completed questionnaire event:', error)
       })
       
       onComplete?.(normalizedAnswers)

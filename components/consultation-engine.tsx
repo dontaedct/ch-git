@@ -9,6 +9,7 @@ import { Clock, CheckCircle, ArrowRight, Download, Mail } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { usePdfExport } from '@/hooks/use-pdf-export'
 import { useN8nEvents } from '@/lib/n8n-events'
+import { emitConsultationGenerated, emitPdfDownloaded, emitEmailCopyRequested } from '@/lib/webhooks/emitter'
 
 // Types based on the config structure
 interface Plan {
@@ -99,7 +100,7 @@ export function ConsultationEngine({
   const { generatePdf, requestEmail } = usePdfExport({
     filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`,
     onSuccess: (blob) => {
-      // Emit PDF download event
+      // Emit PDF download event (both old and new systems for compatibility)
       n8nEvents.emitPdfDownload({
         source: 'consultation-engine',
         planId: selectedPlan,
@@ -107,9 +108,20 @@ export function ConsultationEngine({
         size: blob.size,
         filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`
       })
+      
+      // New webhook emitter system
+      emitPdfDownloaded({
+        consultationId: `consultation_${Date.now()}`,
+        filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`,
+        fileSize: blob.size,
+        source: 'consultation-engine',
+        userId: 'demo-user' // TODO: Get from auth context
+      }).catch(error => {
+        console.warn('Failed to emit PDF downloaded event:', error)
+      })
     },
     onEmailRequest: (blob) => {
-      // Emit email request event
+      // Emit email request event (both old and new systems for compatibility)
       n8nEvents.emitEmailRequest({
         source: 'consultation-engine',
         planId: selectedPlan,
@@ -117,6 +129,16 @@ export function ConsultationEngine({
         blob,
         size: blob.size,
         filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`
+      })
+      
+      // New webhook emitter system
+      emitEmailCopyRequested({
+        consultationId: `consultation_${Date.now()}`,
+        email: clientName ?? 'unknown@example.com', // TODO: Get actual email from form or auth
+        source: 'consultation-engine',
+        userId: 'demo-user' // TODO: Get from auth context
+      }).catch(error => {
+        console.warn('Failed to emit email copy requested event:', error)
       })
     }
   })
@@ -154,12 +176,22 @@ export function ConsultationEngine({
   const primaryPlan = selectedPlans[0]
   const alternatePs = selectedPlans.slice(1, template.planDeck.alternatesCount + 1)
   
-  // Set initial selected plan
+  // Set initial selected plan and emit consultation generated event
   useEffect(() => {
     if (primaryPlan && !selectedPlan) {
       setSelectedPlan(primaryPlan.id)
+      
+      // Emit consultation generated event
+      emitConsultationGenerated({
+        consultationId: `consultation_${Date.now()}`,
+        planIds: selectedPlans.map(p => p.id),
+        source: 'consultation-engine',
+        userId: 'demo-user' // TODO: Get from auth context
+      }).catch(error => {
+        console.warn('Failed to emit consultation generated event:', error)
+      })
     }
-  }, [primaryPlan, selectedPlan])
+  }, [primaryPlan, selectedPlan, selectedPlans])
   
   // Generate summary based on answers
   const summary = useMemo(() => {

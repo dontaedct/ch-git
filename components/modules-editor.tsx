@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { Switch } from '@/components/ui/switch'
 import { toast } from 'sonner'
-import { Loader2, RotateCcw, Save, CheckCircle } from 'lucide-react'
+import { Loader2, RotateCcw, Save, CheckCircle, Layers, Zap, Link, HeadphonesIcon } from 'lucide-react'
 import { saveModuleOverrides, getModuleOverrides, resetToDefaults } from '@/lib/modules/actions'
 import { getBaseModuleRegistry } from '@/lib/config/modules'
 
@@ -15,6 +15,13 @@ interface Module {
   label: string
   description?: string
   tiers?: Array<'foundation' | 'growth' | 'enterprise'>
+}
+
+interface ModuleGroup {
+  id: string
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  modules: Module[]
 }
 
 interface ModulesEditorProps {
@@ -114,10 +121,61 @@ export function ModulesEditor({ clientId }: ModulesEditorProps) {
     }
   }
 
-  const getTierBadgeVariant = (tiers: string[] = []) => {
-    if (tiers.includes('enterprise')) return 'default'
-    if (tiers.includes('growth')) return 'secondary'
-    return 'outline'
+  const getTierLabel = (tier: string) => {
+    switch (tier) {
+      case 'foundation': return 'Tier1'
+      case 'growth': return 'Pro'
+      case 'enterprise': return 'Advanced'
+      default: return tier
+    }
+  }
+
+  const getTierBadgeVariant = (tier: string) => {
+    switch (tier) {
+      case 'foundation': return 'outline'
+      case 'growth': return 'secondary'
+      case 'enterprise': return 'default'
+      default: return 'outline'
+    }
+  }
+
+  // Group modules by category
+  const getModuleGroups = (): ModuleGroup[] => {
+    const groups: ModuleGroup[] = [
+      {
+        id: 'analytics',
+        label: 'Analytics',
+        icon: Layers,
+        modules: modules.filter(m => m.id === 'analytics')
+      },
+      {
+        id: 'automation',
+        label: 'Automation',
+        icon: Zap,
+        modules: modules.filter(m => m.id === 'automation')
+      },
+      {
+        id: 'integrations',
+        label: 'Integrations',
+        icon: Link,
+        modules: modules.filter(m => m.id === 'integrations')
+      },
+      {
+        id: 'support',
+        label: 'Support',
+        icon: HeadphonesIcon,
+        modules: modules.filter(m => m.id === 'support')
+      }
+    ]
+    return groups.filter(group => group.modules.length > 0)
+  }
+
+  // Generate preview of enabled modules
+  const getEnabledModulesPreview = () => {
+    return modules
+      .filter(module => enabledModules.includes(module.id))
+      .map(module => module.label)
+      .join(', ') || 'No modules enabled'
   }
 
   if (isLoading) {
@@ -132,8 +190,18 @@ export function ModulesEditor({ clientId }: ModulesEditorProps) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header Actions */}
+    <div className="space-y-6 pb-20">
+      {/* Preview Section */}
+      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <CardHeader>
+          <CardTitle className="text-lg text-blue-900">Module Preview</CardTitle>
+          <CardDescription className="text-blue-700">
+            Current consultation modules: {getEnabledModulesPreview()}
+          </CardDescription>
+        </CardHeader>
+      </Card>
+
+      {/* Status Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="text-sm text-muted-foreground">
@@ -146,117 +214,155 @@ export function ModulesEditor({ clientId }: ModulesEditorProps) {
             </div>
           )}
         </div>
-        
-        <div className="flex items-center gap-3">
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={handleReset}
-            disabled={isSaving || isResetting}
-          >
-            {isResetting ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
-            ) : (
-              <RotateCcw className="h-4 w-4 mr-2" />
-            )}
-            Reset to Defaults
-          </Button>
-          
-          <Button 
-            onClick={handleSave}
-            disabled={!hasChanges || isSaving || isResetting}
-            size="sm"
-          >
-            {isSaving ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
-            ) : (
-              <Save className="h-4 w-4 mr-2" />
-            )}
-            Save Changes
-          </Button>
-        </div>
       </div>
 
-      {/* Modules Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {modules.map((module) => {
-          const isEnabled = enabledModules.includes(module.id)
+      {/* Grouped Modules */}
+      <div className="space-y-6">
+        {getModuleGroups().map((group) => {
+          const IconComponent = group.icon
           
           return (
-            <Card 
-              key={module.id} 
-              className={`transition-all duration-200 ${
-                isEnabled 
-                  ? 'ring-2 ring-primary/20 bg-primary/5' 
-                  : 'opacity-60 hover:opacity-80'
-              }`}
-            >
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-lg truncate">{module.label}</CardTitle>
-                    <CardDescription className="mt-1">
-                      {module.description ?? 'No description available'}
-                    </CardDescription>
-                  </div>
-                  <Switch
-                    checked={isEnabled}
-                    onCheckedChange={() => handleToggleModule(module.id)}
-                    disabled={isSaving || isResetting}
-                  />
+            <div key={group.id}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <IconComponent className="h-5 w-5 text-primary" />
                 </div>
-                
-                {/* Tier badges */}
-                {module.tiers && module.tiers.length > 0 && (
-                  <div className="flex gap-1 mt-2">
-                    {module.tiers.map((tier) => (
-                      <Badge 
-                        key={tier} 
-                        variant={getTierBadgeVariant(module.tiers)}
-                        className="text-xs"
-                      >
-                        {tier.charAt(0).toUpperCase() + tier.slice(1)}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </CardHeader>
+                <h3 className="text-lg font-semibold text-gray-900">{group.label}</h3>
+              </div>
               
-              <CardContent>
-                <div className="text-sm text-muted-foreground">
-                  <div className="flex items-center justify-between">
-                    <span>Status:</span>
-                    <span className={`font-medium ${
-                      isEnabled ? 'text-green-600' : 'text-gray-500'
-                    }`}>
-                      {isEnabled ? 'Enabled' : 'Disabled'}
-                    </span>
-                  </div>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {group.modules.map((module) => {
+                  const isEnabled = enabledModules.includes(module.id)
                   
-                  {module.tiers && (
-                    <div className="flex items-center justify-between mt-1">
-                      <span>Available in:</span>
-                      <span className="text-right">
-                        {module.tiers.join(', ')} plans
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                  return (
+                    <Card 
+                      key={module.id} 
+                      className={`transition-all duration-200 hover:shadow-md ${
+                        isEnabled 
+                          ? 'ring-2 ring-primary/20 bg-primary/5 shadow-sm' 
+                          : 'opacity-70 hover:opacity-90'
+                      }`}
+                    >
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1 min-w-0">
+                            <CardTitle className="text-lg truncate mb-2">{module.label}</CardTitle>
+                            <CardDescription className="text-sm leading-relaxed">
+                              {module.description ?? 'No description available'}
+                            </CardDescription>
+                            
+                            {/* Tier badges */}
+                            {module.tiers && module.tiers.length > 0 && (
+                              <div className="flex gap-1 mt-3">
+                                {module.tiers.map((tier) => (
+                                  <Badge 
+                                    key={tier} 
+                                    variant={getTierBadgeVariant(tier)}
+                                    className="text-xs px-2 py-1"
+                                  >
+                                    {getTierLabel(tier)}
+                                  </Badge>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                          <div className="ml-3 flex-shrink-0">
+                            <Switch
+                              checked={isEnabled}
+                              onCheckedChange={() => handleToggleModule(module.id)}
+                              disabled={isSaving || isResetting}
+                              aria-label={`Toggle ${module.label}`}
+                            />
+                          </div>
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent>
+                        <div className="text-sm text-muted-foreground">
+                          <div className="flex items-center justify-between">
+                            <span>Status:</span>
+                            <div className="flex items-center gap-2">
+                              <div className={`w-2 h-2 rounded-full ${
+                                isEnabled ? 'bg-green-500' : 'bg-gray-400'
+                              }`} />
+                              <span className={`font-medium ${
+                                isEnabled ? 'text-green-600' : 'text-gray-500'
+                              }`}>
+                                {isEnabled ? 'Active' : 'Inactive'}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            </div>
           )
         })}
       </div>
 
-      {/* Changes indicator */}
-      {hasChanges && (
-        <div className="fixed bottom-6 right-6 bg-yellow-50 border border-yellow-200 rounded-lg p-4 shadow-lg">
-          <div className="flex items-center gap-2 text-yellow-800">
-            <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
-            <span className="text-sm font-medium">You have unsaved changes</span>
+      {/* Sticky Action Bar */}
+      <div className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg transition-all duration-300 z-50 ${
+        hasChanges || lastSaved ? 'translate-y-0' : 'translate-y-full'
+      }`}>
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {hasChanges && (
+                <div className="flex items-center gap-2 text-amber-600">
+                  <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+                  <span className="text-sm font-medium">Unsaved changes</span>
+                </div>
+              )}
+              {!hasChanges && lastSaved && (
+                <div className="flex items-center gap-2 text-green-600">
+                  <CheckCircle className="h-4 w-4" />
+                  <span className="text-sm font-medium">
+                    Saved at {lastSaved.toLocaleTimeString()}
+                  </span>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleReset}
+                disabled={isSaving || isResetting}
+              >
+                {isResetting ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <RotateCcw className="h-4 w-4 mr-2" />
+                )}
+                Reset to Defaults
+              </Button>
+              
+              <Button 
+                onClick={handleSave}
+                disabled={!hasChanges || isSaving || isResetting}
+                size="sm"
+                className="min-w-[120px]"
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="h-4 w-4 mr-2" />
+                    Save Changes
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* Help text */}
       <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">

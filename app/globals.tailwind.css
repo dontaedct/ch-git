@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import motion system for micro-interactions */
+@import '../styles/motion.css';
+
 /* Simple, clean base styles */
 html, body {
   height: 100%;

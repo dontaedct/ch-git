@@ -198,12 +198,11 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
             className={cn(
               'inline-flex items-center gap-1.5 h-[var(--chip-height)] px-[var(--chip-padding)]',
               'text-[var(--chip-font-size)] font-medium rounded-[var(--chip-border-radius)]',
-              'border transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2',
+              'border motion-chip-idle motion-chip-hover transition-chip-hover focus-visible:outline-none focus-visible:ring-2',
               'focus-visible:ring-ring focus-visible:ring-offset-1',
               'disabled:pointer-events-none disabled:opacity-50',
-              'hover:scale-[1.02] active:scale-[0.98]',
               isSelected(option.value)
-                ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                ? 'bg-primary text-primary-foreground border-primary shadow-sm motion-chip-selected transition-chip-select'
                 : 'bg-background text-foreground border-border hover:bg-accent hover:text-accent-foreground hover:border-accent-foreground/20'
             )}
             onClick={() => toggleChip(option.value)}

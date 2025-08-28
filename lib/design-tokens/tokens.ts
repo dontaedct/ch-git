@@ -258,15 +258,26 @@ export interface DesignTokens {
     xl: string;
   };
   
-  // Motion & Animation
+  // Motion & Animation - Enhanced with comprehensive micro-interaction system
   motion: {
     duration: {
+      instant: string;
+      fast: string;
+      normal: string;
+      slow: string;
+      slower: string;
       '75': string;
       '100': string;
       '150': string;
       '200': string;
       '300': string;
       '500': string;
+    };
+    delay: {
+      none: string;
+      short: string;
+      medium: string;
+      long: string;
     };
     easing: {
       linear: string;
@@ -275,6 +286,39 @@ export interface DesignTokens {
       'ease-in-out': string;
       bounce: string;
       smooth: string;
+      spring: string;
+      'ease-out-quart': string;
+      'ease-in-quart': string;
+    };
+    transitions: {
+      button: {
+        hover: string;
+        press: string;
+        focus: string;
+      };
+      chip: {
+        select: string;
+        deselect: string;
+        hover: string;
+      };
+      tab: {
+        switch: string;
+        hover: string;
+      };
+      step: {
+        advance: string;
+        retreat: string;
+        complete: string;
+      };
+      toast: {
+        enter: string;
+        exit: string;
+      };
+      modal: {
+        enter: string;
+        exit: string;
+        backdrop: string;
+      };
     };
   };
   
@@ -478,12 +522,23 @@ export const designTokens: DesignTokens = {
   
   motion: {
     duration: {
+      instant: '75ms',
+      fast: '150ms',
+      normal: '200ms',
+      slow: '300ms',
+      slower: '500ms',
       '75': '75ms',
       '100': '100ms',
       '150': '150ms',
       '200': '200ms',
       '300': '300ms',
       '500': '500ms',
+    },
+    delay: {
+      none: '0ms',
+      short: '50ms',
+      medium: '100ms',
+      long: '200ms',
     },
     easing: {
       linear: 'linear',
@@ -492,6 +547,39 @@ export const designTokens: DesignTokens = {
       'ease-in-out': 'ease-in-out',
       bounce: 'cubic-bezier(0.68, -0.6, 0.32, 1.6)',
       smooth: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      spring: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+      'ease-out-quart': 'cubic-bezier(0.25, 1, 0.5, 1)',
+      'ease-in-quart': 'cubic-bezier(0.5, 0, 0.75, 0)',
+    },
+    transitions: {
+      button: {
+        hover: 'all 150ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        press: 'transform 100ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        focus: 'box-shadow 200ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+      },
+      chip: {
+        select: 'all 150ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        deselect: 'all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        hover: 'all 150ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+      },
+      tab: {
+        switch: 'all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        hover: 'all 150ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+      },
+      step: {
+        advance: 'all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        retreat: 'all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        complete: 'all 300ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+      },
+      toast: {
+        enter: 'all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        exit: 'all 150ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+      },
+      modal: {
+        enter: 'all 200ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        exit: 'all 150ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+        backdrop: 'opacity 200ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+      },
     },
   },
   

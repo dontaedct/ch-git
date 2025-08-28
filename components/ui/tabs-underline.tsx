@@ -150,7 +150,7 @@ const TabsUnderlineList = React.forwardRef<
     >
       {children}
       <div
-        className="absolute bottom-0 h-0.5 bg-primary transition-all duration-300 ease-out"
+        className="absolute bottom-0 h-0.5 bg-primary transition-tab-switch"
         style={indicatorStyle}
         aria-hidden="true"
       />
@@ -168,7 +168,7 @@ const TabsUnderlineTrigger = React.forwardRef<
     className={cn(
       'inline-flex items-center justify-center whitespace-nowrap',
       'px-[var(--tabs-padding)] py-2 text-sm font-medium',
-      'ring-offset-background transition-all duration-200 ease-out',
+      'ring-offset-background transition-tab-hover',
       'focus-visible:outline-none focus-visible:ring-2',
       'focus-visible:ring-ring focus-visible:ring-offset-2',
       'disabled:pointer-events-none disabled:opacity-50',

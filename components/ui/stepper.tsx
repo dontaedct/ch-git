@@ -86,20 +86,19 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                     className={cn(
                       'flex items-center justify-center rounded-full border-[var(--stepper-border-width)]',
                       'w-[var(--stepper-size)] h-[var(--stepper-size)] z-10',
-                      'text-xs font-semibold transition-all duration-300 ease-out',
-                      'bg-background shadow-sm',
+                      'text-xs font-semibold bg-background shadow-sm',
                       step.status === 'complete' && [
                         'bg-primary border-primary text-primary-foreground',
-                        'scale-100'
+                        'scale-100 transition-step-complete'
                       ],
                       step.status === 'current' && [
                         'bg-background border-primary text-primary',
                         'ring-4 ring-primary/20 ring-offset-0',
-                        'scale-110'
+                        'scale-110 transition-step-advance'
                       ],
                       step.status === 'upcoming' && [
                         'bg-background border-muted text-muted-foreground',
-                        'scale-100'
+                        'scale-100 transition-step-retreat'
                       ]
                     )}
                     aria-current={step.status === 'current' ? 'step' : undefined}
@@ -153,18 +152,17 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                     className={cn(
                       'flex items-center justify-center rounded-full border-[var(--stepper-border-width)]',
                       'w-[var(--stepper-size)] h-[var(--stepper-size)] flex-shrink-0',
-                      'text-xs font-semibold transition-all duration-300 ease-out',
-                      'bg-background shadow-sm',
+                      'text-xs font-semibold bg-background shadow-sm',
                       step.status === 'complete' && [
-                        'bg-primary border-primary text-primary-foreground'
+                        'bg-primary border-primary text-primary-foreground transition-step-complete'
                       ],
                       step.status === 'current' && [
                         'bg-background border-primary text-primary',
                         'ring-4 ring-primary/20 ring-offset-0',
-                        'scale-110'
+                        'scale-110 transition-step-advance'
                       ],
                       step.status === 'upcoming' && [
-                        'bg-background border-muted text-muted-foreground'
+                        'bg-background border-muted text-muted-foreground transition-step-retreat'
                       ]
                     )}
                     aria-current={step.status === 'current' ? 'step' : undefined}

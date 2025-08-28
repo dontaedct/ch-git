@@ -21,3 +21,17 @@ export {
   useSemanticColors, 
   useDesignTokens 
 } from './provider';
+
+export { 
+  default as motion,
+  motionTokens,
+  transitions,
+  keyframes,
+  animations,
+  motionPresets,
+  getMotionPreference,
+  shouldReduceMotion,
+  getTransition,
+  createMotionCSS
+} from './motion';
+export type { MotionPreference, MotionConfig } from './motion';

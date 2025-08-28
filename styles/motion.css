@@ -1,0 +1,361 @@
+/**
+ * Motion System CSS
+ * 
+ * Provides CSS custom properties and keyframes for consistent micro-interactions.
+ * Respects prefers-reduced-motion accessibility preferences.
+ * Uses the design token motion system with cubic-bezier(0.2, 0.8, 0.2, 1) easing.
+ * 
+ * Universal Header: @styles/motion
+ */
+
+/* ========================================
+   CSS Custom Properties - Motion Tokens
+======================================== */
+
+:root {
+  /* Duration tokens */
+  --motion-duration-instant: 75ms;
+  --motion-duration-fast: 150ms;
+  --motion-duration-normal: 200ms;
+  --motion-duration-slow: 300ms;
+  --motion-duration-slower: 500ms;
+
+  /* Delay tokens */
+  --motion-delay-none: 0ms;
+  --motion-delay-short: 50ms;
+  --motion-delay-medium: 100ms;
+  --motion-delay-long: 200ms;
+
+  /* Easing curves */
+  --motion-ease-linear: linear;
+  --motion-ease-in: ease-in;
+  --motion-ease-out: ease-out;
+  --motion-ease-in-out: ease-in-out;
+  --motion-ease-spring: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-ease-bounce: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --motion-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --motion-ease-in-quart: cubic-bezier(0.5, 0, 0.75, 0);
+
+  /* Component transition presets */
+  --motion-transition-button-hover: all var(--motion-duration-fast) var(--motion-ease-spring);
+  --motion-transition-button-press: transform var(--motion-duration-instant) var(--motion-ease-spring);
+  --motion-transition-button-focus: box-shadow var(--motion-duration-normal) var(--motion-ease-spring);
+  
+  --motion-transition-chip-select: all var(--motion-duration-fast) var(--motion-ease-spring);
+  --motion-transition-chip-deselect: all var(--motion-duration-normal) var(--motion-ease-spring);
+  --motion-transition-chip-hover: all var(--motion-duration-fast) var(--motion-ease-spring);
+  
+  --motion-transition-tab-switch: all var(--motion-duration-normal) var(--motion-ease-spring);
+  --motion-transition-tab-hover: all var(--motion-duration-fast) var(--motion-ease-spring);
+  
+  --motion-transition-step-advance: all var(--motion-duration-normal) var(--motion-ease-spring);
+  --motion-transition-step-retreat: all var(--motion-duration-normal) var(--motion-ease-spring);
+  --motion-transition-step-complete: all var(--motion-duration-slow) var(--motion-ease-spring);
+  
+  --motion-transition-toast-enter: all var(--motion-duration-normal) var(--motion-ease-spring);
+  --motion-transition-toast-exit: all var(--motion-duration-fast) var(--motion-ease-spring);
+  
+  --motion-transition-modal-enter: all var(--motion-duration-normal) var(--motion-ease-spring);
+  --motion-transition-modal-exit: all var(--motion-duration-fast) var(--motion-ease-spring);
+  --motion-transition-modal-backdrop: opacity var(--motion-duration-normal) var(--motion-ease-spring);
+}
+
+/* ========================================
+   Reduced Motion Support
+======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-instant: 0ms;
+    --motion-duration-fast: 0ms;
+    --motion-duration-normal: 0ms;
+    --motion-duration-slow: 0ms;
+    --motion-duration-slower: 0ms;
+    
+    --motion-delay-none: 0ms;
+    --motion-delay-short: 0ms;
+    --motion-delay-medium: 0ms;
+    --motion-delay-long: 0ms;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ========================================
+   Keyframes
+======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes scaleOut {
+  from {
+    transform: scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-3deg);
+  }
+  75% {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* ========================================
+   Utility Classes
+======================================== */
+
+/* Duration utilities */
+.duration-instant { transition-duration: var(--motion-duration-instant) !important; }
+.duration-fast { transition-duration: var(--motion-duration-fast) !important; }
+.duration-normal { transition-duration: var(--motion-duration-normal) !important; }
+.duration-slow { transition-duration: var(--motion-duration-slow) !important; }
+.duration-slower { transition-duration: var(--motion-duration-slower) !important; }
+
+/* Easing utilities */
+.ease-spring { transition-timing-function: var(--motion-ease-spring) !important; }
+.ease-bounce { transition-timing-function: var(--motion-ease-bounce) !important; }
+.ease-smooth { transition-timing-function: var(--motion-ease-smooth) !important; }
+.ease-out-quart { transition-timing-function: var(--motion-ease-out-quart) !important; }
+.ease-in-quart { transition-timing-function: var(--motion-ease-in-quart) !important; }
+
+/* Delay utilities */
+.delay-none { transition-delay: var(--motion-delay-none) !important; }
+.delay-short { transition-delay: var(--motion-delay-short) !important; }
+.delay-medium { transition-delay: var(--motion-delay-medium) !important; }
+.delay-long { transition-delay: var(--motion-delay-long) !important; }
+
+/* Animation utilities */
+.animate-fadeIn { 
+  animation: fadeIn var(--motion-duration-normal) var(--motion-ease-spring);
+}
+.animate-fadeOut { 
+  animation: fadeOut var(--motion-duration-fast) var(--motion-ease-spring);
+}
+.animate-slideInFromTop { 
+  animation: slideInFromTop var(--motion-duration-normal) var(--motion-ease-spring);
+}
+.animate-slideInFromBottom { 
+  animation: slideInFromBottom var(--motion-duration-normal) var(--motion-ease-spring);
+}
+.animate-slideInFromLeft { 
+  animation: slideInFromLeft var(--motion-duration-normal) var(--motion-ease-spring);
+}
+.animate-slideInFromRight { 
+  animation: slideInFromRight var(--motion-duration-normal) var(--motion-ease-spring);
+}
+.animate-scaleIn { 
+  animation: scaleIn var(--motion-duration-normal) var(--motion-ease-spring);
+}
+.animate-scaleOut { 
+  animation: scaleOut var(--motion-duration-fast) var(--motion-ease-spring);
+}
+.animate-pulse { 
+  animation: pulse var(--motion-duration-slower) var(--motion-ease-in-out) infinite;
+}
+.animate-bounce { 
+  animation: bounce var(--motion-duration-slower) var(--motion-ease-bounce) infinite;
+}
+.animate-wiggle { 
+  animation: wiggle var(--motion-duration-slower) var(--motion-ease-in-out) infinite;
+}
+.animate-shimmer { 
+  animation: shimmer var(--motion-duration-slower) var(--motion-ease-linear) infinite;
+}
+.animate-spin { 
+  animation: spin 1s var(--motion-ease-linear) infinite;
+}
+.animate-ping { 
+  animation: ping 1s var(--motion-ease-in-out) infinite;
+}
+
+/* Component transition classes */
+.transition-button-hover { transition: var(--motion-transition-button-hover); }
+.transition-button-press { transition: var(--motion-transition-button-press); }
+.transition-button-focus { transition: var(--motion-transition-button-focus); }
+
+.transition-chip-select { transition: var(--motion-transition-chip-select); }
+.transition-chip-deselect { transition: var(--motion-transition-chip-deselect); }
+.transition-chip-hover { transition: var(--motion-transition-chip-hover); }
+
+.transition-tab-switch { transition: var(--motion-transition-tab-switch); }
+.transition-tab-hover { transition: var(--motion-transition-tab-hover); }
+
+.transition-step-advance { transition: var(--motion-transition-step-advance); }
+.transition-step-retreat { transition: var(--motion-transition-step-retreat); }
+.transition-step-complete { transition: var(--motion-transition-step-complete); }
+
+.transition-toast-enter { transition: var(--motion-transition-toast-enter); }
+.transition-toast-exit { transition: var(--motion-transition-toast-exit); }
+
+.transition-modal-enter { transition: var(--motion-transition-modal-enter); }
+.transition-modal-exit { transition: var(--motion-transition-modal-exit); }
+.transition-modal-backdrop { transition: var(--motion-transition-modal-backdrop); }
+
+/* State classes for micro-interactions */
+.motion-button-idle {
+  transform: translateY(0px);
+}
+.motion-button-hover:hover {
+  transform: translateY(-1px);
+  transition: var(--motion-transition-button-hover);
+}
+.motion-button-active:active {
+  transform: translateY(0px);
+  transition: var(--motion-transition-button-press);
+}
+
+.motion-chip-idle {
+  transform: scale(1);
+}
+.motion-chip-hover:hover {
+  transform: scale(1.02);
+  transition: var(--motion-transition-chip-hover);
+}
+.motion-chip-selected {
+  transform: scale(1);
+  transition: var(--motion-transition-chip-select);
+}
+
+/* No motion class for accessibility */
+.no-motion,
+.no-motion *,
+.reduced-motion,
+.reduced-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0ms !important;
+}

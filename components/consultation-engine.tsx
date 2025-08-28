@@ -2,11 +2,10 @@
 
 import React, { useState, useEffect, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Clock, CheckCircle, ArrowRight, Download, Mail } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { TabsUnderline, TabsUnderlineContent, TabsUnderlineList, TabsUnderlineTrigger } from '@/components/ui/tabs-underline'
+import { Separator } from '@/components/ui/separator'
+import { Clock, CheckCircle, ArrowRight, Download, Mail, Calendar, User } from 'lucide-react'
 import { usePdfExport } from '@/hooks/use-pdf-export'
 import { useN8nEvents } from '@/lib/n8n-events'
 import { emitConsultationGenerated, emitPdfDownloaded, emitEmailCopyRequested } from '@/lib/webhooks/emitter'
@@ -212,51 +211,25 @@ export function ConsultationEngine({
     if (!content) return null
     
     return (
-      <div key={section} className="space-y-2">
-        <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-          {SECTION_ICONS[section]}
-          {SECTION_LABELS[section]}
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+            {React.cloneElement(SECTION_ICONS[section] as React.ReactElement<React.SVGProps<SVGSVGElement>>, {
+              className: 'w-4 h-4 text-primary',
+              strokeWidth: 2
+            })}
+          </div>
+          <h4 className="text-lg font-semibold text-gray-900">
+            {SECTION_LABELS[section]}
+          </h4>
         </div>
-        <div className="text-sm text-foreground leading-relaxed pl-6">
+        <div className="text-gray-700 leading-relaxed ml-11 font-normal text-sm sm:text-base">
           {content}
         </div>
       </div>
     )
   }
   
-  const renderPlanCard = (plan: Plan, isRecommended = false) => (
-    <Card className={cn(
-      'cursor-pointer transition-all duration-200',
-      selectedPlan === plan.id 
-        ? 'ring-2 ring-primary shadow-md' 
-        : 'hover:shadow-sm',
-      isRecommended && 'border-primary/50'
-    )} onClick={() => setSelectedPlan(plan.id)}>
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">{plan.title}</CardTitle>
-          {isRecommended && (
-            <Badge variant="secondary" className="text-xs">
-              Recommended
-            </Badge>
-          )}
-        </div>
-        <CardDescription>{plan.description}</CardDescription>
-        {plan.priceBand && (
-          <div className="flex items-center gap-2 pt-2">
-            <Badge variant="outline" className="text-xs">
-              {plan.priceBand}
-            </Badge>
-            {plan.timeline && (
-              <Badge variant="outline" className="text-xs">
-                {plan.timeline}
-              </Badge>
-            )}
-          </div>
-        )}
-      </CardHeader>
-    </Card>
-  )
   
   const currentPlan = getCurrentPlan()
   
@@ -296,178 +269,228 @@ export function ConsultationEngine({
   }
   
   return (
-    <div id="consultation-content" className="max-w-4xl mx-auto p-6 space-y-8">
+    <div id="consultation-content" className="max-w-5xl mx-auto bg-white">
       <div aria-live="polite" aria-atomic="true" className="sr-only" ref={ariaLiveRef} />
       
       {/* Header */}
-      <div className="text-center space-y-4">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-2">
-          <CheckCircle className="w-8 h-8 text-green-600" />
+      <header className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-gradient-to-br from-slate-50/50 via-white to-blue-50/30 border-b border-border/30">
+        <div className="text-center space-y-4 sm:space-y-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl shadow-sm">
+            <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-primary" strokeWidth={1.5} />
+          </div>
+          <div className="space-y-2 sm:space-y-3">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold tracking-tight text-gray-900">
+              Your Consultation
+            </h1>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-sm text-muted-foreground">
+              {timestamp && (
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" strokeWidth={1.5} />
+                  <span className="font-medium">
+                    {new Date(timestamp).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </span>
+                </div>
+              )}
+              {clientName && (
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4" strokeWidth={1.5} />
+                  <span className="font-medium">{clientName}</span>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div>
-          <h1 className="text-3xl font-bold mb-2">
-            Your Custom Consultation
-            {clientName && <span className="text-muted-foreground"> for {clientName}</span>}
-          </h1>
-          {timestamp && (
-            <p className="text-sm text-muted-foreground">
-              Generated on {new Date(timestamp).toLocaleDateString()}
-            </p>
-          )}
-        </div>
-      </div>
+      </header>
       
       {/* Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">Executive Summary</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground leading-relaxed">{summary}</p>
-        </CardContent>
-      </Card>
+      <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <div className="max-w-3xl mx-auto text-center space-y-4">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-gray-900 mb-4 sm:mb-6">
+            Executive Summary
+          </h2>
+          <div className="prose prose-lg prose-gray max-w-none">
+            <p className="text-gray-700 leading-relaxed font-normal text-base sm:text-[17px] tracking-[0.011em]">
+              {summary}
+            </p>
+          </div>
+        </div>
+      </section>
       
-      {/* Plan Selection */}
-      <div className="space-y-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Recommended Solutions</h2>
-          <p className="text-muted-foreground">
+      <Separator className="mx-4 sm:mx-6 lg:mx-8" />
+      
+      {/* Plan Deck */}
+      <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-10 space-y-6 sm:space-y-8">
+        <div className="text-center space-y-3">
+          <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-gray-900">
+            Recommended Solutions
+          </h2>
+          <p className="text-gray-600 font-normal text-sm sm:text-base">
             Based on your responses, here are our tailored recommendations
           </p>
         </div>
         
-        <Tabs value={selectedPlan} onValueChange={setSelectedPlan}>
-          <TabsList className={cn(
-            "grid w-full gap-1",
-            primaryPlan && alternatePs.length === 0 ? "grid-cols-1" :
-            primaryPlan && alternatePs.length === 1 ? "grid-cols-2" :
-            primaryPlan && alternatePs.length === 2 ? "grid-cols-3" :
-            "grid-cols-4"
-          )}>
-            {primaryPlan && (
-              <TabsTrigger 
-                value={primaryPlan.id} 
-                className="relative transition-all duration-150"
-              >
-                <span className="truncate">{primaryPlan.title}</span>
-                <Badge variant="secondary" className="ml-2 text-xs">
-                  Best Match
-                </Badge>
-              </TabsTrigger>
-            )}
-            {alternatePs.map(plan => (
-              <TabsTrigger 
-                key={plan.id} 
-                value={plan.id}
-                className="transition-all duration-150"
-              >
-                <span className="truncate">{plan.title}</span>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        <div className="max-w-4xl mx-auto">
+          <TabsUnderline value={selectedPlan} onValueChange={setSelectedPlan}>
+            <TabsUnderlineList className="w-full justify-center">
+              {primaryPlan && (
+                <TabsUnderlineTrigger 
+                  value={primaryPlan.id} 
+                  className="relative px-4 sm:px-6 py-3 text-sm sm:text-base font-medium transition-all duration-200"
+                >
+                  <span className="truncate">{primaryPlan.title}</span>
+                  <Badge variant="secondary" className="ml-2 text-xs font-medium px-2 py-0.5">
+                    Primary
+                  </Badge>
+                </TabsUnderlineTrigger>
+              )}
+              {alternatePs.map(plan => (
+                <TabsUnderlineTrigger 
+                  key={plan.id} 
+                  value={plan.id}
+                  className="px-4 sm:px-6 py-3 text-sm sm:text-base font-medium transition-all duration-200"
+                >
+                  <span className="truncate">{plan.title}</span>
+                </TabsUnderlineTrigger>
+              ))}
+            </TabsUnderlineList>
           
-          {/* Plan Details */}
-          {currentPlan && (
-            <TabsContent value={currentPlan.id} className="mt-6">
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-xl">{currentPlan.title}</CardTitle>
-                      <CardDescription className="mt-1">
-                        {currentPlan.description}
-                      </CardDescription>
+            
+            {/* Plan Details */}
+            {currentPlan && (
+              <TabsUnderlineContent value={currentPlan.id} className="mt-6 sm:mt-8">
+                <div className="bg-white border border-border/40 rounded-2xl shadow-sm overflow-hidden">
+                  {/* Plan Header */}
+                  <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-gradient-to-r from-slate-50/50 to-blue-50/20 border-b border-border/30">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                      <div className="space-y-2">
+                        <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-gray-900">
+                          {currentPlan.title}
+                        </h3>
+                        <p className="text-gray-600 font-normal leading-relaxed text-sm sm:text-base">
+                          {currentPlan.description}
+                        </p>
+                      </div>
+                      <div className="flex gap-2 shrink-0">
+                        {currentPlan.priceBand && (
+                          <Badge variant="outline" className="text-sm font-medium px-3 py-1">
+                            {currentPlan.priceBand}
+                          </Badge>
+                        )}
+                        {currentPlan.timeline && (
+                          <Badge variant="outline" className="text-sm font-medium px-3 py-1">
+                            {currentPlan.timeline}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
-                    {currentPlan.priceBand && (
-                      <Badge variant="outline" className="text-sm">
-                        {currentPlan.priceBand}
-                      </Badge>
+                  </div>
+                  
+                  {/* Plan Content */}
+                  <div className="px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 sm:space-y-8">
+                    {/* Dynamic Sections */}
+                    {template.sections.map((section, index) => {
+                      const content = renderPlanSection(section, currentPlan)
+                      if (!content) return null
+                      
+                      return (
+                        <div key={section}>
+                          {content}
+                          {index < template.sections.length - 1 && (
+                            <Separator className="mt-6 sm:mt-8" />
+                          )}
+                        </div>
+                      )
+                    })}
+                    
+                    {/* What's Included */}
+                    {currentPlan.includes.length > 0 && (
+                      <div>
+                        {template.sections.length > 0 && <Separator className="mb-6 sm:mb-8" />}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                              <CheckCircle className="w-4 h-4 text-primary" strokeWidth={2} />
+                            </div>
+                            <h4 className="text-lg font-semibold text-gray-900">
+                              What&apos;s Included
+                            </h4>
+                          </div>
+                          <div className="grid gap-3 ml-11">
+                            {currentPlan.includes.map((item, index) => (
+                              <div key={index} className="flex items-start gap-3 text-gray-700 text-sm sm:text-base">
+                                <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2.5 shrink-0" />
+                                <span className="leading-relaxed">{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Sections */}
-                  {template.sections.map(section => 
-                    renderPlanSection(section, currentPlan)
-                  )}
-                  
-                  {/* Includes */}
-                  {currentPlan.includes.length > 0 && (
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                        <CheckCircle className="w-4 h-4" />
-                        What&apos;s Included
-                      </div>
-                      <div className="pl-6 space-y-1">
-                        {currentPlan.includes.map((item, index) => (
-                          <div key={index} className="flex items-center gap-2 text-sm">
-                            <div className="w-1.5 h-1.5 bg-primary rounded-full" />
-                            {item}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          )}
-        </Tabs>
-      </div>
+                </div>
+              </TabsUnderlineContent>
+            )}
+          </TabsUnderline>
+        </div>
+      </section>
       
-      {/* Alternative Plans Grid */}
-      {alternatePs.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Alternative Options</h3>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {alternatePs.map(plan => renderPlanCard(plan))}
+      <Separator className="mx-4 sm:mx-6 lg:mx-8" />
+      
+      {/* CTA Cluster */}
+      <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <div className="max-w-2xl mx-auto">
+          <div className="flex flex-col gap-4">
+            {/* Primary CTA */}
+            <Button 
+              size="lg" 
+              className="w-full h-12 text-base font-semibold shadow-sm hover:shadow-md transition-all duration-200"
+              onClick={() => {
+                // Emit booking request event
+                n8nEvents.emitBookingRequest({
+                  source: 'consultation-engine',
+                  planId: selectedPlan,
+                  clientName,
+                  bookingUrl: template.actions.bookingUrl
+                })
+                onComplete?.(selectedPlan, 'book')
+              }}
+            >
+              {template.actions.bookCtaLabel}
+            </Button>
+            
+            {/* Secondary CTAs */}
+            <div className="flex gap-3 justify-center">
+              {template.actions.downloadPdf && (
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="px-6 h-11 text-sm font-medium border-border/60 hover:border-border transition-all duration-200"
+                  onClick={handlePdfDownload}
+                >
+                  <Download className="w-4 h-4 mr-2" strokeWidth={1.5} />
+                  Download PDF
+                </Button>
+              )}
+              
+              {template.actions.emailCopy && (
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  className="px-6 h-11 text-sm font-medium border-border/60 hover:border-border transition-all duration-200"
+                  onClick={handleEmailRequest}
+                >
+                  <Mail className="w-4 h-4 mr-2" strokeWidth={1.5} />
+                  Email Copy
+                </Button>
+              )}
+            </div>
           </div>
         </div>
-      )}
-      
-      {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t">
-        <Button 
-          size="lg" 
-          className="flex-1"
-          onClick={() => {
-            // Emit booking request event
-            n8nEvents.emitBookingRequest({
-              source: 'consultation-engine',
-              planId: selectedPlan,
-              clientName,
-              bookingUrl: template.actions.bookingUrl
-            })
-            onComplete?.(selectedPlan, 'book')
-          }}
-        >
-          {template.actions.bookCtaLabel}
-        </Button>
-        
-        <div className="flex gap-2">
-          {template.actions.downloadPdf && (
-            <Button 
-              variant="outline" 
-              size="lg"
-              onClick={handlePdfDownload}
-            >
-              <Download className="w-4 h-4 mr-2" />
-              PDF
-            </Button>
-          )}
-          
-          {template.actions.emailCopy && (
-            <Button 
-              variant="outline" 
-              size="lg"
-              onClick={handleEmailRequest}
-            >
-              <Mail className="w-4 h-4 mr-2" />
-              Email
-            </Button>
-          )}
-        </div>
-      </div>
+      </section>
       
       {/* Email Modal */}
       <EmailModal

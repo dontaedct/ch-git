@@ -35,7 +35,7 @@ interface Question {
   placeholder?: string
   visibleIf?: {
     questionId: string
-    value: string | string[]
+    value: string | string[] | boolean
   }
 }
 

@@ -66,7 +66,10 @@
     "cursor:report": "node scripts/generate-cursor-report.mjs",
     "cursor:header": "node scripts/cursor-ai-universal-header.mjs",
     "cursor:health": "node scripts/generate-cursor-report.mjs 'Health check'",
-    "cursor:session": "node scripts/generate-cursor-report.mjs 'Development session'"
+    "cursor:session": "node scripts/generate-cursor-report.mjs 'Development session'",
+    "claude:context": "node scripts/claude-code-enhancer.mjs",
+    "claude:enhance": "node scripts/claude-code-enhancer.mjs",
+    "dashboard": "node scripts/dev-session-dashboard.mjs"
   },
   "dependencies": {
     "@playwright/test": "^1.55.0",

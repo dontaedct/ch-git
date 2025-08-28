@@ -3,6 +3,7 @@ import PageBoot from '@/components/ui/skeletons/PageBoot';
 import { getPublicEnv } from '@/lib/env';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TokensProvider } from '@/lib/design-tokens/provider';
+import { AuthProvider } from '@/lib/auth/auth-context';
 
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const dynamic = 'force-dynamic';
@@ -30,27 +31,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           disableTransitionOnChange
         >
           <TokensProvider>
-            {isSafeMode && (
-              <div style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                zIndex: 9998,
-                padding: '6px 10px',
-                fontSize: 12,
-                background: '#d4edda',
-                borderBottom: '1px solid #c3e6cb',
-                color: '#155724'
-              }}>
-                🛡️ SAFE MODE • Bypassing auth guards and heavy data fetches
+            <AuthProvider>
+              {isSafeMode && (
+                <div style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  zIndex: 9998,
+                  padding: '6px 10px',
+                  fontSize: 12,
+                  background: '#d4edda',
+                  borderBottom: '1px solid #c3e6cb',
+                  color: '#155724'
+                }}>
+                  🛡️ SAFE MODE • Bypassing auth guards and heavy data fetches
+                </div>
+              )}
+              <div style={{ paddingTop: 0 }}>
+                <Suspense fallback={<PageBoot />}>
+                  {children}
+                </Suspense>
               </div>
-            )}
-            <div style={{ paddingTop: 0 }}>
-              <Suspense fallback={<PageBoot />}>
-                {children}
-              </Suspense>
-            </div>
+            </AuthProvider>
           </TokensProvider>
         </ThemeProvider>
       </body>

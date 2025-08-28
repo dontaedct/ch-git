@@ -1,10 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from '@supabase/ssr'
 
 const store = new Map<string,{count:number, ts:number}>();
 const WINDOW = 60_000; // 1 min
 const LIMIT = 100;
 
-export function middleware(req: NextRequest) {
+// Protected routes that require authentication
+const PROTECTED_ROUTES = ['/dashboard', '/consultation', '/questionnaire'];
+
+export async function middleware(req: NextRequest) {
   const url = new URL(req.url);
   
   // Dev-only tracing and loop detection
@@ -27,6 +31,71 @@ export function middleware(req: NextRequest) {
         return response;
       }
     }
+  }
+
+  // Handle auth for protected routes
+  if (PROTECTED_ROUTES.some(route => url.pathname.startsWith(route))) {
+    let response = NextResponse.next({
+      request: {
+        headers: req.headers,
+      },
+    });
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return req.cookies.get(name)?.value
+          },
+          set(name: string, value: string, options: any) {
+            req.cookies.set({
+              name,
+              value,
+              ...options,
+            })
+            response = NextResponse.next({
+              request: {
+                headers: req.headers,
+              },
+            })
+            response.cookies.set({
+              name,
+              value,
+              ...options,
+            })
+          },
+          remove(name: string, options: any) {
+            req.cookies.set({
+              name,
+              value: '',
+              ...options,
+            })
+            response = NextResponse.next({
+              request: {
+                headers: req.headers,
+              },
+            })
+            response.cookies.set({
+              name,
+              value: '',
+              ...options,
+            })
+          },
+        },
+      }
+    )
+
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      const redirectUrl = new URL('/login', req.url)
+      redirectUrl.searchParams.set('redirectTo', url.pathname)
+      return NextResponse.redirect(redirectUrl)
+    }
+
+    return response
   }
 
   // Handle API rate limiting

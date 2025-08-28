@@ -1,61 +1,62 @@
 'use client'
 
-import { useState } from 'react'
-// TODO: Replace with authService adapter when created
-// import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect } from 'react'
+import { AuthService } from '@/lib/auth/auth'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // const supabase = createClient() // This line is commented out as per the edit hint
+  const [success, setSuccess] = useState<string | null>(null)
+  const searchParams = useSearchParams()
 
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-
-    try {
-      // This part of the code will need to be updated to use the authService adapter
-      // when the adapter is created. For now, it's a placeholder.
-      // const { error } = await supabase.auth.signInWithPassword({
-      //   email,
-      //   password,
-      // })
-
-      // if (error) {
-      //   setError(error.message)
-      // } else {
-        // Use window.location for client-side navigation
-        window.location.href = '/'
-      // }
-    } catch {
-      setError('An unexpected error occurred')
-    } finally {
-      setLoading(false)
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error === 'auth_callback_error') {
+      setError('There was an error with the authentication process. Please try again.')
     }
-  }
+  }, [searchParams])
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  useEffect(() => {
+    // Check if user is already authenticated
+    const checkAuth = async () => {
+      const user = await AuthService.getCurrentUser()
+      if (user) {
+        const redirectTo = searchParams.get('redirectTo') ?? '/'
+        window.location.href = redirectTo
+      }
+    }
+    
+    checkAuth()
+  }, [searchParams])
+
+  const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!email.trim()) {
+      setError('Please enter your email address')
+      return
+    }
+
     setLoading(true)
     setError(null)
+    setSuccess(null)
 
     try {
-      // This part of the code will need to be updated to use the authService adapter
-      // when the adapter is created. For now, it's a placeholder.
-      // const { error } = await supabase.auth.signUp({
-      //   email,
-      //   password,
-      // })
-
-      // if (error) {
-      //   setError(error.message)
-      // } else {
-        setError('Check your email for the confirmation link!')
-      // }
+      const result = await AuthService.signIn(email.trim())
+      
+      if (result.success) {
+        if (result.user) {
+          // User signed in successfully, redirect
+          window.location.href = '/'
+        } else {
+          // Magic link sent
+          setSuccess(result.error ?? 'Check your email for a magic link to sign in!')
+        }
+      } else {
+        setError(result.error ?? 'Sign in failed')
+      }
     } catch {
       setError('An unexpected error occurred')
     } finally {
@@ -72,10 +73,10 @@ export default function LoginPage() {
             <div className="w-8 h-8 bg-gray-400 rounded"></div>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Welcome back
+            Sign in to your account
           </h1>
           <p className="text-base text-gray-600 mb-8">
-            Don&apos;t have an account? <Link href="/intake" className="text-blue-600 hover:text-blue-700 font-medium">Sign up here</Link>
+            Enter your email and we&apos;ll send you a secure link to sign in
           </p>
           <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
             ← Back to Home
@@ -84,7 +85,7 @@ export default function LoginPage() {
 
         {/* Form Card */}
         <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleMagicLink}>
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium text-gray-700">
                 Email Address
@@ -97,21 +98,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                 required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                required
+                autoFocus
               />
             </div>
             
@@ -123,45 +110,34 @@ export default function LoginPage() {
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                type="submit"
-                onClick={handleSignIn}
-                disabled={loading}
-                className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Signing in...
-                  </div>
-                ) : (
-                  'Sign In'
-                )}
-              </button>
-              
-              <button
-                type="submit"
-                onClick={handleSignUp}
-                disabled={loading}
-                className="flex-1 border border-blue-600 text-blue-600 py-3 px-6 rounded-lg font-medium hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                    Signing up...
-                  </div>
-                ) : (
-                  'Sign Up'
-                )}
-              </button>
-            </div>
+            {success && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                <p className="text-sm text-green-600">
+                  {success}
+                </p>
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Sending magic link...
+                </div>
+              ) : (
+                'Send magic link'
+              )}
+            </button>
           </form>
 
           {/* Footer Note */}
           <div className="mt-8 pt-6 border-t border-gray-100">
             <p className="text-xs text-gray-500 text-center">
-              Your account is secure and protected with industry-standard encryption.
+              We&apos;ll send you a secure link that signs you in instantly. No passwords required.
             </p>
           </div>
         </div>

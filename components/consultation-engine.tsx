@@ -273,7 +273,7 @@ export function ConsultationEngine({
       <div aria-live="polite" aria-atomic="true" className="sr-only" ref={ariaLiveRef} />
       
       {/* Header */}
-      <header className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-gradient-to-br from-slate-50/50 via-white to-blue-50/30 border-b border-border/30">
+      <header className="px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-gradient-to-br from-slate-50/50 via-white to-blue-50/30 border-b border-border/30 print-keep-together">
         <div className="text-center space-y-4 sm:space-y-6">
           <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl shadow-sm">
             <CheckCircle className="w-8 h-8 sm:w-10 sm:h-10 text-primary" strokeWidth={1.5} />
@@ -307,7 +307,7 @@ export function ConsultationEngine({
       </header>
       
       {/* Summary */}
-      <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-10 print-keep-together">
         <div className="max-w-3xl mx-auto text-center space-y-4">
           <h2 className="text-xl sm:text-2xl font-semibold tracking-tight text-gray-900 mb-4 sm:mb-6">
             Executive Summary
@@ -362,7 +362,7 @@ export function ConsultationEngine({
             {/* Plan Details */}
             {currentPlan && (
               <TabsUnderlineContent value={currentPlan.id} className="mt-6 sm:mt-8">
-                <div className="bg-white border border-border/40 rounded-2xl shadow-sm overflow-hidden">
+                <div className="bg-white border border-border/40 rounded-2xl shadow-sm overflow-hidden print-keep-together">
                   {/* Plan Header */}
                   <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-gradient-to-r from-slate-50/50 to-blue-50/20 border-b border-border/30">
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
@@ -441,7 +441,7 @@ export function ConsultationEngine({
       <Separator className="mx-4 sm:mx-6 lg:mx-8" />
       
       {/* CTA Cluster */}
-      <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+      <section className="px-4 sm:px-6 lg:px-8 py-8 sm:py-10 print-hidden">
         <div className="max-w-2xl mx-auto">
           <div className="flex flex-col gap-4">
             {/* Primary CTA */}

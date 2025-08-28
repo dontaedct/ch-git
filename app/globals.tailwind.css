@@ -351,3 +351,64 @@ body {
   max-width: 100%;
   box-sizing: border-box;
 }
+
+/* Print utility classes for better pagination control */
+@layer utilities {
+  /* Page break utilities */
+  .print-page-break-before {
+    page-break-before: always;
+    break-before: page;
+  }
+  
+  .print-page-break-after {
+    page-break-after: always;
+    break-after: page;
+  }
+  
+  .print-page-break-inside-avoid {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  .print-page-break-inside-auto {
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+  
+  /* Print-specific visibility */
+  .print-hidden {
+    @media print {
+      display: none !important;
+    }
+  }
+  
+  .print-visible {
+    @media not print {
+      display: none !important;
+    }
+    @media print {
+      display: block !important;
+    }
+  }
+  
+  /* Print-specific spacing */
+  .print-mb-0 {
+    @media print {
+      margin-bottom: 0 !important;
+    }
+  }
+  
+  .print-pb-0 {
+    @media print {
+      padding-bottom: 0 !important;
+    }
+  }
+  
+  /* Keep elements together in print */
+  .print-keep-together {
+    @media print {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+  }
+}

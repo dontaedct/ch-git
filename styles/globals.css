@@ -125,6 +125,16 @@
     @apply bg-background text-foreground;
   }
   
+  /* Skeleton shimmer animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
   /* Reduced motion support */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -144,6 +154,12 @@
     .animate-pulse {
       animation: none;
       opacity: 1;
+    }
+    
+    /* Disable shimmer animation for reduced motion users */
+    [class*="shimmer"] {
+      animation: none;
+      background-position: 0% 0;
     }
     
     /* Focus indicators should remain visible for reduced motion users */

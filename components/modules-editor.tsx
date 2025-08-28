@@ -9,6 +9,9 @@ import { toast } from 'sonner'
 import { Loader2, RotateCcw, Save, CheckCircle, Layers, Zap, Link, HeadphonesIcon } from 'lucide-react'
 import { saveModuleOverrides, getModuleOverrides, resetToDefaults } from '@/lib/modules/actions'
 import { getBaseModuleRegistry } from '@/lib/config/modules'
+import { CardSkeleton } from '@/components/ui/skeletons'
+import { ModulesEmptyState } from '@/components/empty-states'
+import { LoadingErrorBlock } from '@/components/ui/error-block'
 
 interface Module {
   id: string
@@ -36,12 +39,14 @@ export function ModulesEditor({ clientId }: ModulesEditorProps) {
   const [isSaving, setIsSaving] = useState(false)
   const [isResetting, setIsResetting] = useState(false)
   const [lastSaved, setLastSaved] = useState<Date | null>(null)
+  const [loadError, setLoadError] = useState<string | null>(null)
 
   // Load modules and current overrides
   useEffect(() => {
     async function loadData() {
       try {
         setIsLoading(true)
+        setLoadError(null)
         
         // Get base module registry
         const baseModules = await getBaseModuleRegistry()
@@ -55,6 +60,8 @@ export function ModulesEditor({ clientId }: ModulesEditorProps) {
         setOriginalEnabledModules(enabled)
       } catch (error) {
         console.error('Failed to load modules data:', error)
+        const errorMessage = error instanceof Error ? error.message : 'Failed to load modules configuration'
+        setLoadError(errorMessage)
         toast.error('Failed to load modules configuration')
       } finally {
         setIsLoading(false)
@@ -63,6 +70,31 @@ export function ModulesEditor({ clientId }: ModulesEditorProps) {
 
     loadData()
   }, [clientId])
+
+  const handleRetryLoad = () => {
+    const loadData = async () => {
+      try {
+        setIsLoading(true)
+        setLoadError(null)
+        
+        const baseModules = await getBaseModuleRegistry()
+        setModules(baseModules.modules)
+        
+        const overrides = clientId ? await getModuleOverrides(clientId) : null
+        const enabled = overrides?.modules_enabled ?? baseModules.modules.map(m => m.id)
+        
+        setEnabledModules(enabled)
+        setOriginalEnabledModules(enabled)
+      } catch (error) {
+        console.error('Failed to load modules data:', error)
+        const errorMessage = error instanceof Error ? error.message : 'Failed to load modules configuration'
+        setLoadError(errorMessage)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    loadData()
+  }
 
   // Check if there are unsaved changes
   const hasChanges = JSON.stringify(enabledModules.sort()) !== JSON.stringify(originalEnabledModules.sort())
@@ -178,15 +210,45 @@ export function ModulesEditor({ clientId }: ModulesEditorProps) {
       .join(', ') || 'No modules enabled'
   }
 
+  if (loadError) {
+    return (
+      <div className="py-12">
+        <LoadingErrorBlock
+          onRetry={handleRetryLoad}
+          message={loadError}
+        />
+      </div>
+    )
+  }
+
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-muted-foreground" />
-          <p className="text-muted-foreground">Loading modules...</p>
+      <div className="space-y-6">
+        {/* Preview skeleton */}
+        <CardSkeleton />
+        
+        {/* Module groups skeleton */}
+        <div className="space-y-6">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="space-y-4">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-gray-200 rounded-lg animate-pulse" />
+                <div className="h-6 w-32 bg-gray-200 rounded animate-pulse" />
+              </div>
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {[...Array(2)].map((_, j) => (
+                  <CardSkeleton key={j} />
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     )
+  }
+
+  if (modules.length === 0) {
+    return <ModulesEmptyState />
   }
 
   return (

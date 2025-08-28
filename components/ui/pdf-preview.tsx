@@ -88,28 +88,47 @@ const PDFPreview = React.forwardRef<HTMLDivElement, PDFPreviewProps>(
       switch (loadingState) {
         case 'loading':
           return loading ?? (
-            <div className="flex items-center justify-center h-full min-h-[200px]">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <svg
-                  className="animate-spin h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
-                <span>Loading PDF...</span>
+            <div className="flex flex-col items-center justify-center h-full min-h-[200px] p-8">
+              <div className="w-full max-w-md space-y-4">
+                <div className="flex items-center justify-center mb-6">
+                  <div className="relative">
+                    <div className="w-12 h-12 rounded-lg bg-muted animate-pulse" />
+                    <div className="absolute inset-0 rounded-lg border-2 border-muted-foreground/20" />
+                    <svg
+                      className="absolute inset-2 w-8 h-8 text-muted-foreground/40"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="h-3 bg-muted rounded animate-pulse" />
+                  <div className="h-3 bg-muted rounded animate-pulse w-4/5" />
+                  <div className="h-3 bg-muted rounded animate-pulse w-3/5" />
+                </div>
+                
+                <div className="space-y-2 mt-6">
+                  <div className="h-2 bg-muted rounded animate-pulse" />
+                  <div className="h-2 bg-muted rounded animate-pulse w-5/6" />
+                  <div className="h-2 bg-muted rounded animate-pulse w-4/6" />
+                  <div className="h-2 bg-muted rounded animate-pulse w-3/4" />
+                </div>
+                
+                <div className="flex items-center justify-center pt-4">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                    <span className="text-sm font-medium">Loading PDF...</span>
+                  </div>
+                </div>
               </div>
             </div>
           )
@@ -213,14 +232,19 @@ const PDFPreview = React.forwardRef<HTMLDivElement, PDFPreviewProps>(
       <div
         ref={ref}
         className={cn(
-          'relative overflow-hidden rounded-[var(--card-border-radius)]',
-          'border border-[var(--border-color-hairline)] bg-background',
+          'relative overflow-hidden rounded-lg',
+          'border border-border/50 bg-background',
+          'shadow-sm transition-shadow hover:shadow-md',
+          '[--card-border-radius:0.5rem]',
           className
         )}
         style={{ width, height }}
         {...props}
       >
-        {renderContent()}
+        <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20 pointer-events-none" />
+        <div className="relative h-full">
+          {renderContent()}
+        </div>
       </div>
     )
   }

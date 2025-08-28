@@ -25,7 +25,6 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
     const ariaLiveRef = React.useRef<HTMLDivElement>(null)
     const [prevCurrentStep, setPrevCurrentStep] = React.useState(currentStepIndex)
 
-    // Update aria-live region when current step changes
     React.useEffect(() => {
       if (currentStepIndex !== prevCurrentStep && ariaLiveRef.current) {
         const currentStep = steps[currentStepIndex]
@@ -43,8 +42,11 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
         <div
           ref={ref}
           className={cn(
-            'stepper',
-            orientation === 'horizontal' ? 'flex items-center w-full' : 'flex flex-col h-full',
+            'stepper w-full',
+            '[--stepper-size:1.75rem]',
+            '[--stepper-border-width:2px]',
+            '[--stepper-connector-height:2px]',
+            orientation === 'vertical' && 'h-full',
             className
           )}
           role="progressbar"
@@ -55,38 +57,50 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
           {...props}
         >
         {orientation === 'horizontal' ? (
-          <>
-            {/* Progress bar */}
-            <div className="relative flex-1 mx-2">
+          <div className="relative flex items-center w-full">
+            <div className="relative flex-1 mx-3">
               <div 
-                className="h-[var(--stepper-connector-height)] bg-border rounded-full"
+                className="h-[var(--stepper-connector-height)] bg-muted rounded-full overflow-hidden"
                 aria-hidden="true"
               >
                 <div
-                  className="h-full bg-primary rounded-full transition-all duration-300 ease-out"
-                  style={{ width: `${Math.max(progressPercentage, 2)}%` }}
+                  className="h-full bg-primary rounded-full transition-all duration-500 ease-out"
+                  style={{ 
+                    width: `${Math.max(progressPercentage, 2)}%`,
+                    transformOrigin: 'left center'
+                  }}
                 />
               </div>
             </div>
             
-            {/* Step indicators */}
-            <div className="flex items-center justify-between absolute inset-0 px-2">
+            <div className="absolute inset-0 flex items-center justify-between px-0">
               {steps.map((step, index) => (
                 <div
                   key={step.id}
                   className={cn(
-                    'flex flex-col items-center',
+                    'flex flex-col items-center relative',
                     showLabels ? 'gap-2' : ''
                   )}
                 >
                   <div
                     className={cn(
                       'flex items-center justify-center rounded-full border-[var(--stepper-border-width)]',
-                      'w-[var(--stepper-size)] h-[var(--stepper-size)]',
-                      'text-sm font-medium transition-colors',
-                      step.status === 'complete' && 'bg-primary border-primary text-primary-foreground',
-                      step.status === 'current' && 'bg-background border-primary text-primary ring-2 ring-primary ring-offset-2',
-                      step.status === 'upcoming' && 'bg-background border-border text-muted-foreground'
+                      'w-[var(--stepper-size)] h-[var(--stepper-size)] z-10',
+                      'text-xs font-semibold transition-all duration-300 ease-out',
+                      'bg-background shadow-sm',
+                      step.status === 'complete' && [
+                        'bg-primary border-primary text-primary-foreground',
+                        'scale-100'
+                      ],
+                      step.status === 'current' && [
+                        'bg-background border-primary text-primary',
+                        'ring-4 ring-primary/20 ring-offset-0',
+                        'scale-110'
+                      ],
+                      step.status === 'upcoming' && [
+                        'bg-background border-muted text-muted-foreground',
+                        'scale-100'
+                      ]
                     )}
                     aria-current={step.status === 'current' ? 'step' : undefined}
                   >
@@ -110,17 +124,17 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   </div>
                   
                   {showLabels && (
-                    <div className="text-center">
+                    <div className="text-center max-w-20">
                       <div
                         className={cn(
-                          'text-sm font-medium',
+                          'text-xs font-medium leading-tight',
                           step.status === 'current' ? 'text-foreground' : 'text-muted-foreground'
                         )}
                       >
                         {step.label}
                       </div>
                       {step.description && (
-                        <div className="text-xs text-muted-foreground">
+                        <div className="text-xs text-muted-foreground mt-0.5 leading-tight">
                           {step.description}
                         </div>
                       )}
@@ -129,21 +143,29 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                 </div>
               ))}
             </div>
-          </>
+          </div>
         ) : (
-          // Vertical layout
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col space-y-6">
             {steps.map((step, index) => (
               <div key={step.id} className="flex items-start gap-4">
                 <div className="flex flex-col items-center">
                   <div
                     className={cn(
                       'flex items-center justify-center rounded-full border-[var(--stepper-border-width)]',
-                      'w-[var(--stepper-size)] h-[var(--stepper-size)]',
-                      'text-sm font-medium transition-colors flex-shrink-0',
-                      step.status === 'complete' && 'bg-primary border-primary text-primary-foreground',
-                      step.status === 'current' && 'bg-background border-primary text-primary ring-2 ring-primary ring-offset-2',
-                      step.status === 'upcoming' && 'bg-background border-border text-muted-foreground'
+                      'w-[var(--stepper-size)] h-[var(--stepper-size)] flex-shrink-0',
+                      'text-xs font-semibold transition-all duration-300 ease-out',
+                      'bg-background shadow-sm',
+                      step.status === 'complete' && [
+                        'bg-primary border-primary text-primary-foreground'
+                      ],
+                      step.status === 'current' && [
+                        'bg-background border-primary text-primary',
+                        'ring-4 ring-primary/20 ring-offset-0',
+                        'scale-110'
+                      ],
+                      step.status === 'upcoming' && [
+                        'bg-background border-muted text-muted-foreground'
+                      ]
                     )}
                     aria-current={step.status === 'current' ? 'step' : undefined}
                   >
@@ -167,22 +189,26 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                   </div>
                   
                   {index < steps.length - 1 && (
-                    <div className="flex-1 border-l border-border ml-[calc(var(--stepper-size)/2-0.5px)] mt-2 h-8" />
+                    <div className={cn(
+                      "w-[2px] mt-2 transition-colors duration-300",
+                      "flex-1 min-h-[1.5rem]",
+                      step.status === 'complete' ? 'bg-primary' : 'bg-muted'
+                    )} />
                   )}
                 </div>
                 
                 {showLabels && (
-                  <div className="flex-1 pb-8">
+                  <div className="flex-1 pb-2 -mt-0.5">
                     <div
                       className={cn(
-                        'text-sm font-medium',
+                        'text-sm font-medium leading-tight',
                         step.status === 'current' ? 'text-foreground' : 'text-muted-foreground'
                       )}
                     >
                       {step.label}
                     </div>
                     {step.description && (
-                      <div className="text-xs text-muted-foreground mt-1">
+                      <div className="text-xs text-muted-foreground mt-1 leading-normal">
                         {step.description}
                       </div>
                     )}

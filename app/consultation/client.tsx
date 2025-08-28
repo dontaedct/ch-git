@@ -7,6 +7,7 @@ import { ConsultationEngine } from '@/components/consultation-engine'
 import { Toaster } from '@/components/ui/sonner'
 import { setupN8nEventListeners } from '@/lib/n8n-events'
 import { getRuntimeConfig } from '@/lib/config/modules'
+import { getClientSettings, onSettingsChange, applyClientOverrides } from '@/lib/config/client-settings'
 
 // Type for Plan Card Sections
 type PlanCardSection = 'whatYouGet' | 'whyThisFits' | 'timeline' | 'nextSteps'
@@ -109,7 +110,20 @@ export function ConsultationPageClient() {
         const runtimeConfig = await getRuntimeConfig('demo-client-id')
         
         // Use runtime config if available, otherwise fall back to demo config
-        const finalConfig = runtimeConfig ?? demoConfig
+        let finalConfig = runtimeConfig ?? demoConfig
+        
+        // Apply client settings overrides
+        const clientSettings = getClientSettings()
+        if (finalConfig && typeof finalConfig === 'object' && 'template' in finalConfig) {
+          const configWithTemplate = finalConfig as typeof demoConfig
+          if (configWithTemplate.template) {
+            finalConfig = {
+              ...finalConfig,
+              template: applyClientOverrides(configWithTemplate.template, clientSettings)
+            }
+          }
+        }
+        
         setConfig(finalConfig as typeof demoConfig)
         
         // Try to get answers from localStorage or URL params
@@ -157,6 +171,21 @@ export function ConsultationPageClient() {
     }
     
     loadConfigAndAnswers()
+    
+    // Listen for settings changes and update config
+    const unsubscribe = onSettingsChange((newSettings) => {
+      setConfig(currentConfig => {
+        if (currentConfig?.template) {
+          return {
+            ...currentConfig,
+            template: applyClientOverrides(currentConfig.template, newSettings)
+          }
+        }
+        return currentConfig
+      })
+    })
+    
+    return unsubscribe
   }, [searchParams])
 
   const handleComplete = (planId: string, action: string) => {

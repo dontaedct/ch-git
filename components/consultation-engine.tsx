@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 import { usePdfExport } from '@/hooks/use-pdf-export'
 import { useN8nEvents } from '@/lib/n8n-events'
 import { emitConsultationGenerated, emitPdfDownloaded, emitEmailCopyRequested } from '@/lib/webhooks/emitter'
+import { EmailModal } from '@/components/email-modal'
 
 // Types based on the config structure
 interface Plan {
@@ -92,14 +93,19 @@ export function ConsultationEngine({
   clientName
 }: ConsultationEngineProps) {
   const [selectedPlan, setSelectedPlan] = useState<string>('')
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false)
+  const [currentPdfBlob, setCurrentPdfBlob] = useState<Blob | undefined>()
   
   // N8N event system
   const n8nEvents = useN8nEvents()
   
   // PDF export functionality
-  const { generatePdf, requestEmail } = usePdfExport({
+  const { generatePdf } = usePdfExport({
     filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`,
     onSuccess: (blob) => {
+      // Store blob for email modal
+      setCurrentPdfBlob(blob)
+      
       // Emit PDF download event (both old and new systems for compatibility)
       n8nEvents.emitPdfDownload({
         source: 'consultation-engine',
@@ -118,27 +124,6 @@ export function ConsultationEngine({
         userId: 'demo-user' // TODO: Get from auth context
       }).catch(error => {
         console.warn('Failed to emit PDF downloaded event:', error)
-      })
-    },
-    onEmailRequest: (blob) => {
-      // Emit email request event (both old and new systems for compatibility)
-      n8nEvents.emitEmailRequest({
-        source: 'consultation-engine',
-        planId: selectedPlan,
-        clientName,
-        blob,
-        size: blob.size,
-        filename: `consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`
-      })
-      
-      // New webhook emitter system
-      emitEmailCopyRequested({
-        consultationId: `consultation_${Date.now()}`,
-        email: clientName ?? 'unknown@example.com', // TODO: Get actual email from form or auth
-        source: 'consultation-engine',
-        userId: 'demo-user' // TODO: Get from auth context
-      }).catch(error => {
-        console.warn('Failed to emit email copy requested event:', error)
       })
     }
   })
@@ -273,7 +258,24 @@ export function ConsultationEngine({
 
   const handleEmailRequest = async () => {
     try {
-      await requestEmail('consultation-content')
+      // Generate PDF first if we don't have one
+      if (!currentPdfBlob) {
+        await generatePdf('consultation-content')
+      }
+      
+      // Open email modal
+      setIsEmailModalOpen(true)
+      
+      // Emit event for tracking
+      emitEmailCopyRequested({
+        consultationId: `consultation_${Date.now()}`,
+        email: 'pending', // Will be provided in modal
+        source: 'consultation-engine',
+        userId: 'demo-user' // TODO: Get from auth context
+      }).catch(error => {
+        console.warn('Failed to emit email copy requested event:', error)
+      })
+      
       onComplete?.(selectedPlan, 'email')
     } catch (error) {
       console.error('Email request failed:', error)
@@ -451,6 +453,17 @@ export function ConsultationEngine({
           )}
         </div>
       </div>
+      
+      {/* Email Modal */}
+      <EmailModal
+        isOpen={isEmailModalOpen}
+        onClose={() => setIsEmailModalOpen(false)}
+        clientName={clientName ?? 'Valued Client'}
+        planTitle={currentPlan?.title ?? 'Consultation Plan'}
+        pdfBlob={currentPdfBlob}
+        filename={`consultation-${clientName?.replace(/\s+/g, '-').toLowerCase() ?? 'report'}-${new Date().toISOString().split('T')[0]}.pdf`}
+        initialEmail=""
+      />
     </div>
   )
 }

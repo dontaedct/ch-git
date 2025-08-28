@@ -117,7 +117,7 @@ export default async function DashboardPage() {
           <div className="lg:col-span-2">
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Quick Actions</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <Link 
                   href="/questionnaire"
                   className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group"
@@ -157,6 +157,17 @@ export default async function DashboardPage() {
                   </div>
                   <h4 className="font-medium text-gray-900 mb-1">Catalog Overrides</h4>
                   <p className="text-sm text-gray-600">Customize plan titles and content</p>
+                </Link>
+                
+                <Link 
+                  href="/dashboard/settings"
+                  className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors group"
+                >
+                  <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-gray-200 transition-colors">
+                    <div className="w-4 h-4 bg-gray-600 rounded"></div>
+                  </div>
+                  <h4 className="font-medium text-gray-900 mb-1">Settings</h4>
+                  <p className="text-sm text-gray-600">Configure booking and email settings</p>
                 </Link>
               </div>
             </div>

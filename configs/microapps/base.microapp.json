@@ -201,6 +201,17 @@
             "required": true
           },
           {
+            "id": "experience-details",
+            "text": "Tell us about your previous experience",
+            "type": "long-text",
+            "required": false,
+            "placeholder": "Describe your experience with similar solutions...",
+            "visibleIf": {
+              "questionId": "previous-experience",
+              "value": true
+            }
+          },
+          {
             "id": "additional-info",
             "text": "Anything else you would like us to know?",
             "type": "long-text",
@@ -260,6 +271,35 @@
                 "label": "Performance Optimization"
               }
             ]
+          },
+          {
+            "id": "project-urgency",
+            "text": "Why is this project urgent for you?",
+            "type": "chips-multi",
+            "required": true,
+            "visibleIf": {
+              "questionId": "timeline",
+              "value": "urgent"
+            },
+            "options": [
+              {
+                "value": "competitor-pressure",
+                "label": "Competitive Pressure"
+              },
+              {
+                "value": "regulatory-requirements",
+                "label": "Regulatory Requirements"
+              },
+              {
+                "value": "business-growth",
+                "label": "Rapid Business Growth"
+              },
+              {
+                "value": "system-failure",
+                "label": "Current System Failing"
+              }
+            ],
+            "allowCustom": true
           }
         ]
       }

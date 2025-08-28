@@ -173,14 +173,14 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
     return (
       <div
         ref={ref}
-        className={cn('flex flex-wrap gap-1.5', className)}
+        className={cn('flex flex-wrap gap-1.5 md:gap-2', className)}
         role="group"
         aria-label={ariaLabel}
         aria-describedby={ariaDescribedBy}
         onKeyDown={handleKeyDown}
         style={{
-          '--chip-height': '1.75rem',
-          '--chip-padding': '0.375rem 0.75rem',
+          '--chip-height': '2rem',
+          '--chip-padding': '0.5rem 0.75rem',
           '--chip-font-size': '0.875rem',
           '--chip-border-radius': '0.5rem',
         } as React.CSSProperties}

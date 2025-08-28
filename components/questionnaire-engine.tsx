@@ -17,6 +17,8 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { emitLeadStartedQuestionnaire, emitLeadCompletedQuestionnaire } from '@/lib/webhooks/emitter'
+import { AnimatePresence, motion } from 'framer-motion'
+import { toast } from 'sonner'
 
 interface QuestionOption {
   value: string
@@ -71,7 +73,7 @@ interface ValidationError {
   message: string
 }
 
-const QUESTIONS_PER_VIEW = 2
+const QUESTIONS_PER_VIEW = 3
 const STORAGE_KEY = 'questionnaire-answers'
 
 export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: QuestionnaireEngineProps) {
@@ -79,23 +81,53 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
   const [answers, setAnswers] = useState<Record<string, unknown>>({})
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [direction, setDirection] = useState<'forward' | 'backward'>('forward')
+  const [_lastSaveTime, setLastSaveTime] = useState<Date | null>(null)
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const ariaLiveRef = useRef<HTMLDivElement>(null)
+  const questionRefs = useRef<Record<string, HTMLElement | null>>({})
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
   // Get all questions from all steps
   const allQuestions = config.steps.flatMap(step => step.questions)
   
-  // Filter questions based on visibleIf conditions
-  const visibleQuestions = allQuestions.filter(question => {
-    if (!question.visibleIf) return true
+  // Filter questions based on visibleIf conditions with memoization
+  const visibleQuestions = useMemo(() => {
+    return allQuestions.filter(question => {
+      if (!question.visibleIf) return true
+      
+      const { questionId, value: expectedValue } = question.visibleIf
+      const currentValue = answers[questionId]
+      
+      if (Array.isArray(expectedValue)) {
+        return expectedValue.includes(currentValue as string)
+      }
+      return currentValue === expectedValue
+    })
+  }, [allQuestions, answers])
+  
+  // Track previous visible questions count to handle smooth transitions
+  const prevVisibleQuestionsRef = useRef(visibleQuestions.length)
+  
+  useEffect(() => {
+    const currentCount = visibleQuestions.length
+    const prevCount = prevVisibleQuestionsRef.current
     
-    const { questionId, value: expectedValue } = question.visibleIf
-    const currentValue = answers[questionId]
-    
-    if (Array.isArray(expectedValue)) {
-      return expectedValue.includes(currentValue as string)
+    // If questions became visible/invisible, adjust current view if needed
+    if (currentCount !== prevCount) {
+      // Delay this check until questionViews is updated
+      setTimeout(() => {
+        setCurrentViewIndex(prev => {
+          const maxViews = Math.ceil(visibleQuestions.length / QUESTIONS_PER_VIEW)
+          return Math.min(prev, Math.max(0, maxViews - 1))
+        })
+      }, 0)
     }
-    return currentValue === expectedValue
-  })
+    
+    prevVisibleQuestionsRef.current = currentCount
+  }, [visibleQuestions.length, currentViewIndex])
+  
   
   // Create views with 2-3 questions each
   const questionViews = useMemo(() => {
@@ -108,6 +140,8 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
   
   const totalViews = questionViews.length
   const currentQuestions = useMemo(() => questionViews[currentViewIndex] ?? [], [questionViews, currentViewIndex])
+  const canGoNext = currentViewIndex < totalViews
+  const canGoBack = currentViewIndex > 0
   
   // Calculate progress
   const answeredQuestions = visibleQuestions.filter(q => {
@@ -150,25 +184,69 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
     })
   }, [config.id, allQuestions.length, onAnalyticsEvent])
   
-  // Auto-save to localStorage
+  // Optimistic autosave with debouncing
   useEffect(() => {
     if (Object.keys(answers).length > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
+      setSaveStatus('saving')
       
-      onAnalyticsEvent?.('questionnaire_autosaved', {
-        questionnaireId: config.id,
-        answersCount: Object.keys(answers).length,
-        progress: progressPercent
-      })
+      // Clear any existing timeout
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current)
+      }
+      
+      // Debounced save
+      saveTimeoutRef.current = setTimeout(async () => {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
+          setLastSaveTime(new Date())
+          setSaveStatus('saved')
+          
+          onAnalyticsEvent?.('questionnaire_autosaved', {
+            questionnaireId: config.id,
+            answersCount: Object.keys(answers).length,
+            progress: progressPercent
+          })
+          
+          // Reset status after showing saved state
+          setTimeout(() => setSaveStatus('idle'), 2000)
+        } catch (error) {
+          console.warn('Failed to save answers:', error)
+          setSaveStatus('error')
+          toast.error('Failed to save your progress. Please check your connection.')
+          setTimeout(() => setSaveStatus('idle'), 3000)
+        }
+      }, 800)
+    }
+    
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current)
+      }
     }
   }, [answers, config.id, progressPercent, onAnalyticsEvent])
   
   // Update aria-live region for progress updates
   useEffect(() => {
     if (ariaLiveRef.current) {
-      ariaLiveRef.current.textContent = `Progress: ${progressPercent}% complete, ${answeredQuestions} of ${visibleQuestions.length} questions answered`
+      ariaLiveRef.current.textContent = `Progress: ${progressPercent}% complete, ${answeredQuestions} of ${visibleQuestions.length} questions answered. View ${currentViewIndex + 1} of ${totalViews}`
     }
-  }, [progressPercent, answeredQuestions, visibleQuestions.length])
+  }, [progressPercent, answeredQuestions, visibleQuestions.length, currentViewIndex, totalViews])
+  
+  // Focus management for view changes
+  useEffect(() => {
+    // When view changes, focus first question
+    if (currentQuestions.length > 0 && !isTransitioning) {
+      const firstQuestionId = currentQuestions[0].id
+      const questionElement = questionRefs.current[firstQuestionId]
+      if (questionElement) {
+        // Small delay to allow animation to complete
+        setTimeout(() => {
+          const focusableElement = questionElement.querySelector('input, select, textarea, button[role="radio"], button[role="checkbox"]') as HTMLElement
+          focusableElement?.focus()
+        }, 350)
+      }
+    }
+  }, [currentViewIndex, currentQuestions, isTransitioning])
   
   const updateAnswer = useCallback((questionId: string, value: unknown) => {
     setAnswers(prev => ({ ...prev, [questionId]: value }))
@@ -209,6 +287,16 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
   
   const handleNext = useCallback(async () => {
     if (!validateCurrentView()) {
+      // Focus first error field
+      const firstError = validationErrors[0]
+      if (firstError) {
+        const errorElement = questionRefs.current[firstError.questionId]
+        if (errorElement) {
+          const focusableElement = errorElement.querySelector('input, select, textarea, button') as HTMLElement
+          focusableElement?.focus()
+        }
+      }
+      
       onAnalyticsEvent?.('validation_failed', {
         questionnaireId: config.id,
         viewIndex: currentViewIndex,
@@ -218,6 +306,11 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
     }
     
     setIsLoading(true)
+    setIsTransitioning(true)
+    setDirection('forward')
+    
+    // Add slight delay for smooth transition
+    await new Promise(resolve => setTimeout(resolve, 150))
     
     if (currentViewIndex < totalViews - 1) {
       setCurrentViewIndex(prev => prev + 1)
@@ -253,18 +346,72 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
     }
     
     setIsLoading(false)
-  }, [validateCurrentView, currentViewIndex, totalViews, answers, config.id, visibleQuestions.length, answeredQuestions, progressPercent, validationErrors.length, onAnalyticsEvent, onComplete])
+    setIsTransitioning(false)
+  }, [validateCurrentView, currentViewIndex, totalViews, answers, config.id, visibleQuestions.length, answeredQuestions, progressPercent, validationErrors, onAnalyticsEvent, onComplete])
   
-  const handlePrevious = useCallback(() => {
+  const handlePrevious = useCallback(async () => {
     if (currentViewIndex > 0) {
+      setIsTransitioning(true)
+      setDirection('backward')
+      
+      // Add slight delay for smooth transition
+      await new Promise(resolve => setTimeout(resolve, 150))
+      
       setCurrentViewIndex(prev => prev - 1)
       onAnalyticsEvent?.('view_back', {
         questionnaireId: config.id,
         fromView: currentViewIndex,
         toView: currentViewIndex - 1
       })
+      
+      setIsTransitioning(false)
     }
   }, [currentViewIndex, config.id, onAnalyticsEvent])
+  
+  // Keyboard shortcuts for navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // Only handle if not in an input field
+      if (event.target instanceof HTMLInputElement || 
+          event.target instanceof HTMLTextAreaElement ||
+          event.target instanceof HTMLSelectElement) {
+        return
+      }
+      
+      const isMetaOrCtrl = event.metaKey || event.ctrlKey
+      
+      if (isMetaOrCtrl) {
+        switch (event.key) {
+          case 'ArrowLeft':
+            event.preventDefault()
+            if (canGoBack && !isLoading && !isTransitioning) {
+              handlePrevious()
+            }
+            break
+          case 'ArrowRight':
+            event.preventDefault()
+            // We'll check hasMinRequiredAnswers in the render
+            if (canGoNext && !isLoading && !isTransitioning) {
+              handleNext()
+            }
+            break
+          case 's':
+            event.preventDefault()
+            // Manual save trigger (though it's already auto-saving)
+            if (Object.keys(answers).length > 0) {
+              setSaveStatus('saving')
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
+              setSaveStatus('saved')
+              setTimeout(() => setSaveStatus('idle'), 1500)
+            }
+            break
+        }
+      }
+    }
+    
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [canGoBack, canGoNext, isLoading, isTransitioning, handleNext, handlePrevious, answers])
   
   const renderQuestion = (question: Question) => {
     const answer = answers[question.id]
@@ -273,7 +420,10 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
     
     const commonProps = {
       'aria-invalid': hasError,
-      'aria-describedby': hasError ? `${question.id}-error` : undefined
+      'aria-describedby': hasError ? `${question.id}-error` : undefined,
+      ref: (el: HTMLElement | null) => {
+        questionRefs.current[question.id] = el
+      }
     }
     
     switch (question.type) {
@@ -432,53 +582,166 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
   }
   
   const isLastView = currentViewIndex === totalViews - 1
-  const canGoNext = currentViewIndex < totalViews
-  const canGoBack = currentViewIndex > 0
+  
+  // Check if minimum required questions are answered for current view
+  const currentRequiredQuestions = currentQuestions.filter(q => q.required)
+  const currentAnsweredRequired = currentRequiredQuestions.filter(q => {
+    const answer = answers[q.id]
+    return answer !== undefined && answer !== '' && (Array.isArray(answer) ? answer.length > 0 : true)
+  })
+  const hasMinRequiredAnswers = currentAnsweredRequired.length >= Math.min(currentRequiredQuestions.length, 1)
+  
+  // Animation variants
+  const containerVariants = {
+    enter: (direction: 'forward' | 'backward') => ({
+      x: direction === 'forward' ? 300 : -300,
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction: 'forward' | 'backward') => ({
+      zIndex: 0,
+      x: direction === 'forward' ? -300 : 300,
+      opacity: 0
+    })
+  }
+  
+  const transition = {
+    type: "tween" as const,
+    ease: [0.2, 0.8, 0.2, 1] as const,
+    duration: 0.3
+  }
   
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-2xl mx-auto p-4 md:p-6">
       <div aria-live="polite" aria-atomic="true" className="sr-only" ref={ariaLiveRef} />
       
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">{config.title}</h1>
-        <p className="text-muted-foreground">{config.description}</p>
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{config.title}</h1>
+        <p className="text-sm md:text-base text-muted-foreground mb-3">{config.description}</p>
+        <div className="hidden md:block text-xs text-muted-foreground/70">
+          Use Ctrl+← and Ctrl+→ to navigate, Ctrl+S to save
+        </div>
       </div>
       
       {/* Progress Bar */}
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-2">
+      <div className="mb-6 md:mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2 gap-2">
           {config.progress.showNumbers && (
-            <span className="text-sm font-medium text-muted-foreground">
+            <span className="text-xs md:text-sm font-medium text-muted-foreground">
               Question {currentViewIndex * QUESTIONS_PER_VIEW + 1}-{Math.min((currentViewIndex + 1) * QUESTIONS_PER_VIEW, visibleQuestions.length)} of {visibleQuestions.length}
             </span>
           )}
-          <span className="text-sm font-medium text-muted-foreground">
-            {progressPercent}% complete
-          </span>
+          <div className="flex items-center gap-2 md:gap-3">
+            {/* Save Status Indicator */}
+            <AnimatePresence>
+              {saveStatus !== 'idle' && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className="flex items-center gap-1 text-xs text-muted-foreground"
+                >
+                  {saveStatus === 'saving' && (
+                    <>
+                      <div className="w-3 h-3 border border-muted-foreground/30 border-t-muted-foreground rounded-full animate-spin" />
+                      <span className="hidden sm:inline">Saving...</span>
+                    </>
+                  )}
+                  {saveStatus === 'saved' && (
+                    <>
+                      <div className="w-3 h-3 bg-green-500 rounded-full" />
+                      <span className="text-green-600 hidden sm:inline">Saved</span>
+                    </>
+                  )}
+                  {saveStatus === 'error' && (
+                    <>
+                      <div className="w-3 h-3 bg-red-500 rounded-full" />
+                      <span className="text-red-600 hidden sm:inline">Save failed</span>
+                    </>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <span className="text-xs md:text-sm font-medium text-muted-foreground">
+              {progressPercent}% complete
+            </span>
+          </div>
         </div>
         <Progress value={progressPercent} className="h-2" />
       </div>
       
-      {/* Questions */}
-      <div className="space-y-8 mb-8">
-        {currentQuestions.map(renderQuestion)}
+      {/* Questions with Animation */}
+      <div className="relative overflow-hidden mb-6 md:mb-8">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={currentViewIndex}
+            custom={direction}
+            variants={containerVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={transition}
+            className="space-y-6 md:space-y-8"
+          >
+            {currentQuestions.map((question, index) => (
+              <motion.div
+                key={question.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  y: 0,
+                  transition: { delay: index * 0.1, duration: 0.3 }
+                }}
+                className="bg-card/50 p-4 md:p-6 rounded-lg border border-border/50 backdrop-blur-sm"
+              >
+                {renderQuestion(question)}
+              </motion.div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
       </div>
       
       {/* Navigation */}
-      <div className="flex justify-between items-center pt-6 border-t border-border">
+      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 pt-4 md:pt-6 border-t border-border">
         <Button
           variant="outline"
           onClick={handlePrevious}
-          disabled={!canGoBack || isLoading}
+          disabled={!canGoBack || isLoading || isTransitioning}
+          className="min-w-[100px] order-2 sm:order-1"
+          size="lg"
         >
           {config.navigation.previousLabel}
         </Button>
         
+        {/* Helper text for validation */}
+        {!hasMinRequiredAnswers && currentRequiredQuestions.length > 0 && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-xs md:text-sm text-muted-foreground text-center px-4 order-3 sm:order-2 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2"
+          >
+            Please answer all required questions to continue
+          </motion.div>
+        )}
+        
         <Button
           onClick={handleNext}
-          disabled={!canGoNext || isLoading}
+          disabled={!hasMinRequiredAnswers || isLoading || isTransitioning || !canGoNext}
+          className="min-w-[140px] order-1 sm:order-3"
+          size="lg"
         >
-          {isLoading ? 'Loading...' : isLastView ? config.navigation.submitLabel : config.navigation.nextLabel}
+          {isLoading || isTransitioning ? (
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span>Loading...</span>
+            </div>
+          ) : (
+            isLastView ? config.navigation.submitLabel : config.navigation.nextLabel
+          )}
         </Button>
       </div>
     </div>

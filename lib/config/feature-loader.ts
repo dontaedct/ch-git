@@ -163,7 +163,6 @@ const FEATURE_MODULES: Record<FeatureFlag, FeatureModule> = {
 // =============================================================================
 
 const loadedFeatures = new Map<FeatureFlag, LoadedFeature>();
-const initializationPromises = new Map<FeatureFlag, Promise<void>>();
 
 // =============================================================================
 // CORE LOADING FUNCTIONS

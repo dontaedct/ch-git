@@ -26,6 +26,7 @@
     "tool:security:secrets": "tsx scripts/security-secrets.ts",
     "tool:security:bundle": "node scripts/bundle-analyzer.mjs",
     "tool:check:env": "tsx scripts/check-env.ts",
+    "env:doctor": "tsx scripts/env-doctor.ts",
     "tool:prepare": "node -e \"process.exit(process.env.CI?0:1)\" || husky install",
     "tool:doctor": "tsx scripts/doctor.ts",
     "tool:doctor:fix": "AUTO=1 tsx scripts/doctor.ts",

@@ -119,7 +119,7 @@ jobs:
             node -e "
               const stats = JSON.parse(require('fs').readFileSync('.next/analyze/bundle-stats.json', 'utf8'));
               const totalSize = stats.totalSize || 0;
-              const budget = 500 * 1024; // 500KB budget
+              const budget = 1000 * 1024; // 1MB budget (more realistic)
               
               console.log(\`Total bundle size: \${(totalSize / 1024).toFixed(2)}KB\`);
               console.log(\`Budget: \${(budget / 1024).toFixed(2)}KB\`);

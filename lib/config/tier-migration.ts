@@ -57,7 +57,7 @@ export interface DataIntegrityCheck {
   check: string;
   passed: boolean;
   error?: string;
-  data?: any;
+  data?: unknown;
 }
 
 // =============================================================================
@@ -316,7 +316,7 @@ async function executeMigrationStep(step: MigrationStep, plan: MigrationPlan): P
 // STEP IMPLEMENTATIONS
 // =============================================================================
 
-async function executeBackupStep(step: MigrationStep, plan: MigrationPlan): Promise<void> {
+async function executeBackupStep(_step: MigrationStep, _plan: MigrationPlan): Promise<void> {
   // Create backup of current configuration
   const currentConfig = getAppConfig();
   const backup = {
@@ -338,9 +338,9 @@ async function executeBackupStep(step: MigrationStep, plan: MigrationPlan): Prom
   console.log('💾 Configuration backup created');
 }
 
-async function executeFeatureEnableStep(step: MigrationStep, plan: MigrationPlan): Promise<void> {
+async function executeFeatureEnableStep(_step: MigrationStep, _plan: MigrationPlan): Promise<void> {
   // Get features that will be enabled in new tier
-  const newFeatures = getNewFeaturesForTier(plan.toTier, plan.fromTier);
+  const newFeatures = getNewFeaturesForTier(_plan.toTier, _plan.fromTier);
   
   console.log(`🔧 Enabling features: ${newFeatures.join(', ')}`);
   
@@ -351,9 +351,9 @@ async function executeFeatureEnableStep(step: MigrationStep, plan: MigrationPlan
   }
 }
 
-async function executeFeatureDisableStep(step: MigrationStep, plan: MigrationPlan): Promise<void> {
+async function executeFeatureDisableStep(_step: MigrationStep, _plan: MigrationPlan): Promise<void> {
   // Get features that will be disabled in new tier
-  const removedFeatures = getRemovedFeaturesForTier(plan.toTier, plan.fromTier);
+  const removedFeatures = getRemovedFeaturesForTier(_plan.toTier, _plan.fromTier);
   
   console.log(`🔧 Disabling features: ${removedFeatures.join(', ')}`);
   
@@ -365,7 +365,7 @@ async function executeFeatureDisableStep(step: MigrationStep, plan: MigrationPla
   }
 }
 
-async function executeDataMigrationStep(step: MigrationStep, plan: MigrationPlan): Promise<void> {
+async function executeDataMigrationStep(_step: MigrationStep, _plan: MigrationPlan): Promise<void> {
   // Migrate data structures for new tier
   console.log('🗄️ Migrating data structures...');
   
@@ -376,21 +376,21 @@ async function executeDataMigrationStep(step: MigrationStep, plan: MigrationPlan
   console.log('✅ Data migration completed');
 }
 
-async function executeConfigUpdateStep(step: MigrationStep, plan: MigrationPlan): Promise<void> {
-  if (!plan.preset) return;
+async function executeConfigUpdateStep(_step: MigrationStep, _plan: MigrationPlan): Promise<void> {
+  if (!_plan.preset) return;
   
-  console.log(`📝 Updating preset configuration: ${plan.preset}`);
+  console.log(`📝 Updating preset configuration: ${_plan.preset}`);
   
-  const presetConfig = loadPresetConfig(plan.preset);
+  const presetConfig = loadPresetConfig(_plan.preset);
   if (!presetConfig) {
-    throw new Error(`Failed to load preset configuration: ${plan.preset}`);
+    throw new Error(`Failed to load preset configuration: ${_plan.preset}`);
   }
   
   // In real implementation, update environment variables
   console.log('✅ Preset configuration updated');
 }
 
-async function executeValidationStep(step: MigrationStep, plan: MigrationPlan): Promise<void> {
+async function executeValidationStep(_step: MigrationStep, _plan: MigrationPlan): Promise<void> {
   console.log('🔍 Running validation checks...');
   
   const checks = await performDataIntegrityChecks();
@@ -461,7 +461,7 @@ export async function rollbackMigration(): Promise<boolean> {
     console.log('🔄 Starting migration rollback...');
     
     // Restore from backup
-    let backup: any = null;
+    let backup: unknown = null;
     if (typeof window !== 'undefined') {
       const backupStr = localStorage.getItem('tier_migration_backup');
       backup = backupStr ? JSON.parse(backupStr) : null;
@@ -472,7 +472,10 @@ export async function rollbackMigration(): Promise<boolean> {
     }
     
     // Restore tier configuration
-    await updateTierConfiguration(backup.tier, backup.preset);
+    if (backup && typeof backup === 'object' && 'tier' in backup && 'preset' in backup) {
+      const backupData = backup as { tier: TierLevel; preset: PresetName };
+      await updateTierConfiguration(backupData.tier, backupData.preset);
+    }
     
     console.log('✅ Migration rollback completed');
     return true;
@@ -524,9 +527,11 @@ function getRemovedFeaturesForTier(toTier: TierLevel, fromTier: TierLevel): Feat
 // EXPORTS
 // =============================================================================
 
-export default {
+const tierMigrationExports = {
   createMigrationPlan,
   executeMigration,
   performDataIntegrityChecks,
   rollbackMigration,
 };
+
+export default tierMigrationExports;

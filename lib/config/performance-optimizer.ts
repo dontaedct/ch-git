@@ -660,9 +660,7 @@ let performanceOptimizer: PerformanceOptimizer | null = null;
  * Get performance optimizer instance
  */
 export function getPerformanceOptimizer(): PerformanceOptimizer {
-  if (!performanceOptimizer) {
-    performanceOptimizer = new PerformanceOptimizer();
-  }
+  performanceOptimizer ??= new PerformanceOptimizer();
   return performanceOptimizer;
 }
 
@@ -678,9 +676,11 @@ export async function initializePerformanceOptimization(): Promise<void> {
 // EXPORTS
 // =============================================================================
 
-export default {
+const performanceOptimizerExports = {
   getPerformanceOptimizer,
   initializePerformanceOptimization,
   TIER_OPTIMIZATIONS,
   TIER_CACHE_STRATEGIES,
 };
+
+export default performanceOptimizerExports;

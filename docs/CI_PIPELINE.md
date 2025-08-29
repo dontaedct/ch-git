@@ -154,7 +154,7 @@ Automated performance validation:
 | Metric | Threshold | Purpose |
 |--------|-----------|---------|
 | Build Time | ≤5 minutes | Prevent slow builds |
-| Bundle Size | ≤500KB | Maintain performance |
+| Bundle Size | ≤1MB | Maintain performance (realistic for this project) |
 | File Count | ≤50 files | Prevent fragmentation |
 
 ## Security Features

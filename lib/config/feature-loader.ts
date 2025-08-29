@@ -260,7 +260,7 @@ export async function loadCriticalFeatures(): Promise<LoadedFeature[]> {
  * Lazy load a feature when needed
  */
 export async function lazyLoadFeature(feature: FeatureFlag): Promise<LoadedFeature | null> {
-  return withFeature(feature, () => loadFeature(feature)) || null;
+  return withFeature(feature, () => loadFeature(feature)) ?? null;
 }
 
 // =============================================================================
@@ -367,16 +367,16 @@ export function getFeatureLoadingStatus() {
     features: allFeatures.map(feature => {
       const enabled = isFeatureEnabled(feature);
       const loaded = getLoadedFeature(feature);
-      const module = FEATURE_MODULES[feature];
+      const moduleInfo = FEATURE_MODULES[feature];
       
       return {
         feature,
-        name: module.name,
+        name: moduleInfo.name,
         enabled,
-        lazy: module.lazy || false,
-        dependencies: module.dependencies || [],
-        loaded: loaded?.loaded || false,
-        initialized: loaded?.initialized || false,
+        lazy: moduleInfo.lazy ?? false,
+        dependencies: moduleInfo.dependencies ?? [],
+        loaded: loaded?.loaded ?? false,
+        initialized: loaded?.initialized ?? false,
         error: loaded?.error?.message,
       };
     }),
@@ -395,7 +395,7 @@ export async function reloadAllFeatures(): Promise<void> {
 // EXPORTS
 // =============================================================================
 
-export default {
+const featureLoaderExports = {
   loadFeature,
   loadFeatures,
   loadAllEnabledFeatures,
@@ -411,3 +411,5 @@ export default {
   getFeatureLoadingStatus,
   reloadAllFeatures,
 };
+
+export default featureLoaderExports;

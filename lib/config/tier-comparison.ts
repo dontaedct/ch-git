@@ -687,7 +687,7 @@ export function getUpgradeBenefits(fromTier: TierLevel, toTier: TierLevel): {
       if (fromFeature.limited && !toFeature.limited) {
         improvedLimits.push({
           feature: feature.name,
-          from: fromFeature.limit || 'Limited',
+          from: fromFeature.limit ?? 'Limited',
           to: 'Unlimited',
         });
       } else if (fromFeature.limit && toFeature.limit && fromFeature.limit !== toFeature.limit) {
@@ -734,7 +734,7 @@ export function getPresetTierComparison(preset: PresetName): Array<{
   const requirements = getPresetRequirements(preset);
   
   return (['starter', 'pro', 'advanced'] as TierLevel[]).map(tier => {
-    const comparison = TIER_COMPARISONS[tier];
+    const _comparison = TIER_COMPARISONS[tier];
     const suitability = evaluateTierSuitability(tier, requirements);
     
     return {
@@ -805,7 +805,7 @@ function getSuitabilityReasons(tier: TierLevel, requirements: Record<string, boo
   return reasons;
 }
 
-function getRecommendedFeatures(tier: TierLevel, preset: PresetName): string[] {
+function getRecommendedFeatures(tier: TierLevel, _preset: PresetName): string[] {
   const comparison = TIER_COMPARISONS[tier];
   
   // Return customer-facing features available in this tier
@@ -822,7 +822,7 @@ function getRecommendedFeatures(tier: TierLevel, preset: PresetName): string[] {
 // EXPORTS
 // =============================================================================
 
-export default {
+const tierComparisonExports = {
   TIER_FEATURES,
   TIER_COMPARISONS,
   getFeatureComparison,
@@ -832,3 +832,5 @@ export default {
   getUpgradeBenefits,
   getPresetTierComparison,
 };
+
+export default tierComparisonExports;

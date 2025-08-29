@@ -28,6 +28,8 @@
     "tool:security:headers:test": "npx playwright test tests/playwright/security-headers.spec.ts",
     "tool:security:secrets": "tsx scripts/security-secrets.ts",
     "tool:security:bundle": "node scripts/bundle-analyzer.mjs",
+    "security:scan": "tsx tools/security/vulnerability-scanner.ts",
+    "security:dashboard": "tsx tools/security/vulnerability-scanner.ts --dashboard-only",
     "tool:check:env": "tsx scripts/check-env.ts",
     "env:doctor": "tsx scripts/env-doctor.ts",
     "tool:prepare": "node -e \"process.exit(process.env.CI?0:1)\" || husky install",

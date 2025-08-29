@@ -31,7 +31,12 @@
       "Bash(gh run view:*)",
       "Read(C:\\Users\\Dontae-PC\\Downloads/**)",
       "Bash(gh run list:*)",
-      "Read(C:\\Users\\Dontae-PC\\Downloads/**)"
+      "Read(C:\\Users\\Dontae-PC\\Downloads/**)",
+      "Bash(npm audit:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm info:*)",
+      "Bash(gh api:*)",
+      "Bash(npx tsx:*)"
     ],
     "deny": [],
     "ask": []

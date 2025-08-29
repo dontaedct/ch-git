@@ -1,0 +1,159 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "DCT Micro-Apps Renovate Configuration - Security First",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separateMultipleMajorReleases",
+    "security:openssf-scorecard",
+    "workarounds:all"
+  ],
+  "timezone": "UTC",
+  "schedule": ["before 6am on monday"],
+  "prConcurrentLimit": 5,
+  "branchConcurrentLimit": 10,
+  "labels": ["renovate", "dependencies"],
+  "assignees": ["@renovate[bot]"],
+  "reviewers": ["@renovate[bot]"],
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "labels": ["security", "vulnerability", "high-priority"],
+    "assignees": ["@renovate[bot]"],
+    "reviewers": ["@renovate[bot]"],
+    "schedule": ["at any time"],
+    "prPriority": 10
+  },
+  "packageRules": [
+    {
+      "description": "Security updates - highest priority",
+      "matchPackagePatterns": ["*"],
+      "matchDepTypes": ["dependencies", "devDependencies"],
+      "vulnerabilitySeverity": ["HIGH", "CRITICAL"],
+      "prPriority": 10,
+      "labels": ["security", "high-priority"],
+      "schedule": ["at any time"],
+      "automerge": false,
+      "requiredStatusChecks": null
+    },
+    {
+      "description": "Major updates - require manual review",
+      "matchUpdateTypes": ["major"],
+      "prPriority": 5,
+      "labels": ["major-update", "breaking-change"],
+      "automerge": false,
+      "schedule": ["before 6am on monday"],
+      "minimumReleaseAge": "7 days"
+    },
+    {
+      "description": "Minor and patch updates - lower priority",
+      "matchUpdateTypes": ["minor", "patch"],
+      "prPriority": 3,
+      "labels": ["minor-patch-update"],
+      "automerge": false,
+      "schedule": ["before 6am on monday"],
+      "groupName": "non-major dependencies"
+    },
+    {
+      "description": "Production dependencies - higher priority",
+      "matchDepTypes": ["dependencies"],
+      "prPriority": 6,
+      "labels": ["production-deps"]
+    },
+    {
+      "description": "Development dependencies - lower priority",
+      "matchDepTypes": ["devDependencies"],
+      "prPriority": 2,
+      "labels": ["dev-deps"],
+      "schedule": ["before 6am on monday"]
+    },
+    {
+      "description": "Next.js framework - special handling",
+      "matchPackageNames": ["next"],
+      "prPriority": 7,
+      "labels": ["nextjs", "framework"],
+      "minimumReleaseAge": "3 days",
+      "automerge": false
+    },
+    {
+      "description": "React ecosystem - grouped updates",
+      "matchPackagePatterns": ["^react", "^@types/react"],
+      "prPriority": 7,
+      "labels": ["react", "ui"],
+      "groupName": "React ecosystem",
+      "minimumReleaseAge": "2 days"
+    },
+    {
+      "description": "Supabase - database related",
+      "matchPackagePatterns": ["supabase", "@supabase"],
+      "prPriority": 8,
+      "labels": ["supabase", "database"],
+      "minimumReleaseAge": "2 days",
+      "automerge": false
+    },
+    {
+      "description": "TypeScript and related tools",
+      "matchPackagePatterns": ["typescript", "@types/", "ts-", "tsx"],
+      "groupName": "TypeScript ecosystem",
+      "prPriority": 4,
+      "labels": ["typescript", "types"]
+    },
+    {
+      "description": "Testing dependencies",
+      "matchPackagePatterns": ["jest", "playwright", "@testing-library", "vitest"],
+      "groupName": "Testing dependencies",
+      "prPriority": 3,
+      "labels": ["testing", "quality"]
+    },
+    {
+      "description": "ESLint and Prettier",
+      "matchPackagePatterns": ["eslint", "prettier", "@eslint", "eslint-"],
+      "groupName": "Code quality tools",
+      "prPriority": 2,
+      "labels": ["code-quality", "linting"]
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 6am on monday"],
+    "prPriority": 1,
+    "labels": ["lockfile-maintenance"]
+  },
+  "separateMinorPatch": false,
+  "separateMajorMinor": true,
+  "separateMultipleMajor": true,
+  "rollbackPrs": true,
+  "stopUpdatingLabel": "renovate-stop",
+  "rebaseWhen": "conflicted",
+  "platformAutomerge": false,
+  "prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}{{{configDescription}}}{{{controls}}}",
+  "prTitle": "{{semanticPrefix}}{{#if isPin}}Pin{{else}}Update{{/if}} {{depName}} to {{#if isMajor}}v{{newMajor}}{{else}}{{#if isSingleVersion}}v{{newVersion}}{{else}}{{newValue}}{{/if}}{{/if}}",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{#if isMajor}}v{{newMajor}}{{else}}{{#if isSingleVersion}}v{{newVersion}}{{else}}{{newValue}}{{/if}}{{/if}}",
+  "commitMessageSuffix": "",
+  "prBodyColumns": [
+    "Package",
+    "Change",
+    "Age",
+    "Adoption",
+    "Passing",
+    "Confidence"
+  ],
+  "prBodyNotes": [
+    "⚠️ **Security Updates**: Critical and high severity vulnerabilities are updated immediately",
+    "🔄 **Major Updates**: Require manual review and testing before merge", 
+    "📦 **Grouped Updates**: Minor and patch updates are grouped to reduce PR noise",
+    "🛡️ **Health Monitoring**: All updates include automated health checks and rollback capabilities"
+  ],
+  "enabledManagers": [
+    "npm",
+    "github-actions",
+    "dockerfile"
+  ],
+  "ignoreDeps": [],
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**"
+  ]
+}

@@ -31,12 +31,12 @@ const CriticalServerEnvSchema = z.object({
 
 /**
  * Production-specific environment variables
- * These are required only in production environments
+ * These are recommended but optional in production - will warn if missing
  */
 const ProductionEnvSchema = z.object({
-  SENTRY_DSN: z.string().url("Sentry DSN required in production"),
-  RESEND_API_KEY: z.string().min(1, "Resend API key required in production"),
-  RESEND_FROM: z.string().email("Valid Resend FROM email required in production"),
+  SENTRY_DSN: z.string().url().optional(),
+  RESEND_API_KEY: z.string().min(1).optional(),
+  RESEND_FROM: z.string().email().optional(),
 });
 
 /**
@@ -97,6 +97,17 @@ export function validateCriticalEnv(options: {
           (err) => `[PRODUCTION] ${err.path.join(".")}: ${err.message}`
         );
         errors.push(...productionErrors);
+      }
+      
+      // Warn about missing optional production services
+      if (!process.env.SENTRY_DSN) {
+        warnings.push("[PRODUCTION] SENTRY_DSN: Recommended for error tracking");
+      }
+      if (!process.env.RESEND_API_KEY) {
+        warnings.push("[PRODUCTION] RESEND_API_KEY: Recommended for email functionality");
+      }
+      if (!process.env.RESEND_FROM) {
+        warnings.push("[PRODUCTION] RESEND_FROM: Recommended for email functionality");
       }
     }
     

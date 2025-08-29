@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Import motion system for micro-interactions */
+@import '../styles/motion.css';
+
 /* Simple, clean base styles */
 html, body {
   height: 100%;
@@ -13,18 +16,399 @@ html, body {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-/* Basic utility classes */
-.container-page {
-  @apply max-w-4xl mx-auto px-6;
+/* Typography Scale - Apple/Linear grade */
+@layer components {
+  /* Display & Heading Styles */
+  .text-display-2xl {
+    @apply text-6xl font-extrabold leading-none tracking-tighter;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  }
+  
+  .text-display-xl {
+    @apply text-5xl font-bold leading-none tracking-tight;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  }
+  
+  .text-display-lg {
+    @apply text-4xl font-bold leading-tight tracking-tight;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+  }
+  
+  .text-h1 {
+    @apply text-3xl font-bold leading-tight tracking-tight;
+  }
+  
+  .text-h2 {
+    @apply text-2xl font-semibold leading-snug tracking-tight;
+  }
+  
+  .text-h3 {
+    @apply text-xl font-semibold leading-snug;
+  }
+  
+  .text-h4 {
+    @apply text-lg font-medium leading-snug;
+  }
+  
+  .text-h5 {
+    @apply text-base font-medium leading-normal;
+  }
+  
+  .text-h6 {
+    @apply text-sm font-medium leading-normal tracking-wide;
+  }
+  
+  /* Body Text */
+  .text-body-lg {
+    @apply text-lg leading-relaxed;
+  }
+  
+  .text-body {
+    @apply text-base leading-normal;
+  }
+  
+  .text-body-sm {
+    @apply text-sm leading-normal;
+  }
+  
+  /* Captions & Labels */
+  .text-caption {
+    @apply text-sm leading-snug;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .text-caption-sm {
+    @apply text-xs leading-tight tracking-wide;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .text-label {
+    @apply text-sm font-medium leading-none tracking-normal;
+  }
+  
+  /* Measure (Content Width) Utilities */
+  .measure-narrow {
+    max-width: 45ch;
+  }
+  
+  .measure {
+    max-width: 65ch;
+  }
+  
+  .measure-wide {
+    max-width: 80ch;
+  }
+  
+  /* Leading (Line Height) Utilities */
+  .leading-none { line-height: 1; }
+  .leading-tight { line-height: 1.25; }
+  .leading-snug { line-height: 1.375; }
+  .leading-normal { line-height: 1.5; }
+  .leading-relaxed { line-height: 1.625; }
+  .leading-loose { line-height: 2; }
+  
+  /* Tracking (Letter Spacing) Utilities */
+  .tracking-tighter { letter-spacing: -0.05em; }
+  .tracking-tight { letter-spacing: -0.025em; }
+  .tracking-normal { letter-spacing: 0em; }
+  .tracking-wide { letter-spacing: 0.025em; }
+  .tracking-wider { letter-spacing: 0.05em; }
+  .tracking-widest { letter-spacing: 0.1em; }
+  
+  /* Content Area Utilities */
+  .prose {
+    @apply measure text-body leading-relaxed;
+  }
+  
+  .prose h1 { @apply text-h1 mb-6 mt-8 first:mt-0; }
+  .prose h2 { @apply text-h2 mb-4 mt-8 first:mt-0; }
+  .prose h3 { @apply text-h3 mb-3 mt-6 first:mt-0; }
+  .prose h4 { @apply text-h4 mb-3 mt-4 first:mt-0; }
+  .prose h5 { @apply text-h5 mb-2 mt-4 first:mt-0; }
+  .prose h6 { @apply text-h6 mb-2 mt-3 first:mt-0; }
+  
+  .prose p { @apply mb-4 last:mb-0; }
+  .prose ul, .prose ol { @apply mb-4 pl-6; }
+  .prose li { @apply mb-1; }
+  .prose blockquote { @apply border-l-4 border-border pl-4 italic text-muted-foreground; }
+  .prose code { @apply bg-muted px-1 py-0.5 rounded text-sm font-mono; }
+  .prose pre { @apply bg-muted p-4 rounded-lg overflow-x-auto; }
+  
+  .prose a {
+    @apply text-primary underline underline-offset-4 decoration-1 hover:decoration-2;
+    transition: text-decoration-thickness 0.2s ease;
+  }
+}
+
+/* Grid & Layout System */
+@layer components {
+  /* Container utilities with responsive gutters */
+  .container-grid {
+    @apply max-w-grid mx-auto px-gutter-xs sm:px-gutter-sm md:px-gutter-md lg:px-gutter-lg xl:px-gutter-xl;
+  }
+  
+  .container-page {
+    @apply max-w-container-page mx-auto px-gutter-xs sm:px-gutter-sm md:px-gutter-md lg:px-gutter-lg xl:px-gutter-xl;
+  }
+
+  .container-prose {
+    @apply max-w-container-prose mx-auto px-gutter-xs sm:px-gutter-sm md:px-gutter-md;
+  }
+  
+  /* 12-column grid system */
+  .grid-12 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-grid-12;
+    gap: var(--grid-gutter-xs);
+  }
+  
+  @screen sm {
+    .grid-12 {
+      gap: var(--grid-gutter-sm);
+    }
+  }
+  
+  @screen md {
+    .grid-12 {
+      gap: var(--grid-gutter-md);
+    }
+  }
+  
+  @screen lg {
+    .grid-12 {
+      gap: var(--grid-gutter-lg);
+    }
+  }
+  
+  @screen xl {
+    .grid-12 {
+      gap: var(--grid-gutter-xl);
+    }
+  }
+  
+  /* Column span utilities */
+  .col-span-full { @apply col-span-12; }
+  .col-span-half { @apply col-span-6; }
+  .col-span-third { @apply col-span-4; }
+  .col-span-quarter { @apply col-span-3; }
+  
+  /* Section spacing utilities */
+  .section {
+    @apply py-section-lg;
+  }
+  
+  .section-tight {
+    @apply py-section-sm;
+  }
+  
+  .section-loose {
+    @apply py-section-xl;
+  }
+  
+  /* Vertical rhythm utilities */
+  .rhythm {
+    margin-bottom: var(--section-rhythm-default);
+  }
+  
+  .rhythm-tight {
+    margin-bottom: var(--section-rhythm-tight);
+  }
+  
+  .rhythm-loose {
+    margin-bottom: var(--section-rhythm-loose);
+  }
+  
+  /* Layout stack utilities for mobile-first design */
+  .stack {
+    @apply flex flex-col gap-gutter-md;
+  }
+  
+  .stack-sm {
+    @apply flex flex-col gap-gutter-sm;
+  }
+  
+  .stack-lg {
+    @apply flex flex-col gap-gutter-lg;
+  }
+  
+  /* Auto-responsive grid (no manual breakpoint management) */
+  .grid-auto-fit {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--grid-gutter-md);
+  }
+  
+  .grid-auto-fill {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--grid-gutter-md);
+  }
+  
+  /* Mobile-optimized grid for narrow devices (≤360px) */
+  @media (max-width: 360px) {
+    .grid-auto-fit {
+      grid-template-columns: 1fr;
+      gap: var(--grid-gutter-sm);
+    }
+    
+    .grid-auto-fill {
+      grid-template-columns: 1fr;
+      gap: var(--grid-gutter-sm);
+    }
+    
+    .container-grid,
+    .container-page {
+      padding-left: var(--grid-gutter-xs);
+      padding-right: var(--grid-gutter-xs);
+    }
+    
+    /* Ensure sections maintain rhythm even on very narrow screens */
+    .section {
+      padding-top: var(--section-spacing-md);
+      padding-bottom: var(--section-spacing-md);
+    }
+    
+    .section-tight {
+      padding-top: var(--section-spacing-sm);
+      padding-bottom: var(--section-spacing-sm);
+    }
+    
+    .section-loose {
+      padding-top: var(--section-spacing-lg);
+      padding-bottom: var(--section-spacing-lg);
+    }
+  }
+  
+  /* Ensure buttons stack nicely on narrow devices */
+  @media (max-width: 480px) {
+    .flex.flex-col.sm\\:flex-row {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .flex.flex-col.sm\\:flex-row > * {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+/* CLS (Cumulative Layout Shift) Prevention */
+@layer components {
+  /* Ensure containers maintain layout stability */
+  .container-grid,
+  .container-page,
+  .container-prose {
+    /* Reserve space for containers to prevent layout shift */
+    min-height: 1px;
+  }
+  
+  /* Grid containers should maintain their structure */
+  .grid-12,
+  .grid-auto-fit,
+  .grid-auto-fill {
+    /* Prevent layout shift by maintaining grid structure */
+    contain: layout style;
+  }
+  
+  /* Section elements should have consistent spacing */
+  .section,
+  .section-tight,
+  .section-loose {
+    /* Prevent cumulative layout shift in sections */
+    contain: layout;
+  }
+  
+  /* Image and media elements should reserve space */
+  img,
+  video,
+  iframe,
+  embed,
+  object {
+    /* Prevent layout shift from media loading */
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Buttons and interactive elements should maintain consistent sizing */
+  button,
+  [role="button"],
+  .btn,
+  .button {
+    /* Prevent layout shift from interactive elements */
+    contain: layout style;
+  }
 }
 
 /* Force all elements to respect viewport width */
 * {
   max-width: 100%;
   box-sizing: border-box;
+}
+
+/* Print utility classes for better pagination control */
+@layer utilities {
+  /* Page break utilities */
+  .print-page-break-before {
+    page-break-before: always;
+    break-before: page;
+  }
+  
+  .print-page-break-after {
+    page-break-after: always;
+    break-after: page;
+  }
+  
+  .print-page-break-inside-avoid {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  
+  .print-page-break-inside-auto {
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+  
+  /* Print-specific visibility */
+  .print-hidden {
+    @media print {
+      display: none !important;
+    }
+  }
+  
+  .print-visible {
+    @media not print {
+      display: none !important;
+    }
+    @media print {
+      display: block !important;
+    }
+  }
+  
+  /* Print-specific spacing */
+  .print-mb-0 {
+    @media print {
+      margin-bottom: 0 !important;
+    }
+  }
+  
+  .print-pb-0 {
+    @media print {
+      padding-bottom: 0 !important;
+    }
+  }
+  
+  /* Keep elements together in print */
+  .print-keep-together {
+    @media print {
+      page-break-inside: avoid !important;
+      break-inside: avoid !important;
+    }
+  }
 }

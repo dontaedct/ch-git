@@ -29,6 +29,17 @@ import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
+// Import Claude Code enhancer if available
+let ClaudeCodeEnhancer;
+try {
+  const enhancerPath = path.join(__dirname, 'claude-code-enhancer.mjs');
+  if (fs.existsSync(enhancerPath)) {
+    ClaudeCodeEnhancer = (await import(enhancerPath)).default;
+  }
+} catch (error) {
+  // Claude Code enhancer not available, continue without it
+}
+
 class OSSHeroSessionTracker {
   constructor() {
     this.reportsPath = path.join(__dirname, '../docs/CURSOR_AI_REPORTS.md');
@@ -47,6 +58,8 @@ class OSSHeroSessionTracker {
     if (process.env.GITHUB_COPILOT) return 'GitHub Copilot';
     if (process.env.CODEIUM) return 'Codeium';
     if (process.env.TABNINE) return 'Tabnine';
+    if (process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY) return 'Claude Code';
+    if (process.env.OPENAI_API_KEY) return 'OpenAI Assistant';
     // Default to generic if no specific environment detected
     return 'OSS Hero AI Assistant';
   }
@@ -468,6 +481,19 @@ ${this.generateImpactSection(healthStatus)}
   }
 
   generateAISnippet(sessionEntry, healthStatus) {
+    const isClaude = this.aiAssistant === 'Claude Code';
+    
+    // Generate enhanced context if Claude Code enhancer is available
+    let enhancedContext = '';
+    if (isClaude && ClaudeCodeEnhancer) {
+      try {
+        const enhancer = new ClaudeCodeEnhancer();
+        enhancedContext = '\n\n' + enhancer.generateClaudeContext();
+      } catch (error) {
+        console.warn('⚠️ Claude Code enhancer failed, using standard prompt');
+      }
+    }
+    
     const snippet = `## 📋 **AI Assistant Upload Snippet - ${this.currentDate}**
 
 **AI Assistant**: ${this.aiAssistant}
@@ -484,15 +510,40 @@ ${sessionEntry}
 
 **Context**: This is from a Next.js 14 + TypeScript + Supabase micro web application template with OSS Hero Design Safety framework. The codebase is currently in ${healthStatus.overallHealth.toLowerCase()} health with ${healthStatus.criticalIssues} critical issues, ${healthStatus.styleWarnings} style warnings, and ${healthStatus.designSafety.toLowerCase()} design safety compliance.
 
-**Request**: Please analyze this OSS Hero development session and provide insights on:
-1. The technical approach used
-2. OSS Hero Design Safety compliance
-3. Best practices for maintaining code quality
-4. Recommendations for the next development session`;
+${isClaude ? this.generateClaudeSpecificPrompt(healthStatus) : this.generateGenericPrompt(healthStatus)}${enhancedContext}`;
 
     console.log('\n📋 **AI Assistant Upload Snippet Generated**');
     console.log(`Copy the section above to upload to ${this.aiAssistant} or any AI assistant for analysis`);
     console.log('The snippet includes OSS Hero context and specific questions for optimal AI assistance');
+    
+    if (isClaude) {
+      if (ClaudeCodeEnhancer) {
+        console.log('\n🎯 **Claude Code Enhanced** - Advanced context and performance metrics included');
+      } else {
+        console.log('\n🎯 **Claude Code Optimized** - Enhanced prompt structure for better Claude performance');
+      }
+    }
+  }
+
+  generateClaudeSpecificPrompt(healthStatus) {
+    return `**Claude Code Request**: As an expert developer using Claude Code, please analyze this OSS Hero development session and provide:
+
+1. **Technical Analysis**: Deep dive into the technical approach and implementation patterns
+2. **OSS Hero Compliance**: Assessment of Design Safety framework adherence
+3. **Code Quality Insights**: Specific recommendations for maintaining high standards
+4. **Next Steps**: Prioritized action items for the next development session
+5. **Performance Optimization**: Suggestions for improving development velocity
+6. **Risk Assessment**: Identify potential issues before they become critical
+
+**Focus Areas**: Type safety, import boundaries, component contracts, and design system consistency.`;
+  }
+
+  generateGenericPrompt(healthStatus) {
+    return `**Request**: Please analyze this OSS Hero development session and provide insights on:
+1. The technical approach used
+2. OSS Hero Design Safety compliance
+3. Best practices for maintaining code quality
+4. Recommendations for the next development session`;
   }
 }
 

@@ -25,7 +25,10 @@
       "Bash(del validate-contrast.js)",
       "Bash(npx next lint:*)",
       "Bash(npx playwright test:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh run view:*)"
     ],
     "deny": [],
     "ask": []

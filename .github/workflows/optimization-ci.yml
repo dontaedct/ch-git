@@ -79,6 +79,21 @@ jobs:
           
           echo "================================"
       
+      - name: Debug directory before upload
+        run: |
+          echo "=== Current working directory ==="
+          pwd
+          echo "=== Directory listing ==="
+          ls -la
+          echo "=== .next directory check ==="
+          if [ -d ".next" ]; then
+            echo "✅ .next directory exists"
+            du -sh .next
+            ls -la .next/ | head -10
+          else
+            echo "❌ .next directory does not exist"
+          fi
+          
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:

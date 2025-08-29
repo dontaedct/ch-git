@@ -38,7 +38,7 @@ export default function PageBoot() {
       <h2 style={{ margin: '0 0 8px 0', fontSize: '18px', color: '#495057' }}>
         Loading UI...
       </h2>
-      <p style={{ margin: 0, color: '#6c757d', fontSize: '14px' }}>
+      <p style={{ margin: 0, color: '#495057', fontSize: '14px' }}>
         Preparing your experience
       </p>
       {showWarning && (

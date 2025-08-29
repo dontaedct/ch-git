@@ -6,6 +6,11 @@ const ServerSchema = z.object({
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1),
   SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
 
+  // Optional at build, required at runtime only when used
+  SENTRY_DSN: z.string().optional(),
+  RESEND_API_KEY: z.string().optional(),
+  RESEND_FROM: z.string().optional(),
+
   NODE_ENV: z.enum(["development","test","production"]).default("development"),
 });
 
@@ -23,6 +28,10 @@ export function getEnv() {
       NEXT_PUBLIC_SUPABASE_URL: 'http://localhost:54321',
       NEXT_PUBLIC_SUPABASE_ANON_KEY: 'fallback-key',
       SUPABASE_SERVICE_ROLE_KEY: undefined,
+
+      SENTRY_DSN: undefined,
+      RESEND_API_KEY: undefined,
+      RESEND_FROM: undefined,
 
       NODE_ENV: 'development' as const,
     };

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@lib/supabase/server';
 import { isAdmin, setFlag } from '@lib/flags/server';
 
+export const runtime = 'nodejs';
+
 export async function PUT(request: NextRequest) {
   try {
     const supabase = await createServerClient();

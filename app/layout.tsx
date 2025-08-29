@@ -45,10 +45,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         >
           <TokensProvider>
             <AuthProvider>
-              <GlobalNav client={client} isSafeMode={isSafeMode} />
-              <Suspense fallback={<PageBoot />}>
-                {children}
-              </Suspense>
+              <div>
+                <GlobalNav client={client} isSafeMode={isSafeMode} />
+                <Suspense fallback={<PageBoot />}>
+                  {children}
+                </Suspense>
+              </div>
             </AuthProvider>
           </TokensProvider>
         </ThemeProvider>

@@ -1,18 +1,29 @@
 import { ModuleRegistry } from '@/types/config'
+import { getRuntimeConfigWithOverrides } from '@/lib/modules/runtime-config-actions'
 
 // Client-safe module configuration
 // This version doesn't use Node.js APIs like fs/promises
 
 export async function getBaseModuleRegistry(): Promise<ModuleRegistry> {
-  // For client components, we'll return a default empty registry
-  // The actual configuration should be loaded via server actions or API routes
-  return { modules: [] }
+  // Use server action to get config data
+  try {
+    const config = await getRuntimeConfigWithOverrides()
+    return (config.modules as ModuleRegistry) ?? { modules: [] }
+  } catch (error) {
+    console.error('Failed to load base module registry from server:', error)
+    return { modules: [] }
+  }
 }
 
 export async function getBaseConfigClient(): Promise<Record<string, unknown>> {
-  // For client components, we'll return an empty config
-  // The actual configuration should be loaded via server actions or API routes
-  return {}
+  // Use server action to get config data
+  try {
+    const config = await getRuntimeConfigWithOverrides()
+    return config
+  } catch (error) {
+    console.error('Failed to load base config from server:', error)
+    return {}
+  }
 }
 
 export function getEnabledModuleIds(modules: ModuleRegistry, enabledIds?: string[]): string[] {

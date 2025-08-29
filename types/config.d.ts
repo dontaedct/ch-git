@@ -262,6 +262,10 @@ export interface MicroAppConfig {
   id: string;
   name: string;
   version: string;
+  description?: string;
+  tier?: 'starter' | 'pro' | 'advanced';
+  preset?: string;
+  features?: Record<string, boolean>;
   
   /** Theme customization */
   theme: ThemeTokens;

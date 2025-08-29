@@ -75,7 +75,7 @@ class AutoSaveManager {
     this.setupBeforeUnload();
     this.isInitialized = true;
     
-    console.warn('🚀 Auto-save system initialized with optimized performance');
+    // Auto-save system initialized - ready for use
   }
 
   private setupEventListeners() {

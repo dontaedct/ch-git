@@ -1,0 +1,475 @@
+{
+  "id": "realtor-listing-hub-preset",
+  "name": "Realtor Listing & Lead Hub",
+  "version": "1.0.0",
+  "description": "Complete real estate lead generation and client management system",
+  "tier": "pro",
+  "preset": "realtor-listing-hub",
+  "features": {
+    "database": true,
+    "email": true,
+    "payments": true,
+    "webhooks": true,
+    "automation": true,
+    "notifications": true,
+    "error_tracking": true,
+    "admin_operations": false,
+    "ai_features": false,
+    "debug_mode": false,
+    "safe_mode": true,
+    "performance_monitoring": true,
+    "health_checks": true
+  },
+  "theme": {
+    "colors": {
+      "primary": "#1976D2",
+      "neutral": {
+        "50": "#FAFAFA",
+        "100": "#F5F5F5",
+        "200": "#EEEEEE",
+        "300": "#E0E0E0",
+        "400": "#BDBDBD",
+        "500": "#9E9E9E",
+        "600": "#757575",
+        "700": "#616161",
+        "800": "#424242",
+        "900": "#212121"
+      },
+      "accent": "#43A047"
+    },
+    "typography": {
+      "fontFamily": "'Inter', system-ui, -apple-system, sans-serif",
+      "scales": {
+        "display": "2.25rem",
+        "headline": "1.5rem",
+        "body": "1rem",
+        "caption": "0.875rem"
+      }
+    },
+    "motion": {
+      "duration": "150ms",
+      "easing": "cubic-bezier(.2,.8,.2,1)"
+    },
+    "radii": {
+      "sm": "4px",
+      "md": "8px",
+      "lg": "12px"
+    },
+    "shadows": {
+      "sm": "0 1px 3px 0 rgba(25, 118, 210, 0.06)",
+      "md": "0 4px 8px -2px rgba(25, 118, 210, 0.10)",
+      "lg": "0 20px 24px -8px rgba(25, 118, 210, 0.14)"
+    }
+  },
+  "questionnaire": {
+    "id": "realtor-lead-qualification",
+    "title": "Find Your Perfect Home",
+    "description": "Let's match you with the ideal property and buying/selling strategy",
+    "steps": [
+      {
+        "id": "client-info",
+        "title": "Contact Information",
+        "questions": [
+          {
+            "id": "full-name",
+            "text": "What's your full name?",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "First and Last Name"
+          },
+          {
+            "id": "email",
+            "text": "Email address",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "your.email@example.com"
+          },
+          {
+            "id": "phone",
+            "text": "Phone number",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "(555) 123-4567"
+          },
+          {
+            "id": "preferred-contact-method",
+            "text": "Best way to reach you?",
+            "type": "chips",
+            "required": true,
+            "options": [
+              { "value": "phone", "label": "Phone Call" },
+              { "value": "text", "label": "Text Message" },
+              { "value": "email", "label": "Email" },
+              { "value": "any", "label": "Any Method" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "transaction-intent",
+        "title": "Your Real Estate Goals",
+        "questions": [
+          {
+            "id": "transaction-type",
+            "text": "What are you looking to do?",
+            "type": "chips",
+            "required": true,
+            "options": [
+              { "value": "buy", "label": "Buy a Home" },
+              { "value": "sell", "label": "Sell My Home" },
+              { "value": "both", "label": "Buy & Sell" },
+              { "value": "invest", "label": "Investment Property" },
+              { "value": "rent", "label": "Find Rental" }
+            ]
+          },
+          {
+            "id": "timeline",
+            "text": "What's your timeline?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "asap", "label": "ASAP (within 30 days)" },
+              { "value": "soon", "label": "1-3 months" },
+              { "value": "this-year", "label": "Within 6 months" },
+              { "value": "next-year", "label": "6-12 months" },
+              { "value": "exploring", "label": "Just exploring options" }
+            ]
+          },
+          {
+            "id": "urgency-reason",
+            "text": "What's driving your timeline?",
+            "type": "chips-multi",
+            "required": false,
+            "visibleIf": {
+              "questionId": "timeline",
+              "values": ["asap", "soon"]
+            },
+            "options": [
+              { "value": "job-relocation", "label": "Job Relocation" },
+              { "value": "family-change", "label": "Growing Family" },
+              { "value": "downsizing", "label": "Downsizing" },
+              { "value": "investment", "label": "Investment Opportunity" },
+              { "value": "lease-ending", "label": "Lease Ending" },
+              { "value": "life-change", "label": "Life Change" }
+            ],
+            "allowCustom": true
+          }
+        ]
+      },
+      {
+        "id": "property-preferences",
+        "title": "Property Preferences",
+        "questions": [
+          {
+            "id": "preferred-areas",
+            "text": "Which areas interest you most?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "downtown", "label": "Downtown/Urban" },
+              { "value": "suburbs", "label": "Suburban" },
+              { "value": "waterfront", "label": "Waterfront" },
+              { "value": "golf-community", "label": "Golf Community" },
+              { "value": "family-neighborhood", "label": "Family Neighborhood" },
+              { "value": "luxury", "label": "Luxury Area" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "property-type",
+            "text": "What type of property?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "single-family", "label": "Single Family Home" },
+              { "value": "condo", "label": "Condo/Townhome" },
+              { "value": "luxury", "label": "Luxury Home" },
+              { "value": "fixer-upper", "label": "Fixer-Upper" },
+              { "value": "new-construction", "label": "New Construction" },
+              { "value": "investment", "label": "Investment Property" }
+            ]
+          },
+          {
+            "id": "budget-range",
+            "text": "What's your budget range?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "under-300k", "label": "Under $300K" },
+              { "value": "300k-500k", "label": "$300K - $500K" },
+              { "value": "500k-750k", "label": "$500K - $750K" },
+              { "value": "750k-1m", "label": "$750K - $1M" },
+              { "value": "1m-plus", "label": "$1M+" }
+            ]
+          },
+          {
+            "id": "must-haves",
+            "text": "What features are must-haves?",
+            "type": "chips-multi",
+            "required": false,
+            "options": [
+              { "value": "pool", "label": "Swimming Pool" },
+              { "value": "garage", "label": "2+ Car Garage" },
+              { "value": "office", "label": "Home Office" },
+              { "value": "master-suite", "label": "Master Suite" },
+              { "value": "updated-kitchen", "label": "Updated Kitchen" },
+              { "value": "good-schools", "label": "Top School District" },
+              { "value": "low-maintenance", "label": "Low Maintenance" }
+            ],
+            "allowCustom": true
+          }
+        ]
+      },
+      {
+        "id": "financing-readiness",
+        "title": "Financing & Readiness",
+        "questions": [
+          {
+            "id": "financing-status",
+            "text": "What's your financing status?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "pre-approved", "label": "Pre-approved with lender" },
+              { "value": "working-with-lender", "label": "Working with a lender" },
+              { "value": "need-lender", "label": "Need lender recommendations" },
+              { "value": "cash-buyer", "label": "Cash buyer" },
+              { "value": "not-sure", "label": "Not sure where to start" }
+            ]
+          },
+          {
+            "id": "current-home-status",
+            "text": "Do you currently own a home?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "own-need-sell", "label": "Yes, and I need to sell it" },
+              { "value": "own-keeping", "label": "Yes, but keeping it" },
+              { "value": "renting", "label": "Currently renting" },
+              { "value": "first-time", "label": "First-time buyer" }
+            ]
+          },
+          {
+            "id": "agent-experience",
+            "text": "Have you worked with a real estate agent before?",
+            "type": "toggle",
+            "required": true
+          },
+          {
+            "id": "previous-experience",
+            "text": "Tell us about your previous experience",
+            "type": "long-text",
+            "required": false,
+            "placeholder": "What went well? What would you do differently?",
+            "visibleIf": {
+              "questionId": "agent-experience",
+              "values": ["true"]
+            }
+          }
+        ]
+      },
+      {
+        "id": "communication-preferences",
+        "title": "Working Together",
+        "questions": [
+          {
+            "id": "communication-frequency",
+            "text": "How often would you like updates?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "daily", "label": "Daily updates" },
+              { "value": "few-times-week", "label": "Few times per week" },
+              { "value": "weekly", "label": "Weekly updates" },
+              { "value": "as-needed", "label": "Only when necessary" }
+            ]
+          },
+          {
+            "id": "showing-preferences",
+            "text": "When are you available for showings?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "weekday-mornings", "label": "Weekday Mornings" },
+              { "value": "weekday-afternoons", "label": "Weekday Afternoons" },
+              { "value": "weekday-evenings", "label": "Weekday Evenings" },
+              { "value": "weekends", "label": "Weekends" },
+              { "value": "flexible", "label": "Very Flexible" }
+            ]
+          },
+          {
+            "id": "special-considerations",
+            "text": "Anything else we should know?",
+            "type": "long-text",
+            "required": false,
+            "placeholder": "Special needs, preferences, concerns, questions..."
+          }
+        ]
+      }
+    ],
+    "progress": {
+      "style": "steps",
+      "showNumbers": true,
+      "showTitles": true
+    },
+    "navigation": {
+      "previousLabel": "Back",
+      "nextLabel": "Next",
+      "submitLabel": "Get My Custom Home Search"
+    }
+  },
+  "consultation": {
+    "summary": {
+      "minWords": 100,
+      "maxWords": 180,
+      "tone": "professional"
+    },
+    "planDeck": {
+      "primaryCount": 2,
+      "alternatesCount": 1
+    },
+    "sections": [
+      "whatYouGet",
+      "whyThisFits",
+      "timeline",
+      "nextSteps"
+    ],
+    "actions": {
+      "downloadPdf": true,
+      "emailCopy": true,
+      "bookCtaLabel": "Schedule My Consultation"
+    }
+  },
+  "catalog": {
+    "id": "realtor-service-catalog",
+    "name": "Real Estate Service Plans",
+    "plans": [
+      {
+        "id": "buyer-essentials",
+        "title": "Home Buyer Essentials",
+        "description": "Complete home buying support with personalized guidance",
+        "priceBand": "Commission-based (typically 2.5-3%)",
+        "includes": [
+          "Personalized home search portal",
+          "Market analysis and pricing guidance",
+          "Showing coordination and scheduling",
+          "Negotiation and contract support",
+          "Closing process management",
+          "30-day post-purchase support"
+        ],
+        "timeline": "30-90 days average",
+        "tier": "foundation",
+        "eligibleIf": {
+          "transaction-type": ["buy"],
+          "budget-range": ["under-300k", "300k-500k"]
+        },
+        "content": {
+          "whatYouGet": "Full-service home buying experience with dedicated agent support, custom search portal, and expert guidance from search to closing.",
+          "whyThisFits": "Perfect for first-time buyers and those wanting comprehensive support throughout the home buying journey.",
+          "timeline": "Most clients find their perfect home within 30-90 days, depending on market conditions and preferences.",
+          "nextSteps": "Let's schedule your buyer consultation to set up your custom home search and discuss your goals."
+        }
+      },
+      {
+        "id": "luxury-concierge",
+        "title": "Luxury Concierge Service",
+        "description": "White-glove service for luxury and high-end properties",
+        "priceBand": "Commission-based with premium services",
+        "includes": [
+          "Exclusive access to off-market properties",
+          "Private showing appointments",
+          "Market intelligence and investment analysis",
+          "Professional photography and marketing",
+          "Luxury network connections (contractors, designers)",
+          "Ongoing relationship management"
+        ],
+        "timeline": "Flexible timeline",
+        "tier": "growth",
+        "eligibleIf": {
+          "budget-range": ["750k-1m", "1m-plus"],
+          "property-type": ["luxury"]
+        },
+        "content": {
+          "whatYouGet": "Exclusive luxury real estate experience with access to off-market properties, professional marketing, and high-end network connections.",
+          "whyThisFits": "Designed for discerning clients who value privacy, exclusive access, and premium service in the luxury market.",
+          "timeline": "Flexible approach focused on finding the perfect luxury property, whether that takes weeks or months.",
+          "nextSteps": "Schedule your private consultation to discuss your luxury property goals and exclusive opportunities."
+        }
+      },
+      {
+        "id": "investment-portfolio",
+        "title": "Investment Portfolio Builder",
+        "description": "Strategic investment property acquisition and management",
+        "priceBand": "Custom fee structure",
+        "includes": [
+          "Investment property analysis and ROI calculations",
+          "Market trend analysis and forecasting",
+          "Property management connections",
+          "Tax strategy consultations",
+          "Portfolio diversification planning",
+          "Ongoing investment monitoring"
+        ],
+        "timeline": "Ongoing relationship",
+        "tier": "enterprise",
+        "eligibleIf": {
+          "transaction-type": ["invest"],
+          "budget-range": ["500k-750k", "750k-1m", "1m-plus"]
+        },
+        "content": {
+          "whatYouGet": "Comprehensive investment property strategy with detailed analysis, market forecasting, and ongoing portfolio management support.",
+          "whyThisFits": "Built for serious investors who want data-driven decisions and strategic portfolio growth over time.",
+          "timeline": "Ongoing partnership focused on building wealth through strategic real estate investments.",
+          "nextSteps": "Book your investment strategy session to analyze opportunities and create your portfolio plan."
+        }
+      }
+    ],
+    "defaults": {
+      "fallbackPlan": "buyer-essentials",
+      "preferHigherTier": true
+    }
+  },
+  "modules": {
+    "modules": [
+      {
+        "id": "home-search-portal",
+        "label": "Custom Home Search Portal",
+        "description": "Personalized property search with saved favorites and alerts",
+        "tiers": ["foundation", "growth", "enterprise"]
+      },
+      {
+        "id": "market-analytics",
+        "label": "Real-Time Market Analytics",
+        "description": "Neighborhood trends, price analysis, and investment metrics",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "mortgage-calculator",
+        "label": "Advanced Mortgage Calculator",
+        "description": "Payment scenarios, affordability analysis, and rate comparisons",
+        "tiers": ["foundation", "growth", "enterprise"]
+      },
+      {
+        "id": "vendor-network",
+        "label": "Trusted Vendor Network",
+        "description": "Connections to inspectors, contractors, lenders, and service providers",
+        "tiers": ["growth", "enterprise"]
+      }
+    ]
+  },
+  "integrations": {
+    "n8n": {
+      "webhookUrl": "https://webhook.example.com/realtor-hub",
+      "enabledEvents": [
+        "lead_started_questionnaire",
+        "lead_completed_questionnaire",
+        "consultation_generated",
+        "pdf_downloaded",
+        "email_copy_requested"
+      ]
+    },
+    "email": {
+      "fromAddress": "info@yourrealestate.com",
+      "subjectTemplate": "Your Personalized Home Search Plan is Ready"
+    }
+  }
+}

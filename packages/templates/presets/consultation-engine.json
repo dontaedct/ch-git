@@ -1,0 +1,523 @@
+{
+  "id": "consultation-engine-preset",
+  "name": "AI-Powered Consultation Engine",
+  "version": "1.0.0",
+  "description": "Advanced consultation system with AI recommendations and automation",
+  "tier": "advanced",
+  "preset": "consultation-engine",
+  "features": {
+    "database": true,
+    "email": true,
+    "payments": true,
+    "webhooks": true,
+    "automation": true,
+    "notifications": true,
+    "error_tracking": true,
+    "admin_operations": true,
+    "ai_features": true,
+    "debug_mode": false,
+    "safe_mode": true,
+    "performance_monitoring": true,
+    "health_checks": true
+  },
+  "theme": {
+    "colors": {
+      "primary": "#6366F1",
+      "neutral": {
+        "50": "#F8FAFC",
+        "100": "#F1F5F9",
+        "200": "#E2E8F0",
+        "300": "#CBD5E1",
+        "400": "#94A3B8",
+        "500": "#64748B",
+        "600": "#475569",
+        "700": "#334155",
+        "800": "#1E293B",
+        "900": "#0F172A"
+      },
+      "accent": "#8B5CF6"
+    },
+    "typography": {
+      "fontFamily": "'SF Pro Display', system-ui, -apple-system, sans-serif",
+      "scales": {
+        "display": "2.75rem",
+        "headline": "1.875rem",
+        "body": "1rem",
+        "caption": "0.875rem"
+      }
+    },
+    "motion": {
+      "duration": "200ms",
+      "easing": "cubic-bezier(.4,.0,.2,1)"
+    },
+    "radii": {
+      "sm": "6px",
+      "md": "12px",
+      "lg": "20px"
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(99, 102, 241, 0.06)",
+      "md": "0 8px 16px -4px rgba(99, 102, 241, 0.12)",
+      "lg": "0 24px 40px -12px rgba(99, 102, 241, 0.18)"
+    }
+  },
+  "questionnaire": {
+    "id": "ai-consultation-intake",
+    "title": "Intelligent Business Analysis",
+    "description": "Let our AI analyze your business needs and provide personalized recommendations",
+    "steps": [
+      {
+        "id": "business-profile",
+        "title": "Business Profile",
+        "questions": [
+          {
+            "id": "company-name",
+            "text": "What's your company name?",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "Your Company Name"
+          },
+          {
+            "id": "industry",
+            "text": "What industry are you in?",
+            "type": "chips",
+            "required": true,
+            "options": [
+              { "value": "technology", "label": "Technology/Software" },
+              { "value": "healthcare", "label": "Healthcare" },
+              { "value": "finance", "label": "Financial Services" },
+              { "value": "retail", "label": "Retail/E-commerce" },
+              { "value": "manufacturing", "label": "Manufacturing" },
+              { "value": "consulting", "label": "Consulting" },
+              { "value": "education", "label": "Education" },
+              { "value": "nonprofit", "label": "Non-profit" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "company-size",
+            "text": "How many employees do you have?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "solo", "label": "Just me (solo)" },
+              { "value": "small", "label": "2-10 employees" },
+              { "value": "medium", "label": "11-50 employees" },
+              { "value": "large", "label": "51-200 employees" },
+              { "value": "enterprise", "label": "200+ employees" }
+            ]
+          },
+          {
+            "id": "revenue-stage",
+            "text": "What's your current revenue stage?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "pre-revenue", "label": "Pre-revenue/Startup" },
+              { "value": "under-100k", "label": "Under $100K annually" },
+              { "value": "100k-1m", "label": "$100K - $1M annually" },
+              { "value": "1m-10m", "label": "$1M - $10M annually" },
+              { "value": "10m-plus", "label": "$10M+ annually" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "challenges-analysis",
+        "title": "Current Challenges",
+        "questions": [
+          {
+            "id": "primary-challenges",
+            "text": "What are your biggest business challenges?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "lead-generation", "label": "Lead Generation" },
+              { "value": "conversion-rates", "label": "Low Conversion Rates" },
+              { "value": "operational-efficiency", "label": "Operational Inefficiency" },
+              { "value": "customer-retention", "label": "Customer Retention" },
+              { "value": "scaling-issues", "label": "Scaling Problems" },
+              { "value": "technology-gaps", "label": "Technology Gaps" },
+              { "value": "team-productivity", "label": "Team Productivity" },
+              { "value": "data-insights", "label": "Lack of Data Insights" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "pain-points-detail",
+            "text": "Describe your most pressing pain point",
+            "type": "long-text",
+            "required": true,
+            "placeholder": "What specific problem is costing you time, money, or opportunities?"
+          },
+          {
+            "id": "attempted-solutions",
+            "text": "What solutions have you tried?",
+            "type": "chips-multi",
+            "required": false,
+            "options": [
+              { "value": "hiring-consultants", "label": "Hired Consultants" },
+              { "value": "new-software", "label": "Implemented New Software" },
+              { "value": "process-changes", "label": "Changed Internal Processes" },
+              { "value": "staff-training", "label": "Staff Training" },
+              { "value": "outsourcing", "label": "Outsourcing" },
+              { "value": "nothing-yet", "label": "Haven't tried anything yet" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "solution-outcomes",
+            "text": "What were the results of previous solutions?",
+            "type": "long-text",
+            "required": false,
+            "placeholder": "What worked? What didn't? What would you do differently?",
+            "visibleIf": {
+              "questionId": "attempted-solutions",
+              "values": ["hiring-consultants", "new-software", "process-changes", "staff-training", "outsourcing"]
+            }
+          }
+        ]
+      },
+      {
+        "id": "goals-objectives",
+        "title": "Goals & Objectives",
+        "questions": [
+          {
+            "id": "primary-goals",
+            "text": "What are your primary business goals?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "increase-revenue", "label": "Increase Revenue" },
+              { "value": "reduce-costs", "label": "Reduce Operating Costs" },
+              { "value": "improve-efficiency", "label": "Improve Efficiency" },
+              { "value": "scale-operations", "label": "Scale Operations" },
+              { "value": "better-customer-experience", "label": "Better Customer Experience" },
+              { "value": "data-driven-decisions", "label": "Data-Driven Decisions" },
+              { "value": "competitive-advantage", "label": "Competitive Advantage" },
+              { "value": "market-expansion", "label": "Market Expansion" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "success-metrics",
+            "text": "How do you measure success?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "revenue-growth", "label": "Revenue Growth %" },
+              { "value": "customer-acquisition", "label": "Customer Acquisition" },
+              { "value": "cost-savings", "label": "Cost Savings" },
+              { "value": "time-savings", "label": "Time Savings" },
+              { "value": "customer-satisfaction", "label": "Customer Satisfaction" },
+              { "value": "market-share", "label": "Market Share" },
+              { "value": "productivity-metrics", "label": "Productivity Metrics" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "timeline-expectations",
+            "text": "When do you expect to see results?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "immediate", "label": "Immediate (within 30 days)" },
+              { "value": "short-term", "label": "Short-term (1-3 months)" },
+              { "value": "medium-term", "label": "Medium-term (3-6 months)" },
+              { "value": "long-term", "label": "Long-term (6+ months)" },
+              { "value": "flexible", "label": "Flexible timeline" }
+            ]
+          },
+          {
+            "id": "roi-expectations",
+            "text": "What ROI do you expect from this investment?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "break-even", "label": "Break even within 1 year" },
+              { "value": "2x-return", "label": "2x return within 1 year" },
+              { "value": "3x-return", "label": "3x+ return within 1 year" },
+              { "value": "cost-savings", "label": "Focus on cost savings" },
+              { "value": "strategic-value", "label": "Strategic value over ROI" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "technical-requirements",
+        "title": "Technical Context",
+        "questions": [
+          {
+            "id": "current-tech-stack",
+            "text": "What technology do you currently use?",
+            "type": "chips-multi",
+            "required": false,
+            "options": [
+              { "value": "crm-system", "label": "CRM System" },
+              { "value": "erp-system", "label": "ERP System" },
+              { "value": "analytics-tools", "label": "Analytics Tools" },
+              { "value": "marketing-automation", "label": "Marketing Automation" },
+              { "value": "cloud-services", "label": "Cloud Services" },
+              { "value": "custom-software", "label": "Custom Software" },
+              { "value": "ai-ml-tools", "label": "AI/ML Tools" },
+              { "value": "minimal-tech", "label": "Minimal Technology" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "technical-expertise",
+            "text": "What's your team's technical expertise level?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "beginner", "label": "Beginner - Need lots of support" },
+              { "value": "intermediate", "label": "Intermediate - Some technical knowledge" },
+              { "value": "advanced", "label": "Advanced - Strong technical team" },
+              { "value": "expert", "label": "Expert - We handle complex implementations" }
+            ]
+          },
+          {
+            "id": "integration-needs",
+            "text": "Do you need integration with existing systems?",
+            "type": "chips-multi",
+            "required": false,
+            "options": [
+              { "value": "accounting-software", "label": "Accounting Software" },
+              { "value": "crm-integration", "label": "CRM Integration" },
+              { "value": "payment-systems", "label": "Payment Systems" },
+              { "value": "inventory-management", "label": "Inventory Management" },
+              { "value": "email-marketing", "label": "Email Marketing" },
+              { "value": "social-media", "label": "Social Media Platforms" },
+              { "value": "no-integrations", "label": "No integrations needed" }
+            ],
+            "allowCustom": true
+          }
+        ]
+      },
+      {
+        "id": "project-scope",
+        "title": "Project Parameters",
+        "questions": [
+          {
+            "id": "budget-range",
+            "text": "What's your budget range for this project?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "under-10k", "label": "Under $10,000" },
+              { "value": "10k-25k", "label": "$10,000 - $25,000" },
+              { "value": "25k-50k", "label": "$25,000 - $50,000" },
+              { "value": "50k-100k", "label": "$50,000 - $100,000" },
+              { "value": "100k-250k", "label": "$100,000 - $250,000" },
+              { "value": "250k-plus", "label": "$250,000+" }
+            ]
+          },
+          {
+            "id": "decision-making-process",
+            "text": "Who's involved in the decision-making?",
+            "type": "chips",
+            "required": true,
+            "options": [
+              { "value": "sole-decision", "label": "I make the decision" },
+              { "value": "small-team", "label": "Small team (2-3 people)" },
+              { "value": "executive-committee", "label": "Executive committee" },
+              { "value": "board-approval", "label": "Requires board approval" },
+              { "value": "complex-approval", "label": "Complex approval process" }
+            ]
+          },
+          {
+            "id": "project-urgency",
+            "text": "How urgent is this project?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "critical", "label": "Critical - Immediate action needed" },
+              { "value": "high", "label": "High - Within next quarter" },
+              { "value": "medium", "label": "Medium - Within 6 months" },
+              { "value": "low", "label": "Low - Planning for future" },
+              { "value": "exploring", "label": "Just exploring options" }
+            ]
+          },
+          {
+            "id": "additional-context",
+            "text": "Any additional context or requirements?",
+            "type": "long-text",
+            "required": false,
+            "placeholder": "Specific requirements, constraints, preferences, or anything else we should know..."
+          }
+        ]
+      }
+    ],
+    "progress": {
+      "style": "percentage",
+      "showNumbers": true,
+      "showTitles": false
+    },
+    "navigation": {
+      "previousLabel": "Previous",
+      "nextLabel": "Continue",
+      "submitLabel": "Generate My AI Analysis"
+    }
+  },
+  "consultation": {
+    "summary": {
+      "minWords": 120,
+      "maxWords": 200,
+      "tone": "professional"
+    },
+    "planDeck": {
+      "primaryCount": 3,
+      "alternatesCount": 2
+    },
+    "sections": [
+      "whatYouGet",
+      "whyThisFits",
+      "timeline",
+      "priceBand",
+      "nextSteps"
+    ],
+    "actions": {
+      "downloadPdf": true,
+      "emailCopy": true,
+      "bookCtaLabel": "Book Strategic Session"
+    }
+  },
+  "catalog": {
+    "id": "consultation-service-catalog",
+    "name": "Strategic Consulting Plans",
+    "plans": [
+      {
+        "id": "quick-wins-analysis",
+        "title": "Quick Wins Analysis",
+        "description": "Rapid assessment and immediate improvement opportunities",
+        "priceBand": "$5,000 - $15,000",
+        "includes": [
+          "Comprehensive business audit",
+          "Quick wins identification",
+          "Implementation roadmap",
+          "Priority action plan",
+          "30-day follow-up support"
+        ],
+        "timeline": "2-3 weeks",
+        "tier": "foundation",
+        "eligibleIf": {
+          "budget-range": ["under-10k", "10k-25k"],
+          "timeline-expectations": ["immediate", "short-term"]
+        },
+        "content": {
+          "whatYouGet": "Fast-track business analysis with immediate actionable improvements and clear implementation roadmap for quick results.",
+          "whyThisFits": "Perfect for businesses needing rapid improvements and quick ROI with minimal disruption to operations.",
+          "timeline": "Complete analysis and recommendations delivered within 2-3 weeks, with implementation support.",
+          "nextSteps": "Schedule your strategy session to kick off the rapid analysis and identify your quick wins."
+        }
+      },
+      {
+        "id": "strategic-transformation",
+        "title": "Strategic Transformation",
+        "description": "Comprehensive business transformation with ongoing support",
+        "priceBand": "$25,000 - $75,000",
+        "includes": [
+          "Deep business analysis and strategy",
+          "Custom solution architecture",
+          "Phased implementation plan",
+          "Team training and change management",
+          "6-month optimization support",
+          "Performance monitoring and adjustments"
+        ],
+        "timeline": "3-6 months",
+        "tier": "growth",
+        "eligibleIf": {
+          "budget-range": ["25k-50k", "50k-100k"],
+          "company-size": ["medium", "large"]
+        },
+        "content": {
+          "whatYouGet": "Complete business transformation with custom solutions, comprehensive support, and measurable results over 6 months.",
+          "whyThisFits": "Designed for established businesses ready for significant improvement with dedicated support and proven methodologies.",
+          "timeline": "3-6 month transformation process with ongoing support and continuous optimization.",
+          "nextSteps": "Book your strategic assessment to design your custom transformation plan and timeline."
+        }
+      },
+      {
+        "id": "enterprise-partnership",
+        "title": "Enterprise Partnership",
+        "description": "Ongoing strategic partnership with advanced AI and automation",
+        "priceBand": "$100,000+",
+        "includes": [
+          "AI-powered business intelligence",
+          "Custom automation solutions",
+          "Dedicated strategic advisor",
+          "Advanced analytics and reporting",
+          "Continuous optimization",
+          "Priority access to new innovations",
+          "Executive strategy sessions"
+        ],
+        "timeline": "12+ months ongoing",
+        "tier": "enterprise",
+        "eligibleIf": {
+          "budget-range": ["100k-250k", "250k-plus"],
+          "company-size": ["large", "enterprise"]
+        },
+        "content": {
+          "whatYouGet": "Strategic partnership with AI-powered solutions, dedicated support, and continuous innovation for sustained competitive advantage.",
+          "whyThisFits": "Built for large organizations requiring advanced solutions, dedicated resources, and ongoing strategic guidance.",
+          "timeline": "12+ month partnership with continuous optimization and strategic evolution based on market changes.",
+          "nextSteps": "Connect with our enterprise team for a comprehensive assessment and custom partnership proposal."
+        }
+      }
+    ],
+    "defaults": {
+      "fallbackPlan": "quick-wins-analysis",
+      "preferHigherTier": true
+    }
+  },
+  "modules": {
+    "modules": [
+      {
+        "id": "ai-recommendations",
+        "label": "AI-Powered Recommendations",
+        "description": "Machine learning analysis of business data for intelligent insights",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "predictive-analytics",
+        "label": "Predictive Analytics Dashboard",
+        "description": "Forecast trends and identify opportunities before competitors",
+        "tiers": ["enterprise"]
+      },
+      {
+        "id": "automation-workflows",
+        "label": "Custom Automation Workflows",
+        "description": "Automated processes to eliminate manual work and improve efficiency",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "executive-reporting",
+        "label": "Executive Reporting Suite",
+        "description": "Real-time dashboards and strategic performance metrics",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "competitive-intelligence",
+        "label": "Competitive Intelligence",
+        "description": "Monitor competitors and market trends with AI analysis",
+        "tiers": ["enterprise"]
+      }
+    ]
+  },
+  "integrations": {
+    "n8n": {
+      "webhookUrl": "https://webhook.example.com/consultation-engine",
+      "enabledEvents": [
+        "lead_started_questionnaire",
+        "lead_completed_questionnaire",
+        "consultation_generated",
+        "pdf_downloaded",
+        "email_copy_requested"
+      ]
+    },
+    "email": {
+      "fromAddress": "insights@yourconsulting.com",
+      "subjectTemplate": "Your AI-Powered Business Analysis is Complete"
+    }
+  }
+}

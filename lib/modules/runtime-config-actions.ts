@@ -1,10 +1,23 @@
 'use server'
 
-import { getBaseConfigExport } from '@/lib/config/modules'
+import { readFileSync } from 'fs'
+import path from 'path'
+
+// Server-only config loading to avoid client bundle issues
+function getBaseConfigSync() {
+  try {
+    const configPath = path.join(process.cwd(), 'configs', 'microapps', 'base.microapp.json')
+    const configData = readFileSync(configPath, 'utf-8')
+    return JSON.parse(configData)
+  } catch (error) {
+    console.error('Failed to load base configuration:', error)
+    throw new Error('Failed to load base configuration')
+  }
+}
 import { createServerSupabase } from '@/lib/supabase/server'
 
 export async function getRuntimeConfigWithOverrides(clientId?: string) {
-  const baseConfig = await getBaseConfigExport()
+  const baseConfig = getBaseConfigSync()
   
   if (!clientId) {
     return baseConfig

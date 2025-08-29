@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import PageBoot from '@/components/ui/skeletons/PageBoot';
 import { getPublicEnv } from '@/lib/env';
-import { ThemeProvider } from '@/components/theme-provider';
+import { ThemeProvider, MotionProvider } from '@/components/theme-provider';
 import { TokensProvider } from '@/lib/design-tokens/provider';
 import { AuthProvider } from '@/lib/auth/auth-context';
 import { GlobalNav } from '@/components/GlobalNav';
@@ -43,20 +43,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           enableSystem
           disableTransitionOnChange
         >
-          <div>
+          <MotionProvider>
             <TokensProvider>
-              <div>
-                <AuthProvider>
-                  <div>
-                    <GlobalNav client={client} isSafeMode={isSafeMode} />
-                    <Suspense fallback={<PageBoot />}>
-                      {children}
-                    </Suspense>
-                  </div>
-                </AuthProvider>
-              </div>
+              <AuthProvider>
+                <GlobalNav client={client} isSafeMode={isSafeMode} />
+                <Suspense fallback={<PageBoot />}>
+                  {children}
+                </Suspense>
+              </AuthProvider>
             </TokensProvider>
-          </div>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

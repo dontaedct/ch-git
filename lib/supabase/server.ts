@@ -10,8 +10,8 @@ export async function createServerSupabase() {
   const cookieStore = await cookies();
   
   return createSSRServerClient(
-    NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    NEXT_PUBLIC_SUPABASE_URL!,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get: (name: string) => cookieStore.get(name)?.value,
@@ -39,8 +39,8 @@ export async function createServerClientWithCookies(getCookies: () => ReturnType
   const cookieStore = await getCookies();
   
   return createSSRServerClient(
-    NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    NEXT_PUBLIC_SUPABASE_URL!,
+    NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
         get: (name: string) => cookieStore.get(name)?.value,
@@ -66,8 +66,8 @@ export function createServiceRoleSupabase() {
   
   // Use direct supabase-js client for service role (no cookies needed)
   return createClient(
-    NEXT_PUBLIC_SUPABASE_URL,
-    SUPABASE_SERVICE_ROLE_KEY,
+    NEXT_PUBLIC_SUPABASE_URL!,
+    SUPABASE_SERVICE_ROLE_KEY!,
     {
       auth: {
         persistSession: false,

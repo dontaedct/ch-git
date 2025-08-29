@@ -28,7 +28,10 @@
       "Bash(find:*)",
       "Bash(gh pr checks:*)",
       "Bash(gh pr view:*)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Read(C:\\Users\\Dontae-PC\\Downloads/**)",
+      "Bash(gh run list:*)",
+      "Read(C:\\Users\\Dontae-PC\\Downloads/**)"
     ],
     "deny": [],
     "ask": []

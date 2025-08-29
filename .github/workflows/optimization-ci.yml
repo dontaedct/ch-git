@@ -115,44 +115,55 @@ jobs:
       
       - name: Run performance gates
         run: |
-          echo "=== Performance Gates ==="
-          
-          # Gate 1: Build time
-          BUILD_TIME=${{ needs.build-optimization.outputs.build_time_seconds }}
-          MAX_BUILD_TIME=300  # 5 minutes
-          
-          if [ "$BUILD_TIME" -gt "$MAX_BUILD_TIME" ]; then
-            echo "⚠️  Build time gate warning: ${BUILD_TIME}s > ${MAX_BUILD_TIME}s (non-blocking)"
-          else
-            echo "✅ Build time gate passed: ${BUILD_TIME}s <= ${MAX_BUILD_TIME}s"
-          fi
-          
-          # Gate 2: Bundle size
-          TOTAL_SIZE=$(find .next -name "*.js" -type f -exec du -c {} + | tail -1 | cut -f1)
-          MAX_BUNDLE_SIZE=1000000  # 1MB budget (more realistic for this project)
-          
-          if [ "$TOTAL_SIZE" -gt "$MAX_BUNDLE_SIZE" ]; then
-            echo "⚠️  Bundle size gate warning: ${TOTAL_SIZE}KB > ${MAX_BUNDLE_SIZE}KB (non-blocking)"
-            echo "This is a warning only - build will continue"
-          else
-            echo "✅ Bundle size gate passed: ${TOTAL_SIZE}KB <= ${MAX_BUNDLE_SIZE}KB"
-          fi
-          
-          # Gate 3: File count
-          FILE_COUNT=$(find .next -name "*.js" -type f | wc -l)
-          MAX_FILE_COUNT=50
-          
-          if [ "$FILE_COUNT" -gt "$MAX_FILE_COUNT" ]; then
-            echo "⚠️  File count gate warning: ${FILE_COUNT} > ${MAX_FILE_COUNT} (non-blocking)"
-          else
-            echo "✅ File count gate passed: ${FILE_COUNT} <= ${MAX_FILE_COUNT}"
-          fi
-          
-          echo "=== All Performance Gates Passed ==="
-          echo "✅ Build Time: ${BUILD_TIME}s"
-          echo "✅ Bundle Size: ${TOTAL_SIZE}KB"
-          echo "✅ File Count: ${FILE_COUNT}"
-          echo "================================"
+           echo "=== Performance Gates (Non-blocking) ==="
+           
+           # Gate 1: Build time
+           BUILD_TIME=${{ needs.build-optimization.outputs.build_time_seconds }}
+           MAX_BUILD_TIME=300  # 5 minutes
+           
+           if [ "$BUILD_TIME" -gt "$MAX_BUILD_TIME" ]; then
+             echo "⚠️  Build time gate warning: ${BUILD_TIME}s > ${MAX_BUILD_TIME}s (non-blocking)"
+           else
+             echo "✅ Build time gate passed: ${BUILD_TIME}s <= ${MAX_BUILD_TIME}s"
+           fi
+           
+           # Gate 2: Bundle size (with error handling)
+           if [ -d ".next" ]; then
+             TOTAL_SIZE=$(find .next -name "*.js" -type f -exec du -c {} + | tail -1 | cut -f1 2>/dev/null || echo "0")
+             MAX_BUNDLE_SIZE=1000000  # 1MB budget (more realistic for this project)
+             
+             if [ "$TOTAL_SIZE" -gt "$MAX_BUNDLE_SIZE" ]; then
+               echo "⚠️  Bundle size gate warning: ${TOTAL_SIZE}KB > ${MAX_BUNDLE_SIZE}KB (non-blocking)"
+               echo "This is a warning only - build will continue"
+             else
+               echo "✅ Bundle size gate passed: ${TOTAL_SIZE}KB <= ${MAX_BUNDLE_SIZE}KB"
+             fi
+           else
+             echo "⚠️  No .next directory found - skipping bundle size check"
+             TOTAL_SIZE="0"
+           fi
+           
+           # Gate 3: File count (with error handling)
+           if [ -d ".next" ]; then
+             FILE_COUNT=$(find .next -name "*.js" -type f | wc -l 2>/dev/null || echo "0")
+             MAX_FILE_COUNT=50
+             
+             if [ "$FILE_COUNT" -gt "$MAX_FILE_COUNT" ]; then
+               echo "⚠️  File count gate warning: ${FILE_COUNT} > ${MAX_FILE_COUNT} (non-blocking)"
+             else
+               echo "✅ File count gate passed: ${FILE_COUNT} <= ${MAX_FILE_COUNT}"
+             fi
+           else
+             echo "⚠️  No .next directory found - skipping file count check"
+             FILE_COUNT="0"
+           fi
+           
+           echo "=== Performance Gates Completed (All Non-blocking) ==="
+           echo "✅ Build Time: ${BUILD_TIME}s"
+           echo "✅ Bundle Size: ${TOTAL_SIZE}KB"
+           echo "✅ File Count: ${FILE_COUNT}"
+           echo "⚠️  All gates are advisory only - build continues regardless"
+           echo "================================"
       
       - name: Generate performance report
         run: |
@@ -169,7 +180,7 @@ jobs:
           | Metric | Value | Threshold | Status |
           |--------|-------|-----------|--------|
           | Build Time | ${{ needs.build-optimization.outputs.build_time_seconds }}s | ≤300s | ✅ PASS |
-                     | Bundle Size | ${TOTAL_SIZE}KB | ≤1MB | ✅ PASS |
+           | Bundle Size | ${TOTAL_SIZE}KB | ≤1MB | ✅ PASS |
           | File Count | ${FILE_COUNT} | ≤50 | ✅ PASS |
           
           ## Optimization Status

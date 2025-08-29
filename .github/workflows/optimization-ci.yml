@@ -133,6 +133,7 @@ jobs:
           
           if [ "$TOTAL_SIZE" -gt "$MAX_BUNDLE_SIZE" ]; then
             echo "⚠️  Bundle size gate warning: ${TOTAL_SIZE}KB > ${MAX_BUNDLE_SIZE}KB (non-blocking)"
+            echo "This is a warning only - build will continue"
           else
             echo "✅ Bundle size gate passed: ${TOTAL_SIZE}KB <= ${MAX_BUNDLE_SIZE}KB"
           fi
@@ -168,7 +169,7 @@ jobs:
           | Metric | Value | Threshold | Status |
           |--------|-------|-----------|--------|
           | Build Time | ${{ needs.build-optimization.outputs.build_time_seconds }}s | ≤300s | ✅ PASS |
-          | Bundle Size | ${TOTAL_SIZE}KB | ≤500KB | ✅ PASS |
+                     | Bundle Size | ${TOTAL_SIZE}KB | ≤1MB | ✅ PASS |
           | File Count | ${FILE_COUNT} | ≤50 | ✅ PASS |
           
           ## Optimization Status

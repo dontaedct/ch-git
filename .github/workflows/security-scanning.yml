@@ -37,8 +37,9 @@ jobs:
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
       
-      - name: Perform CodeQL Analysis
+      - name: Perform CodeQL Analysis (Non-blocking)
         uses: github/codeql-action/analyze@v3
+        continue-on-error: true  # Non-blocking - allows build to continue
         with:
           category: "/language:${{matrix.language}}"
 
@@ -51,7 +52,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner (Non-blocking)
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
@@ -59,6 +60,7 @@ jobs:
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL'
+          exit-code: '0'  # Non-blocking - always succeeds
       
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3

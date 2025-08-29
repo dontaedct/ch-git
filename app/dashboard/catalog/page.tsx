@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import { AlertCircle, RefreshCw, Save, Undo2 } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useToast } from '@/hooks/use-toast'
-import { getBaseConfigExport } from '@/lib/config/modules'
+import { getBaseConfigClient } from '@/lib/config/modules-client'
 import { getCatalogOverrides, saveCatalogOverrides, resetCatalogOverrides, CatalogOverrides } from '@/lib/modules/catalog-actions'
 import { Plan, PlanCatalog } from '@/types/config'
 
@@ -31,7 +31,7 @@ function CatalogOverridesPage() {
     const loadData = async () => {
       try {
         // Get base config to access catalog (without client-specific overrides)
-        const baseConfig = await getBaseConfigExport() as { catalog: PlanCatalog }
+        const baseConfig = await getBaseConfigClient() as { catalog: PlanCatalog }
         setBaseCatalog(baseConfig.catalog)
         
         if (baseConfig.catalog?.plans?.length > 0) {

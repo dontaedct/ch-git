@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { Toaster } from '@/components/ui/sonner'
 import { setupN8nEventListeners } from '@/lib/n8n-events'
-import { getBaseConfigExport } from '@/lib/config/modules'
+import { getBaseConfigClient } from '@/lib/config/modules-client'
 import { getClientSettings, onSettingsChange, applyClientOverrides } from '@/lib/config/client-settings'
 
 // Lazy load the ConsultationEngine component
@@ -109,7 +109,7 @@ export function ConsultationPageClient() {
       try {
         // Load base config (client-specific overrides would need to be loaded via server action)
         // TODO: Get actual client ID from auth context
-        const runtimeConfig = await getBaseConfigExport()
+        const runtimeConfig = await getBaseConfigClient()
         
         // Use runtime config if available, otherwise fall back to demo config
         let finalConfig = runtimeConfig ?? demoConfig

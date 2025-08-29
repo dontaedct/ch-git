@@ -1,5 +1,4 @@
 import { supabaseBrowser } from '@/lib/supabase/client'
-import { createServerSupabase } from '@/lib/supabase/server'
 import { User } from '@supabase/supabase-js'
 
 export interface AuthResult {
@@ -129,22 +128,6 @@ export class AuthService {
     }
   }
 
-  static async getServerUser() {
-    try {
-      const supabase = await createServerSupabase()
-      const { data: { user }, error } = await supabase.auth.getUser()
-      
-      if (error) {
-        console.error('Get server user error:', error)
-        return null
-      }
-      
-      return user
-    } catch (error) {
-      console.error('Get server user error:', error)
-      return null
-    }
-  }
 
   static onAuthStateChange(callback: (user: User | null) => void) {
     const supabase = supabaseBrowser

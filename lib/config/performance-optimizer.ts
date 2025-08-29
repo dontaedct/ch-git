@@ -639,13 +639,17 @@ class PerformanceOptimizer {
     memoryLimit: number;
     resourceLimits: ResourceConfig;
   } {
+    // Get fresh config in case tier has changed
+    const currentConfig = getAppConfig();
+    const currentTier = currentConfig.tier;
+    
     return {
-      tier: this.tier,
-      monitoring: this.monitoringEnabled,
-      optimizations: TIER_OPTIMIZATIONS[this.tier].length,
-      cacheStrategies: TIER_CACHE_STRATEGIES[this.tier].length,
-      memoryLimit: this.config.memoryLimits.heap,
-      resourceLimits: this.resources,
+      tier: currentTier,
+      monitoring: currentConfig.performance.monitoring,
+      optimizations: TIER_OPTIMIZATIONS[currentTier].length,
+      cacheStrategies: TIER_CACHE_STRATEGIES[currentTier].length,
+      memoryLimit: currentConfig.performance.memoryLimits.heap,
+      resourceLimits: currentConfig.resources,
     };
   }
 }

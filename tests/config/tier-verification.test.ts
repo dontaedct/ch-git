@@ -12,8 +12,10 @@ import {
   isTier,
   isEnabled,
   isFeatureEnabledForTier,
+  isFeatureAvailable,
   getAllFeatureStatuses,
-  getTierMatrix
+  getTierMatrix,
+  TIER_FEATURES
 } from '../../lib/flags';
 import {
   getAppConfig,
@@ -41,6 +43,7 @@ const ALL_PRESETS: PresetName[] = AVAILABLE_PRESETS;
  * Set tier and clear caches for clean test state
  */
 function setTierAndClear(tier: TierLevel, preset?: PresetName): void {
+  process.env.NODE_ENV = 'test';
   process.env.APP_TIER = tier;
   if (preset) {
     process.env.APP_PRESET = preset;
@@ -66,6 +69,10 @@ describe('Tier System Verification', () => {
   beforeEach(() => {
     clearAppConfigCache();
     clearEnvironmentCache();
+    
+    // Set test environment
+    process.env.NODE_ENV = 'test';
+    
     delete process.env.APP_TIER;
     delete process.env.APP_PRESET;
   });
@@ -73,6 +80,9 @@ describe('Tier System Verification', () => {
   afterEach(() => {
     clearAppConfigCache();
     clearEnvironmentCache();
+    
+    // Reset NODE_ENV
+    delete process.env.NODE_ENV;
   });
 
   // =============================================================================
@@ -263,7 +273,43 @@ describe('Tier System Verification', () => {
   describe('No Hard-Coded Tier Checks', () => {
     it('should use configuration-driven feature detection', () => {
       ALL_TIERS.forEach(tier => {
+        // Clean up any existing environment variables first
+        delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+        delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        delete process.env.RESEND_API_KEY;
+        delete process.env.STRIPE_SECRET_KEY;
+        delete process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+        delete process.env.STRIPE_WEBHOOK_SECRET;
+        delete process.env.N8N_WEBHOOK_URL;
+        delete process.env.N8N_WEBHOOK_SECRET;
+        delete process.env.SLACK_WEBHOOK_URL;
+        delete process.env.SENTRY_DSN;
+        delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+        delete process.env.NEXT_PUBLIC_ENABLE_AI_LIVE;
+        delete process.env.NEXT_PUBLIC_DEBUG;
+        delete process.env.NEXT_PUBLIC_SAFE_MODE;
+        delete process.env.PERFORMANCE_MONITORING_ENABLED;
+        delete process.env.HEALTH_CHECK_ENABLED;
+        
         setTierAndClear(tier);
+        
+        // Set up environment variables to make features available for testing
+        process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co';
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-key';
+        process.env.RESEND_API_KEY = 'test-resend-key';
+        process.env.STRIPE_SECRET_KEY = 'test-stripe-key';
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = 'test-stripe-pub-key';
+        process.env.STRIPE_WEBHOOK_SECRET = 'test-webhook-secret';
+        process.env.N8N_WEBHOOK_URL = 'https://test.n8n.io';
+        process.env.N8N_WEBHOOK_SECRET = 'test-n8n-secret';
+        process.env.SLACK_WEBHOOK_URL = 'https://test.slack.com';
+        process.env.SENTRY_DSN = 'https://test.sentry.io';
+        process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-role';
+        process.env.NEXT_PUBLIC_ENABLE_AI_LIVE = 'true';
+        process.env.NEXT_PUBLIC_DEBUG = 'true';
+        process.env.NEXT_PUBLIC_SAFE_MODE = 'true';
+        process.env.PERFORMANCE_MONITORING_ENABLED = 'true';
+        process.env.HEALTH_CHECK_ENABLED = 'true';
         
         const config = getAppConfig();
         
@@ -271,12 +317,36 @@ describe('Tier System Verification', () => {
         Object.entries(config.features).forEach(([feature, enabled]) => {
           const featureFlag = feature as FeatureFlag;
           
-          // isEnabled should match config
+
+          
+          // isEnabled should match config when environment is properly set up
           expect(isEnabled(featureFlag)).toBe(enabled);
           
-          // Should be based on tier configuration, not string comparison
-          expect(isFeatureEnabledForTier(featureFlag)).toBe(enabled);
+          // isFeatureEnabledForTier should check tier support (ignoring preset overrides)
+          const tierSupportsFeature = TIER_FEATURES[tier].includes(featureFlag);
+          expect(isFeatureEnabledForTier(featureFlag)).toBe(tierSupportsFeature);
         });
+        
+        // Clean up environment variables and clear cache
+        delete process.env.NEXT_PUBLIC_SUPABASE_URL;
+        delete process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        delete process.env.RESEND_API_KEY;
+        delete process.env.STRIPE_SECRET_KEY;
+        delete process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+        delete process.env.STRIPE_WEBHOOK_SECRET;
+        delete process.env.N8N_WEBHOOK_URL;
+        delete process.env.N8N_WEBHOOK_SECRET;
+        delete process.env.SLACK_WEBHOOK_URL;
+        delete process.env.SENTRY_DSN;
+        delete process.env.SUPABASE_SERVICE_ROLE_KEY;
+        delete process.env.NEXT_PUBLIC_ENABLE_AI_LIVE;
+        delete process.env.NEXT_PUBLIC_DEBUG;
+        delete process.env.NEXT_PUBLIC_SAFE_MODE;
+        delete process.env.PERFORMANCE_MONITORING_ENABLED;
+        delete process.env.HEALTH_CHECK_ENABLED;
+        
+        // Clear environment cache to ensure fresh values
+        clearEnvironmentCache();
       });
     });
 

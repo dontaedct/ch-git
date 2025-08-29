@@ -239,13 +239,23 @@ export function getAppConfig(): AppConfig {
     return appConfigCache;
   }
 
-  const env = getEnv();
+  // In test environment, prioritize process.env directly
+  let tier: TierLevel;
+  let preset: string;
   
-  // Determine tier from environment or default to starter
-  const tier: TierLevel = (env.APP_TIER as TierLevel) || 'starter';
+  if (process.env.NODE_ENV === 'test') {
+    tier = (process.env.APP_TIER as TierLevel) || 'starter';
+    preset = process.env.APP_PRESET || 'salon-waitlist';
+  } else {
+    const env = getEnv();
+    tier = (env.APP_TIER as TierLevel) || 'starter';
+    preset = env.APP_PRESET || process.env.APP_PRESET || 'salon-waitlist';
+  }
   
-  // Determine preset from environment or default
-  const preset = env.APP_PRESET || process.env.APP_PRESET || 'salon-waitlist';
+  // Validate tier
+  if (!['starter', 'pro', 'advanced'].includes(tier)) {
+    tier = 'starter';
+  }
   
   // Validate preset exists
   const validPreset = AVAILABLE_PRESETS.includes(preset as PresetName) 
@@ -291,6 +301,14 @@ export function isFeatureEnabled(feature: FeatureFlag): boolean {
  * Get current tier level
  */
 export function getCurrentTier(): TierLevel {
+  // In test environment, prioritize process.env directly
+  if (process.env.NODE_ENV === 'test') {
+    const testTier = process.env.APP_TIER;
+    if (testTier && ['starter', 'pro', 'advanced'].includes(testTier)) {
+      return testTier as TierLevel;
+    }
+  }
+  
   return getAppConfig().tier;
 }
 

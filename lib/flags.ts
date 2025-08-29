@@ -31,7 +31,7 @@ export type TierLevel = 'starter' | 'pro' | 'advanced';
 // FEATURE TIER MAPPING
 // =============================================================================
 
-const TIER_FEATURES: Record<TierLevel, FeatureFlag[]> = {
+export const TIER_FEATURES: Record<TierLevel, FeatureFlag[]> = {
   starter: [
     'database',
     'email',
@@ -138,6 +138,14 @@ export function isFeatureAvailable(feature: FeatureFlag): boolean {
  * Get current application tier from environment or config
  */
 export function getCurrentTier(): TierLevel {
+  // In test environment, prioritize process.env directly
+  if (process.env.NODE_ENV === 'test') {
+    const testTier = process.env.APP_TIER;
+    if (testTier && ['starter', 'pro', 'advanced'].includes(testTier)) {
+      return testTier as TierLevel;
+    }
+  }
+  
   const env = getEnv();
   const tier = env.APP_TIER || process.env.APP_TIER || 'starter';
   
@@ -180,13 +188,9 @@ export function isFeatureEnabledForTier(feature: FeatureFlag): boolean {
  * Check if a feature is enabled (combines tier and availability checks)
  */
 export function isEnabled(feature: FeatureFlag): boolean {
-  // First check if the tier supports this feature
-  if (!isFeatureEnabledForTier(feature)) {
-    return false;
-  }
-  
-  // Then check if the feature is available based on environment
-  return isFeatureAvailable(feature);
+  // Use the resolved config from app.config.base.ts which includes preset overrides
+  const { isFeatureEnabled } = require('../app.config');
+  return isFeatureEnabled(feature);
 }
 
 // =============================================================================

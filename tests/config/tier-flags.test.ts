@@ -34,6 +34,9 @@ describe('Tier Flags System', () => {
     clearAppConfigCache();
     clearEnvironmentCache();
     
+    // Set test environment
+    process.env.NODE_ENV = 'test';
+    
     // Reset environment variables
     delete process.env.APP_TIER;
     delete process.env.APP_PRESET;
@@ -43,6 +46,9 @@ describe('Tier Flags System', () => {
     // Clean up after each test
     clearAppConfigCache();
     clearEnvironmentCache();
+    
+    // Reset NODE_ENV
+    delete process.env.NODE_ENV;
   });
 
   // =============================================================================

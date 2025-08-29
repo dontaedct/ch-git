@@ -43,16 +43,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           enableSystem
           disableTransitionOnChange
         >
-          <TokensProvider>
-            <AuthProvider>
+          <div>
+            <TokensProvider>
               <div>
-                <GlobalNav client={client} isSafeMode={isSafeMode} />
-                <Suspense fallback={<PageBoot />}>
-                  {children}
-                </Suspense>
+                <AuthProvider>
+                  <div>
+                    <GlobalNav client={client} isSafeMode={isSafeMode} />
+                    <Suspense fallback={<PageBoot />}>
+                      {children}
+                    </Suspense>
+                  </div>
+                </AuthProvider>
               </div>
-            </AuthProvider>
-          </TokensProvider>
+            </TokensProvider>
+          </div>
         </ThemeProvider>
       </body>
     </html>

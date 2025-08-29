@@ -11,7 +11,7 @@ import {
   type WebhookEndpointConfig 
 } from '@/lib/config/webhooks';
 import { generateHmacSignature } from './hmac-signer';
-import { withBackoff } from '@/lib/n8n/reliability';
+import { withBackoff } from '@/lib/n8n/reliability-client';
 
 export interface WebhookEvent {
   /** Event type/name */

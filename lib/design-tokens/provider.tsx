@@ -195,7 +195,7 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
   
   // Don't render until mounted (hydration safety)
   if (!mounted) {
-    return <>{children}</>;
+    return children as React.ReactElement;
   }
   
   const contextValue: TokensContextValue = {

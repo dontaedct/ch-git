@@ -113,8 +113,8 @@ test.describe('OSS Hero Design Safety - AXE Accessibility Tests', () => {
     // Start keyboard navigation
     await page.keyboard.press('Tab');
     
-    // Check that focused element has visible focus indicator (scope to app root)
-    const focusedElement = page.locator('body :focus').first();
+    // Check that focused element has visible focus indicator (scope to app content, not portal)
+    const focusedElement = page.locator('body :focus').not('nextjs-portal :focus').first();
     await expect(focusedElement).toBeVisible();
     
     // Verify focus ring or outline is present

@@ -16,22 +16,23 @@
       - button "Collapse issues badge" [ref=e18] [cursor=pointer]:
         - img [ref=e19] [cursor=pointer]
   - alert [ref=e21]
-  - banner [ref=e22]:
-    - generic [ref=e23]:
-      - link "CH Micro App" [ref=e25] [cursor=pointer]:
-        - /url: /
-        - generic [ref=e27] [cursor=pointer]: CH
-        - generic [ref=e28] [cursor=pointer]: Micro App
-      - generic [ref=e29]:
-        - navigation [ref=e30]:
-          - link "Home" [ref=e31] [cursor=pointer]:
-            - /url: /
-            - img [ref=e32] [cursor=pointer]
-            - generic [ref=e35] [cursor=pointer]: Home
-        - button "Open navigation menu" [ref=e36]:
-          - img [ref=e37]
-  - main [ref=e38]:
-    - heading "Something went wrong in this route." [level=2] [ref=e39]
-    - generic [ref=e40]: React.Children.only expected to receive a single React element child.
-    - button "Try again" [ref=e41]
+  - generic [ref=e22]:
+    - banner [ref=e23]:
+      - generic [ref=e24]:
+        - link "CH Micro App" [ref=e26] [cursor=pointer]:
+          - /url: /
+          - generic [ref=e28] [cursor=pointer]: CH
+          - generic [ref=e29] [cursor=pointer]: Micro App
+        - generic [ref=e30]:
+          - navigation [ref=e31]:
+            - link "Home" [ref=e32] [cursor=pointer]:
+              - /url: /
+              - img [ref=e33] [cursor=pointer]
+              - generic [ref=e36] [cursor=pointer]: Home
+          - button "Open navigation menu" [ref=e37]:
+            - img [ref=e38]
+    - main [ref=e39]:
+      - heading "Something went wrong in this route." [level=2] [ref=e40]
+      - generic [ref=e41]: React.Children.only expected to receive a single React element child.
+      - button "Try again" [ref=e42]
 ```

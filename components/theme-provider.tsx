@@ -22,7 +22,7 @@ function MotionProvider({ children }: { children: React.ReactNode }) {
     }
   }, [reducedMotion])
 
-  return <>{children}</>
+  return children as React.ReactElement
 }
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {

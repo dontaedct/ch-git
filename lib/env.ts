@@ -14,6 +14,7 @@ const AppConfigSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.string().optional().default("3000"),
   APP_TIER: z.enum(["starter", "pro", "advanced"]).optional().default("starter"),
+  APP_PRESET: z.string().optional().default("salon-waitlist"),
   CI: z.string().optional(),
   VERCEL_ENV: z.string().optional(),
 });

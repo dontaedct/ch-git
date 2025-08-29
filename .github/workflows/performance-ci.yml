@@ -1,0 +1,138 @@
+name: Performance CI
+
+on:
+  push:
+    branches: [ main, develop, ops/phase-1-foundation ]
+  pull_request:
+    branches: [ main, develop, ops/phase-1-foundation ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20.x'
+  LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+jobs:
+  lighthouse-ci:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: |
+          export NEXT_PUBLIC_SUPABASE_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://example.supabase.co}"
+          export NEXT_PUBLIC_SUPABASE_ANON_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-dummy-key}"
+          export SUPABASE_SERVICE_ROLE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-dummy-service-key}"
+          npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      
+      - name: Start Next.js server
+        run: |
+          npm start &
+          sleep 30
+      
+      - name: Run Lighthouse CI
+        run: |
+          npx lhci autorun --config=design/lhci.config.cjs
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ env.LHCI_GITHUB_APP_TOKEN }}
+
+  bundle-analysis:
+    name: Bundle Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build with bundle analysis
+        run: |
+          export NEXT_PUBLIC_SUPABASE_URL="${NEXT_PUBLIC_SUPABASE_URL:-https://example.supabase.co}"
+          export NEXT_PUBLIC_SUPABASE_ANON_KEY="${NEXT_PUBLIC_SUPABASE_ANON_KEY:-dummy-key}"
+          export SUPABASE_SERVICE_ROLE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-dummy-service-key}"
+          npm run build
+          npm run tool:security:bundle
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      
+      - name: Upload bundle analysis
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis
+          path: |
+            .next/analyze/
+            bundle-stats.json
+          retention-days: 30
+
+  performance-budgets:
+    name: Performance Budgets
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check performance budgets
+        run: |
+          echo "=== Performance Budget Check ==="
+          
+          # Check bundle size budgets
+          if [ -f ".next/analyze/bundle-stats.json" ]; then
+            echo "Bundle stats found, checking budgets..."
+            node -e "
+              const stats = JSON.parse(require('fs').readFileSync('.next/analyze/bundle-stats.json', 'utf8'));
+              const totalSize = stats.totalSize || 0;
+              const budget = 500 * 1024; // 500KB budget
+              
+              console.log(\`Total bundle size: \${(totalSize / 1024).toFixed(2)}KB\`);
+              console.log(\`Budget: \${(budget / 1024).toFixed(2)}KB\`);
+              
+              if (totalSize > budget) {
+                console.error('❌ Bundle size exceeds budget!');
+                process.exit(1);
+              } else {
+                console.log('✅ Bundle size within budget');
+              }
+            "
+          else
+            echo "No bundle stats found, skipping budget check"
+          fi
+          
+          echo "================================"

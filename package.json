@@ -104,7 +104,7 @@
     "@radix-ui/react-toggle": "^1.1.9",
     "@radix-ui/react-toggle-group": "^1.1.11-rc.1752166910601",
     "@radix-ui/react-tooltip": "^1.2.7",
-    "@supabase/ssr": "^0.1.0",
+    "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.54.0",
     "@tailwindcss/forms": "^0.5.10",
     "@types/leven": "^2.1.1",

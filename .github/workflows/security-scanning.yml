@@ -64,6 +64,7 @@ jobs:
       
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
+        continue-on-error: true  # Non-blocking - permissions may not be available in PR from fork
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'

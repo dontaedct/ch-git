@@ -28,6 +28,7 @@ import {
 } from './metrics';
 import { Profiling, PerformanceMonitor } from './profiling';
 import { Logger } from '../logger';
+import { initializeSLOMonitoring } from '../monitoring/slo-service';
 
 const observabilityLogger = Logger.create({ component: 'observability' });
 
@@ -76,6 +77,9 @@ export class Observability {
           this.config.performance.profiling.monitoringInterval
         );
       }
+
+      // Initialize SLO monitoring
+      initializeSLOMonitoring();
 
       this.initialized = true;
       

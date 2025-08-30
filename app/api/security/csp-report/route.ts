@@ -72,20 +72,32 @@ export async function POST(request: NextRequest) {
     // Log CSP violation as security event
     logSecurityRequest(
       'csp_violation',
+      'api_request',
       {
         ip,
-        userAgent,
         route: new URL(cspReport['document-uri']).pathname,
-        method: 'GET', // CSP violations are typically from page loads
-        origin: request.headers.get('origin') || undefined,
-        referer: cspReport['referrer'] || undefined,
-      },
-      {
-        requestId: crypto.randomUUID(),
+        userAgent,
         isBot: /bot|crawler|spider|scraper/i.test(userAgent),
         riskLevel: severity === 'high' ? 'high' : severity === 'medium' ? 'medium' : 'low',
+        metadata: {
+          cspViolation: {
+            violatedDirective: cspReport['violated-directive'],
+            effectiveDirective: cspReport['effective-directive'],
+            blockedUri: cspReport['blocked-uri'],
+            originalPolicy: cspReport['original-policy'],
+            disposition: cspReport['disposition'],
+            sourceFile: cspReport['source-file'],
+            lineNumber: cspReport['line-number'],
+            columnNumber: cspReport['column-number'],
+            scriptSample: cspReport['script-sample'],
+            statusCode: cspReport['status-code'],
+          },
+          severity,
+          documentUri: cspReport['document-uri'],
+          timestamp: new Date().toISOString()
+        }
       },
-      'suspicious',
+      'logged',
       {
         metadata: {
           cspViolation: {
@@ -130,18 +142,15 @@ export async function POST(request: NextRequest) {
     
     logSecurityRequest(
       'csp_violation',
+      'api_request',
       {
         ip,
-        userAgent: request.headers.get('user-agent') || '',
         route: '/api/security/csp-report',
-        method: 'POST',
-      },
-      {
-        requestId: crypto.randomUUID(),
+        userAgent: request.headers.get('user-agent') ?? '',
         isBot: false,
         riskLevel: 'medium',
       },
-      'suspicious',
+      'logged',
       {
         metadata: {
           error: error instanceof Error ? error.message : 'Unknown error',

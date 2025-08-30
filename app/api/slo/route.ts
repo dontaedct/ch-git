@@ -22,9 +22,9 @@ const sloEndpointLogger = Logger.create({ component: 'slo-endpoint' });
 export async function GET(request: Request) {
   const startTime = Date.now();
   const url = new URL(request.url);
-  const format = url.searchParams.get('format') || 'json';
+  const format = url.searchParams.get('format') ?? 'json';
   const sloName = url.searchParams.get('slo');
-  const hours = parseInt(url.searchParams.get('hours') || '24', 10);
+  const hours = parseInt(url.searchParams.get('hours') ?? '24', 10);
   
   try {
     // Check if SLO monitoring is enabled
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
       }, { status: 503 });
     }
 
-    let responseData: any;
+    let responseData: Record<string, unknown>;
 
     if (sloName) {
       // Get specific SLO details
@@ -166,42 +166,58 @@ export async function GET(request: Request) {
 /**
  * Build Prometheus metrics format for SLO data
  */
-function buildPrometheusMetrics(data: any): string {
+function buildPrometheusMetrics(data: Record<string, unknown>): string {
   const lines: string[] = [];
   const timestamp = Date.now();
 
-  if (data.overview) {
+  if (data.overview && typeof data.overview === 'object') {
+    const overview = data.overview as {
+      overallHealth: string;
+      totalSLOs: number;
+      healthySLOs: number;
+      warningSLOs: number;
+      breachingSLOs: number;
+      activeAlerts: number;
+    };
+    
     // Overall health metrics
     lines.push(`# HELP slo_health_status Overall SLO health status (0=unhealthy, 1=degraded, 2=healthy)`);
     lines.push(`# TYPE slo_health_status gauge`);
-    const healthValue = data.overview.overallHealth === 'healthy' ? 2 : 
-                       data.overview.overallHealth === 'degraded' ? 1 : 0;
+    const healthValue = overview.overallHealth === 'healthy' ? 2 : 
+                       overview.overallHealth === 'degraded' ? 1 : 0;
     lines.push(`slo_health_status{service="dct-micro-app"} ${healthValue} ${timestamp}`);
 
     lines.push(`# HELP slo_total_count Total number of configured SLOs`);
     lines.push(`# TYPE slo_total_count gauge`);
-    lines.push(`slo_total_count{service="dct-micro-app"} ${data.overview.totalSLOs} ${timestamp}`);
+    lines.push(`slo_total_count{service="dct-micro-app"} ${overview.totalSLOs} ${timestamp}`);
 
     lines.push(`# HELP slo_healthy_count Number of healthy SLOs`);
     lines.push(`# TYPE slo_healthy_count gauge`);
-    lines.push(`slo_healthy_count{service="dct-micro-app"} ${data.overview.healthySLOs} ${timestamp}`);
+    lines.push(`slo_healthy_count{service="dct-micro-app"} ${overview.healthySLOs} ${timestamp}`);
 
     lines.push(`# HELP slo_warning_count Number of SLOs in warning state`);
     lines.push(`# TYPE slo_warning_count gauge`);
-    lines.push(`slo_warning_count{service="dct-micro-app"} ${data.overview.warningSLOs} ${timestamp}`);
+    lines.push(`slo_warning_count{service="dct-micro-app"} ${overview.warningSLOs} ${timestamp}`);
 
     lines.push(`# HELP slo_breach_count Number of SLOs in breach state`);
     lines.push(`# TYPE slo_breach_count gauge`);
-    lines.push(`slo_breach_count{service="dct-micro-app"} ${data.overview.breachingSLOs} ${timestamp}`);
+    lines.push(`slo_breach_count{service="dct-micro-app"} ${overview.breachingSLOs} ${timestamp}`);
 
     lines.push(`# HELP slo_active_alerts_count Number of active SLO alerts`);
     lines.push(`# TYPE slo_active_alerts_count gauge`);
-    lines.push(`slo_active_alerts_count{service="dct-micro-app"} ${data.overview.activeAlerts} ${timestamp}`);
+    lines.push(`slo_active_alerts_count{service="dct-micro-app"} ${overview.activeAlerts} ${timestamp}`);
 
     // Individual SLO metrics
-    if (data.slos) {
-      for (const slo of data.slos) {
-        const sloName = slo.sloName.replace(/[^a-zA-Z0-9_]/g, '_');
+    if (data.slos && Array.isArray(data.slos)) {
+      for (const slo of data.slos as Array<{
+        sloName: string;
+        type: string;
+        currentValue: number;
+        target: number;
+        errorBudgetRemaining: number;
+        status: string;
+      }>) {
+        const _sloName = slo.sloName.replace(/[^a-zA-Z0-9_]/g, '_');
         
         lines.push(`# HELP slo_current_value Current SLO value (percentage)`);
         lines.push(`# TYPE slo_current_value gauge`);
@@ -223,19 +239,19 @@ function buildPrometheusMetrics(data: any): string {
     }
   } else if (data.current) {
     // Single SLO detailed metrics
-    const sloName = data.slo.name.replace(/[^a-zA-Z0-9_]/g, '_');
+    const _sloName = (data.slo as { name: string }).name.replace(/[^a-zA-Z0-9_]/g, '_');
     
     lines.push(`# HELP slo_current_value Current SLO value (percentage)`);
     lines.push(`# TYPE slo_current_value gauge`);
-    lines.push(`slo_current_value{service="dct-micro-app",slo_name="${data.slo.name}",type="${data.slo.type}"} ${data.current.current.value} ${timestamp}`);
+    lines.push(`slo_current_value{service="dct-micro-app",slo_name="${(data.slo as { name: string }).name}",type="${(data.slo as { type: string }).type}"} ${(data.current as { current: { value: number } }).current.value} ${timestamp}`);
 
     lines.push(`# HELP slo_error_budget_consumed Error budget consumed (percentage)`);
     lines.push(`# TYPE slo_error_budget_consumed gauge`);
-    lines.push(`slo_error_budget_consumed{service="dct-micro-app",slo_name="${data.slo.name}",type="${data.slo.type}"} ${data.current.errorBudget.consumed} ${timestamp}`);
+    lines.push(`slo_error_budget_consumed{service="dct-micro-app",slo_name="${(data.slo as { name: string }).name}",type="${(data.slo as { type: string }).type}"} ${(data.current as { errorBudget: { consumed: number } }).errorBudget.consumed} ${timestamp}`);
 
     lines.push(`# HELP slo_error_budget_burn_rate Error budget burn rate`);
     lines.push(`# TYPE slo_error_budget_burn_rate gauge`);
-    lines.push(`slo_error_budget_burn_rate{service="dct-micro-app",slo_name="${data.slo.name}",type="${data.slo.type}"} ${data.current.errorBudget.burnRate} ${timestamp}`);
+    lines.push(`slo_error_budget_burn_rate{service="dct-micro-app",slo_name="${(data.slo as { name: string }).name}",type="${(data.slo as { type: string }).type}"} ${(data.current as { errorBudget: { burnRate: number } }).errorBudget.burnRate} ${timestamp}`);
   }
 
   return lines.join('\n') + '\n';

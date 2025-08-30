@@ -15,6 +15,45 @@ import { getBusinessMetrics, getCurrentTraceId } from '@/lib/observability/otel'
 import { Logger } from '@/lib/logger';
 import { getObservabilityConfig } from '@/lib/observability/config';
 
+// Type definitions for OpenTelemetry metrics
+interface MetricCounter {
+  total?: number;
+  rate?: number;
+}
+
+interface MetricHistogram {
+  total?: number;
+  rate?: number;
+  average?: number;
+  p50?: number;
+  p95?: number;
+  p99?: number;
+  sum?: number;
+  count?: number;
+  buckets?: Record<string | number, number>;
+}
+
+interface BusinessMetrics {
+  requestCount?: MetricCounter;
+  requestDuration?: MetricHistogram;
+  userRegistrations?: MetricCounter;
+  formSubmissions?: MetricCounter;
+  authenticationAttempts?: MetricCounter;
+  rateLimitViolations?: MetricCounter;
+  securityEvents?: MetricCounter;
+  errorCount?: MetricCounter;
+  slowRequestCount?: MetricCounter;
+  authAttempts?: MetricCounter;
+  errorTypes?: Record<string, number>;
+  recentErrors?: Array<{
+    timestamp: string;
+    type: string;
+    route: string;
+    message: string;
+  }>;
+  httpErrorCodes?: Record<string, number>;
+}
+
 
 export const runtime = 'nodejs';
 export const revalidate = 15; // 15 seconds
@@ -90,9 +129,9 @@ function collectREDMetrics(): REDMetrics {
     errors: {
       totalErrors,
       errorRate,
-      errorTypes: businessMetrics.errorTypes || {},
-      recentErrors: businessMetrics.recentErrors || [],
-      httpErrorCodes: businessMetrics.httpErrorCodes || {},
+      errorTypes: businessMetrics.errorTypes ?? {},
+      recentErrors: businessMetrics.recentErrors ?? [],
+      httpErrorCodes: businessMetrics.httpErrorCodes ?? {},
     },
     duration: {
       averageResponseTime,
@@ -177,7 +216,7 @@ export async function GET() {
 /**
  * Build Prometheus metrics from OpenTelemetry metrics
  */
-function buildPrometheusMetrics(otelMetrics: Record<string, unknown>, _redMetrics: REDMetrics): string {
+function buildPrometheusMetrics(otelMetrics: BusinessMetrics, _redMetrics: REDMetrics): string {
   if (!otelMetrics) {
     return '# No OpenTelemetry metrics available\n';
   }
@@ -189,50 +228,50 @@ function buildPrometheusMetrics(otelMetrics: Record<string, unknown>, _redMetric
   if (otelMetrics.requestCount) {
     lines.push(`# HELP http_requests_total Total number of HTTP requests`);
     lines.push(`# TYPE http_requests_total counter`);
-    lines.push(`http_requests_total{service="dct-micro-app"} ${(otelMetrics.requestCount as any)?.total ?? 0} ${timestamp}`);
+    lines.push(`http_requests_total{service="dct-micro-app"} ${otelMetrics.requestCount?.total ?? 0} ${timestamp}`);
   }
 
   if (otelMetrics.requestDuration) {
     lines.push(`# HELP http_request_duration_ms HTTP request duration in milliseconds`);
     lines.push(`# TYPE http_request_duration_ms histogram`);
-    lines.push(`http_request_duration_ms_bucket{le="100"} ${(otelMetrics.requestDuration as any)?.buckets?.[100] ?? 0} ${timestamp}`);
-    lines.push(`http_request_duration_ms_bucket{le="500"} ${(otelMetrics.requestDuration as any)?.buckets?.[500] ?? 0} ${timestamp}`);
-    lines.push(`http_request_duration_ms_bucket{le="1000"} ${(otelMetrics.requestDuration as any)?.buckets?.[1000] ?? 0} ${timestamp}`);
-    lines.push(`http_request_duration_ms_bucket{le="2000"} ${(otelMetrics.requestDuration as any)?.buckets?.[2000] ?? 0} ${timestamp}`);
-    lines.push(`http_request_duration_ms_bucket{le="+Inf"} ${(otelMetrics.requestDuration as any)?.buckets?.['+Inf'] ?? 0} ${timestamp}`);
-    lines.push(`http_request_duration_ms_sum ${(otelMetrics.requestDuration as any)?.sum ?? 0} ${timestamp}`);
-    lines.push(`http_request_duration_ms_count ${(otelMetrics.requestDuration as any)?.count ?? 0} ${timestamp}`);
+    lines.push(`http_request_duration_ms_bucket{le="100"} ${otelMetrics.requestDuration?.buckets?.[100] ?? 0} ${timestamp}`);
+    lines.push(`http_request_duration_ms_bucket{le="500"} ${otelMetrics.requestDuration?.buckets?.[500] ?? 0} ${timestamp}`);
+    lines.push(`http_request_duration_ms_bucket{le="1000"} ${otelMetrics.requestDuration?.buckets?.[1000] ?? 0} ${timestamp}`);
+    lines.push(`http_request_duration_ms_bucket{le="2000"} ${otelMetrics.requestDuration?.buckets?.[2000] ?? 0} ${timestamp}`);
+    lines.push(`http_request_duration_ms_bucket{le="+Inf"} ${otelMetrics.requestDuration?.buckets?.['+Inf'] ?? 0} ${timestamp}`);
+    lines.push(`http_request_duration_ms_sum ${otelMetrics.requestDuration?.sum ?? 0} ${timestamp}`);
+    lines.push(`http_request_duration_ms_count ${otelMetrics.requestDuration?.count ?? 0} ${timestamp}`);
   }
 
   // Business metrics
   if (otelMetrics.userRegistrations) {
     lines.push(`# HELP user_registrations_total Total number of user registrations`);
     lines.push(`# TYPE user_registrations_total counter`);
-    lines.push(`user_registrations_total{service="dct-micro-app"} ${(otelMetrics.userRegistrations as any)?.total ?? 0} ${timestamp}`);
+    lines.push(`user_registrations_total{service="dct-micro-app"} ${otelMetrics.userRegistrations?.total ?? 0} ${timestamp}`);
   }
 
   if (otelMetrics.formSubmissions) {
     lines.push(`# HELP form_submissions_total Total number of form submissions`);
     lines.push(`# TYPE form_submissions_total counter`);
-    lines.push(`form_submissions_total{service="dct-micro-app"} ${(otelMetrics.formSubmissions as any)?.total ?? 0} ${timestamp}`);
+    lines.push(`form_submissions_total{service="dct-micro-app"} ${otelMetrics.formSubmissions?.total ?? 0} ${timestamp}`);
   }
 
   if (otelMetrics.authenticationAttempts) {
     lines.push(`# HELP authentication_attempts_total Total number of authentication attempts`);
     lines.push(`# TYPE authentication_attempts_total counter`);
-    lines.push(`authentication_attempts_total{service="dct-micro-app"} ${(otelMetrics.authenticationAttempts as any)?.total ?? 0} ${timestamp}`);
+    lines.push(`authentication_attempts_total{service="dct-micro-app"} ${otelMetrics.authenticationAttempts?.total ?? 0} ${timestamp}`);
   }
 
   if (otelMetrics.rateLimitViolations) {
     lines.push(`# HELP rate_limit_violations_total Total number of rate limit violations`);
     lines.push(`# TYPE rate_limit_violations_total counter`);
-    lines.push(`rate_limit_violations_total{service="dct-micro-app"} ${(otelMetrics.rateLimitViolations as any)?.total ?? 0} ${timestamp}`);
+    lines.push(`rate_limit_violations_total{service="dct-micro-app"} ${otelMetrics.rateLimitViolations?.total ?? 0} ${timestamp}`);
   }
 
   if (otelMetrics.securityEvents) {
     lines.push(`# HELP security_events_total Total number of security events`);
     lines.push(`# TYPE security_events_total counter`);
-    lines.push(`security_events_total{service="dct-micro-app"} ${(otelMetrics.securityEvents as any)?.total ?? 0} ${timestamp}`);
+    lines.push(`security_events_total{service="dct-micro-app"} ${otelMetrics.securityEvents?.total ?? 0} ${timestamp}`);
   }
 
   return lines.join('\n') + '\n';

@@ -16,7 +16,7 @@ export interface SecurityEvent {
   context: SecurityEventContext;
   action?: SecurityAction;
   outcome: 'allowed' | 'blocked' | 'rate_limited' | 'suspicious';
-  metadata?: Record<string, any>;
+  metadata?: Record<string, string | number | boolean>;
 }
 
 export type SecurityEventType =
@@ -126,7 +126,7 @@ export function createSecurityEvent(
   outcome: SecurityEvent['outcome'],
   options: {
     action?: SecurityAction;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, string | number | boolean>;
   } = {}
 ): SecurityEvent {
   const event: SecurityEvent = {
@@ -151,7 +151,7 @@ export function logSecurityEvent(event: SecurityEvent): void {
     ...event,
     '@timestamp': event.timestamp,
     '@type': 'security_event',
-    environment: process.env.NODE_ENV || 'unknown',
+    environment: process.env.NODE_ENV ?? 'unknown',
     service: 'dct-microapps'
   };
   
@@ -182,7 +182,7 @@ export function logSecurityRequest(
   outcome: SecurityEvent['outcome'],
   options?: {
     action?: SecurityAction;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, string | number | boolean>;
   }
 ): string {
   const event = createSecurityEvent(type, source, context, outcome, options);

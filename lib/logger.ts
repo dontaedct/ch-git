@@ -6,7 +6,18 @@
  */
 
 import pino from 'pino';
-import { getCurrentTraceId } from './observability/otel';
+// Conditional import for Edge Runtime compatibility
+let getCurrentTraceId: (() => string | undefined) | undefined = undefined;
+
+// Only import OpenTelemetry in Node.js runtime, not Edge Runtime  
+if (typeof process !== 'undefined' && process.env.NEXT_RUNTIME !== 'edge') {
+  try {
+    const otelModule = require('./observability/otel');
+    getCurrentTraceId = otelModule.getCurrentTraceId;
+  } catch (error) {
+    // OpenTelemetry not available, getCurrentTraceId remains undefined
+  }
+}
 
 // Environment configuration
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -56,31 +67,31 @@ function createEnhancedLogger(context?: Record<string, any>) {
     debug: (msg: string, meta?: any) => {
       child.debug({ 
         ...meta, 
-        traceId: getCurrentTraceId() 
+        traceId: getCurrentTraceId?.() 
       }, msg);
     },
     info: (msg: string, meta?: any) => {
       child.info({ 
         ...meta, 
-        traceId: getCurrentTraceId() 
+        traceId: getCurrentTraceId?.() 
       }, msg);
     },
     warn: (msg: string, meta?: any) => {
       child.warn({ 
         ...meta, 
-        traceId: getCurrentTraceId() 
+        traceId: getCurrentTraceId?.() 
       }, msg);
     },
     error: (msg: string, meta?: any) => {
       child.error({ 
         ...meta, 
-        traceId: getCurrentTraceId() 
+        traceId: getCurrentTraceId?.() 
       }, msg);
     },
     fatal: (msg: string, meta?: any) => {
       child.fatal({ 
         ...meta, 
-        traceId: getCurrentTraceId() 
+        traceId: getCurrentTraceId?.() 
       }, msg);
     },
   };

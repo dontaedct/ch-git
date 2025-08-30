@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url);
-  const action = searchParams.get('action') || 'dashboard';
+  const action = searchParams.get('action') ?? 'dashboard';
 
   try {
     switch (action) {
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
           );
         }
         
-        blockIP(ip, reason || 'Manual block via API');
+        blockIP(ip, reason ?? 'Manual block via API');
         
         return NextResponse.json({
           success: true,

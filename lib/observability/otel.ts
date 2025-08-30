@@ -5,15 +5,37 @@
  * observability with business metrics, performance profiling, and security monitoring.
  */
 
-import { NodeSDK } from '@opentelemetry/sdk-node';
-import { Resource } from '@opentelemetry/resources';
-import { ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } from '@opentelemetry/semantic-conventions';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
-import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
-import { JaegerExporter } from '@opentelemetry/exporter-jaeger';
-import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
-import { trace, metrics, SpanStatusCode, SpanKind } from '@opentelemetry/api';
+// Conditional imports to prevent webpack bundling issues in production
+let NodeSDK: any = null;
+let Resource: any = null;
+let ATTR_SERVICE_NAME: any = null;
+let ATTR_SERVICE_VERSION: any = null;
+let getNodeAutoInstrumentations: any = null;
+let PeriodicExportingMetricReader: any = null;
+let PrometheusExporter: any = null;
+let JaegerExporter: any = null;
+let OTLPTraceExporter: any = null;
+let trace: any = null;
+let metrics: any = null;
+let SpanStatusCode: any = null;
+let SpanKind: any = null;
+
+// Only import OpenTelemetry in development to prevent deployment issues
+if (process.env.NODE_ENV === 'development' && !process.env.VERCEL_ENV) {
+  try {
+    ({ NodeSDK } = require('@opentelemetry/sdk-node'));
+    ({ Resource } = require('@opentelemetry/resources'));
+    ({ ATTR_SERVICE_NAME, ATTR_SERVICE_VERSION } = require('@opentelemetry/semantic-conventions'));
+    ({ getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node'));
+    ({ PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics'));
+    ({ PrometheusExporter } = require('@opentelemetry/exporter-prometheus'));
+    ({ JaegerExporter } = require('@opentelemetry/exporter-jaeger'));
+    ({ OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-http'));
+    ({ trace, metrics, SpanStatusCode, SpanKind } = require('@opentelemetry/api'));
+  } catch (error) {
+    console.warn('OpenTelemetry dependencies not available:', error);
+  }
+}
 import { logger } from '../logger';
 
 // Service metadata
@@ -28,9 +50,21 @@ const OTEL_ENABLED = process.env.OTEL_ENABLED !== 'false';
 /**
  * Initialize OpenTelemetry SDK with comprehensive instrumentation
  */
-let sdk: NodeSDK | null = null;
+let sdk: any | null = null;
 
 export function initializeOpenTelemetry(): void {
+  // Temporarily disable OpenTelemetry during deployment to avoid Edge Runtime issues
+  if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV) {
+    logger.log('OpenTelemetry temporarily disabled for deployment compatibility');
+    return;
+  }
+
+  // Skip initialization in Edge Runtime environments
+  if (typeof (globalThis as any).EdgeRuntime !== 'undefined' || process.env.NEXT_RUNTIME === 'edge') {
+    logger.log('OpenTelemetry skipped in Edge Runtime environment');
+    return;
+  }
+
   if (!OTEL_ENABLED) {
     logger.log('OpenTelemetry disabled by configuration');
     return;
@@ -100,7 +134,7 @@ export function initializeOpenTelemetry(): void {
           },
           '@opentelemetry/instrumentation-http': {
             enabled: true,
-            ignoreIncomingRequestHook: (req) => {
+            ignoreIncomingRequestHook: (req: any) => {
               // Ignore health check and static asset requests
               const url = req.url || '';
               return url.includes('/_next/') || 
@@ -108,10 +142,10 @@ export function initializeOpenTelemetry(): void {
                      url.includes('/api/health') ||
                      url.includes('/api/metrics');
             },
-            ignoreOutgoingRequestHook: (req) => {
+            ignoreOutgoingRequestHook: (req: any) => {
               return req.method === 'OPTIONS';
             },
-            requestHook: (span, request) => {
+            requestHook: (span: any, request: any) => {
               // Type guard to check if request has headers
               if ('headers' in request && request.headers) {
                 const userAgent = request.headers['user-agent'];
@@ -124,7 +158,7 @@ export function initializeOpenTelemetry(): void {
                 }
               }
             },
-            responseHook: (span, response) => {
+            responseHook: (span: any, response: any) => {
               if (response.statusCode && response.statusCode >= 400) {
                 span.setStatus({ code: SpanStatusCode.ERROR });
               }
@@ -147,9 +181,11 @@ export function initializeOpenTelemetry(): void {
       metricsEnabled: metricReaders.length > 0,
     });
 
-    // Graceful shutdown
-    process.on('SIGTERM', () => shutdown());
-    process.on('SIGINT', () => shutdown());
+    // Graceful shutdown (only in Node.js runtime)
+    if (typeof process !== 'undefined' && typeof process.on === 'function' && process.env.NEXT_RUNTIME !== 'edge') {
+      process.on('SIGTERM', () => shutdown());
+      process.on('SIGINT', () => shutdown());
+    }
     
   } catch (error) {
     logger.error('Failed to initialize OpenTelemetry:', error);
@@ -233,7 +269,7 @@ export async function tracedOperation<T>(
 
   const tracer = trace.getTracer(SERVICE_NAME, SERVICE_VERSION);
   
-  return tracer.startActiveSpan(name, { kind: SpanKind.INTERNAL }, async (span) => {
+  return tracer.startActiveSpan(name, { kind: SpanKind.INTERNAL }, async (span: any) => {
     try {
       if (attributes) {
         span.setAttributes(attributes);
@@ -297,21 +333,30 @@ export async function shutdown(): Promise<void> {
  * Get current tracing context
  */
 export function getCurrentTraceId(): string | undefined {
-  if (!OTEL_ENABLED) return undefined;
+  if (!OTEL_ENABLED || !trace) return undefined;
   
-  const span = trace.getActiveSpan();
-  return span?.spanContext().traceId;
+  try {
+    const span = trace.getActiveSpan();
+    return span?.spanContext().traceId;
+  } catch (error) {
+    // Trace API not available or failed
+    return undefined;
+  }
 }
 
 /**
  * Add attributes to current span
  */
 export function addSpanAttributes(attributes: Record<string, string | number | boolean>): void {
-  if (!OTEL_ENABLED) return;
+  if (!OTEL_ENABLED || !trace) return;
   
-  const span = trace.getActiveSpan();
-  if (span) {
-    span.setAttributes(attributes);
+  try {
+    const span = trace.getActiveSpan();
+    if (span) {
+      span.setAttributes(attributes);
+    }
+  } catch (error) {
+    // Trace API not available or failed
   }
 }
 

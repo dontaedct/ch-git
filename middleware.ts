@@ -3,7 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import { securityHeadersMiddleware, applySecurityHeaders, logSecurityEvent } from './lib/security/headers';
 import { checkRateLimit, getRateLimitConfigForRoute, isIPBlocked } from './lib/rate-limit';
 import { logSecurityRequest } from './lib/security/logging-clean';
-import { Observing } from './lib/observability';
+import { UniversalObservability } from './lib/observability/edge-client';
 
 // Protected routes that require authentication
 const PROTECTED_ROUTES = ['/dashboard', '/consultation', '/questionnaire'];
@@ -15,7 +15,7 @@ export async function middleware(req: NextRequest) {
   const url = new URL(req.url);
   
   // Start request tracking for observability
-  const requestTracker = Observing.trackRequest(req.method, url.pathname);
+  const requestTracker = UniversalObservability.trackRequest(req.method, url.pathname);
   requestTracker.addMetadata({
     userAgent: req.headers.get('user-agent'),
     origin: req.headers.get('origin'),
@@ -28,20 +28,18 @@ export async function middleware(req: NextRequest) {
   // Block malicious requests immediately
   if (securityResult.shouldBlock) {
     // Record security event in observability system
-    Observing.recordSecurityEvent({
+    UniversalObservability.logSecurityEvent('security-block', 'warn', {
       eventType: 'malicious_payload',
       severity: 'high',
       ip: securityResult.context.ip,
       userAgent: securityResult.context.userAgent,
       route: securityResult.context.route,
-      details: {
-        method: req.method,
-        origin: req.headers.get('origin'),
-        referer: req.headers.get('referer'),
-        blockReason: securityResult.blockReason || 'security_policy_violation',
-        isBot: securityResult.context.isBot,
-        riskLevel: securityResult.context.riskLevel,
-      },
+      method: req.method,
+      origin: req.headers.get('origin'),
+      referer: req.headers.get('referer'),
+      blockReason: securityResult.blockReason || 'security_policy_violation',
+      isBot: securityResult.context.isBot,
+      riskLevel: securityResult.context.riskLevel,
     });
     
     logSecurityRequest(
@@ -93,7 +91,7 @@ export async function middleware(req: NextRequest) {
   // Check if IP is blocked
   if (isIPBlocked(securityResult.context.ip)) {
     // Record IP blocking event
-    Observing.recordSecurityEvent({
+    UniversalObservability.logSecurityEvent('security-block', 'warn', {
       eventType: 'ip_blocked',
       severity: 'high',
       ip: securityResult.context.ip,
@@ -295,19 +293,17 @@ export async function middleware(req: NextRequest) {
     
     if (!rateLimitResult.allowed) {
       // Record rate limit violation in observability system
-      Observing.recordRateLimitViolation(
-        securityResult.context.ip,
-        securityResult.context.route,
-        {
-          method: req.method,
-          violations: rateLimitResult.violations,
-          remaining: rateLimitResult.remaining,
-          resetTime: rateLimitResult.resetTime,
-          retryAfter: rateLimitResult.retryAfter,
-          riskLevel: rateLimitResult.riskLevel,
-          isBot: securityResult.context.isBot,
-        }
-      );
+      UniversalObservability.logSecurityEvent('rate-limit-violation', 'warn', {
+        ip: securityResult.context.ip,
+        route: securityResult.context.route,
+        method: req.method,
+        violations: rateLimitResult.violations,
+        remaining: rateLimitResult.remaining,
+        resetTime: rateLimitResult.resetTime,
+        retryAfter: rateLimitResult.retryAfter,
+        riskLevel: rateLimitResult.riskLevel,
+        isBot: securityResult.context.isBot,
+      });
       
       logSecurityRequest(
         'rate_limit_exceeded',

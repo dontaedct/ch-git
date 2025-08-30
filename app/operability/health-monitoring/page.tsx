@@ -374,11 +374,11 @@ export default function HealthMonitoringPage() {
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <span className="text-muted-foreground">Type</span>
-                        <p className="font-medium capitalize">{slo.type || 'Unknown'}</p>
+                        <p className="font-medium capitalize">{slo.type ?? 'Unknown'}</p>
                       </div>
                       <div>
                         <span className="text-muted-foreground">Impact</span>
-                        <p className="font-medium capitalize">{slo.businessImpact || 'Medium'}</p>
+                        <p className="font-medium capitalize">{slo.businessImpact ?? 'Medium'}</p>
                       </div>
                     </div>
                     

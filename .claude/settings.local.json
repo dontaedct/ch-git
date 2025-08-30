@@ -36,7 +36,13 @@
       "Bash(npm ls:*)",
       "Bash(npm info:*)",
       "Bash(gh api:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(grep:*)",
+      "Bash(git remote set-head:*)",
+      "Bash(git fetch:*)",
+      "Bash(gh pr list:*)",
+      "Bash(git remote prune:*)",
+      "Bash(git branch:*)"
     ],
     "deny": [],
     "ask": []

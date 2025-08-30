@@ -92,8 +92,8 @@ describe('CSV Utils', () => {
     })
 
     it('should transform data when transform function provided', () => {
-      const transformFunction = jest.fn((data) => 
-        data.map(row => ({ ...row, transformed: true }))
+      const transformFunction = jest.fn((data: any[]) => 
+        data.map((row: any) => ({ ...row, transformed: true }))
       )
       
       exportToCSV(mockData, mockSchema, {
@@ -146,7 +146,7 @@ describe('CSV Utils', () => {
 
     it('should handle parsing errors', async () => {
       const Papa = require('papaparse')
-      Papa.parse.mockImplementationOnce((csv, options) => {
+      Papa.parse.mockImplementationOnce((csv: any, options: any) => {
         setTimeout(() => options.complete({
           data: [],
           errors: [{ message: 'Parse error' }]
@@ -162,7 +162,7 @@ describe('CSV Utils', () => {
       const Papa = require('papaparse')
       let transformHeaderFn: ((header: string) => string) | undefined
 
-      Papa.parse.mockImplementationOnce((csv, options) => {
+      Papa.parse.mockImplementationOnce((csv: any, options: any) => {
         transformHeaderFn = options.transformHeader
         setTimeout(() => options.complete({ data: [], errors: [] }), 0)
       })
@@ -181,7 +181,7 @@ describe('CSV Utils', () => {
       const Papa = require('papaparse')
       let transformFn: ((value: string, field: string) => any) | undefined
 
-      Papa.parse.mockImplementationOnce((csv, options) => {
+      Papa.parse.mockImplementationOnce((csv: any, options: any) => {
         transformFn = options.transform
         setTimeout(() => options.complete({ data: [], errors: [] }), 0)
       })

@@ -50,7 +50,7 @@ export function isAllowedForTier(v: UrlValidation, allowedDomains?: string[]): b
 
   if (tier === 'pro') {
     const domains = (allowedDomains && allowedDomains.length > 0) ? allowedDomains : DEFAULT_PRO_ALLOWED
-    return domains.some(d => v.hostname === d || v.hostname.endsWith(`.${d}`))
+    return domains.some(d => v.hostname === d || (v.hostname && v.hostname.endsWith(`.${d}`)))
   }
 
   // advanced: any HTTPS hostname allowed

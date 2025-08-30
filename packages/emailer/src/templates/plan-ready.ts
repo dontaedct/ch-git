@@ -1,4 +1,4 @@
-export function renderPlanReady(args: { weekStartISO: string; viewUrl?: string }) {
+export function renderPlanReady(args: { weekStartISO: string; viewUrl?: string }): { subject: string; html: string } {
   const day = new Date(args.weekStartISO).toLocaleDateString()
   const subject = 'Your plan is ready'
   const html = `

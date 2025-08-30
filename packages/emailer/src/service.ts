@@ -24,10 +24,18 @@ async function doSend(args: { to: string; subject: string; html: string; apiKey?
   if (!apiKey || !sender) return { ok: true, skipped: true }
 
   try {
-    const provider = args.provider ?? new Resend(apiKey)
-    const res = await provider.send({ from: sender, to: args.to, subject: args.subject, html: args.html })
-    if ((res as any)?.error) return { ok: false, code: 'RESEND_ERROR', message: String((res as any).error) }
-    return { ok: true, id: (res as any)?.id }
+    if (args.provider) {
+      // Use custom provider
+      const res = await args.provider.send({ from: sender, to: args.to, subject: args.subject, html: args.html })
+      if (res.error) return { ok: false, code: 'PROVIDER_ERROR', message: String(res.error) }
+      return { ok: true, id: res.id }
+    } else {
+      // Use Resend client
+      const resend = new Resend(apiKey)
+      const res = await resend.emails.send({ from: sender, to: args.to, subject: args.subject, html: args.html })
+      if ((res as any)?.error) return { ok: false, code: 'RESEND_ERROR', message: String((res as any).error) }
+      return { ok: true, id: (res as any)?.id }
+    }
   } catch (e: any) {
     return { ok: false, code: 'SEND_FAILED', message: e?.message ?? 'send failed' }
   }

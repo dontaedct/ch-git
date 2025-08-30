@@ -2,7 +2,7 @@ function fmtWhen(iso: string) {
   return new Date(iso).toLocaleString()
 }
 
-export function renderInvite(args: { session: { title: string; starts_at: string; location?: string }; stripe_link?: string }) {
+export function renderInvite(args: { session: { title: string; starts_at: string; location?: string }; stripe_link?: string }): { subject: string; html: string } {
   const when = fmtWhen(args.session.starts_at)
   const subject = `You're invited: ${args.session.title}`
   const html = `

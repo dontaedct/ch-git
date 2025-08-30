@@ -2,7 +2,7 @@ function fmtWhen(iso: string) {
   return new Date(iso).toLocaleString()
 }
 
-export function renderConfirmation(args: { session: { title: string; starts_at: string; location?: string } }) {
+export function renderConfirmation(args: { session: { title: string; starts_at: string; location?: string } }): { subject: string; html: string } {
   const when = fmtWhen(args.session.starts_at)
   const subject = `Confirmed: ${args.session.title}`
   const html = `

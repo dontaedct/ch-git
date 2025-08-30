@@ -143,7 +143,7 @@ export function parseCSV(csvText: string, schema: FormTableCsvSchema): Promise<a
           resolve(results.data as any[])
         }
       },
-      error: (error) => {
+      error: (error: any) => {
         reject(error)
       }
     })

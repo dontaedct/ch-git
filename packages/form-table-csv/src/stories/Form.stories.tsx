@@ -31,7 +31,7 @@ type Story = StoryObj<typeof FormComponent>
 export const ContactForm: Story = {
   args: {
     schema: createContactFormSchema(),
-    onSubmit: action('form-submitted'),
+    onSubmit: async (data) => { action('form-submitted')(data) },
     onReset: action('form-reset'),
     submitText: 'Send Message',
     resetText: 'Clear Form',
@@ -51,7 +51,7 @@ export const ContactForm: Story = {
 export const EventRegistration: Story = {
   args: {
     schema: createEventRegistrationSchema(),
-    onSubmit: action('registration-submitted'),
+    onSubmit: async (data) => { action('registration-submitted')(data) },
     onReset: action('registration-reset'),
     submitText: 'Register Now',
     resetText: 'Reset',
@@ -72,7 +72,7 @@ export const EventRegistration: Story = {
 export const GridLayout: Story = {
   args: {
     schema: createContactFormSchema(),
-    onSubmit: action('form-submitted'),
+    onSubmit: async (data) => { action('form-submitted')(data) },
     layout: 'grid',
     gridCols: 2,
     submitText: 'Submit',
@@ -91,7 +91,7 @@ export const GridLayout: Story = {
 export const DisabledForm: Story = {
   args: {
     schema: createContactFormSchema(),
-    onSubmit: action('form-submitted'),
+    onSubmit: async (data) => { action('form-submitted')(data) },
     disabled: true,
     submitText: 'Processing...',
     className: 'w-full max-w-2xl'
@@ -190,7 +190,7 @@ export const CustomFieldTypes: Story = {
         }
       ]
     }),
-    onSubmit: action('custom-form-submitted'),
+    onSubmit: async (data) => { action('custom-form-submitted')(data) },
     layout: 'grid',
     gridCols: 2,
     className: 'w-full max-w-6xl'
@@ -244,7 +244,7 @@ export const WithDefaultValues: Story = {
         }
       ]
     }),
-    onSubmit: action('prefilled-form-submitted'),
+    onSubmit: async (data) => { action('prefilled-form-submitted')(data) },
     className: 'w-full max-w-2xl'
   },
   parameters: {
@@ -303,7 +303,7 @@ export const CompactLayout: Story = {
         }
       ]
     }),
-    onSubmit: action('compact-form-submitted'),
+    onSubmit: async (data) => { action('compact-form-submitted')(data) },
     submitText: 'Send',
     showReset: false,
     className: 'w-full max-w-md'

@@ -33,7 +33,7 @@ describe('Config Validation Tests', () => {
 
     it('should reject missing public key', () => {
       const config = { ...validConfig };
-      delete config.publicKey;
+      delete (config as any).publicKey;
       
       const result = validateStripeConfig(config);
       
@@ -51,7 +51,7 @@ describe('Config Validation Tests', () => {
 
     it('should reject missing secret key', () => {
       const config = { ...validConfig };
-      delete config.secretKey;
+      delete (config as any).secretKey;
       
       const result = validateStripeConfig(config);
       
@@ -106,7 +106,7 @@ describe('Config Validation Tests', () => {
 
     it('should warn about production keys in development', () => {
       const originalEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'development';
+      (process.env as any).NODE_ENV = 'development';
       
       const config = {
         ...validConfig,
@@ -118,14 +118,14 @@ describe('Config Validation Tests', () => {
       
       expect(result.warnings).toContain('Using production Stripe keys in non-production environment');
       
-      process.env.NODE_ENV = originalEnv;
+      (process.env as any).NODE_ENV = originalEnv;
     });
   });
 
   describe('Webhook Configuration', () => {
     it('should warn about missing webhook secret', () => {
       const config = { ...validConfig };
-      delete config.webhookSecret;
+      delete (config as any).webhookSecret;
       
       const result = validateStripeConfig(config);
       

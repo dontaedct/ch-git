@@ -1,4 +1,4 @@
-export function renderCheckInReminder(args: { link?: string }) {
+export function renderCheckInReminder(args: { link?: string }): { subject: string; html: string } {
   const subject = 'Please check in'
   const html = `
     <h2>Quick check-in</h2>

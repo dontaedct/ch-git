@@ -157,7 +157,7 @@ describe('FormComponent', () => {
 
   it('should show loading state during submission', async () => {
     const user = userEvent.setup()
-    const slowSubmit = jest.fn(() => new Promise(resolve => setTimeout(resolve, 100)))
+    const slowSubmit = jest.fn(() => new Promise<void>(resolve => setTimeout(resolve, 100)))
     
     render(
       <FormComponent

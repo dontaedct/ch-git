@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/38</span>
+                <span class='fraction'>0/41</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/25</span>
+                <span class='fraction'>0/27</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/38</span>
+                <span class='fraction'>0/41</span>
             </div>
         
             
@@ -226,7 +226,10 @@
 <a name='L161'></a><a href='#L161'>161</a>
 <a name='L162'></a><a href='#L162'>162</a>
 <a name='L163'></a><a href='#L163'>163</a>
-<a name='L164'></a><a href='#L164'>164</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L164'></a><a href='#L164'>164</a>
+<a name='L165'></a><a href='#L165'>165</a>
+<a name='L166'></a><a href='#L166'>166</a>
+<a name='L167'></a><a href='#L167'>167</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -237,10 +240,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -287,7 +288,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -318,14 +318,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -337,6 +329,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -345,6 +345,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -400,10 +406,8 @@ import { readFileSync } from <span class="cstat-no" title="statement not covered
 import { join } from <span class="cstat-no" title="statement not covered" >'path';</span>
 &nbsp;
 // Safety guard: only import OpenAI if available
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let OpenAI: any = <span class="cstat-no" title="statement not covered" >null;</span>
 <span class="cstat-no" title="statement not covered" >try {</span>
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
 <span class="cstat-no" title="statement not covered" >  OpenAI = require('openai');</span>
 } catch {
 <span class="cstat-no" title="statement not covered" >  console.warn('OpenAI SDK not available, provider will use mock mode');</span>
@@ -448,7 +452,6 @@ export interface OpenAIResponse {
 }
 &nbsp;
 export class <span class="cstat-no" title="statement not covered" >OpenAIProvider {</span>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private client: any;
   private config: OpenAIConfig;
   private <span class="cstat-no" title="statement not covered" >universalHeader: string | null = null;</span>
@@ -509,14 +512,20 @@ export class <span class="cstat-no" title="statement not covered" >OpenAIProvide
       
       const userMessage = <span class="cstat-no" title="statement not covered" >`Task: ${taskPrompt}\n\nInput: ${JSON.stringify(input, null, 2)}`;</span>
       
+      // Validate required environment variables
+      const model = <span class="cstat-no" title="statement not covered" >process.env.AI_MODEL;</span>
+<span class="cstat-no" title="statement not covered" >      if (!model) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('AI_MODEL environment variable is required');</span>
+      }
+&nbsp;
       const response = <span class="cstat-no" title="statement not covered" >await this.chat({</span>
-        model: process.env.AI_MODEL ?? 'gpt-4o-mini',
+        model,
         messages: [
           { role: 'system', content: systemMessage },
           { role: 'user', content: userMessage }
         ],
-        temperature: opts?.temperature ?? Number(process.env.AI_TEMPERATURE) ?? 0.2,
-        max_tokens: opts?.maxTokens ?? Number(process.env.AI_MAX_TOKENS) ?? 4000,
+        temperature: opts?.temperature ?? Number(process.env.AI_TEMPERATURE || '0.2'),
+        max_tokens: opts?.maxTokens ?? Number(process.env.AI_MAX_TOKENS || '4000'),
         response_format: { type: 'json_object' }
       });
       
@@ -559,7 +568,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-27T20:17:47.716Z
+                at 2025-08-30T15:13:50.860Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

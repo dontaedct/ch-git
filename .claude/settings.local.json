@@ -31,7 +31,19 @@
       "Bash(gh run view:*)",
       "Read(C:\\Users\\Dontae-PC\\Downloads/**)",
       "Bash(gh run list:*)",
-      "Read(C:\\Users\\Dontae-PC\\Downloads/**)"
+      "Read(C:\\Users\\Dontae-PC\\Downloads/**)",
+      "Bash(npm audit:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm info:*)",
+      "Bash(gh api:*)",
+      "Bash(npx tsx:*)",
+      "Bash(grep:*)",
+      "Bash(git remote set-head:*)",
+      "Bash(git fetch:*)",
+      "Bash(gh pr list:*)",
+      "Bash(git remote prune:*)",
+      "Bash(git branch:*)",
+      "Bash(gh repo view:*)"
     ],
     "deny": [],
     "ask": []

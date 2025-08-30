@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/76</span>
+                <span class='fraction'>0/82</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/51</span>
+                <span class='fraction'>0/57</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/75</span>
+                <span class='fraction'>0/81</span>
             </div>
         
             
@@ -322,7 +322,18 @@
 <a name='L257'></a><a href='#L257'>257</a>
 <a name='L258'></a><a href='#L258'>258</a>
 <a name='L259'></a><a href='#L259'>259</a>
-<a name='L260'></a><a href='#L260'>260</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a>
+<a name='L263'></a><a href='#L263'>263</a>
+<a name='L264'></a><a href='#L264'>264</a>
+<a name='L265'></a><a href='#L265'>265</a>
+<a name='L266'></a><a href='#L266'>266</a>
+<a name='L267'></a><a href='#L267'>267</a>
+<a name='L268'></a><a href='#L268'>268</a>
+<a name='L269'></a><a href='#L269'>269</a>
+<a name='L270'></a><a href='#L270'>270</a>
+<a name='L271'></a><a href='#L271'>271</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -420,6 +431,17 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -614,12 +636,12 @@ const CriticalServerEnvSchema = <span class="cstat-no" title="statement not cove
 &nbsp;
 /**
  * Production-specific environment variables
- * These are required only in production environments
+ * These are recommended but optional in production - will warn if missing
  */
 const ProductionEnvSchema = <span class="cstat-no" title="statement not covered" >z.object({</span>
-  SENTRY_DSN: z.string().url("Sentry DSN required in production"),
-  RESEND_API_KEY: z.string().min(1, "Resend API key required in production"),
-  RESEND_FROM: z.string().email("Valid Resend FROM email required in production"),
+  SENTRY_DSN: z.string().url().optional(),
+  RESEND_API_KEY: z.string().min(1).optional(),
+  RESEND_FROM: z.string().email().optional(),
 });
 &nbsp;
 /**
@@ -680,6 +702,17 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="fstat-no" title="function not covered" >          (e</span>rr) =&gt; <span class="cstat-no" title="statement not covered" >`[PRODUCTION] ${err.path.join(".")}: ${err.message}`</span>
         );
 <span class="cstat-no" title="statement not covered" >        errors.push(...productionErrors);</span>
+      }
+      
+      // Warn about missing optional production services
+<span class="cstat-no" title="statement not covered" >      if (!process.env.SENTRY_DSN) {</span>
+<span class="cstat-no" title="statement not covered" >        warnings.push("[PRODUCTION] SENTRY_DSN: Recommended for error tracking");</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (!process.env.RESEND_API_KEY) {</span>
+<span class="cstat-no" title="statement not covered" >        warnings.push("[PRODUCTION] RESEND_API_KEY: Recommended for email functionality");</span>
+      }
+<span class="cstat-no" title="statement not covered" >      if (!process.env.RESEND_FROM) {</span>
+<span class="cstat-no" title="statement not covered" >        warnings.push("[PRODUCTION] RESEND_FROM: Recommended for email functionality");</span>
       }
     }
     
@@ -847,7 +880,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-27T20:17:47.716Z
+                at 2025-08-30T15:13:50.860Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

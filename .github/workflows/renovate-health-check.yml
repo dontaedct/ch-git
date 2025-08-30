@@ -1,0 +1,270 @@
+name: Renovate Health Monitoring
+
+on:
+  pull_request:
+    branches: [main, wip/ts-errors-20250813-195912]
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'package-lock.json' 
+      - 'yarn.lock'
+      - 'pnpm-lock.yaml'
+  schedule:
+    # Run health checks daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  dependency-health-check:
+    name: Dependency Health Assessment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run dependency vulnerability scan
+        run: |
+          echo "=== Dependency Vulnerability Scan ===" 
+          npm audit --audit-level=moderate --json > vulnerability-report.json || true
+          npm audit --audit-level=moderate > vulnerability-report.txt || true
+          
+          # Count vulnerabilities by severity
+          CRITICAL=$(cat vulnerability-report.json | jq '.vulnerabilities | to_entries[] | select(.value.severity == "critical") | .key' | wc -l)
+          HIGH=$(cat vulnerability-report.json | jq '.vulnerabilities | to_entries[] | select(.value.severity == "high") | .key' | wc -l)
+          MODERATE=$(cat vulnerability-report.json | jq '.vulnerabilities | to_entries[] | select(.value.severity == "moderate") | .key' | wc -l)
+          
+          echo "CRITICAL_VULNS=$CRITICAL" >> $GITHUB_ENV
+          echo "HIGH_VULNS=$HIGH" >> $GITHUB_ENV  
+          echo "MODERATE_VULNS=$MODERATE" >> $GITHUB_ENV
+          
+          echo "Critical: $CRITICAL, High: $HIGH, Moderate: $MODERATE"
+
+      - name: Check for outdated packages
+        run: |
+          echo "=== Outdated Package Analysis ==="
+          npm outdated --json > outdated-report.json || true
+          npm outdated > outdated-report.txt || true
+          
+          # Count outdated packages by update type
+          MAJOR_UPDATES=$(cat outdated-report.json | jq 'keys | length')
+          echo "MAJOR_UPDATES=$MAJOR_UPDATES" >> $GITHUB_ENV
+          echo "Major updates available: $MAJOR_UPDATES"
+
+      - name: Analyze package health scores
+        run: |
+          echo "=== Package Health Analysis ==="
+          # Create health monitoring script
+          cat > health-check.js << 'EOF'
+          const fs = require('fs');
+          const https = require('https');
+          
+          function checkPackageHealth(packageName) {
+            return new Promise((resolve) => {
+              const url = `https://api.npms.io/v2/package/${encodeURIComponent(packageName)}`;
+              https.get(url, (res) => {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                  try {
+                    const parsed = JSON.parse(data);
+                    resolve({
+                      name: packageName,
+                      score: parsed.score?.final || 0,
+                      quality: parsed.score?.detail?.quality || 0,
+                      popularity: parsed.score?.detail?.popularity || 0,
+                      maintenance: parsed.score?.detail?.maintenance || 0
+                    });
+                  } catch {
+                    resolve({ name: packageName, score: 0, quality: 0, popularity: 0, maintenance: 0 });
+                  }
+                });
+              }).on('error', () => {
+                resolve({ name: packageName, score: 0, quality: 0, popularity: 0, maintenance: 0 });
+              });
+            });
+          }
+          
+          async function main() {
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+            
+            const results = [];
+            const packages = Object.keys(deps).slice(0, 10); // Limit to first 10 to avoid rate limits
+            
+            for (const packageName of packages) {
+              const health = await checkPackageHealth(packageName);
+              results.push(health);
+              await new Promise(resolve => setTimeout(resolve, 100)); // Rate limit
+            }
+            
+            const avgScore = results.reduce((sum, r) => sum + r.score, 0) / results.length;
+            const lowQualityPackages = results.filter(r => r.quality < 0.5);
+            
+            console.log('=== Health Summary ===');
+            console.log(`Average Package Score: ${avgScore.toFixed(2)}`);
+            console.log(`Low Quality Packages: ${lowQualityPackages.length}`);
+            
+            if (lowQualityPackages.length > 0) {
+              console.log('Low quality packages:', lowQualityPackages.map(p => p.name).join(', '));
+            }
+            
+            fs.writeFileSync('health-report.json', JSON.stringify({
+              averageScore: avgScore,
+              lowQualityCount: lowQualityPackages.length,
+              lowQualityPackages: lowQualityPackages,
+              allResults: results
+            }, null, 2));
+          }
+          
+          main().catch(console.error);
+          EOF
+          
+          node health-check.js || echo "Health check completed with warnings"
+
+      - name: Generate health report
+        run: |
+          echo "=== Dependency Health Report ===" > health-summary.md
+          echo "" >> health-summary.md
+          echo "**Generated:** $(date -u)" >> health-summary.md
+          echo "" >> health-summary.md
+          
+          echo "## Security Status" >> health-summary.md
+          echo "- Critical vulnerabilities: $CRITICAL_VULNS" >> health-summary.md
+          echo "- High vulnerabilities: $HIGH_VULNS" >> health-summary.md
+          echo "- Moderate vulnerabilities: $MODERATE_VULNS" >> health-summary.md
+          echo "" >> health-summary.md
+          
+          echo "## Update Status" >> health-summary.md
+          echo "- Major updates available: $MAJOR_UPDATES" >> health-summary.md
+          echo "" >> health-summary.md
+          
+          if [ -f "health-report.json" ]; then
+            AVG_SCORE=$(cat health-report.json | jq -r '.averageScore')
+            LOW_QUALITY=$(cat health-report.json | jq -r '.lowQualityCount')
+            echo "## Package Quality" >> health-summary.md
+            echo "- Average package score: $AVG_SCORE/1.0" >> health-summary.md
+            echo "- Low quality packages: $LOW_QUALITY" >> health-summary.md
+            echo "" >> health-summary.md
+          fi
+          
+          echo "## Recommendations" >> health-summary.md
+          if [ "$CRITICAL_VULNS" -gt "0" ]; then
+            echo "- ⚠️ **URGENT:** Address $CRITICAL_VULNS critical vulnerabilities immediately" >> health-summary.md
+          fi
+          if [ "$HIGH_VULNS" -gt "0" ]; then
+            echo "- 🔴 **HIGH PRIORITY:** Address $HIGH_VULNS high severity vulnerabilities" >> health-summary.md
+          fi
+          if [ "$MAJOR_UPDATES" -gt "10" ]; then
+            echo "- 📦 Consider reviewing major updates (${MAJOR_UPDATES} available)" >> health-summary.md
+          fi
+          echo "- ✅ Enable Renovate bot for automated dependency management" >> health-summary.md
+
+      - name: Upload health artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-health-reports
+          path: |
+            health-summary.md
+            vulnerability-report.*
+            outdated-report.*
+            health-report.json
+          retention-days: 30
+
+      - name: Comment on PR (if PR context)
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (fs.existsSync('health-summary.md')) {
+              const healthReport = fs.readFileSync('health-summary.md', 'utf8');
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '## 🔍 Dependency Health Check\n\n' + healthReport
+              });
+            }
+
+      - name: Fail on critical vulnerabilities
+        if: env.CRITICAL_VULNS > 0
+        run: |
+          echo "❌ Build failed due to $CRITICAL_VULNS critical vulnerabilities"
+          echo "Please address these vulnerabilities before proceeding"
+          exit 1
+
+  renovate-monitoring:
+    name: Renovate Bot Monitoring
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check Renovate PR status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Check for open Renovate PRs
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: 'renovate/'
+            });
+            
+            console.log(`Found ${prs.length} open Renovate PRs`);
+            
+            // Check for stale PRs (older than 7 days)
+            const weekAgo = new Date();
+            weekAgo.setDate(weekAgo.getDate() - 7);
+            
+            const stalePrs = prs.filter(pr => new Date(pr.created_at) < weekAgo);
+            
+            if (stalePrs.length > 0) {
+              console.log(`Found ${stalePrs.length} stale Renovate PRs`);
+              
+              // Create issue for stale PRs
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '🤖 Stale Renovate PRs detected',
+                body: `## Stale Renovate PRs\n\nThe following Renovate PRs have been open for more than 7 days:\n\n${stalePrs.map(pr => `- [${pr.title}](${pr.html_url})`).join('\n')}\n\nPlease review and merge or close these PRs.`,
+                labels: ['renovate', 'maintenance', 'stale']
+              });
+            }
+
+      - name: Health status summary
+        run: |
+          echo "✅ Renovate health monitoring completed"
+          echo "📊 Check the Actions tab for detailed reports"
+          echo "🔄 Next scheduled run: Tomorrow at 6 AM UTC"

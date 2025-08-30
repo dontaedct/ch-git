@@ -1,0 +1,455 @@
+name: SLO Guardrails
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main ]
+
+env:
+  # SLO thresholds
+  MAX_BUILD_TIME_SECONDS: 300  # 5 minutes
+  MAX_BUNDLE_SIZE_MB: 10       # 10MB
+  MIN_PERFORMANCE_SCORE: 85    # Lighthouse performance
+  MAX_RESPONSE_TIME_MS: 2000   # API response time
+  MIN_AVAILABILITY_PERCENT: 99 # Service availability
+  MAX_ERROR_RATE_PERCENT: 1    # Error rate threshold
+
+jobs:
+  # Performance budget enforcement
+  performance-budget:
+    runs-on: ubuntu-latest
+    name: Performance Budget Check
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Need previous commit for comparison
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build and measure performance
+        id: build-metrics
+        run: |
+          echo "🏗️ Building application with performance monitoring..."
+          START_TIME=$(date +%s)
+          
+          # Build with size analysis
+          npm run build 2>&1 | tee build.log
+          
+          END_TIME=$(date +%s)
+          BUILD_TIME=$((END_TIME - START_TIME))
+          
+          echo "build_time=${BUILD_TIME}" >> $GITHUB_OUTPUT
+          
+          # Measure bundle size
+          if [ -d ".next" ]; then
+            BUNDLE_SIZE_BYTES=$(du -sb .next | cut -f1)
+            BUNDLE_SIZE_MB=$((BUNDLE_SIZE_BYTES / 1024 / 1024))
+            echo "bundle_size_mb=${BUNDLE_SIZE_MB}" >> $GITHUB_OUTPUT
+            
+            # Detailed bundle analysis
+            echo "📊 Bundle Size Analysis:"
+            du -sh .next/
+            find .next -name "*.js" -type f -exec du -h {} + | sort -hr | head -10
+          else
+            echo "❌ Build failed - no .next directory found"
+            exit 1
+          fi
+      
+      - name: Check build time SLO
+        run: |
+          BUILD_TIME=${{ steps.build-metrics.outputs.build_time }}
+          echo "⏱️ Build time: ${BUILD_TIME}s (limit: ${MAX_BUILD_TIME_SECONDS}s)"
+          
+          if [ ${BUILD_TIME} -gt ${MAX_BUILD_TIME_SECONDS} ]; then
+            echo "❌ SLO BREACH: Build time ${BUILD_TIME}s exceeds limit ${MAX_BUILD_TIME_SECONDS}s"
+            echo "🔧 Recommended actions:"
+            echo "  - Review recent changes for build performance impact"
+            echo "  - Check for large dependency additions"
+            echo "  - Consider build optimization strategies"
+            exit 1
+          else
+            echo "✅ Build time SLO satisfied"
+          fi
+      
+      - name: Check bundle size SLO
+        run: |
+          BUNDLE_SIZE=${{ steps.build-metrics.outputs.bundle_size_mb }}
+          echo "📦 Bundle size: ${BUNDLE_SIZE}MB (limit: ${MAX_BUNDLE_SIZE_MB}MB)"
+          
+          if [ ${BUNDLE_SIZE} -gt ${MAX_BUNDLE_SIZE_MB} ]; then
+            echo "❌ SLO BREACH: Bundle size ${BUNDLE_SIZE}MB exceeds limit ${MAX_BUNDLE_SIZE_MB}MB"
+            echo "🔧 Recommended actions:"
+            echo "  - Review large dependencies and consider alternatives"
+            echo "  - Implement code splitting and lazy loading"
+            echo "  - Remove unused dependencies and dead code"
+            exit 1
+          else
+            echo "✅ Bundle size SLO satisfied"
+          fi
+
+  # Response time and API performance tests
+  api-performance:
+    runs-on: ubuntu-latest
+    name: API Performance Check
+    services:
+      # Mock external services for performance testing
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Start application server
+        run: |
+          npm start &
+          APP_PID=$!
+          echo "APP_PID=${APP_PID}" >> $GITHUB_ENV
+          
+          # Wait for server to be ready
+          timeout 60s bash -c 'until curl -f http://localhost:3000/api/health; do sleep 2; done'
+        env:
+          DATABASE_URL: postgresql://postgres:test@localhost:5432/testdb
+      
+      - name: Run API performance tests
+        id: api-perf
+        run: |
+          echo "🚀 Testing API response times..."
+          
+          # Test critical endpoints
+          ENDPOINTS=(
+            "/api/health"
+            "/api/ready"
+            "/api/metrics"
+            "/api/slo"
+          )
+          
+          TOTAL_RESPONSE_TIME=0
+          ENDPOINT_COUNT=${#ENDPOINTS[@]}
+          MAX_RESPONSE_TIME=0
+          FAILED_TESTS=0
+          
+          for endpoint in "${ENDPOINTS[@]}"; do
+            echo "Testing ${endpoint}..."
+            
+            # Measure response time using curl
+            RESPONSE_TIME=$(curl -o /dev/null -s -w "%{time_total}" "http://localhost:3000${endpoint}")
+            RESPONSE_TIME_MS=$(echo "${RESPONSE_TIME} * 1000" | bc)
+            
+            echo "  Response time: ${RESPONSE_TIME_MS}ms"
+            
+            # Check if response time exceeds threshold
+            if (( $(echo "${RESPONSE_TIME_MS} > ${MAX_RESPONSE_TIME_MS}" | bc -l) )); then
+              echo "  ❌ SLOW: ${endpoint} took ${RESPONSE_TIME_MS}ms (limit: ${MAX_RESPONSE_TIME_MS}ms)"
+              FAILED_TESTS=$((FAILED_TESTS + 1))
+            else
+              echo "  ✅ OK: ${endpoint} response time acceptable"
+            fi
+            
+            # Track maximum response time
+            if (( $(echo "${RESPONSE_TIME_MS} > ${MAX_RESPONSE_TIME}" | bc -l) )); then
+              MAX_RESPONSE_TIME=${RESPONSE_TIME_MS}
+            fi
+            
+            TOTAL_RESPONSE_TIME=$(echo "${TOTAL_RESPONSE_TIME} + ${RESPONSE_TIME_MS}" | bc)
+          done
+          
+          # Calculate average response time
+          AVG_RESPONSE_TIME=$(echo "scale=2; ${TOTAL_RESPONSE_TIME} / ${ENDPOINT_COUNT}" | bc)
+          
+          echo "avg_response_time=${AVG_RESPONSE_TIME}" >> $GITHUB_OUTPUT
+          echo "max_response_time=${MAX_RESPONSE_TIME}" >> $GITHUB_OUTPUT
+          echo "failed_tests=${FAILED_TESTS}" >> $GITHUB_OUTPUT
+          
+          echo "📊 Performance Summary:"
+          echo "  Average response time: ${AVG_RESPONSE_TIME}ms"
+          echo "  Maximum response time: ${MAX_RESPONSE_TIME}ms"
+          echo "  Failed tests: ${FAILED_TESTS}/${ENDPOINT_COUNT}"
+      
+      - name: Check API performance SLO
+        run: |
+          MAX_RESPONSE=${{ steps.api-perf.outputs.max_response_time }}
+          AVG_RESPONSE=${{ steps.api-perf.outputs.avg_response_time }}
+          FAILED_TESTS=${{ steps.api-perf.outputs.failed_tests }}
+          
+          echo "🎯 API Performance SLO Check"
+          echo "  Maximum response time: ${MAX_RESPONSE}ms (limit: ${MAX_RESPONSE_TIME_MS}ms)"
+          echo "  Average response time: ${AVG_RESPONSE}ms"
+          
+          if [ ${FAILED_TESTS} -gt 0 ]; then
+            echo "❌ SLO BREACH: ${FAILED_TESTS} endpoints exceeded response time limit"
+            echo "🔧 Recommended actions:"
+            echo "  - Profile slow endpoints for database queries"
+            echo "  - Check for N+1 query problems"
+            echo "  - Review middleware and authentication overhead"
+            echo "  - Consider caching strategies"
+            exit 1
+          else
+            echo "✅ API response time SLO satisfied"
+          fi
+      
+      - name: Cleanup
+        if: always()
+        run: |
+          if [ -n "$APP_PID" ]; then
+            kill $APP_PID || true
+          fi
+
+  # Error rate and reliability tests
+  reliability-check:
+    runs-on: ubuntu-latest
+    name: Reliability & Error Rate Check
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run reliability tests
+        id: reliability
+        run: |
+          echo "🔍 Running reliability tests..."
+          
+          # Run tests and capture results
+          npm test -- --verbose --coverage 2>&1 | tee test-results.log
+          
+          # Extract test statistics
+          TOTAL_TESTS=$(grep -o "Tests:.*passed" test-results.log | grep -o "[0-9]* passed" | grep -o "[0-9]*" || echo "0")
+          FAILED_TESTS=$(grep -o "Tests:.*failed" test-results.log | grep -o "[0-9]* failed" | grep -o "[0-9]*" || echo "0")
+          
+          if [ "$FAILED_TESTS" = "" ]; then
+            FAILED_TESTS=0
+          fi
+          
+          if [ "$TOTAL_TESTS" = "" ]; then
+            TOTAL_TESTS=0
+          fi
+          
+          # Calculate error rate
+          if [ $TOTAL_TESTS -gt 0 ]; then
+            ERROR_RATE=$(echo "scale=2; ($FAILED_TESTS / $TOTAL_TESTS) * 100" | bc)
+          else
+            ERROR_RATE=0
+          fi
+          
+          echo "total_tests=${TOTAL_TESTS}" >> $GITHUB_OUTPUT
+          echo "failed_tests=${FAILED_TESTS}" >> $GITHUB_OUTPUT
+          echo "error_rate=${ERROR_RATE}" >> $GITHUB_OUTPUT
+          
+          echo "📊 Test Results:"
+          echo "  Total tests: ${TOTAL_TESTS}"
+          echo "  Failed tests: ${FAILED_TESTS}"
+          echo "  Error rate: ${ERROR_RATE}%"
+      
+      - name: Check error rate SLO
+        run: |
+          ERROR_RATE=${{ steps.reliability.outputs.error_rate }}
+          FAILED_TESTS=${{ steps.reliability.outputs.failed_tests }}
+          
+          echo "🎯 Error Rate SLO Check"
+          echo "  Current error rate: ${ERROR_RATE}% (limit: ${MAX_ERROR_RATE_PERCENT}%)"
+          
+          if (( $(echo "${ERROR_RATE} > ${MAX_ERROR_RATE_PERCENT}" | bc -l) )); then
+            echo "❌ SLO BREACH: Error rate ${ERROR_RATE}% exceeds limit ${MAX_ERROR_RATE_PERCENT}%"
+            echo "🔧 Recommended actions:"
+            echo "  - Review failing tests and fix underlying issues"
+            echo "  - Check for flaky tests and improve test stability"
+            echo "  - Verify test environment setup and dependencies"
+            exit 1
+          else
+            echo "✅ Error rate SLO satisfied"
+          fi
+
+  # Security and compliance guardrails
+  security-compliance:
+    runs-on: ubuntu-latest
+    name: Security & Compliance Check
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Security vulnerability scan
+        id: security-scan
+        run: |
+          echo "🔒 Running security vulnerability scan..."
+          
+          # Run npm audit and capture results
+          npm audit --audit-level=moderate --json > audit-results.json || true
+          
+          # Parse results
+          VULNERABILITIES=$(cat audit-results.json | jq '.metadata.vulnerabilities | to_entries | map(.value) | add // 0')
+          HIGH_VULNS=$(cat audit-results.json | jq '.metadata.vulnerabilities.high // 0')
+          CRITICAL_VULNS=$(cat audit-results.json | jq '.metadata.vulnerabilities.critical // 0')
+          
+          echo "vulnerabilities=${VULNERABILITIES}" >> $GITHUB_OUTPUT
+          echo "high_vulnerabilities=${HIGH_VULNS}" >> $GITHUB_OUTPUT
+          echo "critical_vulnerabilities=${CRITICAL_VULNS}" >> $GITHUB_OUTPUT
+          
+          echo "📊 Security Scan Results:"
+          echo "  Total vulnerabilities: ${VULNERABILITIES}"
+          echo "  High severity: ${HIGH_VULNS}"
+          echo "  Critical severity: ${CRITICAL_VULNS}"
+      
+      - name: Check security compliance
+        run: |
+          CRITICAL_VULNS=${{ steps.security-scan.outputs.critical_vulnerabilities }}
+          HIGH_VULNS=${{ steps.security-scan.outputs.high_vulnerabilities }}
+          
+          echo "🛡️ Security Compliance Check"
+          echo "  Critical vulnerabilities: ${CRITICAL_VULNS}"
+          echo "  High vulnerabilities: ${HIGH_VULNS}"
+          
+          if [ ${CRITICAL_VULNS} -gt 0 ]; then
+            echo "❌ SECURITY BREACH: ${CRITICAL_VULNS} critical vulnerabilities found"
+            echo "🔧 Required actions:"
+            echo "  - Update vulnerable dependencies immediately"
+            echo "  - Review security advisory details"
+            echo "  - Consider temporary workarounds if updates unavailable"
+            exit 1
+          elif [ ${HIGH_VULNS} -gt 5 ]; then
+            echo "⚠️ WARNING: ${HIGH_VULNS} high severity vulnerabilities found"
+            echo "🔧 Recommended actions:"
+            echo "  - Plan updates for high severity vulnerabilities"
+            echo "  - Review and prioritize security fixes"
+            # Don't fail the build for high severity, but warn
+          else
+            echo "✅ Security compliance check passed"
+          fi
+
+  # SLO reporting and summary
+  slo-summary:
+    runs-on: ubuntu-latest
+    name: SLO Summary Report
+    needs: [performance-budget, api-performance, reliability-check, security-compliance]
+    if: always()
+    steps:
+      - name: Generate SLO compliance report
+        run: |
+          echo "# 🎯 SLO Compliance Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Performance Budget Results
+          if [ "${{ needs.performance-budget.result }}" == "success" ]; then
+            echo "✅ **Performance Budget**: PASSED" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Performance Budget**: FAILED" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # API Performance Results
+          if [ "${{ needs.api-performance.result }}" == "success" ]; then
+            echo "✅ **API Performance**: PASSED" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **API Performance**: FAILED" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Reliability Results
+          if [ "${{ needs.reliability-check.result }}" == "success" ]; then
+            echo "✅ **Reliability & Error Rate**: PASSED" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Reliability & Error Rate**: FAILED" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Security Results
+          if [ "${{ needs.security-compliance.result }}" == "success" ]; then
+            echo "✅ **Security & Compliance**: PASSED" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Security & Compliance**: FAILED" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 SLO Thresholds" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Time**: ≤ ${MAX_BUILD_TIME_SECONDS}s" >> $GITHUB_STEP_SUMMARY
+          echo "- **Bundle Size**: ≤ ${MAX_BUNDLE_SIZE_MB}MB" >> $GITHUB_STEP_SUMMARY
+          echo "- **API Response Time**: ≤ ${MAX_RESPONSE_TIME_MS}ms" >> $GITHUB_STEP_SUMMARY
+          echo "- **Error Rate**: ≤ ${MAX_ERROR_RATE_PERCENT}%" >> $GITHUB_STEP_SUMMARY
+          echo "- **Critical Vulnerabilities**: 0" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔗 Resources" >> $GITHUB_STEP_SUMMARY
+          echo "- [SLO Dashboard](https://your-domain.com/api/slo)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Performance Monitoring](https://your-domain.com/api/metrics)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Health Status](https://your-domain.com/api/health)" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Check overall SLO compliance
+        run: |
+          FAILED_JOBS=0
+          
+          if [ "${{ needs.performance-budget.result }}" != "success" ]; then
+            FAILED_JOBS=$((FAILED_JOBS + 1))
+          fi
+          
+          if [ "${{ needs.api-performance.result }}" != "success" ]; then
+            FAILED_JOBS=$((FAILED_JOBS + 1))
+          fi
+          
+          if [ "${{ needs.reliability-check.result }}" != "success" ]; then
+            FAILED_JOBS=$((FAILED_JOBS + 1))
+          fi
+          
+          if [ "${{ needs.security-compliance.result }}" != "success" ]; then
+            FAILED_JOBS=$((FAILED_JOBS + 1))
+          fi
+          
+          echo "📊 SLO Compliance Summary:"
+          echo "  Failed checks: ${FAILED_JOBS}/4"
+          
+          if [ ${FAILED_JOBS} -gt 0 ]; then
+            echo "❌ SLO COMPLIANCE FAILED: ${FAILED_JOBS} checks failed"
+            echo ""
+            echo "🚨 This indicates potential service degradation risks:"
+            echo "  - Performance regression may impact user experience"
+            echo "  - Reliability issues could affect service availability"
+            echo "  - Security vulnerabilities pose compliance risks"
+            echo ""
+            echo "🔧 Next steps:"
+            echo "  1. Review failed checks and address root causes"
+            echo "  2. Consider if changes should be reverted"
+            echo "  3. Update monitoring thresholds if needed"
+            echo "  4. Document any acceptable SLO exceptions"
+            exit 1
+          else
+            echo "✅ All SLO checks passed - ready for deployment"
+          fi

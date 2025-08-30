@@ -38,21 +38,23 @@ const nextConfig: NextConfig = {
     const isPreview = process.env.VERCEL_ENV === 'preview';
     const isProduction = process.env.NODE_ENV === 'production';
     
-    // Strict production CSP - no unsafe-inline/unsafe-eval
+    // Strict production CSP with reporting
     const productionCsp = [
       "default-src 'self'",
-      "script-src 'self' 'nonce-{NONCE}'",
-      "script-src-elem 'self' 'nonce-{NONCE}'",
-      "style-src 'self' 'nonce-{NONCE}'",
-      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in",
+      "script-src 'self' 'nonce-{NONCE}' https://js.stripe.com",
+      "script-src-elem 'self' 'nonce-{NONCE}' https://js.stripe.com",
+      "style-src 'self' 'nonce-{NONCE}' https://fonts.googleapis.com",
+      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://*.stripe.com",
       "media-src 'self' blob:",
       "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://api.stripe.com https://*.sentry.io wss://*.supabase.co",
-      "font-src 'self' data:",
+      "font-src 'self' data: https://fonts.gstatic.com",
+      "frame-src 'self' https://js.stripe.com https://hooks.stripe.com",
       "object-src 'none'",
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'none'",
-      "upgrade-insecure-requests"
+      "upgrade-insecure-requests",
+      "report-uri /api/security/csp-report"
     ].join("; ") + ";";
 
     // Preview CSP with report-only for learning

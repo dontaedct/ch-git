@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     const rateLimitResult = checkRateLimit(
       tenantId, 
       RATE_LIMITS.GUARDIAN_HEARTBEAT,
-      request.headers.get('x-forwarded-for') ?? undefined
+      { ip: request.headers.get('x-forwarded-for') ?? undefined }
     );
     
     if (!rateLimitResult.allowed) {

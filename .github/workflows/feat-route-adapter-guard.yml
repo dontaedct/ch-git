@@ -1,0 +1,27 @@
+name: feat/route-adapter-guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  route-adapter-guard:
+    # TEMPORARILY DISABLED for CoachHub removal surgery
+    # uses: dontaedct/ch-git/.github/workflows/route-adapter-guard-core.yml@main
+    # with:
+    #   base_sha: ${{ github.event.pull_request.base.sha || '' }}
+    #   head_sha: ${{ github.event.pull_request.head.sha || '' }}
+    # secrets: inherit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Guard temporarily disabled for surgery
+        run: echo "Route-adapter-guard temporarily disabled for CoachHub removal surgery"

@@ -32,7 +32,6 @@ export async function exponentialBackoff<T>(
     jitter: true
   };
   
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _finalConfig = { ...defaultConfig, ...config };
   
   // Stubbed implementation

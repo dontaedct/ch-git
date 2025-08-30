@@ -1,5 +1,5 @@
 /**
- * 🧠 MIT HERO SYSTEM - AI Feature Flags
+ * 🧠 AI SYSTEM - AI Feature Flags
  * 
  * Centralized AI feature flag management
  * Deny-by-default until explicitly enabled

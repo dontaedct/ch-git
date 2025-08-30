@@ -1,0 +1,106 @@
+# Step 01 - Baseline Establishment CI Checks
+
+## Required Commands to Run
+
+### 1. Repository Health Check
+```bash
+npm run tool:doctor
+```
+**Expected Output**: Health check report with any issues identified
+**Success Criteria**: No critical issues found
+
+### 2. Auto-Fix Test
+```bash
+npm run tool:doctor:fix
+```
+**Expected Output**: Automated fixes applied (if any issues found)
+**Success Criteria**: Issues resolved or no issues to fix
+
+### 3. Safe Mode Test
+```bash
+npm run tool:doctor:safe
+```
+**Expected Output**: Health check with 60-second timeout
+**Success Criteria**: Completes within timeout or reports timeout
+
+### 4. Doctor Test
+```bash
+npm run tool:doctor:test
+```
+**Expected Output**: Test results for doctor functionality
+**Success Criteria**: All tests pass
+
+### 5. Reports Verification
+```bash
+ls -la reports/
+```
+**Expected Output**: List of JSON report files
+**Success Criteria**: Reports directory exists with baseline metrics
+
+### 6. Rename Tools Test
+```bash
+npm run tool:rename:symbol -- --help
+```
+**Expected Output**: Help text for rename tool
+**Success Criteria**: Tool responds with usage information
+
+### 7. Policy Enforcement Test
+```bash
+npm run tool:policy:enforce
+```
+**Expected Output**: Policy enforcement results
+**Success Criteria**: Policies enforced or no violations found
+
+### 8. Development Management Test
+```bash
+npm run tool:dev:status
+```
+**Expected Output**: Development environment status
+**Success Criteria**: Status report generated
+
+## CI Pipeline Integration
+
+### Package.json Scripts
+- `tool:doctor` - Health monitoring
+- `tool:doctor:fix` - Auto-fix issues
+- `tool:doctor:safe` - Safe mode
+- `tool:doctor:test` - Test functionality
+- `tool:rename:symbol` - Symbol renaming
+- `tool:rename:import` - Import renaming
+- `tool:rename:route` - Route renaming
+- `tool:rename:table` - Table renaming
+- `tool:policy:enforce` - Policy enforcement
+- `tool:dev:status` - Dev status
+- `tool:dev:kill` - Kill dev processes
+- `tool:dev:clean` - Clean dev artifacts
+- `tool:dev:ports` - Port management
+
+### Expected CI Results
+- All health checks pass
+- No critical repository issues
+- Baseline metrics established
+- Tooling functionality verified
+
+## Manual Verification Steps
+
+1. **Health Monitoring**: Verify doctor script runs without errors
+2. **Auto-Fix**: Test automatic issue resolution
+3. **Reports**: Confirm baseline metrics are generated
+4. **Tooling**: Verify all rename and management tools work
+5. **Policy**: Confirm policy enforcement is functional
+
+## Success Criteria
+
+- ✅ Repository health monitoring operational
+- ✅ Auto-fix capabilities working
+- ✅ Baseline metrics established
+- ✅ Foundational tooling functional
+- ✅ Policy enforcement active
+- ✅ Development management tools working
+
+## Notes
+
+- This is a documentation-only PR
+- No application behavior changes
+- Focus on establishing baseline monitoring
+- Foundation for subsequent hardening steps

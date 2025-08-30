@@ -48,8 +48,8 @@ backupTest.on('close', (code) => {
     }
 });
 
-// Test 3: MIT Hero Emergency Recovery
-console.log('\n3️⃣ Testing MIT Hero Emergency Recovery...');
+// Test 3: OSS Hero Emergency Recovery
+console.log('\n3️⃣ Testing OSS Hero Emergency Recovery...');
 const heroTest = spawn('npm', ['run', 'hero:unified:emergency'], { 
     stdio: 'pipe', 
     shell: true 
@@ -58,13 +58,13 @@ const heroTest = spawn('npm', ['run', 'hero:unified:emergency'], {
 heroTest.stdout.on('data', (data) => {
     const output = data.toString();
     if (output.includes('✅ Emergency recovery completed')) {
-        console.log('✅ MIT Hero Emergency Recovery: PASSED');
+        console.log('✅ OSS Hero Emergency Recovery: PASSED');
     }
 });
 
 heroTest.on('close', (code) => {
     if (code === 0) {
-        console.log('✅ MIT Hero Emergency Recovery Test: COMPLETED');
+        console.log('✅ OSS Hero Emergency Recovery Test: COMPLETED');
         console.log('\n🎉 All Emergency Recovery Tests PASSED!');
         console.log('🚨 Your emergency recovery system is working correctly.');
     } else {

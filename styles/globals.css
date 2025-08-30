@@ -29,6 +29,10 @@
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
+  --chip-height: 2rem;
+  --chip-padding: 0.75rem;
+  --chip-font-size: 0.875rem;
+  --chip-border-radius: var(--radius-sm);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -119,5 +123,497 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Skeleton shimmer animation */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    
+    /* Remove specific animations that can be distracting */
+    .animate-spin {
+      animation: none;
+    }
+    
+    .animate-pulse {
+      animation: none;
+      opacity: 1;
+    }
+    
+    /* Disable shimmer animation for reduced motion users */
+    [class*="shimmer"] {
+      animation: none;
+      background-position: 0% 0;
+    }
+    
+    /* Focus indicators should remain visible for reduced motion users */
+    :focus-visible {
+      outline: 2px solid hsl(var(--ring)) !important;
+      outline-offset: 2px !important;
+    }
+  }
+}
+
+/* ========================================
+   PRINT STYLES - PDF & Print Media
+======================================== */
+
+@media print {
+  /* Page setup for high-quality PDF rendering */
+  @page {
+    size: A4;
+    margin: 0.75in 0.75in 1in 0.75in; /* Top, Right, Bottom, Left */
+    
+    /* Hairline borders - use exact pixel values for print fidelity */
+    border: none;
+    
+    /* Page headers/footers */
+    @top-left {
+      content: "";
+    }
+    @top-right {
+      content: "";
+    }
+    @bottom-center {
+      content: counter(page) " / " counter(pages);
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 9pt;
+      color: #6b7280;
+      margin-top: 0.25in;
+    }
+  }
+  
+  /* Root-level print optimizations */
+  :root {
+    /* Override colors for print - ensure good contrast on white paper */
+    --background: #ffffff;
+    --foreground: #111827;
+    --card: #ffffff;
+    --card-foreground: #111827;
+    --popover: #ffffff;
+    --popover-foreground: #111827;
+    --primary: #111827;
+    --primary-foreground: #ffffff;
+    --secondary: #f3f4f6;
+    --secondary-foreground: #111827;
+    --muted: #f9fafb;
+    --muted-foreground: #6b7280;
+    --accent: #f3f4f6;
+    --accent-foreground: #111827;
+    --destructive: #dc2626;
+    --destructive-foreground: #ffffff;
+    --border: #d1d5db;
+    --input: #e5e7eb;
+    --ring: #3b82f6;
+  }
+  
+  /* High-DPI and hairline fidelity settings */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+  
+  /* Base document styles for print */
+  body {
+    background: white !important;
+    color: #111827 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    /* Embedded font stack - ensure availability */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  
+  /* Typography adjustments for print */
+  h1, .text-display-2xl, .text-display-xl, .text-display-lg, .text-h1 {
+    font-size: 18pt !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    color: #111827 !important;
+    page-break-after: avoid;
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h2, .text-h2 {
+    font-size: 16pt !important;
+    font-weight: 600 !important;
+    line-height: 1.25 !important;
+    color: #111827 !important;
+    page-break-after: avoid;
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h3, .text-h3 {
+    font-size: 14pt !important;
+    font-weight: 500 !important;
+    line-height: 1.3 !important;
+    color: #111827 !important;
+    page-break-after: avoid;
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h4, .text-h4, h5, .text-h5, h6, .text-h6 {
+    font-size: 12pt !important;
+    font-weight: 500 !important;
+    line-height: 1.3 !important;
+    color: #111827 !important;
+    page-break-after: avoid;
+    orphans: 3;
+    widows: 3;
+  }
+  
+  p, .text-body, .text-body-lg, .text-body-sm {
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    color: #374151 !important;
+    margin: 0 0 8pt 0 !important;
+    orphans: 2;
+    widows: 2;
+  }
+  
+  /* Small text and captions */
+  .text-caption, .text-caption-sm, .text-label, small {
+    font-size: 9pt !important;
+    line-height: 1.3 !important;
+    color: #6b7280 !important;
+  }
+  
+  /* Hyphenation for better text flow */
+  p, div, span {
+    hyphens: auto !important;
+    -webkit-hyphens: auto !important;
+    -ms-hyphens: auto !important;
+    hyphenate-limit-chars: 6 3 3 !important;
+    hyphenate-limit-lines: 2 !important;
+    hyphenate-limit-last: always !important;
+  }
+  
+  /* Layout containers */
+  .container-grid, .container-page, .container-prose {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Page break controls */
+  .page-break-before {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+  
+  .page-break-after {
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+  
+  .page-break-inside-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  
+  /* Consultation engine specific styles */
+  #consultation-content {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+  
+  /* Header section */
+  #consultation-content header {
+    page-break-inside: avoid !important;
+    background: white !important;
+    border-bottom: 1pt solid #d1d5db !important;
+    padding: 16pt !important;
+    margin-bottom: 16pt !important;
+  }
+  
+  /* Summary section */
+  #consultation-content section:nth-of-type(1) {
+    page-break-inside: avoid !important;
+    margin-bottom: 16pt !important;
+  }
+  
+  /* Plan deck section - allow natural breaks but keep plan details together */
+  #consultation-content section:nth-of-type(2) {
+    page-break-inside: auto !important;
+  }
+  
+  /* Individual plan cards */
+  .bg-white.border {
+    page-break-inside: avoid !important;
+    border: 1pt solid #d1d5db !important;
+    margin-bottom: 12pt !important;
+    background: white !important;
+  }
+  
+  /* Separators - use hairline borders */
+  .separator, hr, [data-orientation="horizontal"] {
+    border-top: 0.5pt solid #e5e7eb !important;
+    margin: 12pt 0 !important;
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
+  }
+  
+  /* Hide interactive elements and CTAs */
+  button,
+  .btn,
+  .button,
+  [role="button"],
+  input,
+  textarea,
+  select,
+  .cta-cluster,
+  .email-modal,
+  .tabs-underline-list,
+  [class*="tabs-underline-trigger"],
+  .progress,
+  .switch,
+  .chip-group,
+  .toast,
+  .tooltip,
+  .popover,
+  .dialog,
+  .modal,
+  .dropdown,
+  .select-content,
+  .navigation,
+  nav {
+    display: none !important;
+  }
+  
+  /* Show only the selected/active tab content */
+  [data-state="active"],
+  .tabs-underline-content[data-state="active"] {
+    display: block !important;
+    page-break-inside: avoid !important;
+  }
+  
+  [data-state="inactive"] {
+    display: none !important;
+  }
+  
+  /* Badges and labels - keep visible with proper styling */
+  .badge {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    border: 0.5pt solid #d1d5db !important;
+    padding: 2pt 6pt !important;
+    font-size: 9pt !important;
+    font-weight: 500 !important;
+    border-radius: 3pt !important;
+  }
+  
+  /* Icons - ensure they print properly */
+  svg {
+    fill: currentColor !important;
+    color: inherit !important;
+    width: 12pt !important;
+    height: 12pt !important;
+    vertical-align: middle !important;
+  }
+  
+  .w-4.h-4 {
+    width: 10pt !important;
+    height: 10pt !important;
+  }
+  
+  .w-8.h-8 {
+    width: 16pt !important;
+    height: 16pt !important;
+  }
+  
+  /* Lists - proper indentation and spacing */
+  ul, ol {
+    margin: 8pt 0 !important;
+    padding-left: 16pt !important;
+  }
+  
+  li {
+    margin: 4pt 0 !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Grid layouts - convert to single column for print */
+  .grid,
+  .grid-12,
+  .grid-auto-fit,
+  .grid-auto-fill {
+    display: block !important;
+    grid-template-columns: none !important;
+    gap: 8pt !important;
+  }
+  
+  .grid > *,
+  .grid-12 > *,
+  .grid-auto-fit > *,
+  .grid-auto-fill > * {
+    margin-bottom: 8pt !important;
+  }
+  
+  /* Flex layouts - convert to block for predictable printing */
+  .flex {
+    display: block !important;
+  }
+  
+  .flex.items-center,
+  .flex.justify-center,
+  .flex.justify-between {
+    display: block !important;
+    text-align: left !important;
+  }
+  
+  /* Spacing adjustments for print density */
+  .space-y-4 > * + * {
+    margin-top: 8pt !important;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 12pt !important;
+  }
+  
+  .space-y-8 > * + * {
+    margin-top: 16pt !important;
+  }
+  
+  .mb-4 { margin-bottom: 8pt !important; }
+  .mb-6 { margin-bottom: 12pt !important; }
+  .mb-8 { margin-bottom: 16pt !important; }
+  .mt-4 { margin-top: 8pt !important; }
+  .mt-6 { margin-top: 12pt !important; }
+  .mt-8 { margin-top: 16pt !important; }
+  
+  .p-4 { padding: 8pt !important; }
+  .p-6 { padding: 12pt !important; }
+  .p-8 { padding: 16pt !important; }
+  .px-4 { padding-left: 8pt !important; padding-right: 8pt !important; }
+  .px-6 { padding-left: 12pt !important; padding-right: 12pt !important; }
+  .px-8 { padding-left: 16pt !important; padding-right: 16pt !important; }
+  .py-4 { padding-top: 8pt !important; padding-bottom: 8pt !important; }
+  .py-6 { padding-top: 12pt !important; padding-bottom: 12pt !important; }
+  .py-8 { padding-top: 16pt !important; padding-bottom: 16pt !important; }
+  
+  /* Remove shadows and effects */
+  .shadow,
+  .shadow-sm,
+  .shadow-md,
+  .shadow-lg,
+  .shadow-xl {
+    box-shadow: none !important;
+  }
+  
+  /* Remove background gradients */
+  .bg-gradient-to-br,
+  .bg-gradient-to-r,
+  [class*="gradient"] {
+    background: white !important;
+  }
+  
+  /* Ensure borders are visible */
+  .border {
+    border: 0.5pt solid #d1d5db !important;
+  }
+  
+  .border-t {
+    border-top: 0.5pt solid #d1d5db !important;
+  }
+  
+  .border-b {
+    border-bottom: 0.5pt solid #d1d5db !important;
+  }
+  
+  /* Animation and transition removal */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    transform: none !important;
+  }
+  
+  /* Ensure proper text selection appearance */
+  ::selection {
+    background: rgba(59, 130, 246, 0.3) !important;
+    color: inherit !important;
+  }
+  
+  /* Fix any overflow issues */
+  * {
+    overflow: visible !important;
+    max-width: 100% !important;
+  }
+  
+  /* Table styles for structured data */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 12pt 0 !important;
+    page-break-inside: avoid !important;
+  }
+  
+  th, td {
+    border: 0.5pt solid #d1d5db !important;
+    padding: 6pt !important;
+    text-align: left !important;
+    font-size: 10pt !important;
+    line-height: 1.3 !important;
+  }
+  
+  th {
+    background: #f9fafb !important;
+    font-weight: 600 !important;
+  }
+  
+  /* Force visible content */
+  .sr-only {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    display: none !important; /* Keep screen reader text hidden in print */
+  }
+}
+
+/* High-resolution print media query for better quality */
+@media print and (min-resolution: 150dpi) {
+  * {
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  /* Slightly increase line thickness for high-DPI */
+  .border,
+  .separator,
+  hr {
+    border-width: 0.75pt !important;
   }
 }

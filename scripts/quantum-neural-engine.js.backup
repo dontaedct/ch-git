@@ -6,7 +6,7 @@
  * This is a minimal implementation to prevent system crashes.
  * Provides basic methods that the main system expects.
  * 
- * @author MIT Hero System
+ * @author OSS Hero System
  * @version 1.0.0
  * @license MIT
  */

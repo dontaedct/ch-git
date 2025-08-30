@@ -1,32 +1,30 @@
-# Coach Hub (Minimal)
-- Routes: /sessions (authed), /intake (public)
-- Supabase: Auth, Postgres (RLS by coach_id), Storage (bucket `media`)
-- Emails: Resend (transactional only)
-- Cron: /api/weekly-recap with ?secret=CRON_SECRET
-- Env: see .env.local keys
-- TypeScript: Full type safety with 0 compilation errors
+# Micro App Template (Minimal)
 
-## Setup
-1. Copy `.env.example` to `.env` and configure your environment variables
-2. Install dependencies: `npm install`
-3. Start development server: `npm run dev`
+A modern, production-ready micro web application template built with Next.js 14, TypeScript, and Supabase.
 
-## Dev
+## Features
+
+- **Modern Stack**: Next.js 14, TypeScript, Tailwind CSS
+- **Database**: Supabase with PostgreSQL
+- **Authentication**: Built-in auth system
+- **AI Integration**: OpenAI integration ready
+- **Auto-save**: Intelligent form auto-save and recovery
+- **Design System**: Comprehensive UI component library
+- **Testing**: Jest and Playwright testing setup
+- **Security**: Guardian system for route protection
+- **Development Tools**: Comprehensive dev tooling
+
+## Quick Start
+
+```bash
+npm install
 npm run dev
+```
 
-## Deploy
-- Set env vars on Vercel
-- Create Storage bucket `media`
-- Add RLS policies ensuring coach_id = auth.uid() on tables
-- Deploy Supabase RPC functions (see `supabase/README.md`)
+## Documentation
 
-## Architecture
+See `/docs/` for comprehensive documentation.
 
-### Database Operations
-For any multi-table write sequence, we use Supabase RPC functions that execute atomically:
+## License
 
-- **Intake Flow**: `create_client_intake()` handles client upsert + email logging
-- **Weekly Plans**: `create_weekly_plan()` handles plan creation + task insertion
-- **Sessions**: Future RPC functions for session creation + client invitations
-
-This ensures data consistency and eliminates partial state failures.
+Private template for client micro applications.

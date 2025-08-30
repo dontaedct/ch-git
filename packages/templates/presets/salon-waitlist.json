@@ -1,0 +1,385 @@
+{
+  "id": "salon-waitlist-preset",
+  "name": "Salon/Med-Spa Waitlist Management",
+  "version": "1.0.0",
+  "description": "Complete waitlist management system for salons, med-spas, and beauty clinics",
+  "tier": "starter",
+  "preset": "salon-waitlist",
+  "features": {
+    "database": true,
+    "email": true,
+    "payments": false,
+    "webhooks": false,
+    "automation": false,
+    "notifications": true,
+    "error_tracking": false,
+    "admin_operations": false,
+    "ai_features": false,
+    "debug_mode": false,
+    "safe_mode": true,
+    "performance_monitoring": false,
+    "health_checks": true
+  },
+  "theme": {
+    "colors": {
+      "primary": "#E91E63",
+      "neutral": {
+        "50": "#FAFAFA",
+        "100": "#F5F5F5",
+        "200": "#EEEEEE",
+        "300": "#E0E0E0",
+        "400": "#BDBDBD",
+        "500": "#9E9E9E",
+        "600": "#757575",
+        "700": "#616161",
+        "800": "#424242",
+        "900": "#212121"
+      },
+      "accent": "#FF4081"
+    },
+    "typography": {
+      "fontFamily": "'Poppins', system-ui, -apple-system, sans-serif",
+      "scales": {
+        "display": "2.5rem",
+        "headline": "1.75rem",
+        "body": "1rem",
+        "caption": "0.875rem"
+      }
+    },
+    "motion": {
+      "duration": "200ms",
+      "easing": "cubic-bezier(.2,.8,.2,1)"
+    },
+    "radii": {
+      "sm": "6px",
+      "md": "12px",
+      "lg": "18px"
+    },
+    "shadows": {
+      "sm": "0 2px 4px 0 rgba(233, 30, 99, 0.08)",
+      "md": "0 6px 12px -2px rgba(233, 30, 99, 0.12)",
+      "lg": "0 24px 32px -8px rgba(233, 30, 99, 0.16)"
+    }
+  },
+  "questionnaire": {
+    "id": "salon-waitlist-intake",
+    "title": "Join Our VIP Waitlist",
+    "description": "Get priority access to our premium treatments and exclusive offers",
+    "steps": [
+      {
+        "id": "personal-info",
+        "title": "Tell Us About You",
+        "questions": [
+          {
+            "id": "full-name",
+            "text": "What's your name?",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "First and Last Name"
+          },
+          {
+            "id": "phone",
+            "text": "Phone number",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "(555) 123-4567"
+          },
+          {
+            "id": "email",
+            "text": "Email address",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "your.email@example.com"
+          },
+          {
+            "id": "preferred-contact",
+            "text": "How would you prefer we contact you?",
+            "type": "chips",
+            "required": true,
+            "options": [
+              { "value": "text", "label": "Text Message" },
+              { "value": "call", "label": "Phone Call" },
+              { "value": "email", "label": "Email" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "service-preferences",
+        "title": "Your Beauty Goals",
+        "questions": [
+          {
+            "id": "interested-services",
+            "text": "Which services interest you most?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "facials", "label": "Facials & Skincare" },
+              { "value": "injectables", "label": "Injectables (Botox/Fillers)" },
+              { "value": "laser", "label": "Laser Treatments" },
+              { "value": "body-contouring", "label": "Body Contouring" },
+              { "value": "massage", "label": "Massage Therapy" },
+              { "value": "hair-services", "label": "Hair Services" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "skin-concerns",
+            "text": "What are your main skin concerns?",
+            "type": "chips-multi",
+            "required": false,
+            "options": [
+              { "value": "acne", "label": "Acne" },
+              { "value": "aging", "label": "Anti-aging" },
+              { "value": "pigmentation", "label": "Dark Spots/Pigmentation" },
+              { "value": "texture", "label": "Skin Texture" },
+              { "value": "dryness", "label": "Dryness" },
+              { "value": "sensitivity", "label": "Sensitivity" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "budget-range",
+            "text": "What's your preferred budget range per visit?",
+            "type": "select",
+            "required": false,
+            "options": [
+              { "value": "under-100", "label": "Under $100" },
+              { "value": "100-250", "label": "$100 - $250" },
+              { "value": "250-500", "label": "$250 - $500" },
+              { "value": "500-plus", "label": "$500+" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "scheduling-preferences",
+        "title": "Scheduling Preferences",
+        "questions": [
+          {
+            "id": "preferred-times",
+            "text": "When do you prefer appointments?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "morning", "label": "Morning (8am-12pm)" },
+              { "value": "afternoon", "label": "Afternoon (12pm-5pm)" },
+              { "value": "evening", "label": "Evening (5pm-8pm)" },
+              { "value": "weekend", "label": "Weekends" }
+            ]
+          },
+          {
+            "id": "advance-notice",
+            "text": "How much advance notice do you typically need?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "same-day", "label": "Same day (flexible schedule)" },
+              { "value": "few-days", "label": "2-3 days" },
+              { "value": "week", "label": "About a week" },
+              { "value": "month", "label": "A month or more" }
+            ]
+          },
+          {
+            "id": "frequency",
+            "text": "How often do you typically get treatments?",
+            "type": "select",
+            "required": false,
+            "options": [
+              { "value": "monthly", "label": "Monthly" },
+              { "value": "quarterly", "label": "Every 3-4 months" },
+              { "value": "biannual", "label": "Twice a year" },
+              { "value": "special-occasions", "label": "Special occasions only" },
+              { "value": "first-time", "label": "This would be my first time" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "communication-preferences",
+        "title": "Stay Connected",
+        "questions": [
+          {
+            "id": "notification-types",
+            "text": "What updates would you like to receive?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "availability", "label": "Appointment Availability" },
+              { "value": "promotions", "label": "Special Promotions" },
+              { "value": "new-services", "label": "New Services" },
+              { "value": "tips", "label": "Beauty Tips & Advice" }
+            ]
+          },
+          {
+            "id": "special-requests",
+            "text": "Any special requests or considerations?",
+            "type": "long-text",
+            "required": false,
+            "placeholder": "Allergies, preferences, questions, etc."
+          }
+        ]
+      }
+    ],
+    "progress": {
+      "style": "thinBar",
+      "showNumbers": true,
+      "showTitles": false
+    },
+    "navigation": {
+      "previousLabel": "Back",
+      "nextLabel": "Continue",
+      "submitLabel": "Join VIP Waitlist"
+    }
+  },
+  "consultation": {
+    "summary": {
+      "minWords": 80,
+      "maxWords": 150,
+      "tone": "friendly"
+    },
+    "planDeck": {
+      "primaryCount": 2,
+      "alternatesCount": 1
+    },
+    "sections": [
+      "whatYouGet",
+      "whyThisFits",
+      "timeline",
+      "nextSteps"
+    ],
+    "actions": {
+      "downloadPdf": false,
+      "emailCopy": true,
+      "bookCtaLabel": "Book My Consultation"
+    }
+  },
+  "catalog": {
+    "id": "salon-services-catalog",
+    "name": "VIP Treatment Plans",
+    "plans": [
+      {
+        "id": "glow-starter",
+        "title": "Glow Starter Package",
+        "description": "Perfect introduction to our premium skincare treatments",
+        "priceBand": "$150 - $300",
+        "includes": [
+          "Customized facial treatment",
+          "Professional skin analysis",
+          "Take-home skincare samples",
+          "30-day follow-up consultation"
+        ],
+        "timeline": "90-minute session",
+        "tier": "foundation",
+        "eligibleIf": {
+          "budget-range": ["under-100", "100-250"],
+          "frequency": ["first-time", "special-occasions"]
+        },
+        "content": {
+          "whatYouGet": "A luxurious introduction to professional skincare with personalized treatment and expert guidance for your skin journey.",
+          "whyThisFits": "Ideal for first-time clients who want to experience our premium treatments without a large commitment.",
+          "timeline": "Your first session will take about 90 minutes, including consultation and treatment time.",
+          "nextSteps": "Book your complimentary consultation to discuss your skin goals and customize your perfect treatment."
+        }
+      },
+      {
+        "id": "beauty-maintenance",
+        "title": "Beauty Maintenance Plan",
+        "description": "Regular treatments for ongoing skin health and beauty",
+        "priceBand": "$400 - $800/month",
+        "includes": [
+          "Monthly customized facial",
+          "Quarterly advanced treatments",
+          "Exclusive member pricing",
+          "Priority booking access",
+          "Complimentary skin consultations"
+        ],
+        "timeline": "Ongoing monthly plan",
+        "tier": "growth",
+        "eligibleIf": {
+          "budget-range": ["250-500"],
+          "frequency": ["monthly", "quarterly"]
+        },
+        "content": {
+          "whatYouGet": "Consistent, professional skincare maintenance with advanced treatments and VIP perks for ongoing beauty and skin health.",
+          "whyThisFits": "Perfect for clients who value regular professional care and want to maintain healthy, glowing skin year-round.",
+          "timeline": "Monthly 60-90 minute sessions with quarterly advanced treatment upgrades.",
+          "nextSteps": "Schedule your initial consultation to create your personalized maintenance schedule and treatment plan."
+        }
+      },
+      {
+        "id": "transformation-intensive",
+        "title": "Complete Transformation",
+        "description": "Comprehensive treatment plan for dramatic results",
+        "priceBand": "$2,000 - $5,000",
+        "includes": [
+          "Full skincare assessment",
+          "6-month treatment protocol",
+          "Advanced procedures (injectables, laser)",
+          "Professional home care regimen",
+          "Dedicated aesthetician",
+          "Progress tracking and adjustments"
+        ],
+        "timeline": "6-month program",
+        "tier": "enterprise",
+        "eligibleIf": {
+          "budget-range": ["500-plus"],
+          "interested-services": ["injectables", "laser"]
+        },
+        "content": {
+          "whatYouGet": "A comprehensive transformation program with advanced treatments, dedicated support, and dramatic visible results over 6 months.",
+          "whyThisFits": "Designed for clients ready to invest in significant skin improvement with professional-grade treatments and ongoing support.",
+          "timeline": "6-month intensive program with bi-weekly sessions and quarterly advanced procedures.",
+          "nextSteps": "Book your comprehensive consultation to design your custom transformation protocol and timeline."
+        }
+      }
+    ],
+    "defaults": {
+      "fallbackPlan": "glow-starter",
+      "preferHigherTier": false
+    }
+  },
+  "modules": {
+    "modules": [
+      {
+        "id": "appointment-reminders",
+        "label": "Smart Appointment Reminders",
+        "description": "Automated SMS and email reminders to reduce no-shows",
+        "tiers": ["foundation", "growth", "enterprise"]
+      },
+      {
+        "id": "loyalty-program",
+        "label": "VIP Loyalty Rewards",
+        "description": "Points-based loyalty system with exclusive perks",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "skin-tracking",
+        "label": "Digital Skin Progress Tracking",
+        "description": "Photo documentation and progress analytics",
+        "tiers": ["enterprise"]
+      },
+      {
+        "id": "product-recommendations",
+        "label": "Personalized Product Recommendations",
+        "description": "AI-powered skincare product suggestions",
+        "tiers": ["growth", "enterprise"]
+      }
+    ]
+  },
+  "integrations": {
+    "n8n": {
+      "webhookUrl": "https://webhook.example.com/salon-waitlist",
+      "enabledEvents": [
+        "lead_started_questionnaire",
+        "lead_completed_questionnaire",
+        "consultation_generated",
+        "email_copy_requested"
+      ]
+    },
+    "email": {
+      "fromAddress": "hello@yoursalon.com",
+      "subjectTemplate": "Welcome to Our VIP Waitlist - Your Beauty Journey Starts Here"
+    }
+  }
+}

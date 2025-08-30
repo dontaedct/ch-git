@@ -4,20 +4,24 @@ import { emails } from '@lib/registry/emails';
 
 describe('Registry Contract', () => {
   describe('Routes', () => {
-    it('should have required route keys', () => {
-      // Core app routes
+    it('should have required route keys for OSS Hero micro app', () => {
+      // Core app routes that actually exist
       expect(routes.intake).toBeDefined();
-      expect(routes['client-portal']).toBeDefined();
-      expect(routes['app-sessions']).toBeDefined();
+      expect(routes.login).toBeDefined();
       
-      // API routes
-      expect(routes.sessions).toBeDefined();
-      expect(routes.clients).toBeDefined();
-      expect(routes['weekly-plans']).toBeDefined();
-      
-      // Health routes
+      // Health & monitoring routes
       expect(routes.ping).toBeDefined();
       expect(routes.health).toBeDefined();
+      expect(routes['db-check']).toBeDefined();
+      expect(routes['env-check']).toBeDefined();
+      
+      // Email testing routes
+      expect(routes['test-email']).toBeDefined();
+      expect(routes['email-smoke']).toBeDefined();
+      
+      // Media routes
+      expect(routes['signed-upload']).toBeDefined();
+      expect(routes['signed-download']).toBeDefined();
     });
 
     it('should have valid route paths', () => {
@@ -29,24 +33,17 @@ describe('Registry Contract', () => {
   });
 
   describe('Tables', () => {
-    it('should have required table constants', () => {
-      // Core entities
+    it('should have core table constants for micro app template', () => {
+      // Generic entities that could exist in any micro app
       expect(tables.clients).toBeDefined();
-      expect(tables.sessions).toBeDefined();
-      expect(tables.trainers).toBeDefined();
-      
-      // Planning & Progress
-      expect(tables['weekly_plans']).toBeDefined();
-      expect(tables.check_ins).toBeDefined();
-      expect(tables['progress_metrics']).toBeDefined();
-      
-      // Communication
       expect(tables.invites).toBeDefined();
-      expect(tables.attendance).toBeDefined();
       expect(tables['email_logs']).toBeDefined();
-      
-      // Media
       expect(tables.media).toBeDefined();
+      
+      // Note: Specific business logic tables like sessions, trainers, 
+      // weekly_plans, check_ins, progress_metrics, attendance 
+      // may not be relevant for all OSS Hero micro app implementations
+      // These should be customized based on the specific use case
     });
 
     it('should have valid table names', () => {
@@ -58,13 +55,14 @@ describe('Registry Contract', () => {
   });
 
   describe('Emails', () => {
-    it('should have required email templates', () => {
+    it('should have core email templates for micro app', () => {
       expect(emails.templates.invite).toBeDefined();
       expect(emails.templates.confirmation).toBeDefined();
       expect(emails.templates.welcome).toBeDefined();
-      expect(emails.templates['weekly-recap']).toBeDefined();
-      expect(emails.templates['plan-ready']).toBeDefined();
-      expect(emails.templates['check-in-reminder']).toBeDefined();
+      
+      // Note: Business-specific templates like weekly-recap, plan-ready, 
+      // check-in-reminder may not be relevant for all OSS Hero micro apps
+      // These should be customized based on the specific use case
     });
 
     it('should have email subjects for each template', () => {

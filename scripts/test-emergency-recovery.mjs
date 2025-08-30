@@ -6,7 +6,7 @@
  * This script tests the emergency recovery functionality:
  * 1. Tests Guardian health endpoint
  * 2. Tests Guardian emergency backup
- * 3. Tests MIT Hero emergency recovery
+ * 3. Tests emergency recovery systems
  * 
  * Follows universal header rules
  */
@@ -113,10 +113,10 @@ class EmergencyRecoveryTester {
         });
     }
 
-    async testMITHeroEmergency() {
-        // Test MIT Hero emergency recovery
+    async testOSSHeroEmergency() {
+        // Test OSS Hero emergency recovery
         return new Promise((resolve, reject) => {
-            const child = spawn('node', ['scripts/mit-hero-unified-integration.js', 'emergency-recovery'], {
+            const child = spawn('node', ['scripts/oss-hero-unified-integration.js', 'emergency-recovery'], {
                 cwd: this.projectRoot,
                 stdio: ['pipe', 'pipe', 'pipe']
             });
@@ -136,18 +136,18 @@ class EmergencyRecoveryTester {
                 if (code === 0) {
                     resolve({ success: true, stdout, stderr, exitCode: code });
                 } else {
-                    reject(new Error(`MIT Hero emergency recovery failed with code ${code}: ${stderr}`));
+                    reject(new Error(`OSS Hero emergency recovery failed with code ${code}: ${stderr}`));
                 }
             });
 
             child.on('error', (error) => {
-                reject(new Error(`MIT Hero emergency recovery error: ${error.message}`));
+                reject(new Error(`OSS Hero emergency recovery error: ${error.message}`));
             });
 
             // Set timeout
             setTimeout(() => {
                 child.kill('SIGTERM');
-                reject(new Error('MIT Hero emergency recovery timed out'));
+                reject(new Error('OSS Hero emergency recovery timed out'));
             }, 60000);
         });
     }
@@ -163,8 +163,8 @@ class EmergencyRecoveryTester {
         // Test 2: Guardian Emergency Backup
         await this.runTest('Guardian Emergency Backup', () => this.testGuardianEmergency());
 
-        // Test 3: MIT Hero Emergency Recovery
-        await this.runTest('MIT Hero Emergency Recovery', () => this.testMITHeroEmergency());
+        // Test 3: OSS Hero Emergency Recovery
+        await this.runTest('OSS Hero Emergency Recovery', () => this.testOSSHeroEmergency());
 
         // Summary
         console.log('');

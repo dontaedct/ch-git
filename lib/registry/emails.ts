@@ -14,7 +14,7 @@ export const emails = {
   subjects: {
     invite: 'You\'re invited: {session_title}',
     confirmation: 'Confirmed: {session_title}',
-    welcome: 'Welcome to Another Level',
+    welcome: 'Welcome to Your Micro App',
     'weekly-recap': 'Your weekly recap',
     'plan-ready': 'Your plan is ready',
     'check-in-reminder': 'Please check in',

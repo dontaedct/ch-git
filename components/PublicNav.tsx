@@ -9,7 +9,7 @@ export function PublicNav() {
             <span className="text-white font-bold text-sm">CH</span>
           </div>
           <span className="text-xl font-semibold text-gray-900">
-            Coach Hub
+            Micro App
           </span>
         </Link>
         

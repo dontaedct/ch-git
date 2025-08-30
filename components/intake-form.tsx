@@ -1,4 +1,4 @@
-"use client"
+"use consultation"
 
 import type React from "react"
 import { useId, useMemo, useState } from "react"
@@ -135,8 +135,8 @@ export default function IntakeForm({
                 Consent
               </label>
               <p className="text-xs text-gray-600">
-                I agree to participate in training sessions and understand the risks involved. I consent to being
-                contacted by Another Level regarding scheduling, updates, and payments.
+                I agree to participate in consultation sessions and understand the risks involved. I consent to being
+                contacted by Your Organization regarding scheduling, updates, and payments.
               </p>
               {errors.consent && <p className="mt-1 text-xs text-red-600">{errors.consent}</p>}
             </div>

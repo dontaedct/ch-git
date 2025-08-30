@@ -1,4 +1,4 @@
-// scripts/dev-manager.js
+// scripts/dev-manager.mjs
 // Development server management utility
 // Commands: status, kill, clean, ports
 
@@ -8,12 +8,12 @@ import os from 'node:os';
 import { execSync } from 'node:child_process';
 import net from 'node:net';
 
-const LOCK_FILE = path.join(os.tmpdir(), 'coach-hub-dev.lock');
+const LOCK_FILE = path.join(os.tmpdir(), 'micro-app-dev.lock');
 
 function showHelp() {
-  console.log('🔧 Coach Hub Dev Manager');
+  console.log('🔧 Micro App Dev Manager');
   console.log('');
-  console.log('Usage: node scripts/dev-manager.js <command>');
+  console.log('Usage: node scripts/dev-manager.mjs <command>');
   console.log('');
   console.log('Commands:');
   console.log('  status    - Show current dev server status');
@@ -23,9 +23,9 @@ function showHelp() {
   console.log('  help      - Show this help message');
   console.log('');
   console.log('Examples:');
-  console.log('  node scripts/dev-manager.js status');
-  console.log('  node scripts/dev-manager.js kill');
-  console.log('  node scripts/dev-manager.js clean');
+  console.log('  node scripts/dev-manager.mjs status');
+  console.log('  node scripts/dev-manager.mjs kill');
+  console.log('  node scripts/dev-manager.mjs clean');
 }
 
 function getDevStatus() {
@@ -178,7 +178,7 @@ function main() {
 }
 
 // Run if this file is executed directly
-if (import.meta.main) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main();
 }
 

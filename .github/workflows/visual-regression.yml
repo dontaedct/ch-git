@@ -1,0 +1,10 @@
+name: Visual Regression Testing
+
+on:
+  workflow_dispatch: {}   # manual only until baselines exist
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Run Design Safety on main to seed baselines first."

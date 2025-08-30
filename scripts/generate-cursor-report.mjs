@@ -1,35 +1,74 @@
+#!/usr/bin/env node
+
+/**
+ * @fileoverview OSS Hero Development Session Tracker
+ * @module scripts/generate-cursor-report
+ * @author OSS Hero System
+ * @version 2.0.0
+ * 
+ * Automatically generates new session reports by auditing codebase health
+ * including OSS Hero Design Safety, import boundaries, and code quality.
+ * 
+ * Usage: node scripts/generate-cursor-report.mjs [session-focus]
+ * Example: node scripts/generate-cursor-report.mjs "API endpoint development"
+ * 
+ * Process: AUDIT → DECIDE → APPLY → VERIFY
+ * - Audits OSS Hero Design Safety compliance
+ * - Runs comprehensive health checks
+ * - Generates AI-assistant agnostic reports
+ * - Verifies system integrity
+ */
+
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-#!/usr/bin/env node
-
-/**
- * Cursor AI Report Generator
- * Automatically generates new session reports by auditing codebase health
- * 
- * Usage: node scripts/generate-cursor-report.js [session-focus]
- * Example: node scripts/generate-cursor-report.js "API endpoint development"
- */
-
 import fs from 'fs';
 import path from 'path';
 import { execSync } from 'child_process';
 
-class CursorAIReportGenerator {
+// Import Claude Code enhancer if available
+let ClaudeCodeEnhancer;
+try {
+  const enhancerPath = path.join(__dirname, 'claude-code-enhancer.mjs');
+  if (fs.existsSync(enhancerPath)) {
+    ClaudeCodeEnhancer = (await import(enhancerPath)).default;
+  }
+} catch (error) {
+  // Claude Code enhancer not available, continue without it
+}
+
+class OSSHeroSessionTracker {
   constructor() {
     this.reportsPath = path.join(__dirname, '../docs/CURSOR_AI_REPORTS.md');
     this.currentDate = new Date().toISOString().split('T')[0];
     this.sessionFocus = process.argv[2] || 'General development and maintenance';
+    this.aiAssistant = this.detectAIEnvironment();
+  }
+
+  /**
+   * Detect which AI assistant is being used
+   * @returns {string} AI assistant name
+   */
+  detectAIEnvironment() {
+    if (process.env.AI_ASSISTANT) return process.env.AI_ASSISTANT;
+    if (process.env.CURSOR) return 'Cursor AI';
+    if (process.env.GITHUB_COPILOT) return 'GitHub Copilot';
+    if (process.env.CODEIUM) return 'Codeium';
+    if (process.env.TABNINE) return 'Tabnine';
+    if (process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY) return 'Claude Code';
+    if (process.env.OPENAI_API_KEY) return 'OpenAI Assistant';
+    // Default to generic if no specific environment detected
+    return 'OSS Hero AI Assistant';
   }
 
   async generateReport() {
-    console.log('🔍 Generating Cursor AI Report...');
+    console.log(`🔍 Generating OSS Hero Development Session Report (${this.aiAssistant})...`);
     
     try {
-      // 1. Audit current codebase health
+      // 1. Audit current codebase health including OSS Hero Design Safety
       const healthStatus = await this.auditCodebaseHealth();
       
       // 2. Read existing report
@@ -47,12 +86,13 @@ class CursorAIReportGenerator {
       // 6. Write updated report
       fs.writeFileSync(this.reportsPath, finalContent, 'utf8');
       
-      console.log('✅ Cursor AI Report generated successfully!');
+      console.log('✅ OSS Hero Development Session Report generated successfully!');
       console.log(`📅 New session added for: ${this.currentDate}`);
       console.log(`🎯 Focus: ${this.sessionFocus}`);
+      console.log(`🤖 AI Assistant: ${this.aiAssistant}`);
       
-      // 7. Generate ChatGPT-ready snippet
-      this.generateChatGPTSnippet(newSession, healthStatus);
+      // 7. Generate AI-assistant agnostic snippet
+      this.generateAISnippet(newSession, healthStatus);
       
     } catch (error) {
       console.error('❌ Error generating report:', error.message);
@@ -61,7 +101,7 @@ class CursorAIReportGenerator {
   }
 
   async auditCodebaseHealth() {
-    console.log('  📊 Auditing codebase health...');
+    console.log('  📊 Auditing codebase health with OSS Hero Design Safety...');
     
     const health = {
       timestamp: new Date().toISOString(),
@@ -71,11 +111,19 @@ class CursorAIReportGenerator {
       typeSafety: 'UNKNOWN',
       importResolution: 'UNKNOWN',
       validationCoverage: 'UNKNOWN',
+      designSafety: 'UNKNOWN',
+      ossHeroCompliance: 'UNKNOWN',
       lintResults: null,
-      doctorResults: null
+      doctorResults: null,
+      designResults: null,
+      contractResults: null
     };
 
     try {
+      // Run OSS Hero Design Safety checks first
+      console.log('  🎨 Running OSS Hero Design Safety checks...');
+      await this.runOSSHeroDesignChecks(health);
+      
       // Run linting to check current status
       console.log('  🔍 Running Next.js lint...');
       const lintOutput = execSync('npx next lint --dir app --max-warnings 0', { 
@@ -88,22 +136,25 @@ class CursorAIReportGenerator {
       health.styleWarnings = warnings;
       health.lintResults = lintOutput;
       
-      // Determine overall health based on warnings
-      if (warnings === 0) {
+      // Determine overall health based on warnings and OSS Hero compliance
+      if (warnings === 0 && health.designSafety === 'EXCELLENT') {
         health.overallHealth = 'EXCELLENT';
         health.typeSafety = 'FULLY ALIGNED';
         health.importResolution = '100% WORKING';
         health.validationCoverage = 'COMPLETE';
-      } else if (warnings <= 5) {
+        health.ossHeroCompliance = 'FULLY COMPLIANT';
+      } else if (warnings <= 5 && health.designSafety !== 'CRITICAL') {
         health.overallHealth = 'GOOD';
         health.typeSafety = 'MOSTLY ALIGNED';
         health.importResolution = 'MOSTLY WORKING';
         health.validationCoverage = 'MOSTLY COMPLETE';
+        health.ossHeroCompliance = 'MOSTLY COMPLIANT';
       } else {
         health.overallHealth = 'NEEDS ATTENTION';
         health.typeSafety = 'PARTIALLY ALIGNED';
         health.importResolution = 'PARTIALLY WORKING';
         health.validationCoverage = 'PARTIALLY COMPLETE';
+        health.ossHeroCompliance = 'PARTIALLY COMPLIANT';
       }
 
     } catch (error) {
@@ -139,13 +190,57 @@ class CursorAIReportGenerator {
     return health;
   }
 
+  /**
+   * Run OSS Hero Design Safety checks
+   * @param {Object} health - Health status object to update
+   */
+  async runOSSHeroDesignChecks(health) {
+    try {
+      // Run design safety checks
+      console.log('    🎨 Checking Design Safety compliance...');
+      const designOutput = execSync('npm run tool:design:check', { 
+        encoding: 'utf8',
+        stdio: 'pipe',
+        timeout: 30000
+      });
+      health.designResults = designOutput;
+      health.designSafety = 'EXCELLENT';
+      
+      // Run component contracts validation
+      console.log('    📋 Validating component contracts...');
+      const contractOutput = execSync('npm run tool:ui:contracts', { 
+        encoding: 'utf8',
+        stdio: 'pipe',
+        timeout: 30000
+      });
+      health.contractResults = contractOutput;
+      
+    } catch (error) {
+      // Design safety checks failed
+      if (error.stdout) {
+        health.designResults = error.stdout;
+        const designIssues = (error.stdout.match(/error/gi) || []).length;
+        if (designIssues > 10) {
+          health.designSafety = 'CRITICAL';
+        } else if (designIssues > 0) {
+          health.designSafety = 'NEEDS ATTENTION';
+        } else {
+          health.designSafety = 'GOOD';
+        }
+      } else {
+        health.designSafety = 'UNKNOWN';
+        health.designResults = 'Design safety checks unavailable';
+      }
+    }
+  }
+
   generateSessionEntry(healthStatus) {
     const sessionNumber = this.getNextSessionNumber();
     const duration = this.estimateSessionDuration(healthStatus);
     
     return `### **Session ${sessionNumber}: ${this.currentDate}** - ${this.sessionFocus}
 **Duration**: ${duration}  
-**AI Assistant**: Cursor AI  
+**AI Assistant**: ${this.aiAssistant}  
 **Focus**: ${this.sessionFocus}
 
 #### **Issues Encountered**
@@ -299,6 +394,8 @@ ${this.generateImpactSection(healthStatus)}
     status.push(`- **Type Safety**: ${this.getHealthEmoji(healthStatus.typeSafety)} **${healthStatus.typeSafety}**`);
     status.push(`- **Import Resolution**: ${this.getHealthEmoji(healthStatus.importResolution)} **${healthStatus.importResolution}**`);
     status.push(`- **Validation Coverage**: ${this.getHealthEmoji(healthStatus.validationCoverage)} **${healthStatus.validationCoverage}**`);
+    status.push(`- **Design Safety**: ${this.getHealthEmoji(healthStatus.designSafety)} **${healthStatus.designSafety}**`);
+    status.push(`- **OSS Hero Compliance**: ${this.getHealthEmoji(healthStatus.ossHeroCompliance)} **${healthStatus.ossHeroCompliance}**`);
     
     return status.join('\n');
   }
@@ -383,36 +480,75 @@ ${this.generateImpactSection(healthStatus)}
     return content.replace(healthStatusPattern, newHealthStatus);
   }
 
-  generateChatGPTSnippet(sessionEntry, healthStatus) {
-    const snippet = `## 📋 **ChatGPT Upload Snippet - ${this.currentDate}**
+  generateAISnippet(sessionEntry, healthStatus) {
+    const isClaude = this.aiAssistant === 'Claude Code';
+    
+    // Generate enhanced context if Claude Code enhancer is available
+    let enhancedContext = '';
+    if (isClaude && ClaudeCodeEnhancer) {
+      try {
+        const enhancer = new ClaudeCodeEnhancer();
+        enhancedContext = '\n\n' + enhancer.generateClaudeContext();
+      } catch (error) {
+        console.warn('⚠️ Claude Code enhancer failed, using standard prompt');
+      }
+    }
+    
+    const snippet = `## 📋 **AI Assistant Upload Snippet - ${this.currentDate}**
 
+**AI Assistant**: ${this.aiAssistant}
 **Session Focus**: ${this.sessionFocus}
 **Codebase Health**: ${healthStatus.overallHealth}
+**OSS Hero Compliance**: ${healthStatus.ossHeroCompliance}
+**Design Safety**: ${healthStatus.designSafety}
 **Critical Issues**: ${healthStatus.criticalIssues}
 **Style Warnings**: ${healthStatus.styleWarnings}
 
-**Copy this section for ChatGPT:**
+**Copy this section for any AI assistant:**
 
 ${sessionEntry}
 
-**Context**: This is from a Next.js 14 + TypeScript + Supabase fitness training platform called Coach Hub. The codebase is currently in ${healthStatus.overallHealth.toLowerCase()} health with ${healthStatus.criticalIssues} critical issues and ${healthStatus.styleWarnings} style warnings.
+**Context**: This is from a Next.js 14 + TypeScript + Supabase micro web application template with OSS Hero Design Safety framework. The codebase is currently in ${healthStatus.overallHealth.toLowerCase()} health with ${healthStatus.criticalIssues} critical issues, ${healthStatus.styleWarnings} style warnings, and ${healthStatus.designSafety.toLowerCase()} design safety compliance.
 
-**Request**: Please analyze this session report and provide insights on:
+${isClaude ? this.generateClaudeSpecificPrompt(healthStatus) : this.generateGenericPrompt(healthStatus)}${enhancedContext}`;
+
+    console.log('\n📋 **AI Assistant Upload Snippet Generated**');
+    console.log(`Copy the section above to upload to ${this.aiAssistant} or any AI assistant for analysis`);
+    console.log('The snippet includes OSS Hero context and specific questions for optimal AI assistance');
+    
+    if (isClaude) {
+      if (ClaudeCodeEnhancer) {
+        console.log('\n🎯 **Claude Code Enhanced** - Advanced context and performance metrics included');
+      } else {
+        console.log('\n🎯 **Claude Code Optimized** - Enhanced prompt structure for better Claude performance');
+      }
+    }
+  }
+
+  generateClaudeSpecificPrompt(healthStatus) {
+    return `**Claude Code Request**: As an expert developer using Claude Code, please analyze this OSS Hero development session and provide:
+
+1. **Technical Analysis**: Deep dive into the technical approach and implementation patterns
+2. **OSS Hero Compliance**: Assessment of Design Safety framework adherence
+3. **Code Quality Insights**: Specific recommendations for maintaining high standards
+4. **Next Steps**: Prioritized action items for the next development session
+5. **Performance Optimization**: Suggestions for improving development velocity
+6. **Risk Assessment**: Identify potential issues before they become critical
+
+**Focus Areas**: Type safety, import boundaries, component contracts, and design system consistency.`;
+  }
+
+  generateGenericPrompt(healthStatus) {
+    return `**Request**: Please analyze this OSS Hero development session and provide insights on:
 1. The technical approach used
-2. Any potential improvements
+2. OSS Hero Design Safety compliance
 3. Best practices for maintaining code quality
 4. Recommendations for the next development session`;
-
-    console.log('\n📋 **ChatGPT Upload Snippet Generated**');
-    console.log('Copy the section above to upload to ChatGPT for analysis');
-    console.log('The snippet includes context and specific questions for optimal AI assistance');
   }
 }
 
-// Run the generator
-if (import.meta.main) {
-  const generator = new CursorAIReportGenerator();
-  generator.generateReport();
-}
+// Run the OSS Hero Session Tracker
+const tracker = new OSSHeroSessionTracker();
+tracker.generateReport();
 
-export default CursorAIReportGenerator;
+export default OSSHeroSessionTracker;

@@ -13,7 +13,7 @@ export interface StorageOptions {
 }
 
 class StorageManager {
-  private readonly prefix = 'coach-hub-auto-save';
+  private readonly prefix = 'micro-app-auto-save';
   private readonly maxSize = 10 * 1024 * 1024; // 10MB limit
   private readonly compressionThreshold = 1024; // Compress data larger than 1KB
   private readonly cache = new Map<string, StorageData>();

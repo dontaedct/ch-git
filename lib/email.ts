@@ -5,8 +5,16 @@ type Ok = { ok: true; id?: string; skipped?: true };
 type Fail = { ok: false; code: string; message: string };
 export type EmailResult = Ok | Fail;
 
-const KEY = process.env.RESEND_API_KEY ?? "";
-const FROM = process.env.RESEND_FROM ?? "Coach Hub <no-reply@example.com>";
+const KEY = process.env.RESEND_API_KEY;
+const FROM = process.env.RESEND_FROM;
+
+// Validate required environment variables
+if (!KEY) {
+  console.warn('RESEND_API_KEY environment variable is required for email functionality');
+}
+if (!FROM) {
+  console.warn('RESEND_FROM environment variable is required for email functionality');
+}
 const resend = KEY ? new Resend(KEY) : null;
 
 function htmlWrap(inner: string) {
@@ -14,12 +22,13 @@ function htmlWrap(inner: string) {
   <div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;padding:16px">
     ${inner}
     <hr style="margin-top:16px;border:none;border-top:1px solid #eee"/>
-    <p style="color:#666;font-size:12px">This is a transactional message from Another Level — Coach Hub.</p>
+    <p style="color:#666;font-size:12px">This is a transactional message from Your Micro App.</p>
   </div>`;
 }
 
 async function actuallySend(to: string, subject: string, html: string): Promise<EmailResult> {
   if (!resend) return { ok: true, skipped: true }; // safe in dev without keys
+  if (!FROM) return { ok: false, code: "CONFIG_ERROR", message: "RESEND_FROM environment variable is required" };
   try {
     const r = await resend.emails.send({ from: FROM, to, subject, html });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,10 +71,10 @@ export async function sendConfirmationEmail(args: { to: string; session: Session
 /** Welcome email for intake flow */
 export async function sendWelcomeEmail(args: { to: string; coachName?: string }): Promise<EmailResult> {
   const body = `
-    <h2>Welcome to Another Level — Coach Hub</h2>
+    <h2>Welcome to Your Micro App</h2>
     <p>${args.coachName ? `${args.coachName} ` : ""}will follow up with your next steps shortly.</p>
   `;
-  return actuallySend(args.to, "Welcome to Another Level", htmlWrap(body));
+  return actuallySend(args.to, "Welcome to Your Micro App", htmlWrap(body));
 }
 
 /** Weekly digest sent to clients (summary text provided by server) */

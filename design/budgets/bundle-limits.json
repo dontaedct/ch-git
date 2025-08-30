@@ -1,0 +1,22 @@
+{
+  "bundleLimits": {
+    "maxTotalSize": "500KB",
+    "maxInitialSize": "200KB",
+    "maxAsyncSize": "100KB",
+    "warnings": {
+      "maxTotalSize": "400KB",
+      "maxInitialSize": "150KB",
+      "maxAsyncSize": "75KB"
+    }
+  },
+  "componentLimits": {
+    "maxComponentSize": "50KB",
+    "maxDependencyCount": 10,
+    "maxImportDepth": 3
+  },
+  "designSystemLimits": {
+    "maxTokenCount": 1000,
+    "maxColorVariants": 20,
+    "maxSpacingScale": 16
+  }
+}

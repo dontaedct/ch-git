@@ -1,21 +1,35 @@
-import DebugOverlay from './_debug/DebugOverlay';
-import HydrationProbe from './_debug/HydrationProbe';
-import LoopDetector from './_debug/LoopDetector';
 import { Suspense } from 'react';
 import PageBoot from '@/components/ui/skeletons/PageBoot';
+import { getPublicEnv } from '@/lib/env';
+import { ThemeProvider, MotionProvider } from '@/components/theme-provider';
+import { TokensProvider } from '@/lib/design-tokens/provider';
+import { AuthProvider } from '@/lib/auth/auth-context';
+import { GlobalNav } from '@/components/GlobalNav';
+import { requireClient } from '@/lib/auth/guard';
 
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'default-no-store';
 
-export const metadata = { title: "Coach Hub", description: "Personal training management platform" };
+export const metadata = { title: "Micro App Template", description: "A modern micro web application template" };
 
-const isSafeMode = process.env.NEXT_PUBLIC_SAFE_MODE === '1';
+const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Try to get client info for navigation
+  let client = null;
+  
+  if (!isSafeMode) {
+    try {
+      client = await requireClient();
+    } catch {
+      // No client authenticated, continue without
+    }
+  }
+
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body style={{ 
         minHeight: '100vh', 
         margin: 0, 
@@ -23,30 +37,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         background: '#fff',
         color: '#111'
       }}>
-        {process.env.NEXT_PUBLIC_DEBUG === '1' ? <DebugOverlay /> : null}
-        <HydrationProbe />
-        <LoopDetector />
-        {isSafeMode && (
-          <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 9998,
-            padding: '6px 10px',
-            fontSize: 12,
-            background: '#d4edda',
-            borderBottom: '1px solid #c3e6cb',
-            color: '#155724'
-          }}>
-            🛡️ SAFE MODE • Bypassing auth guards and heavy data fetches
-          </div>
-        )}
-        <div style={{ paddingTop: 0 }}>
-          <Suspense fallback={<PageBoot />}>
-            {children}
-          </Suspense>
-        </div>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <MotionProvider>
+            <TokensProvider>
+              <AuthProvider>
+                <GlobalNav client={client} isSafeMode={isSafeMode} />
+                <Suspense fallback={<PageBoot />}>
+                  {children}
+                </Suspense>
+              </AuthProvider>
+            </TokensProvider>
+          </MotionProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

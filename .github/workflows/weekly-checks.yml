@@ -1,0 +1,80 @@
+name: Weekly Checks
+
+on:
+  schedule:
+    # Weekly dependency check and slow type checking (runs every Monday at 2 AM UTC)
+    - cron: '0 2 * * 1'
+  workflow_dispatch: # Allow manual triggering (but not on PRs)
+
+jobs:
+  dependency-check:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check for outdated dependencies
+        id: outdated
+        run: |
+          echo "Checking for outdated dependencies..."
+          npm outdated --json > outdated.json || true
+          
+          if [ -s outdated.json ]; then
+            echo "has_outdated=true" >> $GITHUB_OUTPUT
+            echo "Found outdated dependencies:"
+            cat outdated.json
+          else
+            echo "has_outdated=false" >> $GITHUB_OUTPUT
+            echo "All dependencies are up to date"
+          fi
+      
+      - name: Send Slack notification if outdated dependencies found
+        if: steps.outdated.outputs.has_outdated == 'true'
+        run: |
+          echo "Would send Slack notification about outdated dependencies"
+          echo "Outdated dependencies found - manual review recommended"
+          # TODO: Implement Slack webhook integration
+          # curl -X POST -H 'Content-type: application/json' \
+          #   --data '{"text":"Outdated dependencies found in repository"}' \
+          #   ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  slow-types:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: "Run comprehensive type checking (skipLibCheck: false)"
+        run: npm run typecheck:slow
+      
+      - name: Comment on PR if this is a PR workflow
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '✅ Weekly slow type checking completed successfully'
+            })

@@ -1,32 +1,60 @@
 'use client'
 
-import { useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { useState, useEffect } from 'react'
+import { AuthService } from '@/lib/auth/auth'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
+import { ArrowLeft, Mail, AlertCircle, CheckCircle } from 'lucide-react'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const supabase = createClient()
+  const [success, setSuccess] = useState<string | null>(null)
+  const [emailFocused, setEmailFocused] = useState(false)
+  const searchParams = useSearchParams()
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error === 'auth_callback_error') {
+      setError('There was an error with the authentication process. Please try again.')
+    }
+  }, [searchParams])
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await AuthService.getCurrentUser()
+      if (user) {
+        const redirectTo = searchParams.get('redirectTo') ?? '/'
+        window.location.href = redirectTo
+      }
+    }
+    
+    checkAuth()
+  }, [searchParams])
+
+  const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!email.trim()) {
+      setError('Please enter your email address')
+      return
+    }
+
     setLoading(true)
     setError(null)
+    setSuccess(null)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-
-      if (error) {
-        setError(error.message)
+      const result = await AuthService.signIn(email.trim())
+      
+      if (result.success) {
+        if (result.user) {
+          window.location.href = '/'
+        } else {
+          setSuccess(result.error ?? 'Check your email for a magic link to sign in!')
+        }
       } else {
-        // Use window.location for client-side navigation
-        window.location.href = '/'
+        setError(result.error ?? 'Sign in failed')
       }
     } catch {
       setError('An unexpected error occurred')
@@ -35,140 +63,116 @@ export default function LoginPage() {
     }
   }
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(null)
-
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      })
-
-      if (error) {
-        setError(error.message)
-      } else {
-        setError('Check your email for the confirmation link!')
-      }
-    } catch {
-      setError('An unexpected error occurred')
-    } finally {
-      setLoading(false)
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !loading) {
+      handleMagicLink(e as unknown as React.FormEvent)
     }
   }
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center p-6">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-200 rounded-full mb-6">
-            <div className="w-8 h-8 bg-gray-400 rounded"></div>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-sm border border-gray-200/80 mb-6">
+            <Mail className="w-7 h-7 text-gray-700" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-            Welcome back
+          <h1 className="text-2xl font-semibold text-gray-900 mb-3 tracking-tight">
+            Sign in to your account
           </h1>
-          <p className="text-base text-gray-600 mb-8">
-            Don&apos;t have an account? <Link href="/intake" className="text-blue-600 hover:text-blue-700 font-medium">Sign up here</Link>
+          <p className="text-gray-600 text-sm leading-relaxed mb-6">
+            Enter your email and we&apos;ll send you a secure link to sign in
           </p>
-          <Link href="/" className="text-blue-600 hover:text-blue-700 font-medium">
-            ← Back to Home
-          </Link>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-            <div className="space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-700">
+        <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xl shadow-gray-900/5 p-8">
+          <form className="space-y-6" onSubmit={handleMagicLink} onKeyDown={handleKeyDown}>
+            <div className="space-y-3">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-900">
                 Email Address
               </label>
-              <input
-                id="email"
-                type="email"
-                placeholder="your.email@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <label htmlFor="password" className="text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
-                required
-              />
+              <div className="relative">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="your.email@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onFocus={() => setEmailFocused(true)}
+                  onBlur={() => setEmailFocused(false)}
+                  className={`w-full px-4 py-3.5 border rounded-xl bg-white transition-all duration-200 outline-none text-gray-900 placeholder-gray-400 ${
+                    emailFocused || email 
+                      ? 'border-gray-900 ring-4 ring-gray-900/5' 
+                      : 'border-gray-300 hover:border-gray-400'
+                  }`}
+                  required
+                  autoFocus
+                  autoComplete="email"
+                  aria-describedby={error ? 'email-error' : success ? 'email-success' : undefined}
+                />
+              </div>
             </div>
             
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-sm text-red-600">
+              <div 
+                id="email-error"
+                role="alert"
+                aria-live="polite"
+                className="flex items-start gap-3 p-4 bg-red-50 border border-red-200/80 rounded-xl"
+              >
+                <AlertCircle className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-red-700 leading-relaxed">
                   {error}
                 </p>
               </div>
             )}
 
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                type="submit"
-                onClick={handleSignIn}
-                disabled={loading}
-                className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            {success && (
+              <div 
+                id="email-success"
+                role="status"
+                aria-live="polite"
+                className="flex items-start gap-3 p-4 bg-green-50 border border-green-200/80 rounded-xl"
               >
-                {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    Signing in...
-                  </div>
-                ) : (
-                  'Sign In'
-                )}
-              </button>
-              
-              <button
-                type="submit"
-                onClick={handleSignUp}
-                disabled={loading}
-                className="flex-1 border border-blue-600 text-blue-600 py-3 px-6 rounded-lg font-medium hover:bg-blue-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-5 h-5 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                    Signing up...
-                  </div>
-                ) : (
-                  'Sign Up'
-                )}
-              </button>
-            </div>
-          </form>
+                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-green-700 leading-relaxed">
+                  {success}
+                </p>
+              </div>
+            )}
 
-          {/* Footer Note */}
-          <div className="mt-8 pt-6 border-t border-gray-100">
-            <p className="text-xs text-gray-500 text-center">
-              Your account is secure and protected with industry-standard encryption.
+            <button
+              type="submit"
+              disabled={loading || !email.trim()}
+              className="w-full bg-gray-900 text-white py-3.5 px-6 rounded-xl font-medium hover:bg-gray-800 active:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-gray-900/20"
+              aria-describedby="submit-help"
+            >
+              {loading ? (
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <span>Sending magic link...</span>
+                </div>
+              ) : (
+                'Send magic link'
+              )}
+            </button>
+            
+            <p id="submit-help" className="text-xs text-gray-500 text-center leading-relaxed">
+              We&apos;ll send you a secure link that signs you in instantly. No passwords required.
             </p>
-          </div>
+          </form>
         </div>
 
         {/* Back to Home */}
-        <div className="text-center mt-6">
+        <div className="text-center mt-8">
           <Link 
             href="/" 
-            className="text-sm text-gray-500 hover:text-gray-700 transition-colors inline-flex items-center gap-1"
+            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:ring-offset-2 rounded-lg px-3 py-2"
           >
-            <div className="w-4 h-4 bg-gray-400 rounded"></div>
-            Back to Home
+            <ArrowLeft className="w-4 h-4" />
+            <span>Back to Home</span>
           </Link>
         </div>
       </div>

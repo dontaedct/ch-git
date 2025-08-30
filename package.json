@@ -55,6 +55,7 @@
     "tool:ui:a11y": "npx -y playwright test tests/ui/a11y.spec.ts || true",
     "tool:ui:visual": "npx -y playwright test tests/ui/visual.spec.ts || true",
     "tool:ui:perf": "npx -y lhci autorun --config=design/lhci.config.cjs || true",
+    "tool:ui:perf:validate": "node design/scripts/validate-lhci.mjs",
     "tool:design:check": "npm run -s typecheck && npm run -s lint && npm run -s tool:ui:contracts && npm run -s tool:ui:a11y && npm run -s tool:ui:visual",
     "tool:ai:evaluate": "node -e \"console.log('[ai:evaluate] no configured evaluations — skipping'); process.exit(0)\"",
     "tool:ai:eval:ci": "node -e \"console.log('[ai:eval:ci] no configured CI evaluations — skipping'); process.exit(0)\"",
@@ -158,6 +159,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
     "@eslint/eslintrc": "^3",
+    "@lhci/cli": "^0.15.1",
     "@sentry/nextjs": "^10.3.0",
     "@testing-library/jest-dom": "^6.6.4",
     "@types/node": "^20",

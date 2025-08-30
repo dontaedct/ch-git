@@ -9,6 +9,8 @@ export const stripeCheckoutSchema = z.object({
   lineItems: z.array(z.object({
     price: z.string().min(1, 'Price ID is required'),
     quantity: z.number().int().min(1, 'Quantity must be at least 1'),
+    /** Amount in cents - required for fallback pricing to prevent calculation errors */
+    amount: z.number().int().positive('Amount must be positive').optional(),
   })).min(1, 'At least one line item is required'),
   
   /** Customer email (optional) */

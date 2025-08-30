@@ -88,8 +88,17 @@ export async function createStripeCheckout(
 
     // Fallback mode
     if (canFallback(config)) {
-      // Convert line items to fallback format
-      const totalAmount = calculateTotalAmount(checkoutData.lineItems);
+      // Convert line items to fallback format - validate amounts first
+      let totalAmount: number;
+      try {
+        totalAmount = calculateTotalAmount(checkoutData.lineItems);
+      } catch (error) {
+        return {
+          success: false,
+          error: error instanceof Error ? error.message : 'Unable to calculate fallback pricing',
+        };
+      }
+      
       const currency = 'usd'; // Default currency, should be configurable
       
       const fallbackData = {
@@ -139,16 +148,19 @@ export async function createStripeCheckout(
 
 /**
  * Calculate total amount from line items
- * Note: This is a simplified calculation. In practice, you'd fetch prices from Stripe.
+ * Note: This implementation requires explicit amounts in metadata to prevent pricing errors.
+ * In production, this would fetch prices from Stripe API or a price database.
  */
-function calculateTotalAmount(lineItems: Array<{ price: string; quantity: number }>): number {
-  // This is a placeholder - in real implementation, you'd look up prices
-  // For demo purposes, assuming price IDs encode the amount
+function calculateTotalAmount(lineItems: Array<{ price: string; quantity: number; amount?: number }>): number {
   return lineItems.reduce((total, item) => {
-    // Extract amount from price ID (this is just for demo)
-    const match = item.price.match(/price_(.*)_(\d+)/);
-    const amount = match ? parseInt(match[2]) : 1000; // Default $10.00
-    return total + (amount * item.quantity);
+    // Require explicit amount to prevent pricing errors
+    if (typeof item.amount !== 'number' || item.amount <= 0) {
+      throw new Error(
+        `Unable to determine price for item ${item.price}. ` +
+        'Fallback checkout requires explicit amounts to prevent pricing errors.'
+      );
+    }
+    return total + (item.amount * item.quantity);
   }, 0);
 }
 

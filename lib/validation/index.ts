@@ -110,3 +110,11 @@ export const signedUploadSchema = z.object({
 });
 
 export const mediaPathSchema = z.string().min(1);
+
+export const confirmUploadSchema = z.object({
+  client_id: z.string().uuid(),
+  path: z.string().min(1),
+  filename: z.string().min(1),
+  mime_type: z.string().min(3),
+  size_bytes: z.number().int().positive(),
+});

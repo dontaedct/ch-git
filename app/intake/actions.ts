@@ -1,13 +1,10 @@
 "use server";
 import { createServiceRoleSupabase } from "@/lib/supabase/server";
-
-
 import { intakeFormSchema } from "@/lib/validation";
 import { sendConfirmationEmail } from "@/lib/email";
-
 import { normalizePhone } from "@/lib/validation";
 import { splitName } from "@/lib/utils/splitName";
-
+import { logAuditEvent, recordConsent } from "@/lib/audit";
 import type { CreateClientIntakeParams } from "@/lib/supabase/rpc-types";
 
 type Result = Promise<{ ok: true } | { ok: false; error: string }>;
@@ -49,16 +46,40 @@ export async function createClientIntake(formData: FormData): Result {
       throw transactionError;
     }
 
+    // Log audit event for intake creation
+    await logAuditEvent("system-intake", {
+      action: "client_intake_created",
+      resourceType: "client",
+      details: {
+        email: parsed.email,
+        hasPhone: !!normalizedPhone,
+        consentGiven: parsed.consent
+      },
+      consentGiven: parsed.consent,
+      consentType: "marketing",
+      consentVersion: "1.0"
+    });
+
+    // Record consent if given
+    if (parsed.consent) {
+      await recordConsent("system-intake", {
+        consentType: "marketing",
+        consentVersion: "1.0",
+        consentGiven: true,
+        consentText: "I agree to be contacted about my coaching sessions and related information."
+      });
+    }
+
     // Send welcome transactional email (non-critical, can fail without rolling back DB)
     try {
       await sendConfirmationEmail({ 
         to: parsed.email, 
         session: { title: "Welcome", starts_at: new Date().toISOString() } 
       });
-          } catch (_emailError) {
-        console.warn('Failed to send welcome email:', _emailError);
-        // Don't fail the entire operation if email fails
-      }
+    } catch (_emailError) {
+      console.warn('Failed to send welcome email:', _emailError);
+      // Don't fail the entire operation if email fails
+    }
 
     return { ok: true };
   } catch (_e: unknown) {

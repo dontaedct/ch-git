@@ -307,7 +307,7 @@ export function recordBusinessMetric(
   
   try {
     const metrics = getBusinessMetrics();
-    if (metrics && metrics[metricName]) {
+    if (metrics?.[metricName]) {
       if (typeof metrics[metricName].add === 'function') {
         metrics[metricName].add(value, attributes);
       } else if (typeof metrics[metricName].record === 'function') {

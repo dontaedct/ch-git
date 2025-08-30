@@ -18,6 +18,7 @@ const customJestConfig = {
     '^@ui/(.*)$': '<rootDir>/components/ui/$1',
     '^@registry/(.*)$': '<rootDir>/lib/registry/$1',
     '^@compat/(.*)$': '<rootDir>/lib/compat/$1',
+    '^@dct/stripe-checkout$': '<rootDir>/packages/stripe-checkout/src/index.ts',
   },
   testPathIgnorePatterns: [
     '<rootDir>/.next/',

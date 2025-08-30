@@ -2,6 +2,7 @@
 
 import { createClientIntake } from "./actions";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -94,19 +95,52 @@ export default function Page() {
                 />
               </div>
 
-              {/* Consent Checkbox */}
-              <div className="space-y-3">
-                <label className="flex items-start gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    name="consent"
-                    className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:ring-2 mt-1"
-                    required
-                  />
-                  <span className="text-sm text-gray-600 leading-relaxed">
-                    I agree to be contacted about my coaching sessions and related information.
-                  </span>
-                </label>
+              {/* Enhanced Consent Section */}
+              <div className="space-y-4">
+                <div className="border-t border-gray-200 pt-4">
+                  <h3 className="text-sm font-medium text-gray-900 mb-3">Privacy & Communications</h3>
+                  
+                  {/* Privacy Consent */}
+                  <div className="space-y-3 mb-4">
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="privacy_consent"
+                        className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:ring-2 mt-1"
+                        required
+                      />
+                      <div className="flex-1">
+                        <span className="text-sm text-gray-600 leading-relaxed">
+                          I agree to the{" "}
+                          <Link href="/privacy" className="text-blue-600 hover:text-blue-700 underline">
+                            Privacy Policy
+                          </Link>
+                          {" "}and consent to the processing of my personal information.
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+
+                  {/* Marketing Consent */}
+                  <div className="space-y-3">
+                    <label className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name="marketing_consent"
+                        className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:ring-2 mt-1"
+                      />
+                      <div className="flex-1">
+                        <span className="text-sm text-gray-600 leading-relaxed">
+                          I agree to receive marketing communications about coaching services and related information.
+                          <span className="text-gray-400 block mt-1">(Optional - you can opt out anytime)</span>
+                        </span>
+                      </div>
+                    </label>
+                  </div>
+
+                  {/* Legacy consent field for backward compatibility */}
+                  <input type="hidden" name="consent" value="true" />
+                </div>
               </div>
 
               {/* Submit Button */}
@@ -132,7 +166,11 @@ export default function Page() {
             {/* Footer Note */}
             <div className="mt-8 pt-6 border-t border-gray-100">
               <p className="text-xs text-gray-500 text-center">
-                Your information is secure and will only be used for coaching purposes.
+                Your information is secure and will only be used for coaching purposes.{" "}
+                <Link href="/privacy" className="text-blue-600 hover:text-blue-700 underline">
+                  Learn more about our privacy practices
+                </Link>
+                .
               </p>
             </div>
           </div>

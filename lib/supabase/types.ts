@@ -19,6 +19,11 @@ export type Client = {
   emergency_contact?: string | null;
   auth_user_id?: string | null;
   last_login?: string | null;
+  marketing_consent?: boolean | null;
+  marketing_consent_date?: string | null;
+  privacy_consent?: boolean | null;
+  privacy_consent_date?: string | null;
+  consent_version?: string | null;
 };
 
 export type Session = {
@@ -207,3 +212,39 @@ export type FeatureFlag = {
 
 export type FeatureFlagInsert = Omit<FeatureFlag, 'id' | 'created_at'>;
 export type FeatureFlagUpdate = Partial<Omit<FeatureFlag, 'id' | 'created_at'>>;
+
+// Audit and Privacy Types
+export type AuditLog = {
+  id: string;
+  user_id?: string | null;
+  coach_id: string;
+  action: string;
+  resource_type: string;
+  resource_id?: string | null;
+  details?: Record<string, unknown> | null;
+  ip_address?: string | null;
+  user_agent?: string | null;
+  consent_given: boolean;
+  consent_type?: string | null;
+  consent_version?: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AuditLogInsert = Omit<AuditLog, 'id' | 'created_at' | 'updated_at'>;
+
+export type ConsentRecord = {
+  id: string;
+  user_id?: string | null;
+  coach_id: string;
+  consent_type: string;
+  consent_version: string;
+  consent_given: boolean;
+  consent_text: string;
+  ip_address?: string | null;
+  user_agent?: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ConsentRecordInsert = Omit<ConsentRecord, 'id' | 'created_at' | 'updated_at'>;

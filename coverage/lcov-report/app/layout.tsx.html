@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
@@ -112,7 +112,23 @@
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -125,6 +141,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,6 +186,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Suspense } from <span class="cstat-no" title="statement not covered" >'react';</span>
 import PageBoot from <span class="cstat-no" title="statement not covered" >'@/components/ui/skeletons/PageBoot';</span>
 import { getPublicEnv } from <span class="cstat-no" title="statement not covered" >'@/lib/env';</span>
+import { ThemeProvider, MotionProvider } from <span class="cstat-no" title="statement not covered" >'@/components/theme-provider';</span>
+import { TokensProvider } from <span class="cstat-no" title="statement not covered" >'@/lib/design-tokens/provider';</span>
+import { AuthProvider } from <span class="cstat-no" title="statement not covered" >'@/lib/auth/auth-context';</span>
+import { GlobalNav } from <span class="cstat-no" title="statement not covered" >'@/components/GlobalNav';</span>
+import { requireClient } from <span class="cstat-no" title="statement not covered" >'@/lib/auth/guard';</span>
 &nbsp;
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const <span class="cstat-no" title="statement not covered" >dynamic = <span class="cstat-no" title="statement not covered" >'</span>force-dynamic';</span>
@@ -174,9 +201,20 @@ export const <span class="cstat-no" title="statement not covered" >metadata = <s
 &nbsp;
 const isSafeMode = <span class="cstat-no" title="statement not covered" >getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';</span>
 &nbsp;
-export default function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >RootLayout({</span></span> children }: { children: React.ReactNode }) {
+export default async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >RootLayout({</span></span> children }: { children: React.ReactNode }) {
+  // Try to get client info for navigation
+  let client = <span class="cstat-no" title="statement not covered" >null;</span>
+  
+<span class="cstat-no" title="statement not covered" >  if (!isSafeMode) {</span>
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      client = await requireClient();</span>
+    } catch {
+      // No client authenticated, continue without
+    }
+  }
+&nbsp;
   return (
-    &lt;html lang="en"&gt;
+    &lt;html lang="en" suppressHydrationWarning&gt;
       &lt;body style={{ 
         minHeight: '100vh', 
         margin: 0, 
@@ -184,28 +222,23 @@ export default function <span class="cstat-no" title="statement not covered" ><s
         background: '#fff',
         color: '#111'
       }}&gt;
-&nbsp;
-        {<span class="branch-0 cbranch-no" title="branch not covered" >isSafeMode &amp;&amp; (</span>
-          &lt;div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 9998,
-            padding: '6px 10px',
-            fontSize: 12,
-            background: '#d4edda',
-            borderBottom: '1px solid #c3e6cb',
-            color: '#155724'
-          }}&gt;
-            🛡️ SAFE MODE • Bypassing auth guards and heavy data fetches
-          &lt;/div&gt;
-        )}
-        &lt;div style={{ paddingTop: 0 }}&gt;
-          &lt;Suspense fallback={&lt;PageBoot /&gt;}&gt;
-            {children}
-          &lt;/Suspense&gt;
-        &lt;/div&gt;
+        &lt;ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        &gt;
+          &lt;MotionProvider&gt;
+            &lt;TokensProvider&gt;
+              &lt;AuthProvider&gt;
+                &lt;GlobalNav client={client} isSafeMode={isSafeMode} /&gt;
+                &lt;Suspense fallback={&lt;PageBoot /&gt;}&gt;
+                  {children}
+                &lt;/Suspense&gt;
+              &lt;/AuthProvider&gt;
+            &lt;/TokensProvider&gt;
+          &lt;/MotionProvider&gt;
+        &lt;/ThemeProvider&gt;
       &lt;/body&gt;
     &lt;/html&gt;
   );
@@ -217,7 +250,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-27T20:17:47.716Z
+                at 2025-08-30T04:00:09.363Z
             </div>
         <script src="../prettify.js"></script>
         <script>

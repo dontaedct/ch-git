@@ -24,8 +24,8 @@ const customJestConfig = {
     '<rootDir>/node_modules/',
     '<rootDir>/tests/ui/',
     '<rootDir>/tests/playwright/',
+    '<rootDir>/tests/e2e/',
     '<rootDir>/design/templates/',
-
     '<rootDir>/attic/',
     '<rootDir>/examples/'
   ],
@@ -35,7 +35,64 @@ const customJestConfig = {
     'lib/**/*.{js,jsx,ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
+    '!**/coverage/**',
+    '!**/tests/**',
+    '!**/scripts/**',
+    '!**/bin/**',
+    '!**/design/**',
+    '!**/examples/**',
+    '!**/attic/**',
   ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'html', 'json'],
+  coverageThreshold: {
+    global: {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70,
+    },
+    // Stricter thresholds for critical paths
+    './lib/': {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+    './components/': {
+      branches: 75,
+      functions: 75,
+      lines: 75,
+      statements: 75,
+    },
+    './app/': {
+      branches: 70,
+      functions: 70,
+      lines: 70,
+      statements: 70,
+    },
+  },
+  // Test timeout configuration
+  testTimeout: 10000,
+  // Verbose output for debugging
+  verbose: true,
+  // Clear mocks between tests
+  clearMocks: true,
+  // Restore mocks after each test
+  restoreMocks: true,
+  // Test file patterns
+  testMatch: [
+    '<rootDir>/tests/**/*.test.{js,jsx,ts,tsx}',
+    '<rootDir>/tests/**/*.spec.{js,jsx,ts,tsx}',
+    '<rootDir>/**/__tests__/**/*.{js,jsx,ts,tsx}',
+    '<rootDir>/**/*.{test,spec}.{js,jsx,ts,tsx}',
+  ],
+  // Transform configuration
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+  },
+  // Module file extensions
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json'],
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

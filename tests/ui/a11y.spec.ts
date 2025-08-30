@@ -181,4 +181,111 @@ test.describe('OSS Hero Design Safety - AXE Accessibility Tests', () => {
     
     expect(accessibilityScanResults.violations).toEqual([]);
   });
+
+  test('should have proper ARIA attributes', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    
+    const accessibilityScanResults = await new AxeBuilder({ page })
+      .withRules(['aria-allowed-attr', 'aria-required-attr', 'aria-required-children', 'aria-required-parent'])
+      .analyze();
+    
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+
+  test('should have accessible interactive elements', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    
+    const accessibilityScanResults = await new AxeBuilder({ page })
+      .withRules(['button-name', 'link-name', 'input-button-name'])
+      .analyze();
+    
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+
+  test('should have proper focus management', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    
+    const accessibilityScanResults = await new AxeBuilder({ page })
+      .withRules(['focus-order-semantics', 'focusable-content', 'focusable-no-name'])
+      .analyze();
+    
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+
+  test('should have accessible navigation', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    
+    const accessibilityScanResults = await new AxeBuilder({ page })
+      .withRules(['landmark-one-main', 'landmark-unique', 'navigation-is-top-level'])
+      .analyze();
+    
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+
+  test('should have proper language attributes', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    
+    const accessibilityScanResults = await new AxeBuilder({ page })
+      .withRules(['html-has-lang', 'html-lang-valid'])
+      .analyze();
+    
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+
+  test('should have accessible tables', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    
+    const accessibilityScanResults = await new AxeBuilder({ page })
+      .withRules(['table-fake-caption', 'td-has-header', 'th-has-data-cells'])
+      .analyze();
+    
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
+
+  test('should have proper skip links', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    
+    // Check for skip links
+    const skipLinks = await page.locator('a[href^="#"]').filter({ hasText: /skip|jump/i }).count();
+    if (skipLinks > 0) {
+      // If skip links exist, they should be properly implemented
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .withRules(['skip-link'])
+        .analyze();
+      
+      expect(accessibilityScanResults.violations).toEqual([]);
+    } else {
+      // Skip links are optional but recommended
+      console.log('No skip links found - consider adding them for better accessibility');
+    }
+  });
+
+  test('should have proper motion preferences', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+    
+    // Check if reduced motion is respected
+    await page.addInitScript(() => {
+      window.matchMedia = window.matchMedia || function() {
+        return {
+          matches: false,
+          addListener: function() {},
+          removeListener: function() {}
+        };
+      };
+    });
+    
+    const accessibilityScanResults = await new AxeBuilder({ page })
+      .withRules(['prefers-reduced-motion'])
+      .analyze();
+    
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
 });

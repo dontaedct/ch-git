@@ -5,7 +5,7 @@
  * observability with business metrics, performance profiling, and security monitoring.
  */
 
-// Conditional imports to prevent webpack bundling issues in production
+// Dynamic imports to prevent Edge Runtime issues
 let NodeSDK: any = null;
 let Resource: any = null;
 let ATTR_SERVICE_NAME: any = null;
@@ -20,8 +20,13 @@ let metrics: any = null;
 let SpanStatusCode: any = null;
 let SpanKind: any = null;
 
-// Only import OpenTelemetry in development to prevent deployment issues
-if (process.env.NODE_ENV === 'development' && !process.env.VERCEL_ENV) {
+// Skip OpenTelemetry imports in Edge Runtime environments
+const isEdgeRuntime = typeof (globalThis as any).EdgeRuntime !== 'undefined' || 
+                     process.env.NEXT_RUNTIME === 'edge' ||
+                     process.env.NODE_ENV === 'production' || 
+                     process.env.VERCEL_ENV;
+
+if (!isEdgeRuntime && process.env.NODE_ENV === 'development') {
   try {
     ({ NodeSDK } = require('@opentelemetry/sdk-node'));
     ({ Resource } = require('@opentelemetry/resources'));
@@ -53,14 +58,13 @@ const OTEL_ENABLED = process.env.OTEL_ENABLED !== 'false';
 let sdk: any | null = null;
 
 export function initializeOpenTelemetry(): void {
-  // Temporarily disable OpenTelemetry during deployment to avoid Edge Runtime issues
-  if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV) {
-    logger.log('OpenTelemetry temporarily disabled for deployment compatibility');
-    return;
-  }
-
-  // Skip initialization in Edge Runtime environments
-  if (typeof (globalThis as any).EdgeRuntime !== 'undefined' || process.env.NEXT_RUNTIME === 'edge') {
+  // Skip OpenTelemetry in Edge Runtime environments
+  const isEdgeRuntime = typeof (globalThis as any).EdgeRuntime !== 'undefined' || 
+                       process.env.NEXT_RUNTIME === 'edge' ||
+                       process.env.NODE_ENV === 'production' || 
+                       process.env.VERCEL_ENV;
+  
+  if (isEdgeRuntime) {
     logger.log('OpenTelemetry skipped in Edge Runtime environment');
     return;
   }

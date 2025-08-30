@@ -5,6 +5,7 @@
  * user notifications, and error response formatting.
  */
 
+import React from 'react';
 import { NextRequest, NextResponse } from 'next/server';
 import { Logger } from '../logger';
 import {
@@ -76,8 +77,11 @@ export class UnifiedErrorHandler {
   processError(error: unknown, context: ErrorContext = {}): AppError {
     // If already an AppError, enhance with context
     if (isAppError(error)) {
-      error.context = { ...error.context, ...context };
-      return error;
+      // Create a new AppError with enhanced context since context is readonly
+      const enhancedError = Object.create(Object.getPrototypeOf(error));
+      Object.assign(enhancedError, error);
+      enhancedError.context = { ...error.context, ...context };
+      return enhancedError;
     }
 
     // Handle standard JavaScript errors
@@ -400,10 +404,10 @@ export function withErrorHandler(handler: Function) {
 export function withErrorBoundary<T extends Record<string, any>>(
   Component: React.ComponentType<T>,
   fallback?: React.ComponentType<{ error: AppError; reset: () => void }>
-) {
+): React.ComponentType<T> {
   return function ErrorBoundaryWrapper(props: T) {
     // This would be implemented with React Error Boundary
     // For now, this is a placeholder for the concept
-    return <Component {...props} />;
+    return React.createElement(Component, props);
   };
 }

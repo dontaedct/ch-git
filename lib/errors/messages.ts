@@ -405,6 +405,7 @@ export class ErrorMessageMapper {
   ): UserErrorMessage {
     // Check for exact code match first
     let userMessage = ERROR_MESSAGE_MAP[errorCode];
+    const isSpecificMessage = !!userMessage;
     
     // Fall back to category default
     if (!userMessage) {
@@ -413,10 +414,31 @@ export class ErrorMessageMapper {
     
     // Apply severity enhancements
     const severityEnhancement = SEVERITY_ENHANCEMENTS[severity];
-    const enhancedMessage = {
-      ...userMessage,
-      ...severityEnhancement
-    };
+    const enhancedMessage = { ...userMessage };
+    
+    // Apply variant enhancement intelligently
+    if (severityEnhancement.variant) {
+      if (isSpecificMessage) {
+        // For specific messages, only override if enhancement is more severe
+        const variantSeverity: Record<string, number> = { 'info': 1, 'warning': 2, 'error': 3 };
+        const originalSeverity = variantSeverity[userMessage.variant as string] || 0;
+        const enhancementSeverity = variantSeverity[severityEnhancement.variant] || 0;
+        
+        if (enhancementSeverity > originalSeverity) {
+          enhancedMessage.variant = severityEnhancement.variant;
+        }
+      } else {
+        // For category defaults, always apply severity enhancement
+        enhancedMessage.variant = severityEnhancement.variant;
+      }
+    }
+    
+    // Add helpText only if original doesn't have it, or if it's a CRITICAL severity override
+    if (severityEnhancement.helpText) {
+      if (!userMessage.helpText || severity === ErrorSeverity.CRITICAL) {
+        enhancedMessage.helpText = severityEnhancement.helpText;
+      }
+    }
     
     // Use custom message if provided and safe
     if (customMessage && this.isSafeCustomMessage(customMessage)) {

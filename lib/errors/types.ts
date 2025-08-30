@@ -49,6 +49,16 @@ export interface ErrorContext {
   userAgent?: string;
   ip?: string;
   timestamp?: string;
+  digest?: string;
+  stack?: string;
+  componentStack?: string;
+  source?: string;
+  filename?: string;
+  lineno?: number;
+  colno?: number;
+  severity?: ErrorSeverity;
+  originalError?: string;
+  errorValue?: string;
   additionalData?: Record<string, any>;
 }
 
@@ -547,14 +557,16 @@ export function createErrorContext(req?: any, additionalData?: Record<string, an
                    req.headers.get?.('x-real-ip') || req.headers['x-real-ip'];
     }
     
-    // Try to get trace ID from OpenTelemetry if available
-    try {
-      const getCurrentTraceId = require('../observability/otel').getCurrentTraceId;
-      if (getCurrentTraceId) {
-        context.traceId = getCurrentTraceId();
+    // Try to get trace ID from OpenTelemetry if available (only in server environment)
+    if (typeof window === 'undefined' && process.env.NODE_ENV !== 'production') {
+      try {
+        const getCurrentTraceId = require('../observability/otel').getCurrentTraceId;
+        if (getCurrentTraceId) {
+          context.traceId = getCurrentTraceId();
+        }
+      } catch (error) {
+        // OpenTelemetry not available, skip traceId
       }
-    } catch (error) {
-      // OpenTelemetry not available, skip traceId
     }
   }
 

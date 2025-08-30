@@ -9,7 +9,6 @@ export {
   AppError,
   ErrorSeverity,
   ErrorCategory,
-  ErrorContext,
   ValidationError,
   AuthenticationError,
   AuthorizationError,
@@ -26,6 +25,7 @@ export {
   isOperationalError,
   createErrorContext,
 } from './types';
+export type { ErrorContext } from './types';
 
 // Error handler and utilities
 export {
@@ -42,8 +42,8 @@ export {
 // User-safe message mapping
 export {
   ErrorMessageMapper,
-  type UserErrorMessage,
 } from './messages';
+export type { UserErrorMessage } from './messages';
 
 // Error context and providers
 export {
@@ -55,6 +55,7 @@ export {
 
 // Backward compatibility with existing error helpers
 export { ok, fail, asResponse, toHttpResponse } from '../errors';
+export type { Ok, Fail } from '../errors';
 
 /**
  * Legacy error handling utilities (deprecated - use new unified system)
@@ -70,91 +71,61 @@ export const legacy = {
   fail: legacyFail,
 };
 
+// Import the classes for factory use
+import {
+  ValidationError as ValidErr,
+  AuthenticationError as AuthErr,
+  AuthorizationError as AuthzErr,
+  DatabaseError as DbErr,
+  ExternalServiceError as ExtErr,
+  NetworkError as NetErr,
+  BusinessLogicError as BizErr,
+  NotFoundError as NotFoundErr,
+  RateLimitError as RateErr,
+  SecurityError as SecErr,
+  SystemError as SysErr,
+  ConflictError as ConflictErr,
+} from './types';
+
 /**
  * Convenience factory functions for common error types
  */
 export const createError = {
-  validation: (message: string, fieldErrors?: Record<string, string[]>, context?: Record<string, any>) =>
-    new ValidationError(message, fieldErrors, context),
+  validation: (message: string, fieldErrors: Record<string, string[]> = {}, context: Record<string, any> = {}) =>
+    new ValidErr(message, fieldErrors, context),
     
-  authentication: (message?: string, context?: Record<string, any>) =>
-    new AuthenticationError(message, context),
+  authentication: (message = 'Authentication failed', context: Record<string, any> = {}) =>
+    new AuthErr(message, context),
     
-  authorization: (message?: string, context?: Record<string, any>) =>
-    new AuthorizationError(message, context),
+  authorization: (message = 'Access denied', context: Record<string, any> = {}) =>
+    new AuthzErr(message, context),
     
-  database: (message: string, operation?: string, table?: string, context?: Record<string, any>) =>
-    new DatabaseError(message, operation, table, context),
+  database: (message: string, operation?: string, table?: string, context: Record<string, any> = {}) =>
+    new DbErr(message, operation, table, context),
     
-  externalService: (message: string, serviceName: string, statusCode?: number, context?: Record<string, any>) =>
-    new ExternalServiceError(message, serviceName, statusCode, context),
+  externalService: (message: string, serviceName: string, statusCode?: number, context: Record<string, any> = {}) =>
+    new ExtErr(message, serviceName, statusCode, context),
     
-  network: (message: string, timeout?: boolean, context?: Record<string, any>) =>
-    new NetworkError(message, timeout, context),
+  network: (message: string, timeout = false, context: Record<string, any> = {}) =>
+    new NetErr(message, timeout, context),
     
-  businessLogic: (message: string, businessRule?: string, context?: Record<string, any>, userSafeMessage?: string) =>
-    new BusinessLogicError(message, businessRule, context, userSafeMessage),
+  businessLogic: (message: string, businessRule?: string, context: Record<string, any> = {}, userSafeMessage?: string) =>
+    new BizErr(message, businessRule, context, userSafeMessage),
     
-  notFound: (message?: string, resource?: string, resourceId?: string, context?: Record<string, any>) =>
-    new NotFoundError(message, resource, resourceId, context),
+  notFound: (message = 'Resource not found', resource?: string, resourceId?: string, context: Record<string, any> = {}) =>
+    new NotFoundErr(message, resource, resourceId, context),
     
-  rateLimit: (message: string, limit: number, remaining: number, resetTime: Date, context?: Record<string, any>) =>
-    new RateLimitError(message, limit, remaining, resetTime, context),
+  rateLimit: (message: string, limit: number, remaining: number, resetTime: Date, context: Record<string, any> = {}) =>
+    new RateErr(message, limit, remaining, resetTime, context),
     
-  security: (message: string, securityEvent: string, context?: Record<string, any>) =>
-    new SecurityError(message, securityEvent, context),
+  security: (message: string, securityEvent: string, context: Record<string, any> = {}) =>
+    new SecErr(message, securityEvent, context),
     
-  system: (message?: string, context?: Record<string, any>) =>
-    new SystemError(message, context),
+  system: (message = 'System error occurred', context: Record<string, any> = {}) =>
+    new SysErr(message, context),
     
-  conflict: (message?: string, conflictType?: string, context?: Record<string, any>) =>
-    new ConflictError(message, conflictType, context),
+  conflict: (message = 'Resource conflict', conflictType?: string, context: Record<string, any> = {}) =>
+    new ConflictErr(message, conflictType, context),
 };
 
-/**
- * Quick error response helpers for API routes
- */
-export const errorResponse = {
-  badRequest: (message: string = 'Bad request', context?: Record<string, any>) =>
-    handleApiError(createError.validation(message, {}, context)),
-    
-  unauthorized: (message?: string, context?: Record<string, any>) =>
-    handleApiError(createError.authentication(message, context)),
-    
-  forbidden: (message?: string, context?: Record<string, any>) =>
-    handleApiError(createError.authorization(message, context)),
-    
-  notFound: (resource?: string, resourceId?: string, context?: Record<string, any>) =>
-    handleApiError(createError.notFound(undefined, resource, resourceId, context)),
-    
-  conflict: (message?: string, conflictType?: string, context?: Record<string, any>) =>
-    handleApiError(createError.conflict(message, conflictType, context)),
-    
-  tooManyRequests: (limit: number, remaining: number, resetTime: Date, context?: Record<string, any>) =>
-    handleApiError(createError.rateLimit('Rate limit exceeded', limit, remaining, resetTime, context)),
-    
-  internalServerError: (message?: string, context?: Record<string, any>) =>
-    handleApiError(createError.system(message, context)),
-    
-  serviceUnavailable: (serviceName: string, statusCode?: number, context?: Record<string, any>) =>
-    handleApiError(createError.externalService('Service unavailable', serviceName, statusCode, context)),
-};
-
-// Re-export UI components for convenience
-export type {
-  ErrorNotificationProps,
-  ErrorToastProps,
-  InlineErrorProps,
-  ErrorPageProps,
-} from '../../components/ui/error-notification';
-
-export {
-  ErrorNotification,
-  ErrorToast,
-  InlineError,
-  ErrorPage,
-  ValidationErrorNotification,
-  NetworkErrorNotification,
-  AuthErrorNotification,
-  useErrorNotification,
-} from '../../components/ui/error-notification';
+// Note: UI components can be imported directly from components/ui/error-notification

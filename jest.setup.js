@@ -55,3 +55,61 @@ Object.defineProperty(window, 'matchMedia', {
 // Polyfill TextEncoder for Node.js environment
 global.TextEncoder = require('util').TextEncoder;
 global.TextDecoder = require('util').TextDecoder;
+
+// Mock Next.js server components
+jest.mock('next/server', () => {
+  const mockNextResponse = {
+    json: jest.fn().mockImplementation((data, init) => {
+      const response = {
+        status: init?.status || 200,
+        headers: new Map(Object.entries(init?.headers || {})),
+        json: jest.fn().mockResolvedValue(data),
+      };
+      // Add getter for status if needed
+      Object.defineProperty(response, 'status', {
+        get: () => init?.status || 200,
+        set: () => {},
+      });
+      return response;
+    }),
+    next: jest.fn().mockReturnValue({
+      status: 200,
+      headers: new Map()
+    })
+  };
+
+  return {
+    NextRequest: jest.fn().mockImplementation((url, init) => ({
+      url,
+      method: init?.method || 'GET',
+      headers: new Map(Object.entries(init?.headers || {})),
+      ...init
+    })),
+    NextResponse: mockNextResponse
+  };
+});
+
+// Mock Web APIs for Node environment
+if (typeof Request === 'undefined') {
+  global.Request = class MockRequest {
+    constructor(url, init = {}) {
+      this.url = url;
+      this.method = init.method || 'GET';
+      this.headers = new Map(Object.entries(init.headers || {}));
+    }
+  };
+}
+
+if (typeof Response === 'undefined') {
+  global.Response = class MockResponse {
+    constructor(body, init = {}) {
+      this.status = init.status || 200;
+      this.headers = new Map(Object.entries(init.headers || {}));
+      this.body = body;
+    }
+    
+    json() {
+      return Promise.resolve(JSON.parse(this.body));
+    }
+  };
+}

@@ -26,11 +26,6 @@ import {
   createErrorContext,
 } from '../../lib/errors/types';
 
-// Mock UUID for consistent testing
-jest.mock('uuid', () => ({
-  v4: jest.fn(() => 'test-uuid-12345')
-}));
-
 describe('AppError Base Class', () => {
   it('should create an AppError with required properties', () => {
     const error = new ValidationError('Test error message');
@@ -44,7 +39,7 @@ describe('AppError Base Class', () => {
     expect(error.severity).toBe(ErrorSeverity.LOW);
     expect(error.httpStatus).toBe(400);
     expect(error.isOperational).toBe(true);
-    expect(error.correlationId).toBe('test-uuid-12345');
+    expect(error.correlationId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);
     expect(typeof error.timestamp).toBe('string');
   });
 
@@ -62,7 +57,7 @@ describe('AppError Base Class', () => {
       name: 'ValidationError',
       message: 'Test error',
       code: 'VALIDATION_ERROR',
-      correlationId: 'test-uuid-12345',
+      correlationId: expect.stringMatching(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/),
       category: ErrorCategory.VALIDATION,
       severity: ErrorSeverity.LOW,
       httpStatus: 400,
@@ -72,7 +67,8 @@ describe('AppError Base Class', () => {
       context: expect.objectContaining({
         userId: '123',
         timestamp: expect.any(String)
-      })
+      }),
+      fieldErrors: expect.any(Object)
     });
   });
 

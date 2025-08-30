@@ -61,9 +61,9 @@ interface ErrorContextType extends ErrorState {
   showInfo: (message: string) => void;
   
   // Error handling methods
-  handleApiError: (error: unknown, context?: Record<string, any>) => AppError;
-  handleFormError: (error: unknown, context?: Record<string, any>) => AppError;
-  handleNetworkError: (error: unknown, context?: Record<string, any>) => AppError;
+  handleApiError: (error: AppError | Error | string, context?: Record<string, any>) => AppError;
+  handleFormError: (error: AppError | Error | string, context?: Record<string, any>) => AppError;
+  handleNetworkError: (error: AppError | Error | string, context?: Record<string, any>) => AppError;
 }
 
 /**
@@ -275,14 +275,7 @@ export function ErrorProvider({
    * Convenience methods for different types of notifications
    */
   const showSuccess = useCallback((message: string) => {
-    const successError = {
-      code: 'SUCCESS',
-      category: ErrorCategory.SYSTEM,
-      severity: ErrorSeverity.LOW,
-      getUserSafeMessage: () => message,
-      correlationId: `success-${Date.now()}`,
-      retryable: false,
-    } as AppError;
+    const successError = processError(`SUCCESS: ${message}`, { source: 'user-success' });
     
     dispatch({ type: 'ADD_NOTIFICATION', error: successError });
     
@@ -294,14 +287,7 @@ export function ErrorProvider({
   }, [autoRemoveNotifications, notificationDuration]);
 
   const showWarning = useCallback((message: string) => {
-    const warningError = {
-      code: 'WARNING',
-      category: ErrorCategory.SYSTEM,
-      severity: ErrorSeverity.MEDIUM,
-      getUserSafeMessage: () => message,
-      correlationId: `warning-${Date.now()}`,
-      retryable: false,
-    } as AppError;
+    const warningError = processError(`WARNING: ${message}`, { source: 'user-warning' });
     
     dispatch({ type: 'ADD_NOTIFICATION', error: warningError });
     
@@ -313,14 +299,7 @@ export function ErrorProvider({
   }, [autoRemoveNotifications, notificationDuration]);
 
   const showInfo = useCallback((message: string) => {
-    const infoError = {
-      code: 'INFO',
-      category: ErrorCategory.SYSTEM,
-      severity: ErrorSeverity.LOW,
-      getUserSafeMessage: () => message,
-      correlationId: `info-${Date.now()}`,
-      retryable: false,
-    } as AppError;
+    const infoError = processError(`INFO: ${message}`, { source: 'user-info' });
     
     dispatch({ type: 'ADD_NOTIFICATION', error: infoError });
     
@@ -335,7 +314,7 @@ export function ErrorProvider({
    * Specialized error handlers
    */
   const handleApiError = useCallback((
-    error: unknown,
+    error: AppError | Error | string,
     context?: Record<string, any>
   ): AppError => {
     const appError = addError(error, { ...context, source: 'api' });
@@ -344,14 +323,14 @@ export function ErrorProvider({
   }, [addError, showNotification]);
 
   const handleFormError = useCallback((
-    error: unknown,
+    error: AppError | Error | string,
     context?: Record<string, any>
   ): AppError => {
     return addError(error, { ...context, source: 'form' });
   }, [addError]);
 
   const handleNetworkError = useCallback((
-    error: unknown,
+    error: AppError | Error | string,
     context?: Record<string, any>
   ): AppError => {
     const appError = addError(error, { ...context, source: 'network' });
@@ -365,7 +344,7 @@ export function ErrorProvider({
   useEffect(() => {
     const handleGlobalError = (event: ErrorEvent) => {
       const error = event.error || event.message;
-      setGlobalError(error, { 
+      setGlobalError(error as Error | string, { 
         source: 'global', 
         filename: event.filename,
         lineno: event.lineno,
@@ -374,7 +353,7 @@ export function ErrorProvider({
     };
 
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      setGlobalError(event.reason, { source: 'promise' });
+      setGlobalError(event.reason as Error | string, { source: 'promise' });
     };
 
     window.addEventListener('error', handleGlobalError);
@@ -430,20 +409,20 @@ export function useError(): ErrorContextType {
 export function useAsyncError() {
   const { addError, setLoading, showNotification } = useError();
 
-  const executeAsync = useCallback(async <T>(
+  const executeAsync = useCallback(async function<T>(
     asyncFn: () => Promise<T>,
     options?: {
       showNotification?: boolean;
       context?: Record<string, any>;
       onError?: (error: AppError) => void;
     }
-  ): Promise<T | null> => {
+  ): Promise<T | null> {
     try {
       setLoading(true);
       const result = await asyncFn();
       return result;
     } catch (error) {
-      const appError = addError(error, options?.context);
+      const appError = addError(error as Error | string, options?.context);
       
       if (options?.showNotification !== false) {
         showNotification(appError);
@@ -507,7 +486,7 @@ export class ErrorBoundary extends React.Component<
     
     // Log to error handler
     errorHandler.handleServerError(error, {
-      componentStack: errorInfo.componentStack,
+      componentStack: errorInfo.componentStack || undefined,
       source: 'react-error-boundary'
     });
   }

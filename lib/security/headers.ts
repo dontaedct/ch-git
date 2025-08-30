@@ -50,7 +50,15 @@ const BOT_PATTERNS = [
   /http\.client/i,
   /axios/i,
   /libwww/i,
-  /perl/i
+  /perl/i,
+  /facebookexternalhit/i,
+  /whatsapp/i,
+  /linkedinbot/i,
+  /twitterbot/i,
+  /googlebot/i,
+  /bingbot/i,
+  /slackbot/i,
+  /telegrambot/i
 ];
 
 /**
@@ -75,10 +83,13 @@ const HIGH_RISK_ROUTES = [
 
 /**
  * Generate a cryptographic nonce for CSP
+ * Uses Web Crypto API for Edge Runtime compatibility
  */
 export function generateNonce(): string {
-  const crypto = require('crypto');
-  return crypto.randomBytes(16).toString('base64');
+  // Use Web Crypto API for Edge Runtime compatibility
+  const array = new Uint8Array(16);
+  crypto.getRandomValues(array);
+  return btoa(String.fromCharCode(...array));
 }
 
 /**
@@ -109,8 +120,9 @@ export function calculateRiskLevel(
     riskScore += 3;
   }
   
-  // High-risk routes
-  if (HIGH_RISK_ROUTES.some(route_pattern => route.startsWith(route_pattern))) {
+  // High-risk routes (extract pathname from full URL for matching)
+  const routeForMatching = route.startsWith('http') ? new URL(route).pathname : route;
+  if (HIGH_RISK_ROUTES.some(route_pattern => routeForMatching.startsWith(route_pattern))) {
     riskScore += 2;
   }
   
@@ -118,8 +130,13 @@ export function calculateRiskLevel(
   if (!userAgent || userAgent.length < 10) riskScore += 1;
   
   // Very short or very long user agents
-  if (userAgent && (userAgent.length < 20 || userAgent.length > 300)) {
+  if (userAgent && userAgent.length < 20) {
     riskScore += 1;
+  }
+  
+  // Very long user agents are more suspicious
+  if (userAgent && userAgent.length > 300) {
+    riskScore += 2;
   }
   
   // Common attack patterns in route
@@ -141,9 +158,11 @@ export function createSecurityContext(req: NextRequest): SecurityContext {
              "unknown").split(",")[0].trim();
   
   const userAgent = req.headers.get("user-agent") || "";
-  const route = new URL(req.url).pathname;
+  const url = new URL(req.url);
+  const route = url.pathname; // Store just pathname in context
   const isBot = detectBot(userAgent);
-  const riskLevel = calculateRiskLevel(ip, userAgent, route, isBot);
+  // Use original URL string for security pattern detection to avoid normalization
+  const riskLevel = calculateRiskLevel(ip, userAgent, req.url, isBot);
   
   return {
     ip,
@@ -297,14 +316,17 @@ export function securityHeadersMiddleware(req: NextRequest): {
   const context = createSecurityContext(req);
   const headers = generateSecurityHeaders(context);
   
+  // Use original URL string to detect malicious patterns before normalization
+  const originalUrl = req.url;
+  
   // Determine if request should be blocked
   let shouldBlock = false;
   let blockReason: string | undefined;
   
-  // Block obviously malicious requests
-  if (context.route.includes('..') || 
-      context.route.includes('<script') ||
-      /union.*select/i.test(context.route)) {
+  // Block obviously malicious requests (check original URL to catch path traversal)
+  if (originalUrl.includes('..') || 
+      originalUrl.includes('<script') ||
+      /union.*select/i.test(originalUrl)) {
     shouldBlock = true;
     blockReason = 'malicious_route_pattern';
   }

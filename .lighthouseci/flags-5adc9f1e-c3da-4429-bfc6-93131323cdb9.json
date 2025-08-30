@@ -1,0 +1,1 @@
+{"emulatedFormFactor":"mobile","throttling":{"rttMs":40,"throughputKbps":10240,"cpuSlowdownMultiplier":1,"requestLatencyMs":0,"downloadThroughputKbps":0,"uploadThroughputKbps":0},"skipAudits":["uses-http2","uses-long-cache-ttl","efficient-animated-content"],"chromeFlags":" --headless=new"}

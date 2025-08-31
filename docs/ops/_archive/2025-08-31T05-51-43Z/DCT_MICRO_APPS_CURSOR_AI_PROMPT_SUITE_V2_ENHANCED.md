@@ -5,31 +5,37 @@
 ## **STRATEGIC PHASED APPROACH**
 
 ### **Phase 1: Foundation & Infrastructure** (Prompts 01-06)
+
 - Baseline, environment, diagnostics, CLI, CI/CD, automation
 - **Branch**: `ops/phase-1-foundation`
 - **Goal**: Solid foundation for everything else
 
-### **Phase 2: Security & Observability** (Prompts 07-12)  
+### **Phase 2: Security & Observability** (Prompts 07-12)
+
 - Security headers, scans, OpenTelemetry, health, SLOs, performance
 - **Branch**: `ops/phase-2-security-observability`
 - **Goal**: Production-grade security and monitoring
 
 ### **Phase 3: Testing & Quality Assurance** (Prompts 13-17)
+
 - Accessibility, testing pyramid, contract tests, error handling, privacy
 - **Branch**: `ops/phase-3-testing-quality`
 - **Goal**: Quality that enforces itself
 
 ### **Phase 4: Modular Architecture & Blocks** (Prompts 18-25)
+
 - Extract reusable components into packages, build blocks
 - **Branch**: `ops/phase-4-blocks-extraction`
 - **Goal**: Modular, reusable architecture
 
 ### **Phase 5: Presets & Business Logic** (Prompts 26-30)
+
 - RBAC, vertical presets, business workflows, documentation
 - **Branch**: `ops/phase-5-presets-integration`
 - **Goal**: Vertical-specific implementations
 
 ### **Phase 6: Production Readiness & Polish** (Prompts 31-36)
+
 - Release tooling, monorepo optimization, validation, delivery
 - **Branch**: `ops/phase-6-final-polish`
 - **Goal**: Production-ready delivery
@@ -39,6 +45,7 @@
 ## **PHASE 1: FOUNDATION & INFRASTRUCTURE**
 
 ### 01) Baseline repo snapshot & risk log
+
 ```text
 [CONTEXT]
 - Date Check: Before doing anything, print the current local date/time in ISO (Node one-liner ok). Include it in your final summary as `RUN_DATE=YYYY-MM-DDTHH:mm:ssZ`.
@@ -91,6 +98,7 @@ D. **Verify**: Repo builds; docs generated; commit history readable.
 ```
 
 ### 02) Environment schema + `env:doctor` (warn‑but‑run)
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE in ISO; include in summary.
@@ -110,7 +118,7 @@ D. **Verify**: Repo builds; docs generated; commit history readable.
 [TASKS]
 A. **Audit**: From `config-inventory.md`, enumerate all env vars; classify as REQUIRED|OPTIONAL per feature.
 B. **Decide**: Organize into modules: `env.app`, `env.integrations`, `env.security`, `env.observability`.
-C. **Apply**: 
+C. **Apply**:
    - Create `packages/lib/env.ts` exporting typed, validated env with runtime validation.
    - Create `.env.example` with commented explanations, placeholders, and security notes.
    - Add `npm run env:doctor` → prints a table: Name | Required? | Set? | Using Placeholder? | Feature Impact | Security Level.
@@ -134,6 +142,7 @@ D. **Verify**: Run without real secrets. App should build and run with warnings,
 ```
 
 ### 03) Admin Diagnostics route (`/admin/diagnostics`)
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -153,7 +162,7 @@ D. **Verify**: Run without real secrets. App should build and run with warnings,
 [TASKS]
 A. **Audit**: Identify current admin/auth pattern and security requirements.
 B. **Decide**: Use a lightweight card grid with sections: Env, Flags, Routes, Webhooks, Queues, Performance, Security.
-C. **Apply**: 
+C. **Apply**:
    - Add `app/admin/diagnostics/page.tsx` fetching from `api/diagnostics` server route.
    - Implement real-time health monitoring with WebSocket updates.
    - Add diagnostic export to JSON/CSV for support purposes.
@@ -177,6 +186,7 @@ D. **Verify**: With empty env, page shows mostly yellow, app still runs, real-ti
 ```
 
 ### 04) Feature tiers (Starter/Pro/Advanced) + preset wiring
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -194,7 +204,7 @@ D. **Verify**: With empty env, page shows mostly yellow, app still runs, real-ti
 [TASKS]
 A. **Audit**: Enumerate current features by tier and identify upgrade paths.
 B. **Decide**: Define `packages/templates/presets/*.json` (e.g., `salon-waitlist.json`, `realtor-listing-hub.json`, `consultation-engine.json`).
-C. **Apply**: 
+C. **Apply**:
    - Add `app.config.ts` shape `{ tier: 'starter'|'pro'|'advanced', preset: string, features: FeatureConfig }` consumed at build.
    - Implement dynamic feature loading based on tier configuration.
    - Add tier migration utilities for seamless upgrades.
@@ -218,6 +228,7 @@ D. **Verify**: Toggle tiers and see sections appear/disappear without errors, mi
 ```
 
 ### 05) CLI initializer `npx dct init`
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -236,7 +247,7 @@ D. **Verify**: Toggle tiers and see sections appear/disappear without errors, mi
 [TASKS]
 A. **Audit**: Confirm repo structure and where to place CLI (`tools/cli`).
 B. **Decide**: CLI UX, idempotency (re‑run safe), and validation rules.
-C. **Apply**: 
+C. **Apply**:
    - Implement `bin/dct.js` (or ts) and add `npx dct init` script via `package.json` bin.
    - Add intelligent defaults and preset-specific configurations.
    - Implement input validation with helpful error messages.
@@ -260,6 +271,7 @@ D. **Verify**: Run end‑to‑end on a clean checkout, test all presets, validat
 ```
 
 ### 06) CI pipeline scaffold (lint → typecheck → test → build)
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -278,7 +290,7 @@ D. **Verify**: Run end‑to‑end on a clean checkout, test all presets, validat
 [TASKS]
 A. **Audit**: Detect ESLint/TS/test runner and identify optimization opportunities.
 B. **Decide**: Name jobs and artifacts; minimal secrets; parallelization strategy.
-C. **Apply**: 
+C. **Apply**:
    - `.github/workflows/ci.yml` with optimized steps and parallel execution.
    - Upload test coverage artifact with trend analysis.
    - Add performance regression detection.
@@ -312,6 +324,7 @@ D. **Verify**: CI passes on PR with improved performance metrics.
 ## **PHASE 2: SECURITY & OBSERVABILITY**
 
 ### 07) Renovate (safe auto‑updates)
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -330,7 +343,7 @@ D. **Verify**: CI passes on PR with improved performance metrics.
 [TASKS]
 A. **Audit**: Current deps risk (outdated major versions, known vulnerabilities).
 B. **Decide**: Policy for automerge, security thresholds, and update windows.
-C. **Apply**: 
+C. **Apply**:
    - `renovate.json` with intelligent grouping and security prioritization.
    - Dependency health monitoring and scoring system.
    - Automated vulnerability assessment and reporting.
@@ -353,6 +366,7 @@ D. **Verify**: Dry‑run config, security scanning works, dependency health is t
 ```
 
 ### 08) Security headers + rate limiting middleware
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -371,7 +385,7 @@ D. **Verify**: Dry‑run config, security scanning works, dependency health is t
 [TASKS]
 A. **Audit**: Existing headers, middleware, and security patterns.
 B. **Decide**: Helmet‑style headers without heavy deps; implement native Next config.
-C. **Apply**: 
+C. **Apply**:
    - Add middleware for rate limits on `/api/*`, `/admin/*` with IP reputation.
    - Implement comprehensive security headers with CSP, HSTS, etc.
    - Add bot detection and protection mechanisms.
@@ -396,6 +410,7 @@ D. **Verify**: Headers present, 429 on flood, bot protection works, security eve
 ```
 
 ### 09) SBOM, SAST, dep scans (Trivy/CodeQL)
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -414,7 +429,7 @@ D. **Verify**: Headers present, 429 on flood, bot protection works, security eve
 [TASKS]
 A. **Audit**: Existing CI, security tools, and compliance requirements.
 B. **Decide**: Which scanners fit current stack and security requirements.
-C. **Apply**: 
+C. **Apply**:
    - Add SBOM generation with provenance tracking.
    - Implement Trivy (or similar) with automated triage.
    - Enable GitHub CodeQL with custom security policies.
@@ -439,6 +454,7 @@ D. **Verify**: CI runs, artifacts published, security policies enforced, complia
 ```
 
 ### 10) OpenTelemetry + pino logging
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -457,7 +473,7 @@ D. **Verify**: CI runs, artifacts published, security policies enforced, complia
 [TASKS]
 A. **Audit**: Where server entrypoints are and what business metrics matter.
 B. **Decide**: Minimal vendor‑agnostic setup with business context.
-C. **Apply**: 
+C. **Apply**:
    - `packages/observability/*` with comprehensive OTel initialization.
    - `logger.ts` using pino with business context and correlation.
    - Business metrics and KPI tracking system.
@@ -482,6 +498,7 @@ D. **Verify**: Traces/logs emitted locally, no runtime perf regression, business
 ```
 
 ### 11) Health/Readiness endpoints + RED metrics
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -500,7 +517,7 @@ D. **Verify**: Traces/logs emitted locally, no runtime perf regression, business
 [TASKS]
 A. **Audit**: Existing endpoints, business flows, and critical dependencies.
 B. **Decide**: Health checks that provide business value and operational insight.
-C. **Apply**: 
+C. **Apply**:
    - Implement comprehensive health and readiness endpoints.
    - Add RED metrics with business context and correlation.
    - Create automated health scoring and trend analysis.
@@ -525,6 +542,7 @@ D. **Verify**: Endpoints respond correctly, metrics are meaningful, health scori
 ```
 
 ### 12) SLOs + CI guardrails
+
 ```text
 [CONTEXT]
 - Date Check: Print RUN_DATE.
@@ -543,7 +561,7 @@ D. **Verify**: Endpoints respond correctly, metrics are meaningful, health scori
 [TASKS]
 A. **Audit**: Current metrics availability and business impact assessment.
 B. **Decide**: Targets: 99.9% avail, P95<500ms, error<0.1%, business impact scoring.
-C. **Apply**: 
+C. **Apply**:
    - Define comprehensive SLOs with business context.
    - Implement automated SLO monitoring and alerting.
    - Add error budget tracking and trend analysis.

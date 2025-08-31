@@ -53,7 +53,11 @@
       "Bash(git rm:*)",
       "Bash(gh pr merge:*)",
       "Bash(npx changeset:*)",
-      "Bash(gh issue create:*)"
+      "Bash(gh issue create:*)",
+      "Bash(gh issue list:*)",
+      "Bash(npx knip:*)",
+      "Bash(npx ts-prune:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []

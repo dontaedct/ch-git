@@ -1,0 +1,29 @@
+*** Begin Patch
+*** Update File: package.json
+@@
+   "scripts": {
++    "prepare": "npm run tool:prepare",
+@@
+   },
+   "devDependencies": {
+@@
+-    "eslint-config-next": "15.4.6",
++    "eslint-config-next": "15.4.6",
++    "@commitlint/cli": "^19.4.0",
++    "@commitlint/config-conventional": "^19.4.0",
++    "lint-staged": "^15.2.9",
++    "prettier": "^3.3.3",
+@@
+     "typescript": "^5"
+-  }
++  },
++  "lint-staged": {
++    "*.{js,jsx,ts,tsx}": [
++      "eslint --fix"
++    ],
++    "*.{json,md,css,scss,html,mdx,graphql,yml,yaml,css}": [
++      "prettier --write"
++    ]
++  }
+ }
+*** End Patch

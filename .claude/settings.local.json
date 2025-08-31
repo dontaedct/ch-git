@@ -44,7 +44,16 @@
       "Bash(git remote prune:*)",
       "Bash(git branch:*)",
       "Bash(gh repo view:*)",
-      "Bash(git clean:*)"
+      "Bash(git clean:*)",
+      "Bash(npm view:*)",
+      "Bash(gh pr comment:*)",
+      "Bash(dir)",
+      "Bash(curl:*)",
+      "Bash(echo:*)",
+      "Bash(git rm:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(npx changeset:*)",
+      "Bash(gh issue create:*)"
     ],
     "deny": [],
     "ask": []

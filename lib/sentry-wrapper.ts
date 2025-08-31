@@ -1,5 +1,17 @@
-// Temporarily disabled to fix build issues
-// import * as Sentry from "@sentry/nextjs";
+// Best-effort optional import to avoid build issues when Sentry is not installed
+let Sentry: any = null;
+try {
+   
+  Sentry = require("@sentry/nextjs");
+} catch {}
+// Initialize server SDK when DSN is present (no-op otherwise)
+try {
+   
+  const { sentryServerInit } = require("../sentry.server.config");
+  if (typeof sentryServerInit === 'function') {
+    sentryServerInit();
+  }
+} catch {}
 import { toHttpResponse } from "./errors";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,11 +26,11 @@ export function withSentry(handler: RouteHandler): RouteHandler {
       return await handler(request, context);
     } catch (error) {
       // Capture error in Sentry if available
-      // Temporarily disabled to fix build issues
-      // if (process.env.SENTRY_DSN) {
-      //   // Add request context to Sentry
-      //   Sentry.captureException(error);
-      // }
+      if (process.env.SENTRY_DSN && Sentry && typeof Sentry.captureException === 'function') {
+        try {
+          Sentry.captureException(error);
+        } catch {}
+      }
       
       // Return NextResponse using existing error handling
       if (error instanceof Error) {

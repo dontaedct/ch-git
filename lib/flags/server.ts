@@ -202,17 +202,18 @@ export async function setFlags(
 export async function isAdmin(userId: string): Promise<boolean> {
   try {
     const supabase = await createServerClient();
-    const { data, error } = await supabase
-      .from('auth.users')
-      .select('raw_user_meta_data')
+    // Prefer canonical role from clients table
+    const { data: client, error } = await supabase
+      .from('clients')
+      .select('id, role')
       .eq('id', userId)
       .single();
 
-    if (error || !data) {
+    if (error || !client) {
       return false;
     }
 
-    return data.raw_user_meta_data?.role === 'admin';
+    return client.role === 'admin' || client.role === 'owner';
   } catch (error) {
     console.error('Error checking admin status:', error);
     return false;

@@ -34,64 +34,97 @@ const nextConfig: NextConfig = {
   // TypeScript build errors are now enforced for strict CI
   typescript: { ignoreBuildErrors: false },
 
-  async headers() {
-    const isPreview = process.env.VERCEL_ENV === 'preview';
-    const isProduction = process.env.NODE_ENV === 'production';
+  // Webpack configuration to handle Node.js built-in modules
+  webpack: (config, { isServer, dev }) => {
+    // Handle Node.js built-in modules for client-side bundles
+    if (!isServer) {
+      // Alias OpenTelemetry to client stub on client-side
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        './observability/otel': require.resolve('./lib/observability/otel.client.ts'),
+      };
+      
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: false,
+        stream: false,
+        url: false,
+        zlib: false,
+        http: false,
+        https: false,
+        assert: false,
+        os: false,
+        path: false,
+        util: false,
+        buffer: false,
+        process: false,
+        v8: false,
+        perf_hooks: false,
+        // Handle node: prefixed modules
+        'node:perf_hooks': false,
+        'node:crypto': false,
+        'node:stream': false,
+        'node:util': false,
+        'node:buffer': false,
+        'node:process': false,
+        'node:fs': false,
+        'node:path': false,
+        'node:os': false,
+        'node:net': false,
+        'node:tls': false,
+        'node:http': false,
+        'node:https': false,
+        'node:zlib': false,
+        'node:url': false,
+        'node:assert': false,
+        'node:v8': false,
+      };
+    }
     
-    // Strict production CSP with reporting
-    const productionCsp = [
-      "default-src 'self'",
-      "script-src 'self' 'nonce-{NONCE}' https://js.stripe.com",
-      "script-src-elem 'self' 'nonce-{NONCE}' https://js.stripe.com",
-      "style-src 'self' 'nonce-{NONCE}' https://fonts.googleapis.com",
-      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://*.stripe.com",
-      "media-src 'self' blob:",
-      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://api.stripe.com https://*.sentry.io wss://*.supabase.co",
-      "font-src 'self' data: https://fonts.gstatic.com",
-      "frame-src 'self' https://js.stripe.com https://hooks.stripe.com",
-      "object-src 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "frame-ancestors 'none'",
-      "upgrade-insecure-requests",
-      "report-uri /api/security/csp-report"
-    ].join("; ") + ";";
+    // Exclude OpenTelemetry packages from client bundle
+    if (!isServer) {
+      config.externals = config.externals || [];
+      
+      // Add function to filter OpenTelemetry modules
+      const originalExternals = Array.isArray(config.externals) ? config.externals : [config.externals].filter(Boolean);
+      
+      config.externals = [
+        ...originalExternals,
+        function(context, request, callback) {
+          // Externalize all OpenTelemetry packages
+          if (request && (
+            request.startsWith('@opentelemetry/') ||
+            request.includes('opentelemetry') ||
+            request.startsWith('node:') ||
+            request === 'perf_hooks' ||
+            request === 'v8' ||
+            request === 'process'
+          )) {
+            return callback(null, `commonjs ${request}`);
+          }
+          callback();
+        }
+      ];
+    }
+    
+    return config;
+  },
 
-    // Preview CSP with report-only for learning
-    const previewCsp = [
-      "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live",
-      "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live",
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in",
-      "media-src 'self' blob:",
-      "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://api.stripe.com https://*.sentry.io https://vercel.live https://*.vercel.live wss://*.supabase.co wss://vercel.live wss://*.vercel.live",
-      "font-src 'self' data:",
-      "object-src 'none'",
-      "base-uri 'self'",
-      "form-action 'self'",
-      "frame-ancestors 'none'"
-    ].join("; ") + ";";
-    
+  async headers() {
+    // Only set core security headers here. CSP is managed in middleware to allow
+    // dynamic nonce and safer iteration. We set report-only CSP there.
     return [
       {
         source: "/(.*)",
         headers: [
-          // Core security headers
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-XSS-Protection", value: "1; mode=block" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
-          
-          // CSP configuration
-          ...(isProduction && !isPreview ? [
-            { key: "Content-Security-Policy", value: productionCsp }
-          ] : []),
-          
-          ...(isPreview ? [
-            { key: "Content-Security-Policy-Report-Only", value: previewCsp }
-          ] : []),
         ],
       },
     ];

@@ -208,6 +208,15 @@ export function GlobalNav({ client, isSafeMode }: GlobalNavProps) {
                     {client.role.toUpperCase()}
                   </span>
                 )}
+                {(client?.role === 'admin' || client?.role === 'owner') && (
+                  <Link
+                    href="/operability/diagnostics"
+                    className="text-xs text-blue-700 hover:text-blue-900 underline underline-offset-2"
+                    aria-label="Open admin diagnostics"
+                  >
+                    Admin
+                  </Link>
+                )}
               </div>
             )}
 
@@ -294,6 +303,14 @@ export function GlobalNav({ client, isSafeMode }: GlobalNavProps) {
                     <div className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded inline-block font-medium">
                       {client.role.toUpperCase()}
                     </div>
+                  )}
+                  {(client?.role === 'admin' || client?.role === 'owner') && (
+                    <Link 
+                      href="/operability/diagnostics"
+                      className="block text-sm text-blue-700 hover:text-blue-900 transition-colors font-medium"
+                    >
+                      Admin Diagnostics
+                    </Link>
                   )}
                   <Link 
                     href="/login"

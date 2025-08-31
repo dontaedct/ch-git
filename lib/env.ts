@@ -33,6 +33,8 @@ const IntegrationsSchema = z.object({
   // Email Services (Resend)
   RESEND_API_KEY: z.string().optional(),
   RESEND_FROM: z.string().email().optional(),
+  // Background jobs / digests
+  DIGEST_RECIPIENTS: z.string().optional(),
 
   // Payment Processing (Stripe)
   STRIPE_SECRET_KEY: z.string().optional(),

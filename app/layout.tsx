@@ -15,7 +15,10 @@ export const fetchCache = 'default-no-store';
 
 export const metadata = { title: "Micro App Template", description: "A modern micro web application template" };
 
-const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
+// Default to safe mode unless explicitly disabled. This avoids SSR auth
+// calls that can fail in misconfigured environments while we stabilize.
+const publicEnv = getPublicEnv();
+const isSafeMode = publicEnv.NEXT_PUBLIC_SAFE_MODE !== '0';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   // Try to get client info for navigation

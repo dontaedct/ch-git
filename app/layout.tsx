@@ -6,6 +6,7 @@ import { TokensProvider } from '@/lib/design-tokens/provider';
 import { AuthProvider } from '@/lib/auth/auth-context';
 import { GlobalNav } from '@/components/GlobalNav';
 import { requireClient } from '@/lib/auth/guard';
+import SentryInit from '@/components/SentryInit';
 
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
 export const dynamic = 'force-dynamic';
@@ -46,6 +47,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <MotionProvider>
             <TokensProvider>
               <AuthProvider>
+                {/* Optional Sentry client initialization */}
+                <SentryInit />
                 <GlobalNav client={client} isSafeMode={isSafeMode} />
                 <Suspense fallback={<PageBoot />}>
                   {children}

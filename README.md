@@ -23,7 +23,18 @@ npm run dev
 
 ## Documentation
 
-See `/docs/` for comprehensive documentation.
+See `/docs/` for comprehensive documentation. Key handover docs:
+
+- `docs/handover/HANDOVER_SOP.md` — operations runbook and recovery
+- `docs/handover/QUICKSTART.md` — new‑engineer setup and first checks
+- `docs/handover/LOOM_SCRIPT.md` — script for the recorded walkthrough
+
+Quick access in dev:
+
+- Diagnostics UI: `http://localhost:3000/operability/diagnostics`
+- Flags UI: `http://localhost:3000/operability/flags`
+- Diagnostics API: `http://localhost:3000/api/admin/diagnostics?mode=summary`
+- Weekly Recap API: `http://localhost:3000/api/weekly-recap` (requires `x-cron-secret`)
 
 ## License
 

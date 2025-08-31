@@ -1,12 +1,13 @@
 {
   "name": "my-app",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "bin": {
     "dct": "./bin/dct.js"
   },
   "scripts": {
+    "prepare": "npm run tool:prepare",
     "dev": "node scripts/dev-bootstrap.mjs",
     "build": "next build",
     "start": "next start",
@@ -74,6 +75,8 @@
     "tool:ui:visual": "npx -y playwright test tests/ui/visual.spec.ts || true",
     "tool:ui:perf": "npx -y lhci autorun --config=design/lhci.config.cjs || true",
     "tool:ui:perf:validate": "node design/scripts/validate-lhci.mjs",
+    "validate:clean-clone": "node scripts/validate-clean-clone.mjs",
+    "validate:clean-clone:full": "node scripts/validate-clean-clone.mjs --full",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
@@ -97,7 +100,10 @@
     "cursor:session": "node scripts/generate-cursor-report.mjs 'Development session'",
     "claude:context": "node scripts/claude-code-enhancer.mjs",
     "claude:enhance": "node scripts/claude-code-enhancer.mjs",
-    "dashboard": "node scripts/dev-session-dashboard.mjs"
+    "dashboard": "node scripts/dev-session-dashboard.mjs",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "npm run build && changeset publish"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
@@ -183,6 +189,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
+    "@changesets/cli": "^2.29.6",
     "@eslint/eslintrc": "^3",
     "@lhci/cli": "^0.15.1",
     "@sentry/nextjs": "^10.3.0",
@@ -207,6 +214,10 @@
     "depcheck": "^1.4.7",
     "eslint": "^9",
     "eslint-config-next": "15.4.6",
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.4.0",
+    "lint-staged": "^15.2.9",
+    "prettier": "^3.3.3",
     "husky": "^9.1.7",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
@@ -217,5 +228,13 @@
     "ts-prune": "^0.10.3",
     "tsx": "^4.20.4",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.{json,md,css,scss,html,mdx,graphql,yml,yaml,css}": [
+      "prettier --write"
+    ]
   }
 }

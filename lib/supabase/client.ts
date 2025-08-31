@@ -5,15 +5,11 @@ import { getPublicEnv } from "@/lib/env";
 const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = getPublicEnv();
 
 /** Browser client singleton - prevents multiple instances and Node polyfill pulls */
+// Use default browser storage/session handling so auth persists across reloads
 export const supabaseBrowser = createBrowserClient(
   NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY,
   {
-    cookies: {
-      get: () => undefined,
-      set: () => {},
-      remove: () => {},
-    },
     auth: {
       persistSession: true,
       autoRefreshToken: true,

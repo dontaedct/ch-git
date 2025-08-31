@@ -31,13 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body style={{ 
-        minHeight: '100vh', 
-        margin: 0, 
-        fontFamily: "system-ui, sans-serif",
-        background: '#fff',
-        color: '#111'
-      }}>
+      <body className="min-h-screen m-0 font-sans bg-white text-[#111]">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

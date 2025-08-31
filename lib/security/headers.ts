@@ -29,6 +29,8 @@ export interface SecurityHeaders {
   'X-DNS-Prefetch-Control': string;
   'X-Download-Options': string;
   'X-Permitted-Cross-Domain-Policies': string;
+  // Expose CSP nonce for Next.js to propagate to inline scripts/styles
+  'x-nonce'?: string;
 }
 
 /**
@@ -239,7 +241,9 @@ export function generateSecurityHeaders(context: SecurityContext): SecurityHeade
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()',
     'X-DNS-Prefetch-Control': 'off',
     'X-Download-Options': 'noopen',
-    'X-Permitted-Cross-Domain-Policies': 'none'
+    'X-Permitted-Cross-Domain-Policies': 'none',
+    // Provide nonce header so Next.js can attach it to inline runtime scripts/styles
+    'x-nonce': nonce
   };
   
   // Add HSTS in production

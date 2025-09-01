@@ -38,12 +38,6 @@ const nextConfig: NextConfig = {
   webpack: (config, { isServer, dev }) => {
     // Handle Node.js built-in modules for client-side bundles
     if (!isServer) {
-      // Alias OpenTelemetry to client stub on client-side
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        './observability/otel': require.resolve('./lib/observability/otel.client.ts'),
-      };
-      
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
@@ -91,23 +85,41 @@ const nextConfig: NextConfig = {
       // Add function to filter OpenTelemetry modules
       const originalExternals = Array.isArray(config.externals) ? config.externals : [config.externals].filter(Boolean);
       
-      config.externals = [
+      // Use IgnorePlugin to completely ignore problematic modules
+      config.plugins = config.plugins || [];
+      config.plugins.push(
+        new (require('webpack').IgnorePlugin)({
+          checkResource(resource: string) {
+            return (
+              resource.startsWith('node:') ||
+              resource === 'perf_hooks' ||
+              resource === 'v8' ||
+              resource === 'process' ||
+              resource.startsWith('@opentelemetry/') ||
+              resource.includes('opentelemetry')
+            );
+          },
+        })
+      );
+
+      // Only add external function if originalExternals is not empty
+      config.externals = originalExternals.length > 0 ? [
         ...originalExternals,
-        function(context, request, callback) {
-          // Externalize all OpenTelemetry packages
+        function(
+          { context, request }: { context?: any; request?: string },
+          callback: (err?: any, result?: any) => void
+        ) {
+          // Only externalize specific problematic modules
           if (request && (
             request.startsWith('@opentelemetry/') ||
-            request.includes('opentelemetry') ||
-            request.startsWith('node:') ||
             request === 'perf_hooks' ||
-            request === 'v8' ||
-            request === 'process'
+            request === 'v8'
           )) {
-            return callback(null, `commonjs ${request}`);
+            return callback(null, 'commonjs ' + request);
           }
           callback();
         }
-      ];
+      ] : originalExternals;
     }
     
     return config;

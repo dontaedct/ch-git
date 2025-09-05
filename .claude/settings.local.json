@@ -59,7 +59,11 @@
       "Bash(npx ts-prune:*)",
       "Bash(git mv:*)",
       "Bash(rm:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "WebSearch",
+      "Bash(gh auth:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(gh secret:*)"
     ],
     "deny": [],
     "ask": []

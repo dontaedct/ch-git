@@ -1,0 +1,228 @@
+{
+  "task": "HT-002.4.4",
+  "title": "Final accessibility audit",
+  "runDate": "2025-01-27T10:00:00.000Z",
+  "status": "completed_with_warnings",
+  "wcag": {
+    "Semantic HTML": {
+      "found": true,
+      "matches": [
+        "<li>",
+        "<li>",
+        "<li>",
+        "<li>",
+        "<li>"
+      ],
+      "critical": true,
+      "description": "Proper use of semantic HTML elements"
+    },
+    "ARIA Labels": {
+      "found": true,
+      "matches": [
+        "role=",
+        "aria-label",
+        "aria-label",
+        "aria-label",
+        "role="
+      ],
+      "critical": true,
+      "description": "Proper ARIA labeling for interactive elements"
+    },
+    "Alt Text": {
+      "found": null,
+      "matches": [],
+      "critical": true,
+      "description": "Images have appropriate alt text"
+    },
+    "Form Labels": {
+      "found": true,
+      "matches": [
+        "aria-labelledby",
+        "aria-labelledby",
+        "aria-labelledby",
+        "aria-labelledby",
+        "aria-labelledby"
+      ],
+      "critical": true,
+      "description": "Form inputs have associated labels"
+    },
+    "Skip Links": {
+      "found": true,
+      "matches": [
+        "skip-link",
+        "skip-link",
+        "skip-link"
+      ],
+      "critical": true,
+      "description": "Skip links for keyboard navigation"
+    },
+    "Focus Management": {
+      "found": true,
+      "matches": [
+        "focus-visible",
+        "focus-visible",
+        "focus-visible"
+      ],
+      "critical": true,
+      "description": "Proper focus management and visible focus indicators"
+    }
+  },
+  "keyboard": {
+    "Tab Order": {
+      "found": true,
+      "matches": [
+        "tabIndex",
+        "tabIndex",
+        "tabIndex",
+        "tabIndex",
+        "tabIndex"
+      ],
+      "critical": true,
+      "description": "Logical tab order through interactive elements"
+    },
+    "Keyboard Traps": {
+      "found": true,
+      "matches": [
+        "aria-hidden",
+        "aria-hidden",
+        "aria-hidden",
+        "aria-hidden",
+        "aria-hidden"
+      ],
+      "critical": true,
+      "description": "No keyboard traps in modal or complex components"
+    },
+    "Enter/Space Activation": {
+      "found": null,
+      "matches": [],
+      "critical": true,
+      "description": "Interactive elements respond to Enter and Space keys"
+    },
+    "Escape Key": {
+      "found": null,
+      "matches": [],
+      "critical": false,
+      "description": "Escape key closes modals and dropdowns"
+    }
+  },
+  "screenReader": {
+    "Heading Structure": {
+      "found": true,
+      "matches": [
+        "<h2 id=\"spacing-test\" className=\"text-2xl font-semibold mb-4\">",
+        "<h2 id=\"product-preview-heading\" className=\"text-lg font-medium text-muted-foreground mb-2\">",
+        "<h2 id=\"features-heading\" className=\"text-3xl font-bold leading-tight tracking-[-0.01em] text-foreground mb-4\">",
+        "<h3 className=\"text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200\">",
+        "<h3 className=\"text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200\">"
+      ],
+      "critical": true,
+      "description": "Proper heading hierarchy (h1, h2, h3, etc.)"
+    },
+    "Landmark Roles": {
+      "found": true,
+      "matches": [
+        "role=\"main\"",
+        "role=\"contentinfo\""
+      ],
+      "critical": true,
+      "description": "Proper landmark roles for page structure"
+    },
+    "Live Regions": {
+      "found": null,
+      "matches": [],
+      "critical": false,
+      "description": "Live regions for dynamic content updates"
+    },
+    "Descriptive Text": {
+      "found": true,
+      "matches": [
+        "aria-label",
+        "aria-label",
+        "aria-label",
+        "aria-label",
+        "aria-describedby"
+      ],
+      "critical": true,
+      "description": "Descriptive text for screen readers"
+    }
+  },
+  "colorContrast": {
+    "Text Contrast": {
+      "found": true,
+      "matches": [
+        "text-foreground",
+        "color:",
+        "background-color:",
+        "color:",
+        "color:"
+      ],
+      "critical": true,
+      "description": "Text meets WCAG AA contrast ratio (4.5:1)"
+    },
+    "Interactive Contrast": {
+      "found": true,
+      "matches": [
+        "input",
+        "input",
+        "input",
+        "input",
+        "button"
+      ],
+      "critical": true,
+      "description": "Interactive elements meet contrast requirements"
+    },
+    "Focus Indicators": {
+      "found": true,
+      "matches": [
+        "outline",
+        ":focus",
+        "outline",
+        "outline",
+        ":focus"
+      ],
+      "critical": true,
+      "description": "Focus indicators meet contrast requirements"
+    }
+  },
+  "summary": {
+    "totalTests": 20,
+    "passed": 16,
+    "failed": 1,
+    "warnings": 3
+  },
+  "recommendations": [
+    {
+      "type": "error",
+      "message": "Missing critical WCAG features: Alt Text",
+      "action": "Implement missing accessibility features for WCAG compliance"
+    },
+    {
+      "type": "error",
+      "message": "Missing critical keyboard navigation: Enter/Space Activation",
+      "action": "Implement keyboard navigation for better accessibility"
+    }
+  ],
+  "motion": {
+    "Reduced Motion Media Query": {
+      "found": true,
+      "matches": [
+        "@media (prefers-reduced-motion: reduce)"
+      ],
+      "critical": true
+    },
+    "Animation Duration Override": {
+      "found": true,
+      "matches": [
+        "animation-duration: 0.01ms"
+      ],
+      "critical": true
+    },
+    "Transition Duration Override": {
+      "found": true,
+      "matches": [
+        "transition-duration: 0.01ms"
+      ],
+      "critical": true
+    }
+  }
+}

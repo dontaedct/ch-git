@@ -2,7 +2,7 @@ UNIVERSAL HEADER
 
 
 
-- Read & obey: /docs/COACH_HUB.md and /docs/AI_RULES.md and /docs/RENAMES.md, then open /AI_ENTRYPOINT.md.
+- Read & obey: /docs/AI_RULES.md and /docs/RENAMES.md, then open /AI_ENTRYPOINT.md.
 
 - Never rename/move directly; use ONLY:
 
@@ -30,7 +30,13 @@ UNIVERSAL HEADER
 
   If info is missing, proceed with explicit assumptions and make minimal diffs.
 
-
+- COMPREHENSIVE SEARCH PROTOCOL: Before making claims about system completeness, automatically run:
+  
+  npm run hero:tasks:verify  # Verify all hero tasks
+  
+  Then use codebase_search with broad queries, glob_file_search for patterns, then read specific files.
+  
+  Never assume partial data represents complete systems. Always verify completeness before conclusions.
 
 Ack exactly one:
 

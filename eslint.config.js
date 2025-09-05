@@ -56,6 +56,8 @@ export default [
       '@typescript-eslint': typescript,
     },
     rules: {
+      // TypeScript ESLint recommended rules
+      ...typescript.configs.recommended.rules,
       // Temporarily relaxed rules for Phase 2 completion
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': 'warn',
@@ -103,7 +105,7 @@ export default [
       'no-restricted-syntax': 'off',
     },
   },
-  // Custom rule to prevent server-only env vars in client code only
+  // Custom rule to prevent server-only imports and env vars in client code
   {
     files: [
       'app/client-portal/**/*.{ts,tsx}',
@@ -126,12 +128,47 @@ export default [
       'types/**/*.{ts,tsx}'
     ],
     rules: {
+      // Block server-only imports in client components
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            'fs',
+            'path',
+            'winston',
+            '@opentelemetry/*',
+            'server-only'
+          ],
+          paths: [
+            {
+              name: 'fs',
+              message: 'Node.js "fs" module not allowed in client components. Use server actions or API routes.'
+            },
+            {
+              name: 'path',
+              message: 'Node.js "path" module not allowed in client components. Use server actions or API routes.'
+            },
+            {
+              name: 'winston',
+              message: 'Winston logging not allowed in client components. Use console or client-side logging.'
+            },
+            {
+              name: 'server-only',
+              message: '"server-only" package not allowed in client components. This enforces server-only code.'
+            }
+          ]
+        }
+      ],
       'no-restricted-syntax': [
         'error',
         {
           selector: 'MemberExpression[object.name="process"][property.name="env"]',
           message: 'Direct process.env access is forbidden. Use @lib/env functions instead.',
         },
+        {
+          selector: 'ImportDeclaration[source.value=/^@opentelemetry/]',
+          message: 'OpenTelemetry imports not allowed in client components. Use server-side observability.'
+        }
       ],
     },
   },

@@ -1,0 +1,82 @@
+{
+  "title": "Manual Mobile Responsiveness Testing Checklist",
+  "breakpoints": [
+    {
+      "name": "Mobile Small",
+      "width": 320,
+      "height": 568
+    },
+    {
+      "name": "Mobile Medium",
+      "width": 375,
+      "height": 667
+    },
+    {
+      "name": "Mobile Large",
+      "width": 414,
+      "height": 896
+    },
+    {
+      "name": "Tablet Portrait",
+      "width": 768,
+      "height": 1024
+    },
+    {
+      "name": "Tablet Landscape",
+      "width": 1024,
+      "height": 768
+    }
+  ],
+  "tests": [
+    {
+      "category": "Layout & Structure",
+      "items": [
+        "Page layout adapts correctly to different screen sizes",
+        "Content doesn't overflow horizontally",
+        "Vertical scrolling works smoothly",
+        "Grid layouts stack properly on mobile",
+        "Flexbox layouts adapt to screen width"
+      ]
+    },
+    {
+      "category": "Typography & Readability",
+      "items": [
+        "Text remains readable at all screen sizes",
+        "Font sizes scale appropriately",
+        "Line height maintains readability",
+        "Text doesn't become too small on mobile",
+        "Headings maintain hierarchy"
+      ]
+    },
+    {
+      "category": "Interactive Elements",
+      "items": [
+        "Buttons meet minimum 44px touch target size",
+        "Links are easily tappable",
+        "Form elements are accessible",
+        "Navigation works on touch devices",
+        "Hover states work on touch devices"
+      ]
+    },
+    {
+      "category": "Images & Media",
+      "items": [
+        "Images scale properly",
+        "Images don't overflow containers",
+        "Aspect ratios are maintained",
+        "Loading states work correctly",
+        "Lazy loading functions properly"
+      ]
+    },
+    {
+      "category": "Performance",
+      "items": [
+        "Page loads quickly on mobile networks",
+        "Animations are smooth",
+        "No layout shifts during loading",
+        "Touch interactions are responsive",
+        "Scrolling is smooth"
+      ]
+    }
+  ]
+}

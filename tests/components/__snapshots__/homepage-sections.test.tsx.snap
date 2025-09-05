@@ -1,0 +1,361 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Homepage Sections Snapshot Tests CTA Section should match snapshot for CTA section: cta-section 1`] = `
+<section
+  aria-labelledby="cta-heading"
+  class="py-section bg-muted/20"
+>
+  <div
+    class=""
+    style="display: block; width: 100%; max-width: 80rem; margin-left: auto; margin-right: auto; padding: 1rem 1.5rem;"
+  >
+    <div
+      class="mx-auto max-w-2xl text-center"
+    >
+      <h2
+        class="mb-6 text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-foreground sm:text-4xl lg:text-5xl"
+        id="cta-heading"
+      >
+        Ready to get started?
+      </h2>
+      <p
+        aria-describedby="cta-heading"
+        class="mb-10 text-lg leading-[1.6] text-muted-foreground sm:text-xl"
+      >
+        Join thousands of developers building the future with our platform.
+      </p>
+      <button
+        aria-describedby="cta-heading"
+        aria-disabled="false"
+        class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm motion-button-idle motion-button-hover motion-button-active transition-button-hover disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:transition-button-focus aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/20 font-semibold tracking-wide transition-all duration-200 ease-out hover:scale-[1.015] active:scale-[0.985] hover:shadow-xl focus-visible:outline-3 focus-visible:outline-primary focus-visible:outline-offset-3 focus-visible:shadow-[0_0_0_6px_hsl(var(--primary)/0.3)] h-10 rounded-md px-6 has-[>svg]:px-4 sm:w-auto"
+        data-cta-type="primary"
+        data-loading="false"
+        data-slot="button"
+        tabindex="0"
+      >
+        <span
+          class=""
+        >
+          Start Building Today
+        </span>
+      </button>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`Homepage Sections Snapshot Tests Features Section should match snapshot for features section: features-section 1`] = `
+<section
+  aria-labelledby="features-heading"
+  class="section"
+>
+  <div
+    class="py-16"
+    style="display: block; width: 100%; max-width: 80rem; margin-left: auto; margin-right: auto; padding: 1rem 1.5rem;"
+  >
+    <div
+      class="mx-auto max-w-4xl text-center mb-12"
+    >
+      <h2
+        class="text-3xl font-bold leading-tight tracking-[-0.01em] text-foreground mb-4"
+        id="features-heading"
+      >
+        Everything you need to build
+      </h2>
+      <p
+        aria-describedby="features-heading"
+        class="text-lg text-muted-foreground"
+      >
+        Powerful tools and components designed to accelerate your development workflow
+      </p>
+    </div>
+    <div
+      aria-label="Feature list"
+      class="grid grid-cols-12 gap-gutter-lg"
+      role="list"
+    >
+      <div
+        class="col-span-12 sm:col-span-6 lg:col-span-3"
+      >
+        <div
+          aria-describedby="feature-1-description"
+          class="relative overflow-hidden bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800/[0.06] shadow-[var(--shadow-elevation-1)] p-4 rounded-lg cursor-pointer hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg h-full text-center group hover:shadow-[var(--shadow-elevation-2)] transition-all duration-200 ease-out hover:-translate-y-0.5"
+          data-slot="surface"
+          role="listitem"
+          style="min-height: 200px; contain: layout style;"
+          tabindex="0"
+        >
+          <div
+            class="mb-4"
+          >
+            <div
+              aria-hidden="true"
+              class="mx-auto w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors duration-200"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-200"
+                fill="none"
+                stroke="currentColor"
+                style="will-change: transform;"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <h3
+              class="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200"
+            >
+              Development Tools
+            </h3>
+            <p
+              class="text-muted-foreground text-sm leading-relaxed"
+              id="feature-1-description"
+            >
+              Built-in TypeScript, ESLint, Prettier, and testing frameworks. Start coding immediately with zero configuration.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-span-12 sm:col-span-6 lg:col-span-3"
+      >
+        <div
+          aria-describedby="feature-2-description"
+          class="relative overflow-hidden bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800/[0.06] shadow-[var(--shadow-elevation-1)] p-4 rounded-lg cursor-pointer hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg h-full text-center group hover:shadow-[var(--shadow-elevation-2)] transition-all duration-200 ease-out hover:-translate-y-0.5"
+          data-slot="surface"
+          role="listitem"
+          style="min-height: 200px; contain: layout style;"
+          tabindex="0"
+        >
+          <div
+            class="mb-4"
+          >
+            <div
+              aria-hidden="true"
+              class="mx-auto w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors duration-200"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-200"
+                fill="none"
+                stroke="currentColor"
+                style="will-change: transform;"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <h3
+              class="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200"
+            >
+              UI Components
+            </h3>
+            <p
+              class="text-muted-foreground text-sm leading-relaxed"
+              id="feature-2-description"
+            >
+              Beautiful, accessible components built with Radix UI and styled with Tailwind CSS. Consistent design system out of the box.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-span-12 sm:col-span-6 lg:col-span-3"
+      >
+        <div
+          aria-describedby="feature-3-description"
+          class="relative overflow-hidden bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800/[0.06] shadow-[var(--shadow-elevation-1)] p-4 rounded-lg cursor-pointer hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg h-full text-center group hover:shadow-[var(--shadow-elevation-2)] transition-all duration-200 ease-out hover:-translate-y-0.5"
+          data-slot="surface"
+          role="listitem"
+          style="min-height: 200px; contain: layout style;"
+          tabindex="0"
+        >
+          <div
+            class="mb-4"
+          >
+            <div
+              aria-hidden="true"
+              class="mx-auto w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors duration-200"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-200"
+                fill="none"
+                stroke="currentColor"
+                style="will-change: transform;"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <h3
+              class="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200"
+            >
+              Database & Auth
+            </h3>
+            <p
+              class="text-muted-foreground text-sm leading-relaxed"
+              id="feature-3-description"
+            >
+              Integrated Supabase for database, authentication, and real-time features. Row-level security and API generation included.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-span-12 sm:col-span-6 lg:col-span-3"
+      >
+        <div
+          aria-describedby="feature-4-description"
+          class="relative overflow-hidden bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800/[0.06] shadow-[var(--shadow-elevation-1)] p-4 rounded-lg cursor-pointer hover:scale-[1.01] active:scale-[0.99] hover:shadow-lg h-full text-center group hover:shadow-[var(--shadow-elevation-2)] transition-all duration-200 ease-out hover:-translate-y-0.5"
+          data-slot="surface"
+          role="listitem"
+          style="min-height: 200px; contain: layout style;"
+          tabindex="0"
+        >
+          <div
+            class="mb-4"
+          >
+            <div
+              aria-hidden="true"
+              class="mx-auto w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors duration-200"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-200"
+                fill="none"
+                stroke="currentColor"
+                style="will-change: transform;"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <h3
+              class="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200"
+            >
+              One-Click Deploy
+            </h3>
+            <p
+              class="text-muted-foreground text-sm leading-relaxed"
+              id="feature-4-description"
+            >
+              Deploy to Vercel with zero configuration. Automatic builds, preview deployments, and global CDN for optimal performance.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`Homepage Sections Snapshot Tests Hero Section should match snapshot for hero section: hero-section 1`] = `
+<section
+  aria-labelledby="hero-heading"
+  class="section"
+>
+  <div
+    class="py-16"
+    style="display: block; width: 100%; max-width: 80rem; margin-left: auto; margin-right: auto; padding: 1rem 1.5rem;"
+  >
+    <div
+      animate="visible"
+      class="mx-auto max-w-4xl text-center"
+      initial="hidden"
+      style="will-change: transform, opacity; transform: translateZ(0);"
+      variants="[object Object]"
+    >
+      <div
+        class="mb-8"
+        variants="[object Object]"
+      >
+        <span
+          aria-label="New feature announcement"
+          class="inline-flex items-center rounded-full bg-primary/5 px-3 py-1 text-sm font-medium text-primary ring-1 ring-primary/10"
+          role="status"
+        >
+          ✨ Now Available
+        </span>
+      </div>
+      <h1
+        class="mb-8 text-5xl font-semibold leading-[1.1] tracking-[-0.02em] text-foreground sm:text-6xl lg:text-7xl xl:text-8xl"
+        id="hero-heading"
+        variants="[object Object]"
+      >
+        Build Better Products
+        <span
+          class="block text-primary font-medium"
+        >
+          Faster Than Ever
+        </span>
+      </h1>
+      <p
+        aria-describedby="hero-heading"
+        class="mx-auto mb-10 max-w-[42rem] text-xl leading-[1.6] text-muted-foreground sm:text-2xl"
+        variants="[object Object]"
+      >
+        Transform your ideas into production-ready applications with our comprehensive development platform. Ship features faster, maintain quality, and scale effortlessly.
+      </p>
+      <div
+        aria-label="Primary actions"
+        class="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4"
+        role="group"
+        variants="[object Object]"
+      >
+        <button
+          aria-describedby="hero-description"
+          aria-disabled="false"
+          class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm motion-button-idle motion-button-hover motion-button-active transition-button-hover disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:transition-button-focus aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/20 font-semibold tracking-wide transition-all duration-200 ease-out hover:scale-[1.015] active:scale-[0.985] hover:shadow-xl focus-visible:outline-3 focus-visible:outline-primary focus-visible:outline-offset-3 focus-visible:shadow-[0_0_0_6px_hsl(var(--primary)/0.3)] h-10 rounded-md px-6 has-[>svg]:px-4 sm:w-auto"
+          data-cta-type="primary"
+          data-loading="false"
+          data-slot="button"
+          tabindex="0"
+        >
+          <span
+            class=""
+          >
+            Get Started Free
+          </span>
+        </button>
+        <button
+          aria-describedby="hero-description"
+          aria-disabled="false"
+          class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm motion-button-idle motion-button-hover motion-button-active transition-button-hover disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:transition-button-focus aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_hsl(var(--ring)/0.2)] bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 active:bg-secondary/70 focus-visible:ring-secondary/20 font-medium transition-all duration-200 ease-out hover:scale-[1.015] active:scale-[0.985] hover:shadow-xl h-10 rounded-md px-6 has-[>svg]:px-4 sm:w-auto"
+          data-cta-type="secondary"
+          data-loading="false"
+          data-slot="button"
+          tabindex="0"
+        >
+          <span
+            class=""
+          >
+            View Documentation
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+`;

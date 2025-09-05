@@ -1,0 +1,415 @@
+/**
+ * Script to create the Linear/Vercel Landing Page Development tasks in Hero Tasks format
+ * RUN_DATE=2025-09-05T02:35:55.323Z
+ */
+
+import fs from 'fs';
+
+// Task data structure in Hero Tasks format
+const landingPagePlan = {
+  mainTask: {
+    task_number: "HT-001",
+    title: "Linear/Vercel-Quality Landing Page Development",
+    description: `Surgical, one-change-at-a-time execution plan to transform Hello World into a Linear/Vercel-quality landing page while keeping the project stable. No ClientTokensProvider used in this pass—advanced tokens will be re-introduced only after the page ships and is stable.
+
+RUN_DATE=2025-09-05T02:35:55.323Z
+Total Steps: 34
+Estimated Hours: 16
+Phases: 5 (A, B, C, D, E)`,
+    type: "feature",
+    priority: "high",
+    status: "pending",
+    created_at: "2025-09-05T02:35:55.323Z",
+    updated_at: "2025-09-05T02:35:55.323Z",
+    tags: ["landing-page", "ui", "frontend", "stabilization", "linear", "vercel"],
+    metadata: {
+      run_date: "2025-09-05T02:35:55.323Z",
+      phases: 5,
+      total_steps: 34,
+      estimated_hours: 16
+    }
+  },
+  subtasks: [
+    {
+      subtask_number: "HT-001.1",
+      title: "Phase A — Hard Stabilize (no visuals yet)",
+      description: "Goal: rock-solid baseline; no runtime surprises.",
+      status: "pending",
+      created_at: "2025-09-05T02:35:55.323Z",
+      updated_at: "2025-09-05T02:35:55.323Z",
+      actions: [
+        {
+          action_number: "HT-001.1.1",
+          title: "Pin and verify core versions",
+          description: "In package.json, keep next@14.2.x, react@18.2.x, react-dom@18.2.x. Run npm ci.",
+          verification: "npm ls react react-dom next shows single copies; npm run dev loads / with 'Hello World', console clean.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.1.2",
+          title: "Minimal Next config",
+          description: "In next.config.*, remove custom webpack/fallbacks. Keep a bare config (images, experimental off).",
+          verification: "Dev server restarts clean; / loads fine.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.1.3",
+          title: "Strictly server-only code separation",
+          description: "Ensure any observability/logging/OpenTelemetry files import server-only and are not imported by client components.",
+          verification: "Global search for @opentelemetry|winston|fs|path in app/** components/** → none.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.1.4",
+          title: "Disable barrels for app/landing dependencies",
+          description: "In the homepage path, replace barrel imports with direct file imports. (Leave other areas for later.)",
+          verification: "Build still green; / renders.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.1.5",
+          title: "Error boundary placement",
+          description: "Use a small local error boundary only around the page content, not at the very root. (Keep layout.tsx simple.)",
+          verification: "Introduce a controlled error in a child and confirm the boundary catches it without breaking the shell, then revert the error.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.1.6",
+          title: "Middleware still off (for now)",
+          description: "Keep middleware returning NextResponse.next(); we'll re-enable near the end.",
+          verification: "/ renders; no edge errors.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        }
+      ]
+    },
+    {
+      subtask_number: "HT-001.2",
+      title: "Phase B — Base Shell & Theming (simple, static)",
+      description: "Goal: a clean shell with theme + motion, no custom token runtime.",
+      status: "pending",
+      created_at: "2025-09-05T02:35:55.323Z",
+      updated_at: "2025-09-05T02:35:55.323Z",
+      actions: [
+        {
+          action_number: "HT-001.2.1",
+          title: "Inter font + base HTML",
+          description: "In app/layout.tsx, add next/font/google Inter with display: 'swap', apply className to <body>.",
+          verification: "Text switches to Inter; no FOUT; console clean.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.2.2",
+          title: "ThemeProvider (next-themes), zero JS token logic",
+          description: "Wrap page with <ThemeProvider attribute=\"class\" defaultTheme=\"system\" enableSystem>. No custom tokens provider.",
+          verification: "Toggle OS light/dark; <html class=\"dark\"> flips; no errors.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.2.3",
+          title: "MotionProvider",
+          description: "Add a lightweight MotionProvider (or just AnimatePresence scaffold) but no animations yet.",
+          verification: "Page renders as before.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.2.4",
+          title: "Static CSS variables for colors/spacing/type",
+          description: "In app/globals.css, define static tokens only (no context): CSS variables for colors, spacing, typography.",
+          verification: "Add a test <div style={{background:'var(--bg)'}}>; colors appear.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.2.5",
+          title: "Tailwind hook-up (if not already)",
+          description: "Ensure tailwind.config.js has content: [\"./app/**/*.{ts,tsx}\", \"./components/**/*.{ts,tsx}\"] and no plugin that injects tokens at runtime.",
+          verification: "Use bg-[var(--bg)] text-[var(--fg)] classes on a test block.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        }
+      ]
+    },
+    {
+      subtask_number: "HT-001.3",
+      title: "Phase C — Layout Primitives (reusable & pretty)",
+      description: "Goal: production-ready Container + Grid + Section spacing you'll reuse everywhere.",
+      status: "pending",
+      created_at: "2025-09-05T02:35:55.323Z",
+      updated_at: "2025-09-05T02:35:55.323Z",
+      actions: [
+        {
+          action_number: "HT-001.3.1",
+          title: "Minimal Container component",
+          description: "components/ui/container.tsx (server component OK): Container with variant support and responsive padding.",
+          verification: "Replace <main> child with <Container><h1>Hello</h1></Container>; centered at ~1152px.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.3.2",
+          title: "Section rhythm helpers",
+          description: "In globals.css: .section, .section-sm, .section-lg classes for consistent spacing.",
+          verification: "Wrap content in <section className=\"section\">…</section>; spacing looks right.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.3.3",
+          title: "12-col Grid utility",
+          description: "Create components/ui/grid.tsx with simple API: Grid and Col components.",
+          verification: "Place two <Col span={6}> side-by-side.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.3.4",
+          title: "Surface card utility",
+          description: "components/ui/surface.tsx: Surface component with Linear/Vercel-style subtle borders and backgrounds.",
+          verification: "Wrap content; looks like subtle Linear/Vercel surface.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.3.5",
+          title: "Button primitive (for CTA later)",
+          description: "Use a simple Tailwind button (accent background, rounded-xl, medium height).",
+          verification: "Hover shows slight translate/opacity.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        }
+      ]
+    },
+    {
+      subtask_number: "HT-001.4",
+      title: "Phase D — Homepage Composition (from shell → hero → sections)",
+      description: "Goal: ship a beautiful, modern landing page with progressive polish.",
+      status: "pending",
+      created_at: "2025-09-05T02:35:55.323Z",
+      updated_at: "2025-09-05T02:35:55.323Z",
+      actions: [
+        {
+          action_number: "HT-001.4.1",
+          title: "Replace 'Hello World' with Hero Section skeleton",
+          description: "In app/page.tsx (server OK): Container, badge, h1, subcopy, primary + secondary buttons.",
+          verification: "Visually balanced at 1280px; no overflow; mobile wraps elegantly.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.2",
+          title: "Add Hero art placeholder (no heavy assets)",
+          description: "Below copy, add a Surface with height ~420px for a 'product shot' placeholder.",
+          verification: "No CLS on load; image placeholder feels premium (good spacing).",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.3",
+          title: "Add Features section (3-4 cards)",
+          description: "<section className=\"section\"> <Container> <Grid> <Col span={12} sm:span=6 lg:span=3>…",
+          verification: "Cards wrap on mobile; equal spacing; headings align with hero grid.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.4",
+          title: "Add Social proof / logos row",
+          description: "Small muted label + logo row inside Container.",
+          verification: "Logos are grayscale, modest size, even spacing.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.5",
+          title: "Add CTA section at bottom",
+          description: "A condensed section: headline, one sentence, primary button.",
+          verification: "Good rhythm: space between hero → features → CTA consistent.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.6",
+          title: "Light/dark refinement",
+          description: "Slightly lift surfaces in dark (bg-white/[0.03]) and tone down borders (/ [0.06]).",
+          verification: "Dark mode looks elegant; no crushed contrast (WCAG AA).",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.7",
+          title: "Typography polish",
+          description: "Tighten hero leading, set subhead to max-w-prose, adjust tracking-[-0.01em] for display sizes.",
+          verification: "Hero reads 'quiet, confident'; no widows on common widths.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.8",
+          title: "Interaction polish (micro-motion)",
+          description: "Add subtle motion.div fade/slide for hero text (staggered 40–80ms), and button hover with scale 1.015 + shadow.",
+          verification: "No layout shift; 60fps feel.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.9",
+          title: "Accessibility pass",
+          description: "Ensure headings descend correctly (h1 → h2), buttons have aria-label when icon-only, focus rings visible.",
+          verification: "Keyboard tab order correct; Lighthouse a11y ≥ 95.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.10",
+          title: "Performance pass",
+          description: "Use next/image for any logos/screens; avoid unoptimized SVG if large; preload Inter 600 weight only if needed; keep hero art under ~120–200KB.",
+          verification: "Lighthouse LCP ≤ 2.5s on fast 3G sim, CLS < 0.1.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.4.11",
+          title: "Meta & OG",
+          description: "Fill export const metadata with title/description/OG image.",
+          verification: "View source → meta present; Twitter Card Validator ok.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        }
+      ]
+    },
+    {
+      subtask_number: "HT-001.5",
+      title: "Phase E — Safety, Hygiene & Re-enable Guards",
+      description: "Goal: keep the beauty, regain guardrails, and prevent regressions.",
+      status: "pending",
+      created_at: "2025-09-05T02:35:55.323Z",
+      updated_at: "2025-09-05T02:35:55.323Z",
+      actions: [
+        {
+          action_number: "HT-001.5.1",
+          title: "Re-enable middleware incrementally",
+          description: "Turn on the first harmless header (e.g., X-DNS-Prefetch-Control: on), deploy locally.",
+          verification: "Pages load; console clean. Repeat: Add one header/rule at a time.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.5.2",
+          title: "Sanitize imports around homepage",
+          description: "Replace any lingering barrel imports used by homepage with direct file imports. Add an ESLint rule for no-barrel-imports in app/** (optional).",
+          verification: "eslint . passes.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.5.3",
+          title: "Add a small 'no server-only in client' lint",
+          description: "Create a custom ESLint rule or simple grep CI step to block fs|path|winston|@opentelemetry|server-only in components/** and client files.",
+          verification: "CI fails if someone re-introduces them.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.5.4",
+          title: "Snapshot tests for the three homepage sections",
+          description: "Jest or Vitest snapshots for hero, features, CTA (server components tested via @testing-library/react).",
+          verification: "npm test passes.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.5.5",
+          title: "Visual regression smoke (optional)",
+          description: "One Playwright test: navigate /, screenshot, compare baseline.",
+          verification: "CI green.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.5.6",
+          title: "Document do's/don'ts (one README section)",
+          description: "A small 'Homepage Guidelines' list: no barrels, no runtime token providers, design tokens via CSS variables, etc.",
+          verification: "Readable in repo; devs follow it.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        },
+        {
+          action_number: "HT-001.5.7",
+          title: "(Deferred) Plan to re-introduce tokens provider safely",
+          description: "Only after the page ships, move token logic to build-time (generate CSS vars) or singleton module with zero React context.",
+          verification: "Replace a single token (e.g., --accent) through the new system → page updates; no runtime errors.",
+          status: "pending",
+          created_at: "2025-09-05T02:35:55.323Z",
+          updated_at: "2025-09-05T02:35:55.323Z"
+        }
+      ]
+    }
+  ]
+};
+
+// Write the task structure to a JSON file for reference
+fs.writeFileSync('landing-page-tasks-hero-format.json', JSON.stringify(landingPagePlan, null, 2));
+
+console.log('✅ Landing page task structure created in Hero Tasks format and saved to landing-page-tasks-hero-format.json');
+console.log(`📋 Main Task: ${landingPagePlan.mainTask.task_number} - ${landingPagePlan.mainTask.title}`);
+console.log(`📊 Total Subtasks: ${landingPagePlan.subtasks.length}`);
+console.log(`🔢 Total Actions: ${landingPagePlan.subtasks.reduce((sum, subtask) => sum + subtask.actions.length, 0)}`);
+
+// Display the task structure
+console.log('\n📋 HERO TASKS BREAKDOWN:');
+console.log('='.repeat(80));
+
+landingPagePlan.subtasks.forEach((subtask, subtaskIndex) => {
+  console.log(`\n${subtask.subtask_number}. ${subtask.title}`);
+  console.log(`   ${subtask.description}`);
+  console.log(`   Actions: ${subtask.actions.length}`);
+  
+  subtask.actions.forEach(action => {
+    console.log(`   ${action.action_number}. ${action.title}`);
+  });
+});
+
+console.log('\n🎯 READY TO PROCEED WITH FIRST ACTION!');
+console.log('The first action is: "HT-001.1.1 - Pin and verify core versions"');

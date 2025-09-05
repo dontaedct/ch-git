@@ -1,0 +1,242 @@
+{
+  "mainTask": {
+    "task_number": "HT-002",
+    "title": "Linear/Vercel-Inspired Homepage Transformation",
+    "description": "Transform our current homepage/landing page into a Linear + Vercel–inspired interface while strictly following our existing systems and rules. This task follows the AUDIT → DECIDE → APPLY → VERIFY methodology to ensure systematic execution.\n\nRUN_DATE=2025-01-27T10:00:00.000Z\nTotal Steps: 16\nEstimated Hours: 20\nPhases: 4 (AUDIT, DECIDE, APPLY, VERIFY)",
+    "type": "feature",
+    "priority": "high",
+    "status": "completed",
+    "created_at": "2025-01-27T10:00:00.000Z",
+    "updated_at": "2025-01-27T10:00:00.000Z",
+    "tags": [
+      "homepage",
+      "ui",
+      "frontend",
+      "linear",
+      "vercel",
+      "theme",
+      "design-tokens",
+      "accessibility"
+    ],
+    "metadata": {
+      "run_date": "2025-01-27T10:00:00.000Z",
+      "phases": 4,
+      "total_steps": 16,
+      "estimated_hours": 20,
+      "inspiration": "Linear + Vercel design principles",
+      "methodology": "AUDIT → DECIDE → APPLY → VERIFY",
+      "constraints": "No new frameworks/libraries without approval",
+      "deliverables": [
+        "Theme system",
+        "Design tokens", 
+        "Homepage redesign",
+        "Accessibility compliance",
+        "Performance optimization"
+      ]
+    }
+  },
+  "subtasks": [
+    {
+      "subtask_number": "HT-002.1",
+      "title": "Phase 1 — Theme Enhancement",
+      "description": "Goal: Enhance existing theme system with Linear-specific tokens and components.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "actions": [
+        {
+          "action_number": "HT-002.1.1",
+          "title": "Add elevation/shadow tokens for Linear-style surfaces",
+          "description": "In styles/globals.css, add elevation tokens: --elevation-0, --elevation-1, --elevation-2 for subtle Linear-style shadows.",
+          "verification": "Test elevation tokens on Surface components; shadows appear subtle and Linear-like.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.1.2",
+          "title": "Create theme toggle component with accessibility",
+          "description": "Create components/ui/theme-toggle.tsx with proper ARIA labels, keyboard support, and icon switching.",
+          "verification": "Theme toggle works with keyboard, screen readers, and switches between light/dark modes.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.1.3",
+          "title": "Enhance micro-interaction tokens",
+          "description": "In styles/motion.css, add Linear-specific micro-interaction tokens for hover states and transitions.",
+          "verification": "Micro-interactions feel smooth and Linear-like; duration 80-150ms with subtle easing.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.1.4",
+          "title": "Add Linear-specific spacing patterns",
+          "description": "Add --space-section, --space-section-sm, --space-section-lg tokens for consistent section spacing.",
+          "verification": "Section spacing follows Linear patterns; consistent rhythm throughout homepage.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-002.2",
+      "title": "Phase 2 — Homepage Refinement",
+      "description": "Goal: Refine existing homepage with Linear/Vercel design principles and proper hierarchy.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "actions": [
+        {
+          "action_number": "HT-002.2.1",
+          "title": "Refine hero section with Linear typography hierarchy",
+          "description": "In app/page.tsx, enhance hero section with proper display typography, tight leading, and Linear-style hierarchy.",
+          "verification": "Hero section has clear hierarchy; display text is prominent, subtext is readable, CTAs are clear.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.2.2",
+          "title": "Enhance feature cards with subtle elevation",
+          "description": "Apply elevation tokens to feature cards; add subtle hover states with elevation changes.",
+          "verification": "Feature cards have subtle shadows; hover states elevate smoothly; feels Linear-like.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.2.3",
+          "title": "Add social proof section with muted styling",
+          "description": "Add social proof/logos section with grayscale styling, proper spacing, and subtle presentation.",
+          "verification": "Social proof section is subtle and professional; logos are muted, spacing is consistent.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.2.4",
+          "title": "Implement CTA section with proper spacing",
+          "description": "Add final CTA section with condensed layout: headline, one sentence, primary button.",
+          "verification": "CTA section has good rhythm; spacing between sections is consistent and Linear-like.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.2.5",
+          "title": "Add navigation header with translucent effect",
+          "description": "Create sticky navigation header with theme toggle, translucent background, and proper CTAs.",
+          "verification": "Navigation is sticky, translucent on scroll, has theme toggle, and clear CTAs.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.2.6",
+          "title": "Enhance footer with multi-column layout",
+          "description": "Create footer with multi-column link groups, subdued contrast, and legal links.",
+          "verification": "Footer has proper multi-column layout, subdued styling, and all necessary links.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-002.3",
+      "title": "Phase 3 — Accessibility & Performance",
+      "description": "Goal: Ensure WCAG AA compliance and optimal performance across all devices.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "actions": [
+        {
+          "action_number": "HT-002.3.1",
+          "title": "Ensure WCAG AA contrast compliance",
+          "description": "Audit all text/background combinations for WCAG AA contrast ratios in both light and dark themes.",
+          "verification": "All text meets WCAG AA contrast requirements; no accessibility violations.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.3.2",
+          "title": "Add proper focus states and keyboard navigation",
+          "description": "Ensure all interactive elements have visible focus states and proper keyboard navigation order.",
+          "verification": "Focus states are visible; keyboard navigation works correctly; no keyboard traps.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.3.3",
+          "title": "Optimize for Core Web Vitals",
+          "description": "Optimize images, reduce CLS, improve LCP, and ensure good performance scores.",
+          "verification": "Lighthouse LCP ≤ 2.5s, CLS < 0.1, performance score ≥ 90.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.3.4",
+          "title": "Test reduced motion preferences",
+          "description": "Ensure all animations respect prefers-reduced-motion and provide fallbacks.",
+          "verification": "Reduced motion preferences are respected; animations are disabled when appropriate.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-002.4",
+      "title": "Phase 4 — Verification & Polish",
+      "description": "Goal: Final testing, cross-browser compatibility, and performance verification.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "actions": [
+        {
+          "action_number": "HT-002.4.1",
+          "title": "Cross-browser testing",
+          "description": "Test homepage across Chrome, Firefox, Safari, and Edge for visual consistency.",
+          "verification": "Homepage looks consistent across all major browsers; no visual regressions.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.4.2",
+          "title": "Mobile responsiveness verification",
+          "description": "Test homepage on mobile devices; ensure proper touch targets and responsive layout.",
+          "verification": "Homepage is fully responsive; touch targets are appropriate; mobile UX is smooth.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.4.3",
+          "title": "Performance audit",
+          "description": "Run final performance audit; check bundle size, loading times, and Core Web Vitals.",
+          "verification": "Performance metrics are optimal; bundle size is reasonable; loading is fast.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        },
+        {
+          "action_number": "HT-002.4.4",
+          "title": "Final accessibility audit",
+          "description": "Run comprehensive accessibility audit; test with screen readers and keyboard navigation.",
+          "verification": "Accessibility audit passes; screen reader compatibility confirmed; keyboard navigation works.",
+          "status": "pending",
+          "created_at": "2025-01-27T10:00:00.000Z",
+          "updated_at": "2025-01-27T10:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

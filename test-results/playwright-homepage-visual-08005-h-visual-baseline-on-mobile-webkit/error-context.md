@@ -1,0 +1,286 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e4]:
+      - link [ref=e5]:
+        - /url: /
+        - img [ref=e7]
+      - generic [ref=e9]:
+        - button "Switch to system theme" [ref=e10] [cursor=pointer]:
+          - img
+        - button "Toggle mobile menu" [ref=e11] [cursor=pointer]:
+          - img [ref=e12] [cursor=pointer]
+  - main "Homepage" [ref=e14]:
+    - link "Skip to main content" [ref=e15]:
+      - /url: "#hero-heading"
+    - link "Skip to features" [ref=e16]:
+      - /url: "#features-heading"
+    - link "Skip to call to action" [ref=e17]:
+      - /url: "#cta-heading"
+    - region "Linear Spacing Patterns" [ref=e18]:
+      - generic [ref=e20]:
+        - heading "Linear Spacing Patterns" [level=2] [ref=e21]
+        - paragraph [ref=e22]: "Testing Linear-specific spacing tokens: section-sm (4rem/64px)"
+        - generic [ref=e23]:
+          - paragraph [ref=e25]: This section uses py-section-sm for vertical spacing
+          - paragraph [ref=e27]: Space between sections uses space-y-section-sm
+    - region "Build Better Products Faster Than Ever" [ref=e28]:
+      - generic [ref=e30]:
+        - status "New feature announcement" [ref=e32]: ✨ Now Available
+        - heading "Build Better Products Faster Than Ever" [level=1] [ref=e33]:
+          - text: Build Better Products
+          - generic [ref=e34]: Faster Than Ever
+        - paragraph [ref=e35]: Transform your ideas into production-ready applications with our comprehensive development platform. Ship features faster, maintain quality, and scale effortlessly.
+        - group "Primary actions" [ref=e36]:
+          - button "Get Started Free" [ref=e37] [cursor=pointer]:
+            - generic [ref=e38] [cursor=pointer]: Get Started Free
+          - button "View Documentation" [ref=e39] [cursor=pointer]:
+            - generic [ref=e40] [cursor=pointer]: View Documentation
+    - region "Product Preview" [ref=e41]:
+      - img "Product preview placeholder" [ref=e44]:
+        - generic [ref=e48]:
+          - img [ref=e50]
+          - heading "Product Preview" [level=2] [ref=e52]
+          - paragraph [ref=e53]: Interactive demo and product screenshots will be displayed here
+    - region "Everything you need to build" [ref=e57]:
+      - generic [ref=e58]:
+        - generic [ref=e59]:
+          - heading "Everything you need to build" [level=2] [ref=e60]
+          - paragraph [ref=e61]: Powerful tools and components designed to accelerate your development workflow
+        - list "Feature list" [ref=e62]:
+          - listitem [ref=e64] [cursor=pointer]:
+            - generic [ref=e65] [cursor=pointer]:
+              - img [ref=e67] [cursor=pointer]
+              - heading "Development Tools" [level=3] [ref=e69] [cursor=pointer]
+              - paragraph [ref=e70] [cursor=pointer]: Built-in TypeScript, ESLint, Prettier, and testing frameworks. Start coding immediately with zero configuration.
+          - listitem [ref=e72] [cursor=pointer]:
+            - generic [ref=e73] [cursor=pointer]:
+              - img [ref=e75] [cursor=pointer]
+              - heading "UI Components" [level=3] [ref=e77] [cursor=pointer]
+              - paragraph [ref=e78] [cursor=pointer]: Beautiful, accessible components built with Radix UI and styled with Tailwind CSS. Consistent design system out of the box.
+          - listitem [ref=e80] [cursor=pointer]:
+            - generic [ref=e81] [cursor=pointer]:
+              - img [ref=e83] [cursor=pointer]
+              - heading "Database & Auth" [level=3] [ref=e85] [cursor=pointer]
+              - paragraph [ref=e86] [cursor=pointer]: Integrated Supabase for database, authentication, and real-time features. Row-level security and API generation included.
+          - listitem [ref=e88] [cursor=pointer]:
+            - generic [ref=e89] [cursor=pointer]:
+              - img [ref=e91] [cursor=pointer]
+              - heading "One-Click Deploy" [level=3] [ref=e93] [cursor=pointer]
+              - paragraph [ref=e94] [cursor=pointer]: Deploy to Vercel with zero configuration. Automatic builds, preview deployments, and global CDN for optimal performance.
+    - region "Trusted by teams at" [ref=e95]:
+      - generic [ref=e97]:
+        - heading "Trusted by teams at" [level=2] [ref=e98]
+        - list "Trusted companies" [ref=e99]:
+          - listitem [ref=e100]:
+            - img "Vercel logo" [ref=e101]
+          - listitem [ref=e109]:
+            - img "Linear logo" [ref=e110]
+          - listitem [ref=e113]:
+            - img "Supabase logo" [ref=e114]
+          - listitem [ref=e117]:
+            - img "Next.js logo" [ref=e118]
+          - listitem [ref=e121]:
+            - img "Tailwind CSS logo" [ref=e122]
+          - listitem [ref=e125]:
+            - img "TypeScript logo" [ref=e126]
+    - region "Ready to get started?" [ref=e129]:
+      - generic [ref=e131]:
+        - heading "Ready to get started?" [level=2] [ref=e132]
+        - paragraph [ref=e133]: Join thousands of developers building the future with our platform.
+        - button "Start Building Today" [ref=e134] [cursor=pointer]:
+          - generic [ref=e135] [cursor=pointer]: Start Building Today
+    - generic [ref=e136]:
+      - generic [ref=e137]:
+        - heading "Surface Component Test" [level=2] [ref=e138]
+        - generic [ref=e139]:
+          - generic [ref=e140]:
+            - heading "Default Surface" [level=3] [ref=e141]
+            - paragraph [ref=e142]: This is the default surface variant with subtle borders and background.
+          - generic [ref=e143]:
+            - heading "Elevated Surface" [level=3] [ref=e144]
+            - paragraph [ref=e145]: This surface has more elevation and stronger shadows for emphasis.
+          - generic [ref=e146]:
+            - heading "Card Surface" [level=3] [ref=e147]
+            - paragraph [ref=e148]: This surface mimics a traditional card with solid background.
+          - generic [ref=e149]:
+            - heading "Subtle Surface" [level=3] [ref=e150]
+            - paragraph [ref=e151]: This surface has minimal styling for background content.
+          - generic [ref=e152] [cursor=pointer]:
+            - heading "Ghost Surface" [level=3] [ref=e153] [cursor=pointer]
+            - paragraph [ref=e154] [cursor=pointer]: This surface is nearly transparent with hover effects.
+          - generic [ref=e155] [cursor=pointer]:
+            - heading "Interactive Surface" [level=3] [ref=e156] [cursor=pointer]
+            - paragraph [ref=e157] [cursor=pointer]: This surface has interactive hover and scale effects.
+        - generic [ref=e158]:
+          - heading "Size Variations" [level=3] [ref=e159]
+          - generic [ref=e160]:
+            - generic [ref=e161]:
+              - heading "Small" [level=4] [ref=e162]
+              - paragraph [ref=e163]: Compact padding
+            - generic [ref=e164]:
+              - heading "Default" [level=4] [ref=e165]
+              - paragraph [ref=e166]: Standard padding
+            - generic [ref=e167]:
+              - heading "Large" [level=4] [ref=e168]
+              - paragraph [ref=e169]: Generous padding
+        - generic [ref=e170]:
+          - heading "Rounded Variations" [level=3] [ref=e171]
+          - generic [ref=e172]:
+            - generic [ref=e173]:
+              - heading "Small Radius" [level=4] [ref=e174]
+              - paragraph [ref=e175]: Subtle rounding
+            - generic [ref=e176]:
+              - heading "Default Radius" [level=4] [ref=e177]
+              - paragraph [ref=e178]: Standard rounding
+            - generic [ref=e179]:
+              - heading "Extra Large" [level=4] [ref=e180]
+              - paragraph [ref=e181]: Pronounced rounding
+      - generic [ref=e182]:
+        - heading "Grid System Test" [level=2] [ref=e183]
+        - generic [ref=e184]:
+          - heading "Basic 2-Column Layout" [level=3] [ref=e185]
+          - generic [ref=e186]:
+            - generic [ref=e188]: Left Column (span=6)
+            - generic [ref=e190]: Right Column (span=6)
+        - generic [ref=e191]:
+          - heading "Responsive 3-Column Layout" [level=3] [ref=e192]
+          - generic [ref=e193]:
+            - generic [ref=e195]: Column 1 (12/6/4)
+            - generic [ref=e197]: Column 2 (12/6/4)
+            - generic [ref=e199]: Column 3 (12/12/4)
+        - generic [ref=e200]:
+          - heading "Column with Offset" [level=3] [ref=e201]
+          - generic [ref=e204]: Offset Column (span=4, offset=2)
+        - generic [ref=e205]:
+          - heading "Different Grid Configurations" [level=3] [ref=e206]
+          - generic [ref=e207]:
+            - heading "6-Column Grid" [level=4] [ref=e208]
+            - generic [ref=e209]:
+              - generic [ref=e211]: Col 1
+              - generic [ref=e213]: Col 2
+              - generic [ref=e215]: Col 3
+          - generic [ref=e216]:
+            - heading "4-Column Grid" [level=4] [ref=e217]
+            - generic [ref=e218]:
+              - generic [ref=e220]: "1"
+              - generic [ref=e222]: "2"
+              - generic [ref=e224]: "3"
+              - generic [ref=e226]: "4"
+        - generic [ref=e227]:
+          - heading "Gap Variations" [level=3] [ref=e228]
+          - generic [ref=e229]:
+            - heading "Small Gap" [level=4] [ref=e230]
+            - generic [ref=e231]:
+              - generic [ref=e233]: Small Gap
+              - generic [ref=e235]: Small Gap
+              - generic [ref=e237]: Small Gap
+          - generic [ref=e238]:
+            - heading "Large Gap" [level=4] [ref=e239]
+            - generic [ref=e240]:
+              - generic [ref=e242]: Large Gap
+              - generic [ref=e244]: Large Gap
+              - generic [ref=e246]: Large Gap
+    - contentinfo "Site footer" [ref=e247]:
+      - generic [ref=e249]:
+        - generic [ref=e251]:
+          - generic [ref=e253]:
+            - heading "Micro App Platform" [level=3] [ref=e254]
+            - paragraph [ref=e255]: Build better products faster than ever with our comprehensive development platform.
+            - list "Social media links" [ref=e256]:
+              - link "Follow us on Twitter" [ref=e257]:
+                - /url: "#"
+                - img [ref=e258]
+              - link "Follow us on GitHub" [ref=e260]:
+                - /url: "#"
+                - img [ref=e261]
+              - link "Follow us on LinkedIn" [ref=e263]:
+                - /url: "#"
+                - img [ref=e264]
+          - generic [ref=e267]:
+            - heading "Product" [level=4] [ref=e268]
+            - list "Product links" [ref=e269]:
+              - list [ref=e270]:
+                - listitem [ref=e271]:
+                  - link "Features" [ref=e272]:
+                    - /url: "#"
+                - listitem [ref=e273]:
+                  - link "Pricing" [ref=e274]:
+                    - /url: "#"
+                - listitem [ref=e275]:
+                  - link "Documentation" [ref=e276]:
+                    - /url: "#"
+                - listitem [ref=e277]:
+                  - link "API Reference" [ref=e278]:
+                    - /url: "#"
+                - listitem [ref=e279]:
+                  - link "Changelog" [ref=e280]:
+                    - /url: "#"
+          - generic [ref=e282]:
+            - heading "Resources" [level=4] [ref=e283]
+            - list "Resources links" [ref=e284]:
+              - list [ref=e285]:
+                - listitem [ref=e286]:
+                  - link "Blog" [ref=e287]:
+                    - /url: "#"
+                - listitem [ref=e288]:
+                  - link "Guides" [ref=e289]:
+                    - /url: "#"
+                - listitem [ref=e290]:
+                  - link "Examples" [ref=e291]:
+                    - /url: "#"
+                - listitem [ref=e292]:
+                  - link "Community" [ref=e293]:
+                    - /url: "#"
+                - listitem [ref=e294]:
+                  - link "Support" [ref=e295]:
+                    - /url: "#"
+          - generic [ref=e297]:
+            - heading "Company" [level=4] [ref=e298]
+            - list "Company links" [ref=e299]:
+              - list [ref=e300]:
+                - listitem [ref=e301]:
+                  - link "About" [ref=e302]:
+                    - /url: "#"
+                - listitem [ref=e303]:
+                  - link "Careers" [ref=e304]:
+                    - /url: "#"
+                - listitem [ref=e305]:
+                  - link "Contact" [ref=e306]:
+                    - /url: "#"
+                - listitem [ref=e307]:
+                  - link "Press" [ref=e308]:
+                    - /url: "#"
+                - listitem [ref=e309]:
+                  - link "Partners" [ref=e310]:
+                    - /url: "#"
+          - generic [ref=e312]:
+            - heading "Legal" [level=4] [ref=e313]
+            - list "Legal links" [ref=e314]:
+              - list [ref=e315]:
+                - listitem [ref=e316]:
+                  - link "Privacy Policy" [ref=e317]:
+                    - /url: "#"
+                - listitem [ref=e318]:
+                  - link "Terms of Service" [ref=e319]:
+                    - /url: "#"
+                - listitem [ref=e320]:
+                  - link "Cookie Policy" [ref=e321]:
+                    - /url: "#"
+                - listitem [ref=e322]:
+                  - link "Security" [ref=e323]:
+                    - /url: "#"
+                - listitem [ref=e324]:
+                  - link "Compliance" [ref=e325]:
+                    - /url: "#"
+        - generic [ref=e327]:
+          - generic [ref=e328]: © 2025 Micro App Platform. All rights reserved.
+          - generic [ref=e329]:
+            - generic [ref=e330]: Made with ❤️ for developers
+            - generic [ref=e331]:
+              - generic [ref=e332]: "Status:"
+              - generic [ref=e335]: All systems operational
+  - alert [ref=e336]
+```

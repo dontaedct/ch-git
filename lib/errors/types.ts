@@ -558,6 +558,8 @@ export function createErrorContext(req?: any, additionalData?: Record<string, an
     }
     
     // Try to get trace ID from OpenTelemetry if available (only in server environment)
+    // Temporarily disabled to fix 500 error
+    /*
     if (typeof window === 'undefined' && process.env.NODE_ENV !== 'production') {
       try {
         const getCurrentTraceId = require('../observability/otel').getCurrentTraceId;
@@ -568,6 +570,7 @@ export function createErrorContext(req?: any, additionalData?: Record<string, an
         // OpenTelemetry not available, skip traceId
       }
     }
+    */
   }
 
   return context;

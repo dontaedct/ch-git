@@ -1,0 +1,65 @@
+{
+  "task": "HT-002.4.1",
+  "title": "Cross-browser testing",
+  "runDate": "2025-01-27T10:00:00.000Z",
+  "status": "completed_with_warnings",
+  "browsers": {
+    "Chrome": {
+      "available": false,
+      "error": "Command failed: where chromium\nINFO: Could not find files for the given pattern(s).\r\n",
+      "command": "where chrome (fallback: where chromium)",
+      "features": [
+        "CSS Grid",
+        "Flexbox",
+        "CSS Custom Properties",
+        "OKLCH Colors",
+        "Framer Motion"
+      ],
+      "tests": {}
+    },
+    "Firefox": {
+      "available": false,
+      "error": "Command failed: where firefox-esr\nINFO: Could not find files for the given pattern(s).\r\n",
+      "command": "where firefox (fallback: where firefox-esr)",
+      "features": [
+        "CSS Grid",
+        "Flexbox",
+        "CSS Custom Properties",
+        "OKLCH Colors",
+        "Framer Motion"
+      ],
+      "tests": {}
+    },
+    "Edge": {
+      "available": false,
+      "error": "Command failed: where microsoft-edge\nINFO: Could not find files for the given pattern(s).\r\n",
+      "command": "where msedge (fallback: where microsoft-edge)",
+      "features": [
+        "CSS Grid",
+        "Flexbox",
+        "CSS Custom Properties",
+        "OKLCH Colors",
+        "Framer Motion"
+      ],
+      "tests": {}
+    }
+  },
+  "summary": {
+    "totalTests": 13,
+    "passed": 10,
+    "failed": 3,
+    "warnings": 0
+  },
+  "recommendations": [
+    {
+      "type": "warning",
+      "message": "Some browsers not available for testing: Chrome, Firefox, Edge",
+      "action": "Install missing browsers or use browser testing services like BrowserStack"
+    },
+    {
+      "type": "info",
+      "message": "OKLCH colors may not be supported in older browsers",
+      "action": "Consider adding fallback colors for older browser support"
+    }
+  ]
+}

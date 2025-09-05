@@ -1,0 +1,60 @@
+{
+  "title": "Accessibility Testing Checklist",
+  "categories": [
+    {
+      "name": "WCAG 2.1 AA Compliance",
+      "items": [
+        "All images have appropriate alt text",
+        "Form inputs have associated labels",
+        "Semantic HTML elements used correctly",
+        "ARIA labels and descriptions provided",
+        "Skip links implemented for keyboard users",
+        "Focus indicators visible and consistent"
+      ]
+    },
+    {
+      "name": "Keyboard Navigation",
+      "items": [
+        "All interactive elements accessible via keyboard",
+        "Logical tab order through page elements",
+        "No keyboard traps in complex components",
+        "Enter and Space keys activate buttons",
+        "Escape key closes modals and dropdowns",
+        "Arrow keys work in menus and lists"
+      ]
+    },
+    {
+      "name": "Screen Reader Support",
+      "items": [
+        "Proper heading hierarchy (h1, h2, h3, etc.)",
+        "Landmark roles for page structure",
+        "Descriptive text for screen readers",
+        "Live regions for dynamic content",
+        "Form validation messages announced",
+        "Status updates communicated clearly"
+      ]
+    },
+    {
+      "name": "Visual Accessibility",
+      "items": [
+        "Text meets WCAG AA contrast ratio (4.5:1)",
+        "Interactive elements meet contrast requirements",
+        "Focus indicators meet contrast requirements",
+        "Color is not the only way to convey information",
+        "Text can be resized up to 200% without loss of functionality",
+        "Content reflows properly at different zoom levels"
+      ]
+    },
+    {
+      "name": "Motor Accessibility",
+      "items": [
+        "Touch targets meet minimum 44px size",
+        "Sufficient spacing between interactive elements",
+        "No time limits that cannot be extended",
+        "Reduced motion preferences respected",
+        "No content that flashes more than 3 times per second",
+        "Drag and drop alternatives provided"
+      ]
+    }
+  ]
+}

@@ -23,6 +23,11 @@ body {
   line-height: 1.5;
 }
 
+/* Inter font family */
+.font-inter {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 /* Typography Scale - Apple/Linear grade */
 @layer components {
   /* Display & Heading Styles */
@@ -209,6 +214,22 @@ body {
   
   .section-loose {
     @apply py-section-xl;
+  }
+  
+  /* HT-001.3.2: Section rhythm helpers for consistent spacing */
+  .section {
+    padding-top: 4rem;    /* 64px */
+    padding-bottom: 4rem;  /* 64px */
+  }
+  
+  .section-sm {
+    padding-top: 2rem;    /* 32px */
+    padding-bottom: 2rem; /* 32px */
+  }
+  
+  .section-lg {
+    padding-top: 6rem;    /* 96px */
+    padding-bottom: 6rem; /* 96px */
   }
   
   /* Vertical rhythm utilities */

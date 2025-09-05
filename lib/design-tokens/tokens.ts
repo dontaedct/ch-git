@@ -207,6 +207,11 @@ export interface DesignTokens {
     '2xl': string;
     '3xl': string;
     '4xl': string;
+    // HT-002.1.4: Linear-specific spacing patterns
+    section: string;
+    'section-sm': string;
+    'section-lg': string;
+    'section-xl': string;
   };
   
   // Border system - Hairline borders for material feel
@@ -372,17 +377,17 @@ export const designTokens: DesignTokens = {
       background: '#ffffff',
       foreground: neutralScale[950],
       muted: neutralScale[50],
-      mutedForeground: neutralScale[600],
+      mutedForeground: neutralScale[500],
       accent: accentScale[50],
       accentForeground: accentScale[600],
       border: neutralScale[200],
       input: neutralScale[200],
       ring: accentScale[600],
-      destructive: '#dc2626', // Darker red for better contrast (was #ef4444)
+      destructive: '#b91c1c', // Even darker red for WCAG AA compliance (was #dc2626)
       destructiveForeground: '#ffffff',
-      success: '#15803d', // Even darker green for WCAG AA compliance (was #16a34a)
+      success: '#166534', // Even darker green for WCAG AA compliance (was #15803d)
       successForeground: '#ffffff',
-      warning: '#c2410c', // Darker orange for WCAG AA compliance (was #d97706)
+      warning: '#9a3412', // Even darker orange for WCAG AA compliance (was #c2410c)
       warningForeground: '#ffffff',
       info: accentScale[500],
       infoForeground: '#ffffff',
@@ -395,17 +400,17 @@ export const designTokens: DesignTokens = {
       background: neutralScale[950],
       foreground: neutralScale[50],
       muted: neutralScale[900],
-      mutedForeground: neutralScale[400],
+      mutedForeground: neutralScale[300],
       accent: neutralScale[800],
       accentForeground: accentScale[400],
       border: neutralScale[800],
       input: neutralScale[800],
       ring: accentScale[400],
-      destructive: '#dc2626', // Consistent with light theme
+      destructive: '#b91c1c', // Consistent with light theme
       destructiveForeground: '#ffffff',
-      success: '#15803d', // Consistent with light theme
+      success: '#166534', // Consistent with light theme
       successForeground: '#ffffff',
-      warning: '#c2410c', // Consistent with light theme
+      warning: '#9a3412', // Consistent with light theme
       warningForeground: '#ffffff',
       info: accentScale[400],
       infoForeground: '#ffffff',
@@ -470,6 +475,11 @@ export const designTokens: DesignTokens = {
     '2xl': '3rem',
     '3xl': '4rem',
     '4xl': '6rem',
+    // HT-002.1.4: Linear-specific spacing patterns
+    section: '6rem',        // 96px - Standard section spacing
+    'section-sm': '4rem',   // 64px - Compact section spacing
+    'section-lg': '8rem',   // 128px - Large section spacing
+    'section-xl': '12rem',  // 192px - Extra large section spacing
   },
   
   // Border system - Hairline borders for material feel

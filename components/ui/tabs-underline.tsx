@@ -26,21 +26,22 @@ const TabsUnderlineList = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   const [activeTabRect, setActiveTabRect] = React.useState<DOMRect | null>(null)
   const [listRect, setListRect] = React.useState<DOMRect | null>(null)
-  const listRef = React.useRef<HTMLDivElement>(null)
-  const activeTabRef = React.useRef<HTMLButtonElement>(null)
+  const [listElement, setListElement] = React.useState<HTMLDivElement | null>(null)
+  const activeTabRef = React.useRef<HTMLButtonElement | null>(null)
 
   const updateIndicator = React.useCallback(() => {
-    if (!listRef.current) return
+    if (!listElement) return
 
-    const activeTab = listRef.current.querySelector('[data-state="active"]') as HTMLButtonElement
+    const activeTab = listElement.querySelector('[data-state="active"]') as HTMLButtonElement
     if (activeTab) {
       const tabRect = activeTab.getBoundingClientRect()
-      const listRect = listRef.current.getBoundingClientRect()
+      const listRect = listElement.getBoundingClientRect()
       setActiveTabRect(tabRect)
       setListRect(listRect)
+      // Store active tab reference for keyboard navigation
       activeTabRef.current = activeTab
     }
-  }, [])
+  }, [listElement])
 
   React.useEffect(() => {
     updateIndicator()
@@ -49,8 +50,8 @@ const TabsUnderlineList = React.forwardRef<
       requestAnimationFrame(updateIndicator)
     })
 
-    if (listRef.current) {
-      observer.observe(listRef.current, {
+    if (listElement) {
+      observer.observe(listElement, {
         attributes: true,
         attributeFilter: ['data-state'],
         subtree: true
@@ -64,12 +65,12 @@ const TabsUnderlineList = React.forwardRef<
       observer.disconnect()
       window.removeEventListener('resize', handleResize)
     }
-  }, [updateIndicator])
+  }, [updateIndicator, listElement])
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (!listRef.current) return
+    if (!listElement) return
 
-    const triggers = Array.from(listRef.current.querySelectorAll('[role="tab"]')) as HTMLButtonElement[]
+    const triggers = Array.from(listElement.querySelectorAll('[role="tab"]')) as HTMLButtonElement[]
     const currentIndex = triggers.findIndex(trigger => trigger === event.target)
     
     if (currentIndex === -1) return
@@ -130,12 +131,14 @@ const TabsUnderlineList = React.forwardRef<
   return (
     <TabsPrimitive.List
       ref={(node) => {
-        listRef.current = node
+        // Forward the ref first
         if (typeof ref === 'function') {
           ref(node)
         } else if (ref) {
           ref.current = node
         }
+        // Update our internal state
+        setListElement(node)
       }}
       className={cn(
         'relative inline-flex h-10 items-center justify-start',

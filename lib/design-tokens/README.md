@@ -114,6 +114,7 @@ Tailwind: `bg-accent-scale-500`, `text-accent-scale-700`, etc.
 
 ### 4. Spacing
 
+#### Standard Spacing Scale
 | Token | Value | CSS Variable | Tailwind Class |
 |-------|-------|-------------|----------------|
 | `xs` | 0.25rem | `--spacing-xs` | `p-token-xs`, `m-token-xs` |
@@ -123,7 +124,28 @@ Tailwind: `bg-accent-scale-500`, `text-accent-scale-700`, etc.
 | `xl` | 2rem | `--spacing-xl` | `p-token-xl`, `m-token-xl` |
 | `2xl` | 3rem | `--spacing-2xl` | `p-token-2xl`, `m-token-2xl` |
 | `3xl` | 4rem | `--spacing-3xl` | `p-token-3xl`, `m-token-3xl` |
-| `4xl` | 6rem | `--spacing-4xl` | `p-token-4xl`, `m-token-4xl` |
+
+#### Linear-Specific Section Spacing (HT-002.1.4)
+| Token | Value | CSS Variable | Tailwind Class | Usage |
+|-------|-------|-------------|----------------|-------|
+| `section-sm` | 4rem (64px) | `--spacing-section-sm` | `py-section-sm`, `space-y-section-sm` | Compact sections |
+| `section` | 6rem (96px) | `--spacing-section` | `py-section`, `space-y-section` | Standard sections |
+| `section-lg` | 8rem (128px) | `--spacing-section-lg` | `py-section-lg`, `space-y-section-lg` | Large sections |
+| `section-xl` | 12rem (192px) | `--spacing-section-xl` | `py-section-xl`, `space-y-section-xl` | Extra large sections |
+
+#### Usage Examples
+```tsx
+// Section spacing
+<section className="py-section-sm">Compact section</section>
+<section className="py-section">Standard section</section>
+<section className="py-section-lg">Large section</section>
+
+// Vertical spacing between elements
+<div className="space-y-section-sm">
+  <div>Item 1</div>
+  <div>Item 2</div>
+</div>
+```
 
 ### 5. Border Radius
 

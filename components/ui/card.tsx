@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Card primitive component
+ * @module components/ui/card
+ * 
+ * UI POLISH NOTE: This component will be EXTENDED (not duplicated) for Swift-inspired
+ * aesthetic changes. All modifications behind FEATURE_UI_POLISH_TARGET_STYLE flag.
+ */
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"

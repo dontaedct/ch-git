@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './button';
+import { Button, CTAButton, SecondaryCTAButton, OutlineCTAButton, GhostCTAButton, BookingCTAButton, DownloadCTAButton, EmailCTAButton } from './button';
+import { Download, Mail, Calendar, ArrowRight } from 'lucide-react';
 
 const meta: Meta<typeof Button> = {
-  title: 'UI/Button',
+  title: 'UI/Button - HT-001.3.5',
   component: Button,
   parameters: {
     layout: 'centered',
@@ -21,11 +22,25 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: { type: 'select' },
-      options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
+      options: ['cta', 'cta-secondary', 'cta-outline', 'cta-ghost', 'solid', 'ghost', 'subtle', 'destructive', 'outline', 'link', 'default', 'secondary'],
     },
     size: {
       control: { type: 'select' },
-      options: ['default', 'sm', 'lg', 'icon'],
+      options: ['xs', 'sm', 'default', 'lg', 'xl', 'icon', 'icon-sm', 'icon-lg'],
+    },
+    intent: {
+      control: { type: 'select' },
+      options: ['default', 'booking', 'download', 'email', 'danger', 'success'],
+    },
+    ctaType: {
+      control: { type: 'select' },
+      options: ['primary', 'secondary', 'outline', 'ghost'],
+    },
+    loading: {
+      control: { type: 'boolean' },
+    },
+    fullWidth: {
+      control: { type: 'boolean' },
     },
   },
 };
@@ -33,97 +48,216 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+// HT-001.3.5 CTA Variants
+export const CTAPrimary: Story = {
   args: {
-    children: 'Button',
-  },
-};
-
-export const Secondary: Story = {
-  args: {
-    variant: 'secondary',
-    children: 'Secondary',
-  },
-};
-
-export const Destructive: Story = {
-  args: {
-    variant: 'destructive',
-    children: 'Destructive',
-  },
-};
-
-export const Outline: Story = {
-  args: {
-    variant: 'outline',
-    children: 'Outline',
-  },
-};
-
-export const Ghost: Story = {
-  args: {
-    variant: 'ghost',
-    children: 'Ghost',
-  },
-};
-
-export const Link: Story = {
-  args: {
-    variant: 'link',
-    children: 'Link',
-  },
-};
-
-export const Small: Story = {
-  args: {
-    size: 'sm',
-    children: 'Small',
-  },
-};
-
-export const Large: Story = {
-  args: {
+    variant: 'cta',
     size: 'lg',
-    children: 'Large',
+    children: 'Book Consultation',
   },
 };
 
-export const Icon: Story = {
+export const CTASecondary: Story = {
   args: {
-    size: 'icon',
-    children: '🔍',
+    variant: 'cta-secondary',
+    size: 'lg',
+    children: 'Learn More',
   },
 };
 
-export const Disabled: Story = {
+export const CTAOutline: Story = {
   args: {
-    disabled: true,
-    children: 'Disabled',
+    variant: 'cta-outline',
+    size: 'lg',
+    children: 'Get Started',
   },
 };
 
-export const WithIcon: Story = {
+export const CTAGhost: Story = {
   args: {
-    children: 'Button with Icon',
+    variant: 'cta-ghost',
+    size: 'lg',
+    children: 'View Details',
   },
-  render: (args: any) => (
-    <Button {...args}>
-      <svg
-        width="15"
-        height="15"
-        viewBox="0 0 15 15"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="mr-2 h-4 w-4"
+};
+
+// Intent-specific CTAs
+export const BookingCTA: Story = {
+  args: {
+    variant: 'cta',
+    intent: 'booking',
+    size: 'xl',
+    icon: <Calendar className="w-5 h-5" />,
+    children: 'Book Now',
+  },
+};
+
+export const DownloadCTA: Story = {
+  args: {
+    variant: 'cta',
+    intent: 'download',
+    size: 'lg',
+    icon: <Download className="w-4 h-4" />,
+    children: 'Download PDF',
+  },
+};
+
+export const EmailCTA: Story = {
+  args: {
+    variant: 'cta',
+    intent: 'email',
+    size: 'lg',
+    icon: <Mail className="w-4 h-4" />,
+    children: 'Email Copy',
+  },
+};
+
+// Loading States
+export const CTALoading: Story = {
+  args: {
+    variant: 'cta',
+    size: 'lg',
+    loading: true,
+    loadingText: 'Processing...',
+    children: 'Submit',
+  },
+};
+
+export const BookingCTALoading: Story = {
+  args: {
+    variant: 'cta',
+    intent: 'booking',
+    size: 'xl',
+    loading: true,
+    loadingText: 'Booking...',
+    children: 'Book Now',
+  },
+};
+
+// Full Width CTAs
+export const FullWidthCTA: Story = {
+  args: {
+    variant: 'cta',
+    size: 'xl',
+    fullWidth: true,
+    children: 'Get Started Today',
+  },
+};
+
+// CTA with Right Icon
+export const CTARightIcon: Story = {
+  args: {
+    variant: 'cta',
+    size: 'lg',
+    icon: <ArrowRight className="w-4 h-4" />,
+    iconPosition: 'right',
+    children: 'Continue',
+  },
+};
+
+// Size Variants
+export const CTASizes: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 items-center">
+      <Button variant="cta" size="xs">Extra Small</Button>
+      <Button variant="cta" size="sm">Small</Button>
+      <Button variant="cta" size="default">Default</Button>
+      <Button variant="cta" size="lg">Large</Button>
+      <Button variant="cta" size="xl">Extra Large</Button>
+    </div>
+  ),
+};
+
+// Specialized CTA Components
+export const SpecializedCTAs: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 items-center">
+      <CTAButton size="lg">Primary CTA</CTAButton>
+      <SecondaryCTAButton size="lg">Secondary CTA</SecondaryCTAButton>
+      <OutlineCTAButton size="lg">Outline CTA</OutlineCTAButton>
+      <GhostCTAButton size="lg">Ghost CTA</GhostCTAButton>
+    </div>
+  ),
+};
+
+export const IntentCTAs: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 items-center">
+      <BookingCTAButton size="lg" icon={<Calendar className="w-4 h-4" />}>
+        Book Appointment
+      </BookingCTAButton>
+      <DownloadCTAButton size="lg" icon={<Download className="w-4 h-4" />}>
+        Download Report
+      </DownloadCTAButton>
+      <EmailCTAButton size="lg" icon={<Mail className="w-4 h-4" />}>
+        Send Email
+      </EmailCTAButton>
+    </div>
+  ),
+};
+
+// CTA Cluster Example (like in consultation engine)
+export const CTACluster: Story = {
+  render: () => (
+    <div className="max-w-md mx-auto space-y-4">
+      {/* Primary CTA */}
+      <Button 
+        variant="cta" 
+        size="xl" 
+        fullWidth
+        className="h-12 text-base font-semibold"
       >
-        <path
-          d="M7.5 0.875C5.49797 0.875 3.875 2.49797 3.875 4.5C3.875 6.15288 4.98124 7.54738 6.49373 7.98351C5.2997 8.12901 4.27557 8.82034 3.71447 9.82476C3.15895 10.8196 3.31803 12.0806 4.37868 12.9442C4.38845 12.9525 4.39844 12.9609 4.40864 12.9692C4.47187 13.0274 4.54553 13.0841 4.62939 13.1378C4.74304 13.2071 4.87695 13.2713 5.02956 13.3258C5.33447 13.4277 5.71729 13.5 6.125 13.5C6.53271 13.5 6.91553 13.4277 7.22044 13.3258C7.37305 13.2713 7.50696 13.2071 7.62061 13.1378C7.70447 13.0841 7.77813 13.0274 7.84136 12.9692C7.85156 12.9609 7.86155 12.9525 7.87132 12.9442C8.93197 12.0806 9.09105 10.8196 8.53553 9.82476C7.97443 8.82034 6.9503 8.12901 5.75627 7.98351C7.26876 7.54738 8.375 6.15288 8.375 4.5C8.375 2.49797 6.75203 0.875 4.75 0.875H7.5ZM7.5 1.875C6.15203 1.875 5.125 2.90203 5.125 4.25C5.125 5.59797 6.15203 6.625 7.5 6.625C8.84797 6.625 9.875 5.59797 9.875 4.25C9.875 2.90203 8.84797 1.875 7.5 1.875Z"
-          fill="currentColor"
-          fillRule="evenodd"
-          clipRule="evenodd"
-        />
-      </svg>
-      {args.children}
-    </Button>
+        Book Your Consultation
+      </Button>
+      
+      {/* Secondary CTAs */}
+      <div className="flex gap-3 justify-center">
+        <Button 
+          variant="cta-outline" 
+          size="lg"
+          icon={<Download className="w-4 h-4" />}
+        >
+          Download PDF
+        </Button>
+        <Button 
+          variant="cta-outline" 
+          size="lg"
+          icon={<Mail className="w-4 h-4" />}
+        >
+          Email Copy
+        </Button>
+      </div>
+    </div>
+  ),
+};
+
+// Legacy variants for backward compatibility
+export const LegacyVariants: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 items-center">
+      <Button variant="default" size="lg">Default</Button>
+      <Button variant="secondary" size="lg">Secondary</Button>
+      <Button variant="destructive" size="lg">Destructive</Button>
+      <Button variant="outline" size="lg">Outline</Button>
+      <Button variant="ghost" size="lg">Ghost</Button>
+      <Button variant="link" size="lg">Link</Button>
+    </div>
+  ),
+};
+
+// Disabled States
+export const DisabledCTAs: Story = {
+  render: () => (
+    <div className="flex flex-col gap-4 items-center">
+      <Button variant="cta" size="lg" disabled>
+        Disabled CTA
+      </Button>
+      <Button variant="cta-secondary" size="lg" disabled>
+        Disabled Secondary
+      </Button>
+      <Button variant="cta-outline" size="lg" disabled>
+        Disabled Outline
+      </Button>
+    </div>
   ),
 };

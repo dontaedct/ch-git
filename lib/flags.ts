@@ -6,6 +6,37 @@
 
 import { getEnv, isPlaceholder, FEATURE_DEPENDENCIES } from './env';
 
+// Client-safe environment access
+function getClientSafeEnv() {
+  if (typeof window !== 'undefined') {
+    // Client-side: only use NEXT_PUBLIC_ variables
+    return {
+      NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+      NEXT_PUBLIC_FEATURE_UI_POLISH_TARGET_STYLE: process.env.NEXT_PUBLIC_FEATURE_UI_POLISH_TARGET_STYLE,
+      NEXT_PUBLIC_ENABLE_AI_LIVE: process.env.NEXT_PUBLIC_ENABLE_AI_LIVE,
+      NEXT_PUBLIC_DEBUG: process.env.NEXT_PUBLIC_DEBUG,
+      NEXT_PUBLIC_SAFE_MODE: process.env.NEXT_PUBLIC_SAFE_MODE,
+      APP_TIER: process.env.APP_TIER, // This is safe to use on client
+      // Server-side variables (will be undefined on client, which is expected)
+      RESEND_API_KEY: undefined,
+      STRIPE_SECRET_KEY: undefined,
+      STRIPE_WEBHOOK_SECRET: undefined,
+      N8N_WEBHOOK_URL: undefined,
+      N8N_WEBHOOK_SECRET: undefined,
+      SLACK_WEBHOOK_URL: undefined,
+      SENTRY_DSN: undefined,
+      SUPABASE_SERVICE_ROLE_KEY: undefined,
+      PERFORMANCE_MONITORING_ENABLED: undefined,
+      HEALTH_CHECK_ENABLED: undefined,
+      NODE_ENV: undefined,
+    };
+  }
+  // Server-side: use full environment
+  return getEnv();
+}
+
 // =============================================================================
 // FEATURE DEFINITIONS
 // =============================================================================
@@ -23,7 +54,8 @@ export type FeatureFlag =
   | 'debug_mode'
   | 'safe_mode'
   | 'performance_monitoring'
-  | 'health_checks';
+  | 'health_checks'
+  | 'ui_polish_target_style';
 
 export type TierLevel = 'starter' | 'pro' | 'advanced';
 
@@ -36,7 +68,8 @@ export const TIER_FEATURES: Record<TierLevel, FeatureFlag[]> = {
     'database',
     'email',
     'health_checks',
-    'safe_mode'
+    'safe_mode',
+    'ui_polish_target_style'
   ],
   pro: [
     'database',
@@ -47,7 +80,8 @@ export const TIER_FEATURES: Record<TierLevel, FeatureFlag[]> = {
     'error_tracking',
     'health_checks',
     'safe_mode',
-    'performance_monitoring'
+    'performance_monitoring',
+    'ui_polish_target_style'
   ],
   advanced: [
     'database',
@@ -62,7 +96,8 @@ export const TIER_FEATURES: Record<TierLevel, FeatureFlag[]> = {
     'debug_mode',
     'safe_mode',
     'performance_monitoring',
-    'health_checks'
+    'health_checks',
+    'ui_polish_target_style'
   ]
 };
 
@@ -74,7 +109,7 @@ export const TIER_FEATURES: Record<TierLevel, FeatureFlag[]> = {
  * Check if a feature is available based on environment variables
  */
 export function isFeatureAvailable(feature: FeatureFlag): boolean {
-  const env = getEnv();
+  const env = getClientSafeEnv();
   
   switch (feature) {
     case 'database':
@@ -125,6 +160,10 @@ export function isFeatureAvailable(feature: FeatureFlag): boolean {
     case 'health_checks':
       return env.HEALTH_CHECK_ENABLED !== 'false';
       
+    case 'ui_polish_target_style':
+      return env.NEXT_PUBLIC_FEATURE_UI_POLISH_TARGET_STYLE === 'true' || 
+             env.NEXT_PUBLIC_FEATURE_UI_POLISH_TARGET_STYLE === '1';
+      
     default:
       return false;
   }
@@ -146,7 +185,7 @@ export function getCurrentTier(): TierLevel {
     }
   }
   
-  const env = getEnv();
+  const env = getClientSafeEnv();
   const tier = env.APP_TIER || process.env.APP_TIER || 'starter';
   
   if (['starter', 'pro', 'advanced'].includes(tier)) {
@@ -265,7 +304,8 @@ export function getAllFeatureStatuses() {
   const features: FeatureFlag[] = [
     'database', 'email', 'payments', 'webhooks', 'automation',
     'notifications', 'error_tracking', 'admin_operations',
-    'ai_features', 'debug_mode', 'safe_mode', 'performance_monitoring', 'health_checks'
+    'ai_features', 'debug_mode', 'safe_mode', 'performance_monitoring', 'health_checks',
+    'ui_polish_target_style'
   ];
   
   return features.map(feature => ({

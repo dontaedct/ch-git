@@ -72,6 +72,7 @@ const SecuritySchema = z.object({
   NEXT_PUBLIC_SAFE_MODE: z.string().optional(),
   NEXT_PUBLIC_ENABLE_AI_LIVE: z.string().optional(),
   NEXT_PUBLIC_DISABLE_REDIRECTS: z.string().optional(),
+  NEXT_PUBLIC_FEATURE_UI_POLISH_TARGET_STYLE: z.string().optional(),
 });
 
 // =============================================================================
@@ -125,6 +126,7 @@ const SECURITY_CLASSIFICATION: Record<string, keyof typeof SECURITY_LEVELS> = {
   NEXT_PUBLIC_SAFE_MODE: 'PUBLIC',
   NEXT_PUBLIC_ENABLE_AI_LIVE: 'PUBLIC',
   NEXT_PUBLIC_DISABLE_REDIRECTS: 'PUBLIC',
+  NEXT_PUBLIC_FEATURE_UI_POLISH_TARGET_STYLE: 'PUBLIC',
   NEXT_PUBLIC_VERCEL_ENV: 'PUBLIC',
   
   // Private server-only
@@ -257,6 +259,7 @@ export function getPublicEnv() {
     NEXT_PUBLIC_SAFE_MODE: env.NEXT_PUBLIC_SAFE_MODE,
     NEXT_PUBLIC_ENABLE_AI_LIVE: env.NEXT_PUBLIC_ENABLE_AI_LIVE,
     NEXT_PUBLIC_DISABLE_REDIRECTS: env.NEXT_PUBLIC_DISABLE_REDIRECTS,
+    NEXT_PUBLIC_FEATURE_UI_POLISH_TARGET_STYLE: env.NEXT_PUBLIC_FEATURE_UI_POLISH_TARGET_STYLE,
     NEXT_PUBLIC_VERCEL_ENV: env.VERCEL_ENV,
     NODE_ENV: env.NODE_ENV,
   };

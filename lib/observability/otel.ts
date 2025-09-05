@@ -26,7 +26,7 @@ const isEdgeRuntime = typeof (globalThis as any).EdgeRuntime !== 'undefined' ||
                      process.env.NODE_ENV === 'production' || 
                      process.env.VERCEL_ENV;
 
-if (!isEdgeRuntime && process.env.NODE_ENV === 'development') {
+if (false) { // Temporarily disabled to fix 500 error
   try {
     ({ NodeSDK } = require('@opentelemetry/sdk-node'));
     ({ Resource } = require('@opentelemetry/resources'));

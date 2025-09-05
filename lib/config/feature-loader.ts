@@ -4,7 +4,7 @@
  * RUN_DATE=2025-08-29T15:10:31.507Z
  */
 
-import { getAppConfig, isFeatureEnabled } from '../../app.config';
+import { getAppConfig, isFeatureEnabled } from '../../app.config.base';
 import { FeatureFlag } from '../flags';
 import { withFeature } from '../flags';
 
@@ -153,6 +153,15 @@ const FEATURE_MODULES: Record<FeatureFlag, FeatureModule> = {
     initialize: async () => {
       // Initialize health check monitoring
       console.log('🏥 Health checks initialized');
+    },
+    dependencies: [],
+  },
+  
+  ui_polish_target_style: {
+    name: 'UI Polish Target Style',
+    initialize: async () => {
+      // Initialize UI polish theme system
+      console.log('🎨 UI Polish Target Style initialized');
     },
     dependencies: [],
   },

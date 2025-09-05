@@ -1,0 +1,45 @@
+{
+  "title": "Performance Optimization Checklist",
+  "categories": [
+    {
+      "name": "Loading Performance",
+      "items": [
+        "LCP (Largest Contentful Paint) ≤ 2.5s",
+        "FCP (First Contentful Paint) ≤ 1.8s",
+        "TTFB (Time to First Byte) ≤ 800ms",
+        "Bundle size optimized",
+        "Critical resources preloaded"
+      ]
+    },
+    {
+      "name": "Runtime Performance",
+      "items": [
+        "FID (First Input Delay) ≤ 100ms",
+        "Animations run at 60fps",
+        "No layout shifts (CLS ≤ 0.1)",
+        "Hardware acceleration enabled",
+        "Reduced motion support implemented"
+      ]
+    },
+    {
+      "name": "Resource Optimization",
+      "items": [
+        "Images optimized (WebP/AVIF)",
+        "Fonts preloaded and optimized",
+        "CSS purged and minified",
+        "JavaScript code split",
+        "Caching headers configured"
+      ]
+    },
+    {
+      "name": "User Experience",
+      "items": [
+        "Smooth scrolling",
+        "Responsive touch interactions",
+        "Accessible focus states",
+        "Progressive enhancement",
+        "Offline functionality (if applicable)"
+      ]
+    }
+  ]
+}

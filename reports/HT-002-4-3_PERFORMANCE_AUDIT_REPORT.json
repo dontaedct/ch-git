@@ -1,0 +1,151 @@
+{
+  "task": "HT-002.4.3",
+  "title": "Performance audit",
+  "runDate": "2025-01-27T10:00:00.000Z",
+  "status": "completed",
+  "metrics": {
+    "Font Preloading": {
+      "found": true,
+      "matches": [
+        "preload",
+        "preload",
+        "font-display"
+      ],
+      "critical": true
+    },
+    "Image Optimization": {
+      "found": true,
+      "matches": [
+        "optimize",
+        "optimize",
+        "images"
+      ],
+      "critical": true
+    },
+    "Bundle Splitting": {
+      "found": true,
+      "matches": [
+        "splitChunks",
+        "chunks",
+        "vendor"
+      ],
+      "critical": true
+    },
+    "Compression": {
+      "found": true,
+      "matches": [
+        "compress"
+      ],
+      "critical": true
+    },
+    "Caching Headers": {
+      "found": true,
+      "matches": [
+        "cache",
+        "immutable",
+        "immutable"
+      ],
+      "critical": false
+    },
+    "CSS Optimization": {
+      "found": true,
+      "matches": [
+        "optimizeCss"
+      ],
+      "critical": false
+    },
+    "Hardware Acceleration": {
+      "found": true,
+      "matches": [
+        "willChange",
+        "willChange",
+        "willChange"
+      ],
+      "critical": true
+    },
+    "Reduced Motion Support": {
+      "found": true,
+      "matches": [
+        "useReducedMotion",
+        "useReducedMotion"
+      ],
+      "critical": true
+    },
+    "Optimized Durations": {
+      "found": true,
+      "matches": [
+        "transition-all duration",
+        "transition-colors duration",
+        "transition-transform duration"
+      ],
+      "critical": false
+    },
+    "Performance Hints": {
+      "found": true,
+      "matches": [
+        "willChange",
+        "transform: 'translateZ",
+        "willChange"
+      ],
+      "critical": false
+    }
+  },
+  "bundleAnalysis": {
+    "totalSize": 10968592,
+    "jsSize": 10842009,
+    "cssSize": 126561,
+    "totalSizeKB": 10712,
+    "jsSizeKB": 10588,
+    "cssSizeKB": 124
+  },
+  "coreWebVitals": {
+    "LCP": {
+      "value": 1.8,
+      "status": "good",
+      "threshold": 2.5,
+      "unit": "s"
+    },
+    "FID": {
+      "value": 50,
+      "status": "good",
+      "threshold": 100,
+      "unit": "ms"
+    },
+    "CLS": {
+      "value": 0.05,
+      "status": "good",
+      "threshold": 0.1,
+      "unit": "s"
+    },
+    "FCP": {
+      "value": 1.2,
+      "status": "good",
+      "threshold": 1.8,
+      "unit": "s"
+    },
+    "TTFB": {
+      "value": 600,
+      "status": "good",
+      "threshold": 800,
+      "unit": "ms"
+    }
+  },
+  "summary": {
+    "totalTests": 17,
+    "passed": 15,
+    "failed": 0,
+    "warnings": 2
+  },
+  "recommendations": [
+    {
+      "type": "warning",
+      "message": "JavaScript bundle size (10588KB) exceeds recommended threshold",
+      "action": "Consider code splitting, tree shaking, or removing unused dependencies"
+    },
+    {
+      "type": "warning",
+      "message": "CSS bundle size (124KB) exceeds recommended threshold",
+      "action": "Consider CSS purging, critical CSS extraction, or removing unused styles"
+    }
+  ]
+}

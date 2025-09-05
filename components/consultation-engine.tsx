@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect, useMemo } from 'react'
-import { Button } from '@/components/ui/button'
+import { Button, BookingCTAButton, DownloadCTAButton, EmailCTAButton } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { TabsUnderline, TabsUnderlineContent, TabsUnderlineList, TabsUnderlineTrigger } from '@/components/ui/tabs-underline'
 import { Separator } from '@/components/ui/separator'
@@ -445,9 +445,10 @@ export function ConsultationEngine({
         <div className="max-w-2xl mx-auto">
           <div className="flex flex-col gap-4">
             {/* Primary CTA */}
-            <Button 
-              size="lg" 
-              className="w-full h-12 text-base font-semibold shadow-sm hover:shadow-md transition-all duration-200"
+            <BookingCTAButton 
+              size="xl" 
+              fullWidth
+              className="h-12 text-base font-semibold"
               onClick={() => {
                 // Emit booking request event
                 n8nEvents.emitBookingRequest({
@@ -460,32 +461,30 @@ export function ConsultationEngine({
               }}
             >
               {template.actions.bookCtaLabel}
-            </Button>
+            </BookingCTAButton>
             
             {/* Secondary CTAs */}
             <div className="flex gap-3 justify-center">
               {template.actions.downloadPdf && (
-                <Button 
-                  variant="outline" 
+                <DownloadCTAButton 
+                  variant="cta-outline"
                   size="lg"
-                  className="px-6 h-11 text-sm font-medium border-border/60 hover:border-border transition-all duration-200"
+                  icon={<Download className="w-4 h-4" />}
                   onClick={handlePdfDownload}
                 >
-                  <Download className="w-4 h-4 mr-2" strokeWidth={1.5} />
                   Download PDF
-                </Button>
+                </DownloadCTAButton>
               )}
               
               {template.actions.emailCopy && (
-                <Button 
-                  variant="outline" 
+                <EmailCTAButton 
+                  variant="cta-outline"
                   size="lg"
-                  className="px-6 h-11 text-sm font-medium border-border/60 hover:border-border transition-all duration-200"
+                  icon={<Mail className="w-4 h-4" />}
                   onClick={handleEmailRequest}
                 >
-                  <Mail className="w-4 h-4 mr-2" strokeWidth={1.5} />
                   Email Copy
-                </Button>
+                </EmailCTAButton>
               )}
             </div>
           </div>

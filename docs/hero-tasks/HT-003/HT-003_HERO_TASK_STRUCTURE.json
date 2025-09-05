@@ -1,0 +1,152 @@
+{
+  "mainTask": {
+    "task_number": "HT-003",
+    "title": "HT-003: UI Polish — Swift-Inspired Aesthetic (Dark-First, flagged)",
+    "description": "Deliver a refined, enterprise-grade landing experience modeled primarily on runswiftapp.com—hero + product montage, feature chip grid, slider-style demo, testimonials—upgraded to a Dark default with Light/Dark toggle, subtle motion, and strong a11y/perf. All changes extend what already exists.\n\n**Constraints & Guardrails:**\n- ADAV is mandatory for each sub-task (AUDIT → DECIDE → APPLY → VERIFY)\n- No new frameworks/design systems/build tools without approval\n- No duplication of component roles (extend/refactor existing primitives)\n- Follow existing naming, routing, linting, and token conventions\n- All visible changes behind FEATURE_UI_POLISH_TARGET_STYLE (off by default)\n- Off-plan change → REQUIRES APPROVAL with justification + minimal alternative\n- Provide precise backout steps for every change\n\n**Status:** IN_PROGRESS\n**Methodology:** AUDIT → DECIDE → APPLY → VERIFY\n**Total Subtasks:** 6 major implementation phases\n**Estimated Hours:** 24",
+    "type": "feature",
+    "priority": "high",
+    "status": "in_progress",
+    "created_at": "2025-01-27T10:00:00.000Z",
+    "updated_at": "2025-01-27T10:00:00.000Z",
+    "tags": [
+      "ui-polish",
+      "swift-inspired",
+      "dark-first",
+      "accessibility",
+      "performance",
+      "motion",
+      "enterprise-grade"
+    ],
+    "metadata": {
+      "run_date": "2025-01-27T10:00:00.000Z",
+      "phases": 6,
+      "total_steps": 24,
+      "estimated_hours": 24,
+      "inspiration": "runswiftapp.com design principles",
+      "methodology": "AUDIT → DECIDE → APPLY → VERIFY",
+      "constraints": "No new frameworks without approval, extend existing primitives",
+      "feature_flag": "FEATURE_UI_POLISH_TARGET_STYLE",
+      "deliverables": [
+        "Dark-first theme system",
+        "Swift-inspired layout",
+        "Feature chip grid",
+        "Slider-style demo",
+        "Testimonials section",
+        "Accessibility compliance",
+        "Performance optimization"
+      ],
+      "success_criteria": {
+        "layout_rhythm": "Standardized via tokens; consistent section paddings",
+        "typography": "Clamp-based scale; H1/H2/H3 distinct",
+        "theme": "Dark default + Light toggle; ≥AA contrast",
+        "components": "Full state matrix (hover/focus/active/disabled/loading/skeleton)",
+        "motion": "120–200ms transitions; single easing; reduced-motion honored",
+        "performance": "LCP ≤ 2.5s, CLS ≤ 0.02; bundle delta < +30KB GZIP"
+      }
+    }
+  },
+  "subtasks": [
+    {
+      "subtask_number": "HT-003.1",
+      "title": "Phase 1 — Theme System Enhancement",
+      "description": "Implement dark-first theme system with semantic tokens and proper contrast ratios.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "tags": ["theme", "dark-first", "semantic-tokens", "contrast"],
+      "metadata": {
+        "features": [
+          "Dark default theme",
+          "Light/Dark toggle",
+          "Semantic color tokens",
+          "WCAG AA contrast compliance"
+        ]
+      }
+    },
+    {
+      "subtask_number": "HT-003.2",
+      "title": "Phase 2 — Layout & Typography",
+      "description": "Implement Swift-inspired layout rhythm and clamp-based typography scale.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "tags": ["layout", "typography", "rhythm", "clamp-scale"],
+      "metadata": {
+        "features": [
+          "Standardized layout rhythm",
+          "Clamp-based typography scale",
+          "Consistent section paddings",
+          "Optimal line lengths"
+        ]
+      }
+    },
+    {
+      "subtask_number": "HT-003.3",
+      "title": "Phase 3 — Component Enhancement",
+      "description": "Enhance existing components with full state matrix and Swift-inspired styling.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "tags": ["components", "state-matrix", "swift-inspired", "styling"],
+      "metadata": {
+        "features": [
+          "Full state matrix implementation",
+          "Swift-inspired component styling",
+          "Hover/focus/active states",
+          "Loading and skeleton states"
+        ]
+      }
+    },
+    {
+      "subtask_number": "HT-003.4",
+      "title": "Phase 4 — Motion & Interactions",
+      "description": "Implement subtle motion system with proper reduced-motion support.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "tags": ["motion", "interactions", "reduced-motion", "accessibility"],
+      "metadata": {
+        "features": [
+          "120-200ms transitions",
+          "Single easing function",
+          "Reduced-motion support",
+          "Accessible animations"
+        ]
+      }
+    },
+    {
+      "subtask_number": "HT-003.5",
+      "title": "Phase 5 — Performance Optimization",
+      "description": "Optimize performance metrics and ensure Core Web Vitals compliance.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "tags": ["performance", "core-web-vitals", "bundle-size", "optimization"],
+      "metadata": {
+        "metrics": {
+          "lcp": "≤ 2.5s",
+          "cls": "≤ 0.02",
+          "bundle_delta": "< +30KB GZIP",
+          "deferred_assets": "Video/large images"
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-003.6",
+      "title": "Phase 6 — Verification & Polish",
+      "description": "Comprehensive testing, accessibility validation, and final polish.",
+      "status": "pending",
+      "created_at": "2025-01-27T10:00:00.000Z",
+      "updated_at": "2025-01-27T10:00:00.000Z",
+      "tags": ["verification", "testing", "accessibility", "polish"],
+      "metadata": {
+        "features": [
+          "Comprehensive testing",
+          "Accessibility validation",
+          "Cross-browser compatibility",
+          "Final quality assurance"
+        ]
+      }
+    }
+  ]
+}

@@ -4,8 +4,6 @@
  * RUN_DATE=2025-08-29T15:10:31.507Z
  */
 
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import type { MicroAppConfig } from './types/config';
 import { TierLevel, FeatureFlag } from './lib/flags';
 import { getEnv } from './lib/env';
@@ -43,6 +41,7 @@ export interface FeatureConfig {
   safe_mode: boolean;
   performance_monitoring: boolean;
   health_checks: boolean;
+  ui_polish_target_style: boolean;
 }
 
 export interface PerformanceConfig {
@@ -153,12 +152,20 @@ export const AVAILABLE_PRESETS = [
 export type PresetName = typeof AVAILABLE_PRESETS[number];
 
 /**
- * Load preset configuration from JSON file
+ * Load preset configuration from JSON file (server-side only)
  */
 export function loadPresetConfig(preset: PresetName): MicroAppConfig | null {
+  // Only run on server-side
+  if (typeof window !== 'undefined') {
+    return null;
+  }
+  
   try {
-    const presetPath = join(process.cwd(), 'packages', 'templates', 'presets', `${preset}.json`);
-    const presetJson = readFileSync(presetPath, 'utf-8');
+    // Dynamic import for server-side only
+    const fs = require('fs');
+    const path = require('path');
+    const presetPath = path.join(process.cwd(), 'packages', 'templates', 'presets', `${preset}.json`);
+    const presetJson = fs.readFileSync(presetPath, 'utf-8');
     return JSON.parse(presetJson) as MicroAppConfig;
   } catch (error) {
     console.warn(`Failed to load preset "${preset}":`, error);
@@ -209,6 +216,7 @@ export function resolveFeatureConfig(tier: TierLevel, presetData?: MicroAppConfi
     safe_mode: ['starter', 'pro', 'advanced'].includes(tier),
     performance_monitoring: ['pro', 'advanced'].includes(tier),
     health_checks: ['starter', 'pro', 'advanced'].includes(tier),
+    ui_polish_target_style: ['starter', 'pro', 'advanced'].includes(tier),
   };
 
   // Override with preset-specific features if available
@@ -262,8 +270,8 @@ export function getAppConfig(): AppConfig {
     ? preset as PresetName 
     : 'salon-waitlist';
   
-  // Load preset data
-  const presetData = loadPresetConfig(validPreset);
+  // Load preset data (server-side only)
+  const presetData = typeof window === 'undefined' ? loadPresetConfig(validPreset) : null;
   
   // Build configuration
   appConfigCache = {

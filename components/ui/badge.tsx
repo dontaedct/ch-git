@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Badge primitive component
+ * @module components/ui/badge
+ * 
+ * UI POLISH NOTE: This component will be EXTENDED (not duplicated) for Swift-inspired
+ * aesthetic changes. All modifications behind FEATURE_UI_POLISH_TARGET_STYLE flag.
+ */
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"

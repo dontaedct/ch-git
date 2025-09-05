@@ -57,7 +57,9 @@
       "Bash(gh issue list:*)",
       "Bash(npx knip:*)",
       "Bash(npx ts-prune:*)",
-      "Bash(git mv:*)"
+      "Bash(git mv:*)",
+      "Bash(rm:*)",
+      "Bash(git stash:*)"
     ],
     "deny": [],
     "ask": []

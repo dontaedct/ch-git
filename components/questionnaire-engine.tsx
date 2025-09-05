@@ -676,18 +676,18 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
       
       {/* Questions with Animation */}
       <div className="relative overflow-hidden mb-6 md:mb-8">
-        <AnimatePresence mode="wait" custom={direction}>
-          <motion.div
-            key={currentViewIndex}
-            custom={direction}
-            variants={containerVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={transition}
-            className="space-y-6 md:space-y-8"
-          >
-            {currentQuestions.map((question, index) => (
+        <AnimatePresence custom={direction}>
+          {currentQuestions.map((question, index) => (
+            <motion.div
+              key={`${currentViewIndex}-${question.id}`}
+              custom={direction}
+              variants={containerVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={transition}
+              className="space-y-6 md:space-y-8"
+            >
               <motion.div
                 key={question.id}
                 initial={{ opacity: 0, y: 20 }}
@@ -700,8 +700,8 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
               >
                 {renderQuestion(question)}
               </motion.div>
-            ))}
-          </motion.div>
+            </motion.div>
+          ))}
         </AnimatePresence>
       </div>
       

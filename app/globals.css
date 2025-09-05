@@ -1,0 +1,118 @@
+/* app/globals.css – SAFE STUB */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Keep variables here; avoid url() or absolute paths */
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --border: oklch(0.922 0 0);
+  --radius: 0.625rem;
+
+  --grid-gutter-xs: 0.75rem;
+  --grid-gutter-sm: 1rem;
+  --grid-gutter-md: 1.5rem;
+  --grid-gutter-lg: 2rem;
+  --grid-gutter-xl: 2.5rem;
+
+  --max-w-grid: 80rem;
+  --max-w-container-page: 80rem;
+  --max-w-container-prose: 65ch;
+}
+
+/* UI Polish Semantic Tokens - Swift-Inspired Aesthetic */
+.ui-polish-enabled {
+  /* Surface tokens for layered design */
+  --ui-polish-surface: #0a0a0a;
+  --ui-polish-surface-elev: #111111;
+  --ui-polish-surface-elev-2: #1a1a1a;
+  
+  /* Text hierarchy */
+  --ui-polish-text: #ffffff;
+  --ui-polish-text-muted: #a3a3a3;
+  --ui-polish-text-subtle: #737373;
+  
+  /* Border system */
+  --ui-polish-border: #262626;
+  --ui-polish-border-subtle: #171717;
+  
+  /* Single accent (royal blue) */
+  --ui-polish-accent: #3b82f6;
+  --ui-polish-accent-contrast: #ffffff;
+  
+  /* Interactive states */
+  --ui-polish-ring: #3b82f6;
+  --ui-polish-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --ui-polish-shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+}
+
+/* Light mode overrides for UI polish */
+.ui-polish-enabled.light {
+  --ui-polish-surface: #ffffff;
+  --ui-polish-surface-elev: #fafafa;
+  --ui-polish-surface-elev-2: #f5f5f5;
+  
+  --ui-polish-text: #111111;
+  --ui-polish-text-muted: #6b7280;
+  --ui-polish-text-subtle: #9ca3af;
+  
+  --ui-polish-border: #e5e7eb;
+  --ui-polish-border-subtle: #f3f4f6;
+  
+  --ui-polish-accent: #2563eb;
+  --ui-polish-accent-contrast: #ffffff;
+  
+  --ui-polish-ring: #2563eb;
+  --ui-polish-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --ui-polish-shadow-elevated: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Minimal base to see text */
+html, body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* HT-001.3.2: Section rhythm helpers for consistent spacing */
+.section {
+  padding-top: 4rem;    /* 64px */
+  padding-bottom: 4rem; /* 64px */
+}
+
+.section-sm {
+  padding-top: 2rem;    /* 32px */
+  padding-bottom: 2rem; /* 32px */
+}
+
+.section-lg {
+  padding-top: 6rem;    /* 96px */
+  padding-bottom: 6rem; /* 96px */
+}
+
+/* UI Polish Utility Classes - Swift-Inspired Aesthetic */
+.ui-polish-enabled {
+  /* Surface utilities */
+  .bg-surface { background-color: var(--ui-polish-surface); }
+  .bg-surface-elev { background-color: var(--ui-polish-surface-elev); }
+  .bg-surface-elev-2 { background-color: var(--ui-polish-surface-elev-2); }
+  
+  /* Text utilities */
+  .text-ui-polish { color: var(--ui-polish-text); }
+  .text-ui-polish-muted { color: var(--ui-polish-text-muted); }
+  .text-ui-polish-subtle { color: var(--ui-polish-text-subtle); }
+  
+  /* Border utilities */
+  .border-ui-polish { border-color: var(--ui-polish-border); }
+  .border-ui-polish-subtle { border-color: var(--ui-polish-border-subtle); }
+  
+  /* Accent utilities */
+  .bg-ui-polish-accent { background-color: var(--ui-polish-accent); }
+  .text-ui-polish-accent { color: var(--ui-polish-accent); }
+  .text-ui-polish-accent-contrast { color: var(--ui-polish-accent-contrast); }
+  
+  /* Interactive utilities */
+  .ring-ui-polish { --tw-ring-color: var(--ui-polish-ring); }
+  .shadow-ui-polish { box-shadow: var(--ui-polish-shadow); }
+  .shadow-ui-polish-elevated { box-shadow: var(--ui-polish-shadow-elevated); }
+}

@@ -19,6 +19,14 @@
   --motion-duration-normal: 200ms;
   --motion-duration-slow: 300ms;
   --motion-duration-slower: 500ms;
+  
+  /* HT-002.1.3: Linear-specific micro-interaction durations */
+  --motion-duration-micro: 80ms;
+  --motion-duration-micro-fast: 120ms;
+  --motion-duration-micro-slow: 180ms;
+  --motion-duration-hover: 150ms;
+  --motion-duration-focus: 200ms;
+  --motion-duration-active: 100ms;
 
   /* Delay tokens */
   --motion-delay-none: 0ms;
@@ -36,11 +44,38 @@
   --motion-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --motion-ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --motion-ease-in-quart: cubic-bezier(0.5, 0, 0.75, 0);
+  
+  /* HT-002.1.3: Linear-specific easing curves */
+  --motion-ease-linear-micro: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --motion-ease-linear-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-ease-linear-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --motion-ease-linear-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --motion-ease-linear-back: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --motion-ease-linear-circ: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --motion-ease-linear-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
 
   /* Component transition presets */
   --motion-transition-button-hover: all var(--motion-duration-fast) var(--motion-ease-spring);
   --motion-transition-button-press: transform var(--motion-duration-instant) var(--motion-ease-spring);
   --motion-transition-button-focus: box-shadow var(--motion-duration-normal) var(--motion-ease-spring);
+  
+  /* HT-002.1.3: Linear-specific micro-interaction presets */
+  --motion-transition-linear-hover: all var(--motion-duration-hover) var(--motion-ease-linear-micro);
+  --motion-transition-linear-focus: all var(--motion-duration-focus) var(--motion-ease-linear-smooth);
+  --motion-transition-linear-active: transform var(--motion-duration-active) var(--motion-ease-linear-micro);
+  --motion-transition-linear-scale: transform var(--motion-duration-micro) var(--motion-ease-linear-smooth);
+  --motion-transition-linear-elevation: box-shadow var(--motion-duration-micro-fast) var(--motion-ease-linear-micro);
+  --motion-transition-linear-color: color var(--motion-duration-micro) var(--motion-ease-linear-micro);
+  --motion-transition-linear-opacity: opacity var(--motion-duration-micro) var(--motion-ease-linear-micro);
+  --motion-transition-linear-border: border-color var(--motion-duration-micro) var(--motion-ease-linear-micro);
+  
+  /* HT-002.1.3: Linear-specific component transitions */
+  --motion-transition-linear-card-hover: all var(--motion-duration-hover) var(--motion-ease-linear-micro);
+  --motion-transition-linear-card-elevation: box-shadow var(--motion-duration-micro-fast) var(--motion-ease-linear-micro);
+  --motion-transition-linear-button-micro: all var(--motion-duration-micro) var(--motion-ease-linear-micro);
+  --motion-transition-linear-input-focus: all var(--motion-duration-focus) var(--motion-ease-linear-smooth);
+  --motion-transition-linear-toggle-switch: all var(--motion-duration-micro-fast) var(--motion-ease-linear-micro);
+  --motion-transition-linear-theme-switch: all var(--motion-duration-micro-slow) var(--motion-ease-linear-smooth);
   
   --motion-transition-chip-select: all var(--motion-duration-fast) var(--motion-ease-spring);
   --motion-transition-chip-deselect: all var(--motion-duration-normal) var(--motion-ease-spring);
@@ -72,6 +107,14 @@
     --motion-duration-normal: 0ms;
     --motion-duration-slow: 0ms;
     --motion-duration-slower: 0ms;
+    
+    /* HT-002.1.3: Linear-specific micro-interaction durations (reduced motion) */
+    --motion-duration-micro: 0ms;
+    --motion-duration-micro-fast: 0ms;
+    --motion-duration-micro-slow: 0ms;
+    --motion-duration-hover: 0ms;
+    --motion-duration-focus: 0ms;
+    --motion-duration-active: 0ms;
     
     --motion-delay-none: 0ms;
     --motion-delay-short: 0ms;
@@ -233,6 +276,109 @@
   }
 }
 
+/* HT-002.1.3: Linear-specific micro-interaction keyframes */
+@keyframes linearMicroHover {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  100% {
+    transform: translateY(-1px) scale(1.01);
+  }
+}
+
+@keyframes linearMicroPress {
+  0% {
+    transform: translateY(-1px) scale(1.01);
+  }
+  100% {
+    transform: translateY(0px) scale(0.99);
+  }
+}
+
+@keyframes linearElevationHover {
+  0% {
+    box-shadow: var(--elevation-0);
+  }
+  100% {
+    box-shadow: var(--elevation-1);
+  }
+}
+
+@keyframes linearElevationActive {
+  0% {
+    box-shadow: var(--elevation-1);
+  }
+  100% {
+    box-shadow: var(--elevation-2);
+  }
+}
+
+@keyframes linearScaleIn {
+  0% {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes linearScaleOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.98);
+    opacity: 0.8;
+  }
+}
+
+@keyframes linearFadeInMicro {
+  0% {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes linearFadeOutMicro {
+  0% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes linearSlideInMicro {
+  0% {
+    transform: translateX(-4px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes linearSlideOutMicro {
+  0% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(4px);
+    opacity: 0;
+  }
+}
+
 /* ========================================
    Utility Classes
 ======================================== */
@@ -244,12 +390,29 @@
 .duration-slow { transition-duration: var(--motion-duration-slow) !important; }
 .duration-slower { transition-duration: var(--motion-duration-slower) !important; }
 
+/* HT-002.1.3: Linear-specific duration utilities */
+.duration-micro { transition-duration: var(--motion-duration-micro) !important; }
+.duration-micro-fast { transition-duration: var(--motion-duration-micro-fast) !important; }
+.duration-micro-slow { transition-duration: var(--motion-duration-micro-slow) !important; }
+.duration-hover { transition-duration: var(--motion-duration-hover) !important; }
+.duration-focus { transition-duration: var(--motion-duration-focus) !important; }
+.duration-active { transition-duration: var(--motion-duration-active) !important; }
+
 /* Easing utilities */
 .ease-spring { transition-timing-function: var(--motion-ease-spring) !important; }
 .ease-bounce { transition-timing-function: var(--motion-ease-bounce) !important; }
 .ease-smooth { transition-timing-function: var(--motion-ease-smooth) !important; }
 .ease-out-quart { transition-timing-function: var(--motion-ease-out-quart) !important; }
 .ease-in-quart { transition-timing-function: var(--motion-ease-in-quart) !important; }
+
+/* HT-002.1.3: Linear-specific easing utilities */
+.ease-linear-micro { transition-timing-function: var(--motion-ease-linear-micro) !important; }
+.ease-linear-smooth { transition-timing-function: var(--motion-ease-linear-smooth) !important; }
+.ease-linear-bounce { transition-timing-function: var(--motion-ease-linear-bounce) !important; }
+.ease-linear-elastic { transition-timing-function: var(--motion-ease-linear-elastic) !important; }
+.ease-linear-back { transition-timing-function: var(--motion-ease-linear-back) !important; }
+.ease-linear-circ { transition-timing-function: var(--motion-ease-linear-circ) !important; }
+.ease-linear-expo { transition-timing-function: var(--motion-ease-linear-expo) !important; }
 
 /* Delay utilities */
 .delay-none { transition-delay: var(--motion-delay-none) !important; }
@@ -301,6 +464,38 @@
   animation: ping 1s var(--motion-ease-in-out) infinite;
 }
 
+/* HT-002.1.3: Linear-specific animation utilities */
+.animate-linear-micro-hover { 
+  animation: linearMicroHover var(--motion-duration-hover) var(--motion-ease-linear-micro);
+}
+.animate-linear-micro-press { 
+  animation: linearMicroPress var(--motion-duration-active) var(--motion-ease-linear-micro);
+}
+.animate-linear-elevation-hover { 
+  animation: linearElevationHover var(--motion-duration-micro-fast) var(--motion-ease-linear-micro);
+}
+.animate-linear-elevation-active { 
+  animation: linearElevationActive var(--motion-duration-micro-fast) var(--motion-ease-linear-micro);
+}
+.animate-linear-scale-in { 
+  animation: linearScaleIn var(--motion-duration-micro) var(--motion-ease-linear-smooth);
+}
+.animate-linear-scale-out { 
+  animation: linearScaleOut var(--motion-duration-micro) var(--motion-ease-linear-smooth);
+}
+.animate-linear-fade-in-micro { 
+  animation: linearFadeInMicro var(--motion-duration-micro) var(--motion-ease-linear-micro);
+}
+.animate-linear-fade-out-micro { 
+  animation: linearFadeOutMicro var(--motion-duration-micro) var(--motion-ease-linear-micro);
+}
+.animate-linear-slide-in-micro { 
+  animation: linearSlideInMicro var(--motion-duration-micro-fast) var(--motion-ease-linear-micro);
+}
+.animate-linear-slide-out-micro { 
+  animation: linearSlideOutMicro var(--motion-duration-micro-fast) var(--motion-ease-linear-micro);
+}
+
 /* Component transition classes */
 .transition-button-hover { transition: var(--motion-transition-button-hover); }
 .transition-button-press { transition: var(--motion-transition-button-press); }
@@ -323,6 +518,22 @@
 .transition-modal-enter { transition: var(--motion-transition-modal-enter); }
 .transition-modal-exit { transition: var(--motion-transition-modal-exit); }
 .transition-modal-backdrop { transition: var(--motion-transition-modal-backdrop); }
+
+/* HT-002.1.3: Linear-specific component transition classes */
+.transition-linear-hover { transition: var(--motion-transition-linear-hover); }
+.transition-linear-focus { transition: var(--motion-transition-linear-focus); }
+.transition-linear-active { transition: var(--motion-transition-linear-active); }
+.transition-linear-scale { transition: var(--motion-transition-linear-scale); }
+.transition-linear-elevation { transition: var(--motion-transition-linear-elevation); }
+.transition-linear-color { transition: var(--motion-transition-linear-color); }
+.transition-linear-opacity { transition: var(--motion-transition-linear-opacity); }
+.transition-linear-border { transition: var(--motion-transition-linear-border); }
+.transition-linear-card-hover { transition: var(--motion-transition-linear-card-hover); }
+.transition-linear-card-elevation { transition: var(--motion-transition-linear-card-elevation); }
+.transition-linear-button-micro { transition: var(--motion-transition-linear-button-micro); }
+.transition-linear-input-focus { transition: var(--motion-transition-linear-input-focus); }
+.transition-linear-toggle-switch { transition: var(--motion-transition-linear-toggle-switch); }
+.transition-linear-theme-switch { transition: var(--motion-transition-linear-theme-switch); }
 
 /* State classes for micro-interactions */
 .motion-button-idle {
@@ -347,6 +558,74 @@
 .motion-chip-selected {
   transform: scale(1);
   transition: var(--motion-transition-chip-select);
+}
+
+/* HT-002.1.3: Linear-specific micro-interaction state classes */
+.motion-linear-idle {
+  transform: translateY(0px) scale(1);
+  box-shadow: var(--elevation-0);
+}
+
+.motion-linear-hover:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: var(--elevation-1);
+  transition: var(--motion-transition-linear-hover);
+}
+
+.motion-linear-active:active {
+  transform: translateY(0px) scale(0.99);
+  box-shadow: var(--elevation-2);
+  transition: var(--motion-transition-linear-active);
+}
+
+.motion-linear-focus:focus-visible {
+  box-shadow: var(--elevation-1);
+  transition: var(--motion-transition-linear-focus);
+}
+
+.motion-linear-card-idle {
+  transform: scale(1);
+  box-shadow: var(--elevation-0);
+}
+
+.motion-linear-card-hover:hover {
+  transform: scale(1.01);
+  box-shadow: var(--elevation-1);
+  transition: var(--motion-transition-linear-card-hover);
+}
+
+.motion-linear-card-active:active {
+  transform: scale(0.99);
+  box-shadow: var(--elevation-2);
+  transition: var(--motion-transition-linear-card-elevation);
+}
+
+.motion-linear-button-idle {
+  transform: translateY(0px) scale(1);
+}
+
+.motion-linear-button-hover:hover {
+  transform: translateY(-1px) scale(1.01);
+  transition: var(--motion-transition-linear-button-micro);
+}
+
+.motion-linear-button-active:active {
+  transform: translateY(0px) scale(0.99);
+  transition: var(--motion-transition-linear-active);
+}
+
+.motion-linear-toggle-idle {
+  transform: scale(1);
+}
+
+.motion-linear-toggle-hover:hover {
+  transform: scale(1.02);
+  transition: var(--motion-transition-linear-toggle-switch);
+}
+
+.motion-linear-toggle-active:active {
+  transform: scale(0.98);
+  transition: var(--motion-transition-linear-toggle-switch);
 }
 
 /* No motion class for accessibility */

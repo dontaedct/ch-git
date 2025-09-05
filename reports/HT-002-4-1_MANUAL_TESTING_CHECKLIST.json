@@ -1,0 +1,61 @@
+{
+  "title": "Manual Cross-Browser Testing Checklist",
+  "browsers": [
+    "Chrome",
+    "Firefox",
+    "Safari",
+    "Edge"
+  ],
+  "tests": [
+    {
+      "category": "Visual Consistency",
+      "items": [
+        "Typography renders consistently across browsers",
+        "Colors display correctly (especially OKLCH colors)",
+        "Spacing and layout maintain consistency",
+        "Shadows and elevation effects appear correctly",
+        "Border radius renders properly"
+      ]
+    },
+    {
+      "category": "Interactive Elements",
+      "items": [
+        "Buttons respond to hover states",
+        "Focus states are visible and consistent",
+        "Click/tap interactions work properly",
+        "Form elements function correctly",
+        "Navigation works as expected"
+      ]
+    },
+    {
+      "category": "Responsive Design",
+      "items": [
+        "Layout adapts correctly at different screen sizes",
+        "Text remains readable at all breakpoints",
+        "Touch targets are appropriate on mobile",
+        "Images scale properly",
+        "Grid layouts work correctly"
+      ]
+    },
+    {
+      "category": "Performance",
+      "items": [
+        "Page loads quickly",
+        "Animations are smooth",
+        "No layout shifts during loading",
+        "Fonts load properly",
+        "Images optimize correctly"
+      ]
+    },
+    {
+      "category": "Accessibility",
+      "items": [
+        "Keyboard navigation works",
+        "Screen reader compatibility",
+        "Focus indicators are visible",
+        "Color contrast is adequate",
+        "Text scaling works properly"
+      ]
+    }
+  ]
+}

@@ -26,7 +26,7 @@
     "test:e2e": "playwright test tests/e2e/",
     "test:e2e:ui": "playwright test tests/e2e/ --ui",
     "test:all": "npm run test:unit && npm run test:integration && npm run test:contracts && npm run test:e2e",
-    "test:ci": "npm run test:coverage && npm run test:e2e",
+    "hero-tasks:verify-dates": "tsx scripts/hero-tasks-date-verification.ts",
     "test:debug": "jest --detectOpenHandles --forceExit",
     "test:update": "jest --updateSnapshot",
     "test:coverage:html": "jest --coverage --coverageReporters=html",

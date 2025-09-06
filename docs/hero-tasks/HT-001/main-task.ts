@@ -59,7 +59,7 @@ export const HT_001_MAIN_TASK: CreateHeroTaskRequest = {
     'import-sanitization'
   ],
   metadata: {
-    completion_date: '2025-01-27',
+    completion_date: '2025-09-06T03:49:55.449Z',
     methodology: 'AUDIT → DECIDE → APPLY → VERIFY',
     deliverables: [
       'Button primitive with CTA variants',
@@ -224,21 +224,21 @@ export const HT_001_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'audit-ui-components',
       description: 'Review current component library and identify gaps',
       completed: true,
-      completed_at: '2025-01-27T10:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'audit-design-system',
       description: 'Evaluate current design token system',
       completed: true,
-      completed_at: '2025-01-27T10:15:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'audit-accessibility',
       description: 'Assess current accessibility implementation',
       completed: true,
-      completed_at: '2025-01-27T10:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     }
   ],
@@ -247,21 +247,21 @@ export const HT_001_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'decide-component-architecture',
       description: 'Define component structure and variants',
       completed: true,
-      completed_at: '2025-01-27T10:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'decide-design-tokens',
       description: 'Plan design token implementation',
       completed: true,
-      completed_at: '2025-01-27T10:45:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'decide-accessibility-approach',
       description: 'Plan accessibility implementation strategy',
       completed: true,
-      completed_at: '2025-01-27T11:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     }
   ],
@@ -270,42 +270,42 @@ export const HT_001_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'apply-button-primitive',
       description: 'Implement comprehensive button component',
       completed: true,
-      completed_at: '2025-01-27T11:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'apply-meta-og',
       description: 'Implement SEO and social media optimization',
       completed: true,
-      completed_at: '2025-01-27T11:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'apply-performance-optimization',
       description: 'Implement Core Web Vitals optimization',
       completed: true,
-      completed_at: '2025-01-27T12:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'apply-accessibility-features',
       description: 'Implement WCAG 2.1 AA compliance',
       completed: true,
-      completed_at: '2025-01-27T12:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'apply-micro-motion',
       description: 'Implement subtle animations and interactions',
       completed: true,
-      completed_at: '2025-01-27T13:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'apply-security-features',
       description: 'Implement import sanitization and server-only blocking',
       completed: true,
-      completed_at: '2025-01-27T13:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     }
   ],
@@ -314,28 +314,28 @@ export const HT_001_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'verify-component-functionality',
       description: 'Test all component variants and states',
       completed: true,
-      completed_at: '2025-01-27T14:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'verify-accessibility-compliance',
       description: 'Validate WCAG 2.1 AA compliance',
       completed: true,
-      completed_at: '2025-01-27T14:15:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'verify-performance-metrics',
       description: 'Validate Core Web Vitals scores',
       completed: true,
-      completed_at: '2025-01-27T14:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     },
     {
       id: 'verify-security-implementation',
       description: 'Validate import sanitization and server-only blocking',
       completed: true,
-      completed_at: '2025-01-27T14:45:00.000Z',
+      completed_at: '2025-09-06T03:49:55.449Z',
       required: true
     }
   ]

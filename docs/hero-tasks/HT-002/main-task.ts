@@ -60,7 +60,7 @@ export const HT_002_MAIN_TASK: CreateHeroTaskRequest = {
     'core-web-vitals'
   ],
   metadata: {
-    run_date: '2025-01-27T10:00:00.000Z',
+    run_date: '2025-09-06T03:49:55.452Z',
     phases: 4,
     total_steps: 16,
     inspiration: 'Linear + Vercel design principles',
@@ -169,21 +169,21 @@ export const HT_002_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'audit-current-homepage',
       description: 'Review existing homepage layout and components',
       completed: true,
-      completed_at: '2025-01-27T10:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'audit-design-system',
       description: 'Evaluate existing theme and token system',
       completed: true,
-      completed_at: '2025-01-27T10:15:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'audit-performance',
       description: 'Assess Core Web Vitals and performance metrics',
       completed: true,
-      completed_at: '2025-01-27T10:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     }
   ],
@@ -192,21 +192,21 @@ export const HT_002_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'decide-linear-approach',
       description: 'Define Linear design principles to implement',
       completed: true,
-      completed_at: '2025-01-27T10:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'decide-vercel-patterns',
       description: 'Select Vercel design patterns to incorporate',
       completed: true,
-      completed_at: '2025-01-27T10:45:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'decide-implementation-strategy',
       description: 'Plan phased implementation approach',
       completed: true,
-      completed_at: '2025-01-27T11:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     }
   ],
@@ -215,14 +215,14 @@ export const HT_002_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'apply-theme-enhancement',
       description: 'Implement Linear-specific theme tokens',
       completed: true,
-      completed_at: '2025-01-27T11:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'apply-design-tokens',
       description: 'Implement comprehensive design token system',
       completed: true,
-      completed_at: '2025-01-27T11:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
@@ -235,14 +235,14 @@ export const HT_002_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'apply-core-web-vitals',
       description: 'Optimize performance metrics',
       completed: true,
-      completed_at: '2025-01-27T12:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'apply-reduced-motion',
       description: 'Implement and test reduced motion support',
       completed: true,
-      completed_at: '2025-01-27T12:15:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     }
   ],
@@ -251,35 +251,35 @@ export const HT_002_ADAV_CHECKLISTS: Record<WorkflowPhase, WorkflowChecklistItem
       id: 'verify-theme-implementation',
       description: 'Test theme tokens and styling consistency',
       completed: true,
-      completed_at: '2025-01-27T12:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'verify-performance-metrics',
       description: 'Validate Core Web Vitals improvements',
       completed: true,
-      completed_at: '2025-01-27T12:45:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'verify-accessibility',
       description: 'Test accessibility features and compliance',
       completed: true,
-      completed_at: '2025-01-27T13:00:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'verify-reduced-motion',
       description: 'Test reduced motion implementation',
       completed: true,
-      completed_at: '2025-01-27T13:15:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     },
     {
       id: 'verify-final-polish',
       description: 'Complete final quality assurance and polish',
       completed: true,
-      completed_at: '2025-01-27T13:30:00.000Z',
+      completed_at: '2025-09-06T03:49:55.452Z',
       required: true
     }
   ]

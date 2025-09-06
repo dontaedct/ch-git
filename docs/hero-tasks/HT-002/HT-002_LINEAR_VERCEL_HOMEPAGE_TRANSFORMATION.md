@@ -6,7 +6,7 @@
 **Type:** Feature  
 **Priority:** High  
 **Status:** In Progress  
-**Created:** 2025-01-27T10:00:00.000Z  
+**Created:** September 5, 2025 at 11:49 PM EDT  
 **Estimated Duration:** 20 hours  
 
 ## Description

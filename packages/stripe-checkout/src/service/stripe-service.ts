@@ -189,7 +189,7 @@ export class StripeService {
   /**
    * Handle Stripe errors and convert to our error format
    */
-  private handleStripeError(error: unknown): StripeError {
+  private handleStripeError(error: unknown): Error {
     if (error instanceof Stripe.errors.StripeError) {
       let type: StripeError['type'] = 'api_error';
 
@@ -203,13 +203,7 @@ export class StripeService {
         type = 'network';
       }
 
-      return {
-        type,
-        message: error.message,
-        code: error.code,
-        requestId: error.requestId,
-        statusCode: error.statusCode,
-      };
+      return this.createError(type, error.message, error.code);
     }
 
     return this.createError('unknown', 'An unexpected error occurred');
@@ -218,12 +212,11 @@ export class StripeService {
   /**
    * Create a standardized error
    */
-  private createError(type: StripeError['type'], message: string, code?: string): StripeError {
-    return {
-      type,
-      message,
-      code,
-    };
+  private createError(type: StripeError['type'], message: string, code?: string): Error {
+    const error = new Error(message);
+    (error as any).type = type;
+    (error as any).code = code;
+    return error;
   }
 
   /**

@@ -28,6 +28,7 @@ interface FormFieldProps {
 function FormField({ field, register, error, disabled }: FormFieldProps) {
   const baseClasses = "w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
   const errorClasses = error ? "border-red-500 focus:ring-red-500" : ""
+  const fieldId = `field-${field.name}`
 
   const renderInput = () => {
     switch (field.type) {
@@ -35,6 +36,7 @@ function FormField({ field, register, error, disabled }: FormFieldProps) {
         return (
           <textarea
             {...register(field.name)}
+            id={fieldId}
             placeholder={field.placeholder}
             disabled={disabled}
             className={`${baseClasses} ${errorClasses} min-h-[100px] resize-vertical`}
@@ -46,6 +48,7 @@ function FormField({ field, register, error, disabled }: FormFieldProps) {
         return (
           <select
             {...register(field.name)}
+            id={fieldId}
             disabled={disabled}
             className={`${baseClasses} ${errorClasses}`}
           >
@@ -62,6 +65,7 @@ function FormField({ field, register, error, disabled }: FormFieldProps) {
         return (
           <select
             {...register(field.name)}
+            id={fieldId}
             disabled={disabled}
             multiple
             className={`${baseClasses} ${errorClasses} min-h-[120px]`}
@@ -79,11 +83,12 @@ function FormField({ field, register, error, disabled }: FormFieldProps) {
           <div className="flex items-center">
             <input
               {...register(field.name)}
+              id={fieldId}
               type="checkbox"
               disabled={disabled}
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded disabled:cursor-not-allowed"
             />
-            <label className="ml-2 block text-sm text-gray-900">
+            <label htmlFor={fieldId} className="ml-2 block text-sm text-gray-900">
               {field.label}
             </label>
           </div>
@@ -92,20 +97,24 @@ function FormField({ field, register, error, disabled }: FormFieldProps) {
       case 'radio':
         return (
           <div className="space-y-2">
-            {field.options?.map((option) => (
-              <div key={option.value} className="flex items-center">
-                <input
-                  {...register(field.name)}
-                  type="radio"
-                  value={option.value}
-                  disabled={disabled}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 disabled:cursor-not-allowed"
-                />
-                <label className="ml-2 block text-sm text-gray-900">
-                  {option.label}
-                </label>
-              </div>
-            ))}
+            {field.options?.map((option, index) => {
+              const radioId = `${fieldId}-${index}`;
+              return (
+                <div key={option.value} className="flex items-center">
+                  <input
+                    {...register(field.name)}
+                    id={radioId}
+                    type="radio"
+                    value={option.value}
+                    disabled={disabled}
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 disabled:cursor-not-allowed"
+                  />
+                  <label htmlFor={radioId} className="ml-2 block text-sm text-gray-900">
+                    {option.label}
+                  </label>
+                </div>
+              );
+            })}
           </div>
         )
 
@@ -113,6 +122,7 @@ function FormField({ field, register, error, disabled }: FormFieldProps) {
         return (
           <input
             {...register(field.name, field.type === 'number' ? { valueAsNumber: true } : {})}
+            id={fieldId}
             type={field.type}
             placeholder={field.placeholder}
             disabled={disabled}
@@ -125,7 +135,7 @@ function FormField({ field, register, error, disabled }: FormFieldProps) {
   return (
     <div className="space-y-2">
       {field.type !== 'checkbox' && (
-        <label className="block text-sm font-medium text-gray-700">
+        <label htmlFor={fieldId} className="block text-sm font-medium text-gray-700">
           {field.label}
           {field.required && <span className="text-red-500 ml-1">*</span>}
         </label>

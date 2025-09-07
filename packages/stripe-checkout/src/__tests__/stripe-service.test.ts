@@ -2,12 +2,22 @@
  * @fileoverview Contract tests for Stripe service
  */
 
-import { StripeService } from '../service/stripe-service';
-import type { StripeCheckoutConfig } from '../types';
-
-// Mock Stripe
+// Mock Stripe before any imports
 jest.mock('stripe', () => {
-  return jest.fn().mockImplementation(() => ({
+  class MockStripeError extends Error {
+    code?: string;
+    constructor(message: string, code?: string) {
+      super(message);
+      this.code = code;
+    }
+  }
+
+  class MockStripeCardError extends MockStripeError {}
+  class MockStripeRateLimitError extends MockStripeError {}
+  class MockStripeAuthenticationError extends MockStripeError {}
+  class MockStripeConnectionError extends MockStripeError {}
+
+  const mockStripeClass = jest.fn().mockImplementation(() => ({
     checkout: {
       sessions: {
         create: jest.fn(),
@@ -23,7 +33,20 @@ jest.mock('stripe', () => {
       constructEvent: jest.fn(),
     },
   }));
+
+  mockStripeClass.errors = {
+    StripeError: MockStripeError,
+    StripeCardError: MockStripeCardError,
+    StripeRateLimitError: MockStripeRateLimitError,
+    StripeAuthenticationError: MockStripeAuthenticationError,
+    StripeConnectionError: MockStripeConnectionError,
+  };
+
+  return mockStripeClass;
 });
+
+import { StripeService } from '../service/stripe-service';
+import type { StripeCheckoutConfig } from '../types';
 
 describe('StripeService Contract Tests', () => {
   let mockStripe: any;
@@ -172,6 +195,7 @@ describe('StripeService Contract Tests', () => {
     it('should not include promotion codes for starter tier', async () => {
       const starterConfig = { ...config, tier: 'starter' as const };
       const starterService = new StripeService(starterConfig, 'sk_test_123');
+      const starterMockStripe = (starterService as any).stripe;
 
       const mockSession = {
         id: 'cs_test_123',
@@ -181,14 +205,14 @@ describe('StripeService Contract Tests', () => {
         currency: 'usd',
       };
 
-      mockStripe.checkout.sessions.create.mockResolvedValue(mockSession);
+      starterMockStripe.checkout.sessions.create.mockResolvedValue(mockSession);
 
       const lineItems = [{ price: 'price_123', quantity: 1 }];
       await starterService.createCheckoutSession(lineItems, {
         allowPromotionCodes: true,
       });
 
-      expect(mockStripe.checkout.sessions.create).toHaveBeenCalledWith(
+      expect(starterMockStripe.checkout.sessions.create).toHaveBeenCalledWith(
         expect.not.objectContaining({
           allow_promotion_codes: true,
         })
@@ -327,8 +351,8 @@ describe('StripeService Contract Tests', () => {
     });
 
     it('should handle network errors', async () => {
-      const networkError = new Error('Network error');
-      (networkError as any).type = 'StripeConnectionError';
+      const Stripe = jest.requireMock('stripe');
+      const networkError = new Stripe.errors.StripeConnectionError('Network error');
       
       mockStripe.checkout.sessions.create.mockRejectedValue(networkError);
 

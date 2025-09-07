@@ -3,8 +3,9 @@
  */
 
 import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { z } from 'zod'
 import { FormComponent } from '../components/Form'
 import { createContactFormSchema } from '../schema/createSchema'
 
@@ -41,8 +42,9 @@ describe('FormComponent', () => {
       />
     )
 
-    // Full Name should have required indicator
-    expect(screen.getByText('*')).toBeInTheDocument()
+    // Should have required indicators for required fields
+    const requiredIndicators = screen.getAllByText('*')
+    expect(requiredIndicators.length).toBeGreaterThan(0)
   })
 
   it('should submit form with valid data', async () => {
@@ -227,10 +229,10 @@ describe('FormComponent', () => {
         { name: 'textarea_field', label: 'Textarea Field', type: 'textarea' as const }
       ],
       columns: [],
-      validation: require('zod').z.object({
-        select_field: require('zod').z.string().optional(),
-        number_field: require('zod').z.number().optional(),
-        textarea_field: require('zod').z.string().optional()
+      validation: z.object({
+        select_field: z.string().optional(),
+        number_field: z.number().optional(),
+        textarea_field: z.string().optional()
       })
     }
 

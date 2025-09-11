@@ -867,10 +867,11 @@ export const OnboardingCompletion = forwardRef<HTMLDivElement, OnboardingComplet
 OnboardingCompletion.displayName = "OnboardingCompletion"
 
 export {
-  OnboardingProvider,
   useOnboarding,
   OnboardingFlowSelector,
   OnboardingStepContent,
   OnboardingProgressTracker,
   OnboardingCompletion,
 }
+
+export { OnboardingProvider }

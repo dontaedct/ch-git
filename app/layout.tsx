@@ -1,7 +1,10 @@
-
 import { EnhancedThemeProvider } from '../lib/ui-polish-theme-provider';
-import { MotionProvider } from '../components/providers/motion-provider';
-import NavigationHeaderSimple from '../components/navigation-header-simple';
+import { TokensProvider } from '../lib/design-tokens/provider';
+import { DarkModeProvider } from '../lib/dark-mode/provider';
+import { MotionProvider } from '../lib/motion/interactions';
+import { MotionProvider as MotionProviderComponent } from '../components/providers/motion-provider';
+import { ModernHeader } from '../components/ModernHeader';
+import PWARegistration from '../components/pwa/PWARegistration';
 import './globals.css';
 
 // Force fully dynamic rendering in staging to avoid build-time prerender failures.
@@ -99,42 +102,35 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* DNS prefetch for external resources */}
-        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-        
-        {/* Preconnect for critical resources */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        {/* Preload Inter 600 weight for hero headings - critical for LCP */}
-        <link 
-          rel="preload" 
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" 
-          as="style" 
-        />
-        <noscript>
-          <link 
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" 
-            rel="stylesheet" 
-          />
-        </noscript>
-        {/* Load other weights asynchronously */}
-        <link 
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" 
-          rel="stylesheet" 
-        />
+        {/* Use system fonts instead of Google Fonts to avoid CSP issues */}
         
         {/* Performance hints */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="format-detection" content="telephone=no" />
         
-        {/* Additional SEO meta tags */}
-        <meta name="theme-color" content="#ffffff" />
-        <meta name="msapplication-TileColor" content="#ffffff" />
+        {/* PWA Meta Tags */}
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#3b82f6" />
+        <meta name="msapplication-TileColor" content="#3b82f6" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Micro App Platform" />
+        <meta name="apple-mobile-web-app-title" content="Hero Tasks" />
+        <meta name="application-name" content="Hero Tasks" />
+        <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
+        
+        {/* PWA Icons */}
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180x180.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144x144.png" />
+        <link rel="apple-touch-icon" sizes="120x120" href="/icons/icon-120x120.png" />
+        <link rel="apple-touch-icon" sizes="114x114" href="/icons/icon-114x114.png" />
+        <link rel="apple-touch-icon" sizes="76x76" href="/icons/icon-76x76.png" />
+        <link rel="apple-touch-icon" sizes="72x72" href="/icons/icon-72x72.png" />
+        <link rel="apple-touch-icon" sizes="60x60" href="/icons/icon-60x60.png" />
+        <link rel="apple-touch-icon" sizes="57x57" href="/icons/icon-57x57.png" />
         
         {/* Additional Open Graph tags */}
         <meta property="og:image:width" content="1200" />
@@ -200,12 +196,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           `
         }} />
       </head>
-      <body className="min-h-screen m-0 bg-white text-[#111]">
+      <body 
+        className="min-h-screen m-0 bg-theme text-theme theme-transition"
+        style={{
+          minHeight: '100vh'
+        }}
+      >
         <EnhancedThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <MotionProvider>
-            <NavigationHeaderSimple />
-            {children}
-          </MotionProvider>
+          <DarkModeProvider defaultTheme="system" enableSystem>
+            <MotionProvider>
+              <MotionProviderComponent>
+                <TokensProvider>
+                  <ModernHeader client={null} isSafeMode={isSafeMode} />
+                  <main className="min-h-screen">
+                    {children}
+                  </main>
+                  <PWARegistration />
+                </TokensProvider>
+              </MotionProviderComponent>
+            </MotionProvider>
+          </DarkModeProvider>
         </EnhancedThemeProvider>
       </body>
     </html>

@@ -677,7 +677,6 @@ export const GenericListEmptyState = forwardRef<HTMLDivElement, GenericListEmpty
 GenericListEmptyState.displayName = "GenericListEmptyState"
 
 export {
-  EmptyState,
   WelcomeEmptyState,
   OnboardingEmptyState,
   SearchEmptyState,
@@ -687,3 +686,5 @@ export {
   CelebrationEmptyState,
   GenericListEmptyState,
 }
+
+export { EmptyState }

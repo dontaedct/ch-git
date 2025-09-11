@@ -583,7 +583,6 @@ export const FloatingActionButton = forwardRef<HTMLButtonElement, FloatingAction
 FloatingActionButton.displayName = "FloatingActionButton"
 
 export {
-  InteractiveButton,
   HoverCard,
   AnimatedCard,
   InteractiveInput,
@@ -591,3 +590,5 @@ export {
   ProgressBar,
   FloatingActionButton,
 }
+
+export { InteractiveButton }

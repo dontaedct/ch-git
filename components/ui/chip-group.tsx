@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { accessibilityUtils } from '@/lib/accessibility/accessibility-system'
 
 interface ChipOption {
   id: string
@@ -22,6 +23,8 @@ interface ChipGroupProps {
   disabled?: boolean
   'aria-label'?: string
   'aria-describedby'?: string
+  'aria-invalid'?: boolean
+  'aria-required'?: boolean
 }
 
 const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
@@ -38,6 +41,8 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
       disabled = false,
       'aria-label': ariaLabel,
       'aria-describedby': ariaDescribedBy,
+      'aria-invalid': ariaInvalid = false,
+      'aria-required': ariaRequired = false,
       ...props
     },
     ref
@@ -48,6 +53,19 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
     const [isAddingCustom, setIsAddingCustom] = React.useState(false)
     const [customValue, setCustomValue] = React.useState('')
     const [focusedIndex, setFocusedIndex] = React.useState(0)
+    
+    // Generate unique IDs for accessibility
+    const groupId = React.useMemo(() => accessibilityUtils.generateId('chip-group'), [])
+    const liveRegionId = React.useMemo(() => accessibilityUtils.generateId('chip-live'), [])
+    
+    // Screen reader announcements
+    const [announcement, setAnnouncement] = React.useState('')
+    
+    const announce = React.useCallback((message: string) => {
+      setAnnouncement(message)
+      // Clear announcement after a short delay
+      setTimeout(() => setAnnouncement(''), 1000)
+    }, [])
     
     const isControlled = value !== undefined
     const currentValue = isControlled ? value : internalValue
@@ -127,10 +145,12 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
         case 'ArrowRight':
           event.preventDefault()
           setFocusedIndex(prev => Math.min(prev + 1, totalChipCount - 1))
+          announce(`Moved to option ${focusedIndex + 2} of ${totalChipCount}`)
           break
         case 'ArrowLeft':
           event.preventDefault()
           setFocusedIndex(prev => Math.max(prev - 1, 0))
+          announce(`Moved to option ${focusedIndex} of ${totalChipCount}`)
           break
         case 'Enter':
         case ' ':
@@ -139,9 +159,12 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
             const chip = allOptions[focusedIndex]
             if (!chip.disabled) {
               toggleChip(chip.value)
+              const isSelected = isSelectedChip(chip.value)
+              announce(`${chip.label} ${isSelected ? 'selected' : 'deselected'}`)
             }
           } else if (allowCustom && focusedIndex === allOptions.length) {
             setIsAddingCustom(true)
+            announce('Adding custom option')
           }
           break
         case 'Escape':
@@ -149,10 +172,21 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
             event.preventDefault()
             setIsAddingCustom(false)
             setCustomValue('')
+            announce('Cancelled adding custom option')
           }
           break
+        case 'Home':
+          event.preventDefault()
+          setFocusedIndex(0)
+          announce('Moved to first option')
+          break
+        case 'End':
+          event.preventDefault()
+          setFocusedIndex(totalChipCount - 1)
+          announce('Moved to last option')
+          break
       }
-    }, [disabled, focusedIndex, totalChipCount, allOptions, allowCustom, isAddingCustom, toggleChip])
+    }, [disabled, focusedIndex, totalChipCount, allOptions, allowCustom, isAddingCustom, toggleChip, announce])
 
     // Focus management
     React.useEffect(() => {
@@ -175,9 +209,13 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
         ref={ref}
         className={cn('flex flex-wrap gap-1.5 md:gap-2', className)}
         role="group"
-        aria-label={ariaLabel}
+        aria-label={ariaLabel || 'Select options'}
         aria-describedby={ariaDescribedBy}
+        aria-invalid={ariaInvalid}
+        aria-required={ariaRequired}
+        aria-labelledby={groupId}
         onKeyDown={handleKeyDown}
+        tabIndex={disabled ? -1 : 0}
         style={{
           '--chip-height': '2rem',
           '--chip-padding': '0.5rem 0.75rem',
@@ -186,6 +224,20 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
         } as React.CSSProperties}
         {...props}
       >
+        {/* Screen reader live region for announcements */}
+        <div
+          id={liveRegionId}
+          aria-live="polite"
+          aria-atomic="true"
+          className="sr-only"
+        >
+          {announcement}
+        </div>
+        
+        {/* Hidden label for screen readers */}
+        <div id={groupId} className="sr-only">
+          {ariaLabel || 'Select options'} {ariaRequired ? '(required)' : ''}
+        </div>
         {allOptions.map((option, index) => (
           <button
             key={option.id}

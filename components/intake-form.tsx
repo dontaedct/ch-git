@@ -4,6 +4,7 @@ import type React from "react"
 import { useId, useMemo, useState } from "react"
 import { intakeFormSchema } from "@/lib/validation"
 import { z } from "zod"
+import { useCSRF } from '@/lib/security/csrf'
 
 interface FormState {
   full_name: string
@@ -25,6 +26,7 @@ export default function IntakeForm({
   onSubmitted?: () => void
 }) {
   const idPrefix = useId()
+  const { getCSRFField } = useCSRF()
   const [form, setForm] = useState<FormState>({
     full_name: "",
     phone: "",
@@ -78,6 +80,16 @@ export default function IntakeForm({
       noValidate
       className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-5"
     >
+      {/* CSRF Protection */}
+      {getCSRFField() && (
+        <input
+          type={getCSRFField()!.type}
+          name={getCSRFField()!.props.name}
+          value={getCSRFField()!.props.value}
+          style={{ display: 'none' }}
+        />
+      )}
+      
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="sm:col-span-2">
           <label htmlFor={`${idPrefix}-full_name`} className="block text-sm font-medium text-gray-800">

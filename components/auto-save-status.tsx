@@ -16,6 +16,7 @@ import {
 import { autoSaveManager } from '@lib/auto-save';
 import { storageManager } from '@lib/auto-save/storage';
 import { toast } from '@ui/use-toast';
+import { useSecureFileDownload } from '@/lib/security/file-download';
 
 interface AutoSaveStatusProps {
   className?: string;
@@ -27,6 +28,7 @@ export function AutoSaveStatus({ className, showAdvanced = false }: AutoSaveStat
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [unsavedCount, setUnsavedCount] = useState(0);
   const [storageSize, setStorageSize] = useState(0);
+  const { downloadJSON, generateFileName } = useSecureFileDownload();
 
   useEffect(() => {
     // Listen for auto-save events
@@ -84,21 +86,18 @@ export function AutoSaveStatus({ className, showAdvanced = false }: AutoSaveStat
   const exportData = () => {
     try {
       const data = storageManager.exportData();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `auto-save-backup-${new Date().toISOString().split('T')[0]}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      const fileName = generateFileName('auto-save-backup', 'json');
+      const success = downloadJSON(data, fileName);
       
-      toast({
-        title: "Data exported",
-        description: "Auto-save data has been exported successfully.",
-        variant: "default",
-      });
+      if (success) {
+        toast({
+          title: "Data exported",
+          description: "Auto-save data has been exported successfully.",
+          variant: "default",
+        });
+      } else {
+        throw new Error('Download failed');
+      }
     } catch {
       toast({
         title: "Export failed",

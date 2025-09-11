@@ -46,10 +46,10 @@ const themeToggleVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-transparent hover:bg-muted hover:text-muted-foreground",
-        outline: "border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        subtle: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+        default: "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100",
+        outline: "border border-gray-300 dark:border-gray-700 bg-transparent shadow-xs hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100",
+        ghost: "hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100",
+        subtle: "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-sm hover:bg-gray-200 dark:hover:bg-gray-700",
       },
       size: {
         sm: "h-8 px-2 min-w-8",
@@ -99,7 +99,6 @@ const themeIcons = {
 const defaultLabels = {
   light: "Switch to light theme",
   dark: "Switch to dark theme", 
-  system: "Switch to system theme",
 } as const
 
 function ThemeToggle({
@@ -113,7 +112,6 @@ function ThemeToggle({
 }: ThemeToggleProps) {
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
-  const isUiPolishOn = isUiPolishEnabled()
 
   // Prevent hydration mismatch
   React.useEffect(() => {
@@ -129,18 +127,17 @@ function ThemeToggle({
         aria-label="Theme toggle loading"
         {...props}
       >
-        <div className="size-4 animate-pulse bg-muted rounded" />
+        <div className="size-4 animate-pulse bg-gray-300 dark:bg-gray-600 rounded" />
         {showLabel && <span className="sr-only">Loading theme toggle</span>}
       </button>
     )
   }
 
-  const currentTheme = theme || "system"
+  const currentTheme = theme || "light"
   const Icon = themeIcons[currentTheme as keyof typeof themeIcons]
   
   const cycleTheme = () => {
-    // When UI polish is enabled, prioritize dark/light toggle (no system)
-    const themes = isUiPolishOn || disableSystem ? ["light", "dark"] : ["light", "dark", "system"]
+    const themes = ["light", "dark"]
     const currentIndex = themes.indexOf(currentTheme)
     const nextIndex = (currentIndex + 1) % themes.length
     setTheme(themes[nextIndex])
@@ -160,11 +157,6 @@ function ThemeToggle({
     return labels[currentTheme as keyof typeof labels] || `Switch theme from ${currentTheme}`
   }
 
-  // Only render when UI polish is enabled
-  if (!isUiPolishOn) {
-    return null
-  }
-
   return (
     <button
       type="button"
@@ -180,14 +172,13 @@ function ThemeToggle({
       {...props}
     >
       <Icon 
-        className="size-4 transition-transform duration-200 ease-spring" 
+        className="size-4 transition-transform duration-200 ease-spring text-gray-700 dark:text-gray-300" 
         aria-hidden="true"
       />
       {showLabel && (
         <span className="sr-only sm:not-sr-only">
           {currentTheme === "light" && "Light"}
           {currentTheme === "dark" && "Dark"}
-          {currentTheme === "system" && "System"}
         </span>
       )}
     </button>

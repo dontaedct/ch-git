@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Save, ExternalLink, Mail } from 'lucide-react'
 import { toast } from 'sonner'
+import { useCSRF } from '@/lib/security/csrf'
 
 interface SettingsData {
   bookingUrl: string
@@ -15,6 +16,7 @@ interface SettingsData {
 }
 
 export function SettingsForm() {
+  const { getCSRFField, getCSRFHeaders } = useCSRF()
   const [settings, setSettings] = useState<SettingsData>({
     bookingUrl: '',
     emailSubjectTemplate: ''
@@ -63,12 +65,20 @@ export function SettingsForm() {
         return
       }
 
-      // For now, save to localStorage
-      // In a real app, this would save to database via API
-      localStorage.setItem('client-settings', JSON.stringify(settings))
-      
-      // Also emit an event for immediate UI updates
-      window.dispatchEvent(new CustomEvent('settings-updated', { detail: settings }))
+      // Save via API with CSRF protection
+      const response = await fetch('/api/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getCSRFHeaders(),
+        },
+        credentials: 'include',
+        body: JSON.stringify(settings),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save settings')
+      }
       
       toast.success('Settings saved successfully')
     } catch (error) {

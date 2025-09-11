@@ -34,6 +34,7 @@ import { Toast, ToastAction, ToastClose, ToastDescription, ToastTitle } from './
 import { Badge } from './badge';
 import { AppError, ErrorCategory, ErrorSeverity, isAppError } from '@/lib/errors/types';
 import { ErrorMessageMapper, UserErrorMessage } from '@/lib/errors/messages';
+import { useSecureClipboard } from '@/lib/security/clipboard';
 
 /**
  * Error notification variants for different UI contexts
@@ -170,6 +171,7 @@ export function ErrorNotification({
 }: ErrorNotificationProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [copiedCorrelationId, setCopiedCorrelationId] = useState(false);
+  const { copyText } = useSecureClipboard();
 
   // Convert error to AppError if needed
   const appError = isAppError(error) 
@@ -206,11 +208,13 @@ export function ErrorNotification({
 
   // Handle correlation ID copy
   const handleCopyCorrelationId = async () => {
-    if (navigator.clipboard && appError.correlationId) {
+    if (appError.correlationId) {
       try {
-        await navigator.clipboard.writeText(appError.correlationId);
-        setCopiedCorrelationId(true);
-        setTimeout(() => setCopiedCorrelationId(false), 2000);
+        const success = await copyText(appError.correlationId);
+        if (success) {
+          setCopiedCorrelationId(true);
+          setTimeout(() => setCopiedCorrelationId(false), 2000);
+        }
       } catch (error) {
         console.warn('Failed to copy correlation ID:', error);
       }

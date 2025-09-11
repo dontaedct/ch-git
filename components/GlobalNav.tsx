@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { Menu, Home, Settings, Package, FileText, X, ChevronDown } from "lucide-react"
 import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
+import { BrandWithLogo } from "@/components/branding/DynamicBrandName"
 
 interface GlobalNavProps {
   client?: {
@@ -127,32 +128,34 @@ export function GlobalNav({ client, isSafeMode }: GlobalNavProps) {
   return (
     <>
       {/* Ultra-thin translucent topbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-12 bg-white/80 backdrop-blur-md border-b border-gray-200/60 transition-all duration-200">
+      <header className="fixed top-0 left-0 right-0 z-50 h-12 bg-gray-900/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-700/60 dark:border-gray-700/60 transition-all duration-200">
         <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
           {/* Left side - Logo and breadcrumbs */}
           <div className="flex items-center gap-4">
             <Link 
               href={isAuthenticated ? "/dashboard" : "/"} 
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg px-2 py-1"
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-2 py-1"
               tabIndex={0}
             >
-              <div className="w-6 h-6 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-xs">CH</span>
-              </div>
-              <span className="hidden sm:inline text-sm font-medium text-gray-900">Micro App</span>
+              <BrandWithLogo
+                logoSize="sm"
+                brandVariant="nav"
+                brandClassName="text-sm font-medium text-gray-100 dark:text-gray-100"
+                className="gap-2"
+              />
             </Link>
             
             {/* Micro-breadcrumbs for dashboard sections */}
             {breadcrumbs.length > 1 && (
-              <nav aria-label="Breadcrumb" className="hidden md:flex items-center gap-2 text-sm text-gray-500">
+              <nav aria-label="Breadcrumb" className="hidden md:flex items-center gap-2 text-sm text-gray-400 dark:text-gray-400">
                 {breadcrumbs.map((crumb, index) => (
                   <div key={crumb.href} className="flex items-center gap-2">
-                    {index > 0 && <ChevronDown className="w-3 h-3 rotate-[-90deg] text-gray-400" />}
+                    {index > 0 && <ChevronDown className="w-3 h-3 rotate-[-90deg] text-gray-500 dark:text-gray-500" />}
                     <Link
                       href={crumb.href}
                       className={cn(
-                        "hover:text-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 rounded px-1 py-0.5",
-                        isActiveRoute(crumb.href) ? "text-gray-900 font-medium" : "text-gray-500"
+                        "hover:text-gray-200 dark:hover:text-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-gray-900 rounded px-1 py-0.5",
+                        isActiveRoute(crumb.href) ? "text-gray-100 dark:text-gray-100 font-medium" : "text-gray-400 dark:text-gray-400"
                       )}
                     >
                       {crumb.label}
@@ -176,16 +179,16 @@ export function GlobalNav({ client, isSafeMode }: GlobalNavProps) {
                     key={route.href}
                     href={route.href}
                     className={cn(
-                      "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1",
+                      "flex items-center gap-2 px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 focus:ring-offset-gray-900",
                       isActive 
-                        ? "text-blue-600 bg-blue-50/80" 
-                        : "text-gray-700 hover:text-gray-900 hover:bg-gray-100/60"
+                        ? "text-blue-400 dark:text-blue-400 bg-blue-900/80 dark:bg-blue-900/80" 
+                        : "text-gray-300 dark:text-gray-300 hover:text-gray-100 dark:hover:text-gray-100 hover:bg-gray-800/60 dark:hover:bg-gray-800/60"
                     )}
                   >
                     <Icon className="w-4 h-4" />
                     <span className="hidden lg:inline">{route.label}</span>
                     {isActive && (
-                      <div className="w-1 h-1 bg-blue-600 rounded-full hidden lg:block" />
+                      <div className="w-1 h-1 bg-blue-400 dark:bg-blue-400 rounded-full hidden lg:block" />
                     )}
                   </Link>
                 )
@@ -246,12 +249,12 @@ export function GlobalNav({ client, isSafeMode }: GlobalNavProps) {
             <div className="flex flex-col h-full">
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-xs">CH</span>
-                  </div>
-                  <span className="text-sm font-medium text-gray-900">Micro App</span>
-                </div>
+                <BrandWithLogo
+                  logoSize="sm"
+                  brandVariant="short"
+                  brandClassName="text-sm font-medium text-gray-900"
+                  className="gap-2"
+                />
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"

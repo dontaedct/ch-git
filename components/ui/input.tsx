@@ -4,19 +4,19 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const inputVariants = cva(
-  "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground flex w-full min-w-0 rounded-md border bg-background px-3 py-2 text-sm shadow-xs transition-colors outline-none file:inline-flex file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50",
+  "file:text-gray-900 dark:file:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 selection:bg-blue-600 selection:text-white flex w-full min-w-0 rounded-xl border bg-white dark:bg-gray-900 px-4 py-3 text-sm shadow-sm transition-all duration-300 ease-out outline-none file:inline-flex file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:cursor-not-allowed disabled:opacity-50 high-tech-input",
   {
     variants: {
       variant: {
-        default: "border-input hover:border-input/80 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20",
-        error: "border-destructive bg-destructive/5 focus-visible:border-destructive focus-visible:ring-2 focus-visible:ring-destructive/20",
+        default: "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20",
+        error: "border-red-500 bg-red-50 dark:bg-red-950 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/20",
         success: "border-green-500 bg-green-50 dark:bg-green-950 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/20",
         warning: "border-yellow-500 bg-yellow-50 dark:bg-yellow-950 focus-visible:border-yellow-500 focus-visible:ring-2 focus-visible:ring-yellow-500/20",
       },
       size: {
-        sm: "h-8 px-2 py-1 text-xs",
-        default: "h-9 px-3 py-2 text-sm",
-        lg: "h-10 px-4 py-3 text-base",
+        sm: "h-9 px-3 py-2 text-xs",
+        default: "h-11 px-4 py-3 text-sm",
+        lg: "h-12 px-5 py-4 text-base",
       },
     },
     defaultVariants: {
@@ -103,14 +103,14 @@ function Input({
       {label && (
         <label
           htmlFor={inputId}
-          className="text-sm font-medium text-foreground leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="text-sm font-semibold text-gray-900 dark:text-gray-100 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {label}
         </label>
       )}
       {inputElement}
       {helper && !validationMessage && (
-        <p id={helperId} className="text-xs text-muted-foreground">
+        <p id={helperId} className="text-xs text-gray-600 dark:text-gray-400">
           {helper}
         </p>
       )}

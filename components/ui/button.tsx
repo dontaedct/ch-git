@@ -44,23 +44,25 @@ import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium motion-button-idle motion-button-hover motion-button-active transition-button-hover disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:transition-button-focus aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_hsl(var(--ring)/0.2)]",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold high-tech-button transition-all duration-300 ease-out disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:transition-all aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 focus-visible:shadow-[0_0_0_4px_hsl(var(--ring)/0.2)]",
   {
     variants: {
       variant: {
         // CTA-focused variants
         cta: [
-          "bg-primary text-primary-foreground shadow-sm hover:shadow-lg",
-          "hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/20",
-          "font-semibold tracking-wide transition-all duration-200 ease-out",
-          "hover:scale-[1.015] active:scale-[0.985] hover:shadow-xl",
-          "focus-visible:outline-3 focus-visible:outline-primary focus-visible:outline-offset-3 focus-visible:shadow-[0_0_0_6px_hsl(var(--primary)/0.3)]"
+          "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg hover:shadow-xl",
+          "hover:from-blue-700 hover:to-blue-800 active:from-blue-800 active:to-blue-900 focus-visible:ring-blue-500/20",
+          "font-bold tracking-wide transition-all duration-300 ease-out",
+          "hover:scale-[1.02] active:scale-[0.98] hover:shadow-2xl",
+          "focus-visible:outline-3 focus-visible:outline-blue-500 focus-visible:outline-offset-3 focus-visible:shadow-[0_0_0_6px_hsl(220_100%_50%/0.3)]",
+          "high-tech-glow"
         ],
         "cta-secondary": [
-          "bg-secondary text-secondary-foreground shadow-sm hover:shadow-lg",
-          "hover:bg-secondary/80 active:bg-secondary/70 focus-visible:ring-secondary/20",
-          "font-medium transition-all duration-200 ease-out",
-          "hover:scale-[1.015] active:scale-[0.985] hover:shadow-xl"
+          "bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow-md hover:shadow-lg",
+          "hover:bg-gray-200 dark:hover:bg-gray-700 active:bg-gray-300 dark:active:bg-gray-600 focus-visible:ring-gray-500/20",
+          "font-semibold transition-all duration-300 ease-out",
+          "hover:scale-[1.02] active:scale-[0.98] hover:shadow-xl",
+          "high-tech-subtle"
         ],
         "cta-outline": [
           "border border-primary/20 bg-background text-primary shadow-sm hover:shadow-lg",
@@ -90,11 +92,14 @@ const buttonVariants = cva(
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/20 transition-all duration-200 ease-out hover:scale-[1.015] active:scale-[0.985] hover:shadow-lg",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 active:bg-secondary/70 focus-visible:ring-secondary/20 transition-all duration-200 ease-out hover:scale-[1.015] active:scale-[0.985] hover:shadow-lg",
+        primary:
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/80 focus-visible:ring-primary/20 transition-all duration-200 ease-out hover:scale-[1.015] active:scale-[0.985] hover:shadow-lg",
       },
       size: {
         xs: "h-7 px-2 py-1 text-xs gap-1 has-[>svg]:px-1.5",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
+        md: "h-9 px-4 py-2 has-[>svg]:px-3",
         lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
         xl: "h-12 px-8 py-3 text-base font-semibold has-[>svg]:px-6",
         icon: "size-9",
@@ -161,7 +166,7 @@ export interface ButtonProps extends React.ComponentProps<"button">, VariantProp
   ctaType?: 'primary' | 'secondary' | 'outline' | 'ghost'
 }
 
-function Button({
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
   className,
   variant,
   size,
@@ -176,7 +181,7 @@ function Button({
   children,
   disabled,
   ...props
-}: ButtonProps) {
+}, ref) => {
   const Comp = asChild ? Slot : "button"
   const hasIcon = Boolean(icon)
   const hasChildren = Boolean(children)
@@ -194,6 +199,7 @@ function Button({
 
   return (
     <Comp
+      ref={ref}
       data-slot="button"
       data-cta-type={ctaType}
       data-loading={loading}
@@ -227,7 +233,9 @@ function Button({
       {!loading && hasIcon && iconPosition === 'right' && icon}
     </Comp>
   )
-}
+})
+
+Button.displayName = "Button"
 
 // Specialized CTA components for common use cases
 const CTAButton = React.forwardRef<HTMLButtonElement, Omit<ButtonProps, 'ctaType'>>(

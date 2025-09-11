@@ -17,8 +17,14 @@ import {
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { emitLeadStartedQuestionnaire, emitLeadCompletedQuestionnaire } from '@/lib/webhooks/emitter'
-import { AnimatePresence, motion } from 'framer-motion'
+import { OptimizedMotion, OptimizedAnimatePresence, OptimizedStagger } from '@/lib/performance/optimized-motion'
 import { toast } from 'sonner'
+import { 
+  useAccessibility, 
+  SkipLink, 
+  LiveRegion,
+  accessibilityUtils 
+} from '@/lib/accessibility/accessibility-system'
 
 interface QuestionOption {
   value: string
@@ -89,6 +95,20 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
   const questionRefs = useRef<Record<string, HTMLElement | null>>({})
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   
+  // Accessibility features
+  const { 
+    prefersReducedMotion, 
+    announce, 
+    ScreenReaderAnnouncer,
+    createAriaProps,
+    createKeyboardHandlers 
+  } = useAccessibility()
+  
+  // Generate unique IDs for accessibility
+  const questionnaireId = useMemo(() => accessibilityUtils.generateId('questionnaire'), [])
+  const progressId = useMemo(() => accessibilityUtils.generateId('progress'), [])
+  const navigationId = useMemo(() => accessibilityUtils.generateId('navigation'), [])
+  
   // Get all questions from all steps
   const allQuestions = config.steps.flatMap(step => step.questions)
   
@@ -126,7 +146,7 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
     }
     
     prevVisibleQuestionsRef.current = currentCount
-  }, [visibleQuestions.length, currentViewIndex])
+  }, [visibleQuestions.length]) // Removed currentViewIndex to prevent infinite loop
   
   
   // Create views with 2-3 questions each
@@ -368,7 +388,7 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
     }
   }, [currentViewIndex, config.id, onAnalyticsEvent])
   
-  // Keyboard shortcuts for navigation
+  // Enhanced keyboard navigation with accessibility
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       // Only handle if not in an input field
@@ -385,13 +405,14 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
           case 'ArrowLeft':
             event.preventDefault()
             if (canGoBack && !isLoading && !isTransitioning) {
+              announce(`Going back to previous questions`)
               handlePrevious()
             }
             break
           case 'ArrowRight':
             event.preventDefault()
-            // We'll check hasMinRequiredAnswers in the render
             if (canGoNext && !isLoading && !isTransitioning) {
+              announce(`Going to next questions`)
               handleNext()
             }
             break
@@ -400,10 +421,17 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
             // Manual save trigger (though it's already auto-saving)
             if (Object.keys(answers).length > 0) {
               setSaveStatus('saving')
+              announce('Saving your progress')
               localStorage.setItem(STORAGE_KEY, JSON.stringify(answers))
               setSaveStatus('saved')
+              announce('Progress saved successfully')
               setTimeout(() => setSaveStatus('idle'), 1500)
             }
+            break
+          case 'h':
+            event.preventDefault()
+            // Show help
+            announce('Keyboard shortcuts: Ctrl+Left/Right to navigate, Ctrl+S to save, Ctrl+H for help')
             break
         }
       }
@@ -411,16 +439,31 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
     
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [canGoBack, canGoNext, isLoading, isTransitioning, handleNext, handlePrevious, answers])
+  }, [canGoBack, canGoNext, isLoading, isTransitioning, handleNext, handlePrevious, answers, announce])
+
+  // Announce progress changes
+  useEffect(() => {
+    const currentStep = Math.floor(currentViewIndex / QUESTIONS_PER_VIEW) + 1
+    const totalSteps = Math.ceil(visibleQuestions.length / QUESTIONS_PER_VIEW)
+    const progressPercentage = Math.round((currentViewIndex / Math.max(visibleQuestions.length - 1, 1)) * 100)
+    
+    announce(`Step ${currentStep} of ${totalSteps}, ${progressPercentage}% complete`)
+  }, [currentViewIndex, visibleQuestions.length, announce])
   
   const renderQuestion = (question: Question) => {
     const answer = answers[question.id]
     const error = validationErrors.find(e => e.questionId === question.id)
     const hasError = !!error
     
+    // Generate unique IDs for accessibility
+    const questionId = accessibilityUtils.generateId(`question-${question.id}`)
+    const errorId = `${questionId}-error`
+    const descriptionId = `${questionId}-description`
+    
     const commonProps = {
       'aria-invalid': hasError,
-      'aria-describedby': hasError ? `${question.id}-error` : undefined,
+      'aria-describedby': hasError ? errorId : undefined,
+      'aria-required': question.required,
       ref: (el: HTMLElement | null) => {
         questionRefs.current[question.id] = el
       }
@@ -429,11 +472,11 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
     switch (question.type) {
       case 'chips':
         return (
-          <div key={question.id} className="space-y-3">
-            <Label className={cn('text-base font-medium', hasError && 'text-destructive')}>
+          <fieldset key={question.id} className="space-y-3">
+            <legend className={cn('text-base font-medium', hasError && 'text-destructive')}>
               {question.text}
-              {question.required && <span className="text-destructive ml-1">*</span>}
-            </Label>
+              {question.required && <span className="text-destructive ml-1" aria-label="required">*</span>}
+            </legend>
             <ChipGroup
               options={question.options?.map(opt => ({
                 id: opt.value,
@@ -444,13 +487,14 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
               onValueChange={(value) => updateAnswer(question.id, value)}
               allowCustom={question.allowCustom}
               {...commonProps}
+              aria-label={question.text}
             />
             {hasError && (
-              <p id={`${question.id}-error`} className="text-sm text-destructive">
+              <p id={errorId} className="text-sm text-destructive" role="alert" aria-live="polite">
                 {error.message}
               </p>
             )}
-          </div>
+          </fieldset>
         )
       
       case 'chips-multi':
@@ -616,22 +660,43 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
   }
   
   return (
-    <div className="max-w-2xl mx-auto p-4 md:p-6">
-      <div aria-live="polite" aria-atomic="true" className="sr-only" ref={ariaLiveRef} />
+    <div 
+      className="max-w-2xl mx-auto p-4 md:p-6"
+      {...createAriaProps({
+        role: 'main',
+        label: config.title,
+        description: config.description
+      })}
+    >
+      {/* Skip Links */}
+      <SkipLink href="#questions">Skip to questions</SkipLink>
+      <SkipLink href="#navigation">Skip to navigation</SkipLink>
+      
+      {/* Screen Reader Announcer */}
+      {ScreenReaderAnnouncer}
       
       <div className="mb-6 md:mb-8">
         <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{config.title}</h1>
         <p className="text-sm md:text-base text-muted-foreground mb-3">{config.description}</p>
         <div className="hidden md:block text-xs text-muted-foreground/70">
-          Use Ctrl+← and Ctrl+→ to navigate, Ctrl+S to save
+          Use Ctrl+← and Ctrl+→ to navigate, Ctrl+S to save, Ctrl+H for help
         </div>
       </div>
       
       {/* Progress Bar */}
-      <div className="mb-6 md:mb-8">
+      <section 
+        className="mb-6 md:mb-8"
+        {...createAriaProps({
+          role: 'region',
+          label: 'Questionnaire progress'
+        })}
+      >
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2 gap-2">
           {config.progress.showNumbers && (
-            <span className="text-xs md:text-sm font-medium text-muted-foreground">
+            <span 
+              className="text-xs md:text-sm font-medium text-muted-foreground"
+              aria-live="polite"
+            >
               Question {currentViewIndex * QUESTIONS_PER_VIEW + 1}-{Math.min((currentViewIndex + 1) * QUESTIONS_PER_VIEW, visibleQuestions.length)} of {visibleQuestions.length}
             </span>
           )}
@@ -644,6 +709,8 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   className="flex items-center gap-1 text-xs text-muted-foreground"
+                  aria-live="polite"
+                  aria-label={`Save status: ${saveStatus}`}
                 >
                   {saveStatus === 'saving' && (
                     <>
@@ -666,19 +733,33 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
                 </motion.div>
               )}
             </AnimatePresence>
-            <span className="text-xs md:text-sm font-medium text-muted-foreground">
+            <span 
+              className="text-xs md:text-sm font-medium text-muted-foreground"
+              aria-live="polite"
+            >
               {progressPercent}% complete
             </span>
           </div>
         </div>
-        <Progress value={progressPercent} className="h-2" />
-      </div>
+        <Progress 
+          value={progressPercent} 
+          className="h-2"
+          aria-label={`Progress: ${progressPercent}% complete`}
+        />
+      </section>
       
       {/* Questions with Animation */}
-      <div className="relative overflow-hidden mb-6 md:mb-8">
-        <AnimatePresence custom={direction}>
+      <section 
+        id="questions"
+        className="relative overflow-hidden mb-6 md:mb-8"
+        {...createAriaProps({
+          role: 'region',
+          label: 'Questionnaire questions'
+        })}
+      >
+        <OptimizedAnimatePresence custom={direction}>
           {currentQuestions.map((question, index) => (
-            <motion.div
+            <OptimizedMotion
               key={`${currentViewIndex}-${question.id}`}
               custom={direction}
               variants={containerVariants}
@@ -688,7 +769,7 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
               transition={transition}
               className="space-y-6 md:space-y-8"
             >
-              <motion.div
+              <OptimizedMotion
                 key={question.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ 
@@ -697,22 +778,36 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
                   transition: { delay: index * 0.1, duration: 0.3 }
                 }}
                 className="bg-card/50 p-4 md:p-6 rounded-lg border border-border/50 backdrop-blur-sm"
+                {...createAriaProps({
+                  role: 'group',
+                  label: `Question ${currentViewIndex * QUESTIONS_PER_VIEW + index + 1}`
+                })}
               >
                 {renderQuestion(question)}
-              </motion.div>
-            </motion.div>
+              </OptimizedMotion>
+            </OptimizedMotion>
           ))}
-        </AnimatePresence>
-      </div>
+        </OptimizedAnimatePresence>
+      </section>
       
       {/* Navigation */}
-      <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 pt-4 md:pt-6 border-t border-border">
+      <nav 
+        id="navigation"
+        className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3 pt-4 md:pt-6 border-t border-border"
+        {...createAriaProps({
+          role: 'navigation',
+          label: 'Questionnaire navigation'
+        })}
+      >
         <Button
           variant="outline"
           onClick={handlePrevious}
           disabled={!canGoBack || isLoading || isTransitioning}
           className="min-w-[100px] order-2 sm:order-1"
           size="lg"
+          {...createAriaProps({
+            label: `Go to previous questions${!canGoBack ? ' (disabled)' : ''}`
+          })}
         >
           {config.navigation.previousLabel}
         </Button>
@@ -723,6 +818,8 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-xs md:text-sm text-muted-foreground text-center px-4 order-3 sm:order-2 sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2"
+            role="alert"
+            aria-live="polite"
           >
             Please answer all required questions to continue
           </motion.div>
@@ -733,6 +830,9 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
           disabled={!hasMinRequiredAnswers || isLoading || isTransitioning || !canGoNext}
           className="min-w-[140px] order-1 sm:order-3"
           size="lg"
+          {...createAriaProps({
+            label: `${isLastView ? 'Submit' : 'Go to next questions'}${(!hasMinRequiredAnswers || isLoading || isTransitioning || !canGoNext) ? ' (disabled)' : ''}`
+          })}
         >
           {isLoading || isTransitioning ? (
             <div className="flex items-center gap-2">
@@ -743,7 +843,7 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
             isLastView ? config.navigation.submitLabel : config.navigation.nextLabel
           )}
         </Button>
-      </div>
+      </nav>
     </div>
   )
 }

@@ -15,9 +15,10 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card"
       className={cn(
-        "bg-background text-foreground flex flex-col",
-        "rounded-[var(--card-border-radius)] border-[var(--border-width-hairline)] border-[var(--border-color-hairline)]",
-        "shadow-[var(--elevation-sm)]",
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col",
+        "rounded-2xl border border-gray-200 dark:border-gray-700",
+        "shadow-lg hover:shadow-xl transition-all duration-300 ease-out",
+        "high-tech-card",
         className
       )}
       {...props}
@@ -30,10 +31,10 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-header"
       className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5",
-        "p-[var(--card-padding)] pb-0",
+        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2",
+        "p-6 pb-0",
         "has-data-[slot=card-action]:grid-cols-[1fr_auto]",
-        "[&:has(+[data-slot=card-content])]:border-b [&:has(+[data-slot=card-content])]:border-[var(--border-color-hairline)] [&:has(+[data-slot=card-content])]:pb-[var(--card-padding)]",
+        "[&:has(+[data-slot=card-content])]:border-b [&:has(+[data-slot=card-content])]:border-gray-200 dark:[&:has(+[data-slot=card-content])]:border-gray-700 [&:has(+[data-slot=card-content])]:pb-6",
         className
       )}
       {...props}
@@ -45,7 +46,7 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn("leading-tight font-bold text-lg text-gray-900 dark:text-gray-100", className)}
       {...props}
     />
   )
@@ -55,7 +56,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-gray-600 dark:text-gray-400 text-sm leading-relaxed", className)}
       {...props}
     />
   )
@@ -78,7 +79,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-content"
-      className={cn("p-[var(--card-padding)] pt-0 flex-1", className)}
+      className={cn("p-6 pt-0 flex-1", className)}
       {...props}
     />
   )
@@ -89,8 +90,8 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-footer"
       className={cn(
-        "flex items-center p-[var(--card-padding)] pt-0",
-        "[&:has([data-slot=card-content]+&)]:border-t [&:has([data-slot=card-content]+&)]:border-[var(--border-color-hairline)] [&:has([data-slot=card-content]+&)]:pt-[var(--card-padding)]",
+        "flex items-center p-6 pt-0",
+        "[&:has([data-slot=card-content]+&)]:border-t [&:has([data-slot=card-content]+&)]:border-gray-200 dark:[&:has([data-slot=card-content]+&)]:border-gray-700 [&:has([data-slot=card-content]+&)]:pt-6",
         className
       )}
       {...props}

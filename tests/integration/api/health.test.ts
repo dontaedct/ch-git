@@ -185,7 +185,7 @@ describe('Health API Integration', () => {
     it('should return comprehensive status information', async () => {
       const mockStatus = {
         application: {
-          name: 'DCT Micro-Apps',
+          name: 'Automation DCT',
           version: '1.0.0',
           environment: 'development',
           uptime: process.uptime(),
@@ -215,7 +215,7 @@ describe('Health API Integration', () => {
       expect(data.application).toBeDefined();
       expect(data.services).toBeDefined();
       expect(data.system).toBeDefined();
-      expect(data.application.name).toBe('DCT Micro-Apps');
+      expect(data.application.name).toBe('Automation DCT');
     });
   });
 

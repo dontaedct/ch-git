@@ -144,3 +144,4 @@ async function autoRun() {
 autoRun().catch(console.error);
 
 export { AutoStartupEnforcer };
+

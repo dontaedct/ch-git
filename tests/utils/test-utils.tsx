@@ -1,5 +1,5 @@
 /**
- * @fileoverview Comprehensive Test Utilities for DCT Micro-Apps
+ * @fileoverview Comprehensive Test Utilities for Automation DCT
  * @description Test utilities, custom renderers, and common test helpers
  * @version 1.0.0
  * @author SOS Operation Phase 3 Task 15

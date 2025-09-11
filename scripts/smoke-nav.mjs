@@ -15,7 +15,7 @@ async function smokeTest() {
       name: 'Public Landing Page (/)',
       url: '/',
       expectedStatus: 200,
-      expectedContent: 'Micro App Template'
+      expectedContent: 'Automation DCT'
     },
     {
       name: 'Health Check (/api/health)',

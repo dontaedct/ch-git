@@ -16,7 +16,7 @@ test.describe('Critical User Workflows', () => {
   test.describe('Homepage Navigation', () => {
     test('should load homepage successfully', async ({ page }) => {
       // Check that the page loads
-      await expect(page).toHaveTitle(/DCT Micro-Apps/);
+      await expect(page).toHaveTitle(/Automation DCT/);
       
       // Check for main navigation elements
       await expect(page.locator('nav')).toBeVisible();

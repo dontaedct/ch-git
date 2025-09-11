@@ -12,7 +12,7 @@ test.describe('OSS Hero Template - Basic Functionality', () => {
     await page.goto('/');
     
     // Verify page loads without errors
-    await expect(page).toHaveTitle(/Micro App Template/);
+    await expect(page).toHaveTitle(/Automation DCT/);
     
     // Check for basic content
     await expect(page.locator('body')).toBeVisible();

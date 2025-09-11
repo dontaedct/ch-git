@@ -5,6 +5,10 @@ import typescriptParser from '@typescript-eslint/parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// Import brand-aware ESLint configuration
+import brandAwareConfig from './design/policies/eslint-brand-aware.config.mjs';
+import brandRules from './design/policies/eslint-brand-rules.mjs';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
@@ -41,6 +45,32 @@ export default [
       'temp/',
       '*.tsbuildinfo',
     ],
+  },
+  // Brand-aware ESLint configuration
+  {
+    files: ['**/*.{ts,tsx}'],
+    plugins: {
+      'brand-aware': {
+        rules: brandRules.brandAwareRules
+      }
+    },
+    rules: {
+      // Brand-aware rules
+      'brand-aware/brand-enforce-colors': ['error', {
+        allowTailwind: true,
+        allowCustomColors: false,
+        brandColors: ['#007AFF', '#f9fafb', '#111827'] // Default brand colors
+      }],
+      'brand-aware/brand-enforce-typography': ['error', {
+        allowSystemFonts: true,
+        allowCustomFonts: false,
+        brandFonts: ['system-ui', 'sans-serif', 'Geist']
+      }],
+      'brand-aware/brand-enforce-components': 'error',
+      'brand-aware/brand-enforce-hooks': 'error',
+      // Include brand-aware config rules
+      ...brandAwareConfig.rules
+    }
   },
   {
     files: ['**/*.{ts,tsx}'],
@@ -105,6 +135,8 @@ export default [
       'no-restricted-syntax': 'off',
     },
   },
+  // Brand-specific overrides
+  ...brandAwareConfig.overrides,
   // Custom rule to prevent server-only imports and env vars in client code
   {
     files: [

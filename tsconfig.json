@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2022"
-    ],
+    "lib": ["dom", "dom.iterable", "es2022"],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "preserve",
@@ -19,21 +15,10 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@app/*": [
-        "src/app/*",
-        "app/*"
-      ],
-      "@data/*": [
-        "src/data/*",
-        "data/*"
-      ],
-      "@lib/*": [
-        "src/lib/*",
-        "lib/*"
-      ],
+      "@/*": ["./*"],
+      "@app/*": ["src/app/*", "app/*"],
+      "@data/*": ["src/data/*", "data/*"],
+      "@lib/*": ["src/lib/*", "lib/*"],
       "@ui/*": [
         "components/ui/*",
         "src/components/ui/*",
@@ -41,23 +26,12 @@
         "components/*",
         "src/components/*"
       ],
-      "@registry/*": [
-        "src/registry/*",
-        "registry/*"
-      ],
-      "@compat/*": [
-        "src/compat/*",
-        "compat/*"
-      ],
-      "@components/*": [
-        "components/*",
-        "src/components/*"
-      ]
+      "@/components-sandbox/*": ["components-sandbox/*"],
+      "@registry/*": ["src/registry/*", "registry/*"],
+      "@compat/*": ["src/compat/*", "compat/*"],
+      "@components/*": ["components/*", "src/components/*"]
     },
-    "typeRoots": [
-      "types",
-      "node_modules/@types"
-    ],
+    "typeRoots": ["types", "node_modules/@types"],
     "allowJs": false,
     "incremental": true,
     "plugins": [
@@ -81,6 +55,11 @@
     ".vercel",
     "scripts",
     "tests",
-    "**/*.backup.*"
+    "**/*.backup.*",
+    "docs/**/*",
+    "lib/accessibility/**/*",
+    "lib/architecture/**/*",
+    "lib/performance/**/*",
+    "hooks/use-form-validation.ts"
   ]
 }

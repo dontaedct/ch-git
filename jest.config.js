@@ -7,7 +7,7 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js', '<rootDir>/tests/hero-tasks/setup/test-setup.ts'],
   testEnvironment: 'jsdom',
   moduleNameMapper: {
     // Handle module aliases (this is the configuration for your path aliases)
@@ -48,29 +48,29 @@ const customJestConfig = {
   coverageReporters: ['text', 'lcov', 'html', 'json'],
   coverageThreshold: {
     global: {
-      branches: 0,
-      functions: 0,
-      lines: 0,
-      statements: 0,
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
     },
-    // Temporarily lowered thresholds for SOS job phase 3
+    // HT-008 Phase 7: Testing Suite Implementation - 95%+ coverage target
     './lib/': {
-      branches: 0,
-      functions: 0,
-      lines: 0,
-      statements: 0,
+      branches: 95,
+      functions: 95,
+      lines: 95,
+      statements: 95,
     },
     './components/': {
-      branches: 0,
-      functions: 0,
-      lines: 0,
-      statements: 0,
+      branches: 90,
+      functions: 90,
+      lines: 90,
+      statements: 90,
     },
     './app/': {
-      branches: 0,
-      functions: 0,
-      lines: 0,
-      statements: 0,
+      branches: 85,
+      functions: 85,
+      lines: 85,
+      statements: 85,
     },
   },
   // Test timeout configuration

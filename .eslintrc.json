@@ -1,5 +1,11 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "./design/policies/eslint-design-configurable.config.cjs",
+    "./design/policies/import-boundaries.cjs",
+    "./design/policies/token-guards.cjs"
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "parserOptions": {

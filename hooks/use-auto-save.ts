@@ -100,7 +100,8 @@ export function useAutoSave({
           elementRef.current.value = relevantEntry.content;
           elementRef.current.dispatchEvent(new Event('input', { bubbles: true }));
         } else if (elementRef.current.isContentEditable) {
-          elementRef.current.innerHTML = relevantEntry.content;
+          // SECURITY: Use textContent instead of innerHTML to prevent XSS
+          elementRef.current.textContent = relevantEntry.content;
           elementRef.current.dispatchEvent(new Event('input', { bubbles: true }));
         }
 

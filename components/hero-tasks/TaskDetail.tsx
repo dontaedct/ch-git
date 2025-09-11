@@ -31,6 +31,10 @@ import {
 } from 'lucide-react';
 import { TaskCard } from './TaskCard';
 import { TaskForm } from './TaskForm';
+import { useLiveCollaboration } from '@/hooks/useLiveCollaboration';
+import { PresenceIndicator } from './PresenceIndicator';
+import { TypingIndicator } from './TypingIndicator';
+import { ConflictResolution } from './ConflictResolution';
 import {
   HeroTask,
   HeroSubtask,
@@ -51,11 +55,12 @@ interface TaskDetailProps {
 
 const statusConfig = {
   [TaskStatus.DRAFT]: { color: 'bg-gray-100 text-gray-800', icon: AlertCircle },
-  [TaskStatus.READY]: { color: 'bg-blue-100 text-blue-800', icon: Play },
+  [TaskStatus.READY]: { color: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100', icon: Play },
   [TaskStatus.IN_PROGRESS]: { color: 'bg-yellow-100 text-yellow-800', icon: Play },
   [TaskStatus.BLOCKED]: { color: 'bg-red-100 text-red-800', icon: Pause },
   [TaskStatus.COMPLETED]: { color: 'bg-green-100 text-green-800', icon: CheckCircle },
-  [TaskStatus.CANCELLED]: { color: 'bg-gray-100 text-gray-800', icon: AlertCircle }
+  [TaskStatus.CANCELLED]: { color: 'bg-gray-100 text-gray-800', icon: AlertCircle },
+  [TaskStatus.PENDING]: { color: 'bg-orange-100 text-orange-800', icon: Clock }
 };
 
 const priorityConfig = {
@@ -67,7 +72,7 @@ const priorityConfig = {
 
 const phaseConfig = {
   [WorkflowPhase.AUDIT]: { color: 'bg-purple-100 text-purple-800', label: 'Audit' },
-  [WorkflowPhase.DECIDE]: { color: 'bg-blue-100 text-blue-800', label: 'Decide' },
+  [WorkflowPhase.DECIDE]: { color: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-100', label: 'Decide' },
   [WorkflowPhase.APPLY]: { color: 'bg-green-100 text-green-800', label: 'Apply' },
   [WorkflowPhase.VERIFY]: { color: 'bg-yellow-100 text-yellow-800', label: 'Verify' }
 };
@@ -78,6 +83,50 @@ export function TaskDetail({ taskId, onBack, className }: TaskDetailProps) {
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Live collaboration integration
+  const {
+    connected: wsConnected,
+    presenceUsers,
+    typingUsers,
+    conflicts,
+    hasConflicts,
+    joinTaskRoom,
+    leaveTaskRoom,
+    sendTypingIndicator,
+    resolveConflicts,
+    dismissConflicts,
+    updateTaskOptimistically
+  } = useLiveCollaboration({
+    userId: 'current-user', // TODO: Get from auth context
+    enabled: true,
+    onTaskUpdate: (message) => {
+      console.log('Real-time task update received:', message);
+      // Refresh task data when updated
+      if (message.taskId === taskId && ['task_updated', 'task_status_changed'].includes(message.type)) {
+        fetchTask();
+      }
+    },
+    onPresenceUpdate: (message) => {
+      console.log('Presence update received:', message);
+    },
+    onConflict: (conflicts) => {
+      console.log('Conflicts detected:', conflicts);
+    }
+  });
+
+  // Join task room when component mounts
+  useEffect(() => {
+    if (wsConnected && taskId) {
+      joinTaskRoom(taskId);
+    }
+    
+    return () => {
+      if (taskId) {
+        leaveTaskRoom(taskId);
+      }
+    };
+  }, [wsConnected, taskId, joinTaskRoom, leaveTaskRoom]);
 
   const fetchTask = async () => {
     try {
@@ -114,28 +163,60 @@ export function TaskDetail({ taskId, onBack, className }: TaskDetailProps) {
     fetchTask();
   }, [taskId]);
 
-  const handleUpdateTask = async (data: any) => {
+  // Keyboard shortcuts for task detail
+  const detailShortcuts = [
+    createPlatformShortcut('e', 'Edit task', () => {
+      if (!editing) {
+        setEditing(true);
+      }
+    }),
+    
+    createPlatformShortcut('r', 'Refresh task', () => {
+      refreshTask();
+    }),
+    
+    createPlatformShortcut('d', 'Duplicate task', () => {
+      // TODO: Implement duplicate functionality
+      console.log('Duplicate task functionality not yet implemented');
+    }),
+    
+    createPlatformShortcut('Delete', 'Delete task', () => {
+      // TODO: Implement delete functionality with confirmation
+      console.log('Delete task functionality not yet implemented');
+    }),
+    
+    createPlatformShortcut('p', 'Change priority', () => {
+      // TODO: Implement priority change modal
+      console.log('Priority change functionality not yet implemented');
+    }),
+    
+    createPlatformShortcut('s', 'Change status', () => {
+      // TODO: Implement status change modal
+      console.log('Status change functionality not yet implemented');
+    }),
+    
+    {
+      key: 'Escape',
+      description: 'Go back to task list',
+      action: onBack,
+      preventDefault: true
+    }
+  ];
+
+  // Initialize keyboard shortcuts
+  useKeyboardShortcuts({
+    shortcuts: detailShortcuts,
+    enabled: true
+  });
+
+  const handleUpdateTask = async (data: Partial<HeroTask>) => {
     try {
-      const response = await fetch(`/api/hero-tasks/${taskId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update task');
-      }
-
-      const result = await response.json();
+      // Use optimistic updates for better UX
+      await updateTaskOptimistically(taskId, data);
       
-      if (result.success) {
-        setTask(result.data);
-        setEditing(false);
-      } else {
-        throw new Error(result.error || 'Failed to update task');
-      }
+      // The optimistic update will handle conflicts automatically
+      setTask(prev => prev ? { ...prev, ...data } : null);
+      setEditing(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error');
     }
@@ -237,6 +318,7 @@ export function TaskDetail({ taskId, onBack, className }: TaskDetailProps) {
           task={task}
           onSubmit={handleUpdateTask}
           onCancel={() => setEditing(false)}
+          taskId={taskId}
         />
       </div>
     );
@@ -286,6 +368,21 @@ export function TaskDetail({ taskId, onBack, className }: TaskDetailProps) {
             </div>
           </div>
         </div>
+        
+        {/* Live Collaboration Indicators */}
+        {wsConnected && (
+          <div className="flex items-center gap-4">
+            <PresenceIndicator 
+              users={presenceUsers}
+              maxVisible={3}
+              size="sm"
+            />
+            <TypingIndicator 
+              typingUsers={typingUsers}
+              currentUserId="current-user"
+            />
+          </div>
+        )}
         <div className="flex gap-2">
           <Button onClick={refreshTask} variant="outline" disabled={refreshing}>
             <RefreshCw className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
@@ -297,6 +394,16 @@ export function TaskDetail({ taskId, onBack, className }: TaskDetailProps) {
           </Button>
         </div>
       </div>
+
+      {/* Conflict Resolution */}
+      {hasConflicts && (
+        <ConflictResolution
+          conflicts={conflicts}
+          onResolve={resolveConflicts}
+          onDismiss={dismissConflicts}
+          className="mb-6"
+        />
+      )}
 
       {/* Progress */}
       <Card className="mb-6">
@@ -484,7 +591,7 @@ export function TaskDetail({ taskId, onBack, className }: TaskDetailProps) {
                       [WorkflowPhase.AUDIT, WorkflowPhase.DECIDE, WorkflowPhase.APPLY, WorkflowPhase.VERIFY].indexOf(task.current_phase);
                     
                     return (
-                      <div key={phase} className={`text-center p-2 rounded ${isActive ? 'bg-blue-50 border-2 border-blue-200' : isCompleted ? 'bg-green-50' : 'bg-gray-50'}`}>
+                      <div key={phase} className={`text-center p-2 rounded ${isActive ? 'bg-gray-50 border-2 border-gray-200 dark:bg-gray-800 dark:border-gray-600' : isCompleted ? 'bg-green-50 dark:bg-green-900' : 'bg-gray-50 dark:bg-gray-800'}`}>
                         <div className="text-xs font-medium">{phaseInfo.label}</div>
                         <div className="text-xs text-gray-500">{phase}</div>
                       </div>

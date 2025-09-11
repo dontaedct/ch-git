@@ -36,7 +36,8 @@ const statusConfig = {
   [TaskStatus.IN_PROGRESS]: { color: 'bg-yellow-100 text-yellow-800', icon: Play },
   [TaskStatus.BLOCKED]: { color: 'bg-red-100 text-red-800', icon: Pause },
   [TaskStatus.COMPLETED]: { color: 'bg-green-100 text-green-800', icon: CheckCircle },
-  [TaskStatus.CANCELLED]: { color: 'bg-gray-100 text-gray-800', icon: AlertCircle }
+  [TaskStatus.CANCELLED]: { color: 'bg-gray-100 text-gray-800', icon: AlertCircle },
+  [TaskStatus.PENDING]: { color: 'bg-orange-100 text-orange-800', icon: Clock }
 };
 
 const priorityConfig = {

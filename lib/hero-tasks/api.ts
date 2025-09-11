@@ -765,7 +765,8 @@ export async function getTaskAnalytics(): Promise<ApiResponse<TaskAnalytics>> {
         in_progress: 0,
         blocked: 0,
         completed: 0,
-        cancelled: 0
+        cancelled: 0,
+        pending: 0
       },
       tasks_by_priority: {
         critical: 0,
@@ -788,7 +789,8 @@ export async function getTaskAnalytics(): Promise<ApiResponse<TaskAnalytics>> {
         planning: 0,
         review: 0,
         deployment: 0,
-        monitoring: 0
+        monitoring: 0,
+        architecture: 0
       },
       tasks_by_phase: {
         audit: 0,
@@ -973,6 +975,74 @@ export async function createAttachment(request: CreateAttachmentRequest): Promis
       success: true,
       data: data as TaskAttachment,
       message: 'Attachment created successfully',
+      timestamp: new Date().toISOString()
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      timestamp: new Date().toISOString()
+    };
+  }
+}
+
+// ============================================================================
+// REORDER OPERATIONS
+// ============================================================================
+
+export async function reorderTasks(request: {
+  task_ids: string[];
+  reorder_timestamp: string;
+  user_id?: string;
+}): Promise<ApiResponse<HeroTask[]>> {
+  try {
+    // Validate that all task IDs exist
+    const { data: existingTasks, error: fetchError } = await supabase
+      .from('hero_tasks')
+      .select('id')
+      .in('id', request.task_ids);
+
+    if (fetchError) {
+      throw new Error(`Failed to validate task IDs: ${fetchError.message}`);
+    }
+
+    if (!existingTasks || existingTasks.length !== request.task_ids.length) {
+      throw new Error('One or more task IDs do not exist');
+    }
+
+    // Update each task with its new display order
+    const updates = request.task_ids.map((taskId, index) => ({
+      id: taskId,
+      metadata: {
+        display_order: index,
+        last_reordered_at: request.reorder_timestamp,
+        reordered_by: request.user_id || 'system'
+      },
+      updated_at: new Date().toISOString()
+    }));
+
+    // Perform batch update
+    const { data: updatedTasks, error: updateError } = await supabase
+      .from('hero_tasks')
+      .upsert(updates, { 
+        onConflict: 'id',
+        ignoreDuplicates: false 
+      })
+      .select();
+
+    if (updateError) {
+      throw new Error(`Failed to reorder tasks: ${updateError.message}`);
+    }
+
+    // Return tasks in their new order
+    const orderedTasks = request.task_ids.map(id => 
+      updatedTasks?.find(task => task.id === id)
+    ).filter(Boolean) as HeroTask[];
+
+    return {
+      success: true,
+      data: orderedTasks,
+      message: 'Tasks reordered successfully',
       timestamp: new Date().toISOString()
     };
   } catch (error) {

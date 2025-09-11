@@ -24,6 +24,12 @@ export const routes = {
   // V1 API
   'v1-clients': '/api/v1/clients',
   
+  // Brand Configuration API
+  'brand': '/api/brand',
+  'brand-presets': '/api/brand/presets',
+  'brand-import': '/api/brand/import',
+  'brand-migration': '/api/brand/migration',
+  
   // Client Portal Routes
   'client-portal': '/client-portal',
   'client-check-in': '/client-portal/check-in',

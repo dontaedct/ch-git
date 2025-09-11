@@ -388,7 +388,7 @@ export function processError(error: unknown, context: ErrorContext = {}): AppErr
 /**
  * Middleware wrapper for API routes
  */
-export function withErrorHandler(handler: Function) {
+export function withErrorHandler(handler: (req: NextRequest, context?: any) => Promise<Response>) {
   return async (req: NextRequest, context?: any) => {
     try {
       return await handler(req, context);

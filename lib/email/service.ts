@@ -134,7 +134,7 @@ export function createEmailModal(
   clientName = 'Unknown Client',
   planTitle = 'Consultation Plan'
 ): EmailModalData {
-  let state = {
+  const state = {
     isOpen: false,
     email: initialEmail,
     clientName,

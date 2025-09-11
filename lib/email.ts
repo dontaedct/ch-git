@@ -1,5 +1,7 @@
 import { Resend } from "resend";
 import type { SessionLite } from "@/types/email";
+import { DynamicEmailRenderer } from './branding/email-templates';
+import { DEFAULT_BRAND_CONFIG } from './branding/logo-manager';
 
 type Ok = { ok: true; id?: string; skipped?: true };
 type Fail = { ok: false; code: string; message: string };
@@ -18,12 +20,8 @@ if (!FROM) {
 const resend = KEY ? new Resend(KEY) : null;
 
 function htmlWrap(inner: string) {
-  return `<!doctype html><meta charset="utf-8" />
-  <div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;padding:16px">
-    ${inner}
-    <hr style="margin-top:16px;border:none;border-top:1px solid #eee"/>
-    <p style="color:#666;font-size:12px">This is a transactional message from Your Micro App.</p>
-  </div>`;
+  const emailRenderer = new DynamicEmailRenderer(DEFAULT_BRAND_CONFIG.brandName);
+  return emailRenderer.wrapHtml(inner);
 }
 
 async function actuallySend(to: string, subject: string, html: string): Promise<EmailResult> {
@@ -70,11 +68,9 @@ export async function sendConfirmationEmail(args: { to: string; session: Session
 
 /** Welcome email for intake flow */
 export async function sendWelcomeEmail(args: { to: string; coachName?: string }): Promise<EmailResult> {
-  const body = `
-    <h2>Welcome to Your Micro App</h2>
-    <p>${args.coachName ? `${args.coachName} ` : ""}will follow up with your next steps shortly.</p>
-  `;
-  return actuallySend(args.to, "Welcome to Your Micro App", htmlWrap(body));
+  const emailRenderer = new DynamicEmailRenderer(DEFAULT_BRAND_CONFIG.brandName);
+  const template = emailRenderer.renderWelcome({ coachName: args.coachName });
+  return actuallySend(args.to, template.subject, htmlWrap(template.html));
 }
 
 /** Weekly digest sent to clients (summary text provided by server) */

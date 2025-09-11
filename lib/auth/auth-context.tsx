@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { User } from '@supabase/supabase-js'
 import { AuthService } from './auth'
+import { SecureNavigation } from '@/lib/security/navigation'
 
 interface AuthContextType {
   user: User | null
@@ -68,7 +69,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       await AuthService.signOut()
       setUser(null)
-      window.location.href = '/'
+      SecureNavigation.navigateToPath('/')
     } catch (error) {
       console.error('Error signing out:', error)
     }

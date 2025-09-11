@@ -193,28 +193,31 @@ export function getContentSecurityPolicy(nonce: string): string {
   ];
   
   if (isProduction && !isPreview) {
-    // Production CSP (temporarily allow inline for compatibility until nonce propagation is wired)
+    // Production CSP with strict nonce-based security
     return [
       ...baseDirectives,
-      // Allow inline scripts/styles to prevent blocking Next.js runtime and third-party snippets
-      "script-src 'self' 'unsafe-inline' https://js.stripe.com",
-      "script-src-elem 'self' 'unsafe-inline' https://js.stripe.com",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      // Use nonce for scripts and styles
+      `script-src 'self' 'nonce-${nonce}' https://js.stripe.com`,
+      `script-src-elem 'self' 'nonce-${nonce}' https://js.stripe.com`,
+      `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com`,
       "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://*.stripe.com",
       "media-src 'self' blob:",
       "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://api.stripe.com https://*.sentry.io wss://*.supabase.co",
       "font-src 'self' data: https://fonts.gstatic.com",
       "frame-src 'self' https://js.stripe.com https://hooks.stripe.com",
       "worker-src 'self' blob:",
-      "manifest-src 'self'"
+      "manifest-src 'self'",
+      // Additional security directives
+      "require-trusted-types-for 'script'",
+      "trusted-types default"
     ].join("; ");
   } else {
-    // Development/Preview CSP with more flexibility
+    // Development/Preview CSP with more flexibility but still secure
     return [
       ...baseDirectives.filter(d => !d.includes('upgrade-insecure-requests')), // Remove HTTPS requirement in dev
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live https://js.stripe.com",
-      "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live https://js.stripe.com",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      `script-src 'self' 'nonce-${nonce}' 'unsafe-eval' https://vercel.live https://*.vercel.live https://js.stripe.com`,
+      `script-src-elem 'self' 'nonce-${nonce}' 'unsafe-eval' https://vercel.live https://*.vercel.live https://js.stripe.com`,
+      `style-src 'self' 'nonce-${nonce}' 'unsafe-inline' https://fonts.googleapis.com`,
       "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://*.stripe.com",
       "media-src 'self' blob:",
       "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://api.stripe.com https://*.sentry.io https://vercel.live https://*.vercel.live wss://*.supabase.co wss://vercel.live wss://*.vercel.live",
@@ -252,10 +255,9 @@ export function generateSecurityHeaders(context: SecurityContext): SecurityHeade
     headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
   }
   
-  // Temporarily set CSP to report-only in all environments to guarantee rendering
-  // while we finalize strict nonce-based wiring across the app.
+  // Re-enable CSP with proper Google Fonts support
   const csp = getContentSecurityPolicy(nonce);
-  headers['Content-Security-Policy-Report-Only'] = csp;
+  headers['Content-Security-Policy'] = csp;
   
   return headers;
 }

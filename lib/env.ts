@@ -49,6 +49,26 @@ const IntegrationsSchema = z.object({
 
   // Notifications
   SLACK_WEBHOOK_URL: z.string().url().optional(),
+  SLACK_BOT_TOKEN: z.string().optional(),
+  SLACK_SIGNING_SECRET: z.string().optional(),
+  SLACK_APP_TOKEN: z.string().optional(),
+  SLACK_DEFAULT_CHANNEL: z.string().optional(),
+  SLACK_ENABLE_NOTIFICATIONS: z.string().optional(),
+  SLACK_ENABLE_COMMANDS: z.string().optional(),
+  DISCORD_BOT_TOKEN: z.string().optional(),
+  DISCORD_CLIENT_ID: z.string().optional(),
+  DISCORD_GUILD_ID: z.string().optional(),
+  DISCORD_DEFAULT_CHANNEL_ID: z.string().optional(),
+  DISCORD_ENABLE_NOTIFICATIONS: z.string().optional(),
+  DISCORD_ENABLE_COMMANDS: z.string().optional(),
+  SLACK_ENABLED: z.string().optional(),
+  DISCORD_ENABLED: z.string().optional(),
+  NOTIFY_TASK_CREATED: z.string().optional(),
+  NOTIFY_TASK_UPDATED: z.string().optional(),
+  NOTIFY_TASK_COMPLETED: z.string().optional(),
+  NOTIFY_TASK_ASSIGNED: z.string().optional(),
+  NOTIFY_TASK_DUE_SOON: z.string().optional(),
+  NOTIFY_TASK_OVERDUE: z.string().optional(),
 
   // CI/CD
   GITHUB_TOKEN: z.string().optional(),

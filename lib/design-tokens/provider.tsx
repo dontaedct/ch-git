@@ -1,22 +1,49 @@
-'use client'
+'use client';
 
 /**
- * Design Tokens Provider
+ * @fileoverview HT-011.1.2: Multi-Brand Design Token Provider with Typography
+ * @module lib/design-tokens/provider
+ * @author OSS Hero System
+ * @version 3.1.0
  * 
- * Provides design tokens via React context and manages CSS custom properties.
- * Integrates with next-themes for light/dark mode support.
- * 
- * Universal Header: @lib/design-tokens/provider
+ * UNIVERSAL HEADER: Hero Tasks System Integration
+ * Task: HT-011.1.2 - Implement Custom Typography System
+ * Focus: Create flexible typography system supporting custom client fonts
+ * Methodology: AUDIT → DECIDE → APPLY → VERIFY (strict adherence)
+ * Risk Level: HIGH (design system foundation)
  */
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
-import { designTokens, DesignTokens, SemanticColors } from './tokens';
+import { 
+  designTokens, 
+  generateDesignTokens, 
+  BrandPalette, 
+  MultiBrandConfig,
+  FontFamily,
+  MultiTypographyConfig,
+  fontLoader
+} from './tokens';
+import type { DesignTokens, SemanticColors } from './generator';
 
 interface TokensContextValue {
   tokens: DesignTokens;
   semanticColors: SemanticColors;
   updateCSSVariables: () => void;
+  // Multi-brand functionality
+  activeBrand: string;
+  availableBrands: BrandPalette[];
+  switchBrand: (brandName: string) => void;
+  addCustomBrand: (brand: BrandPalette) => void;
+  multiBrandConfig: MultiBrandConfig;
+  
+  // Multi-typography functionality
+  activeFont: string;
+  availableFonts: FontFamily[];
+  switchFont: (fontName: string) => void;
+  addCustomFont: (font: FontFamily) => void;
+  multiTypographyConfig: MultiTypographyConfig;
+  loadFont: (font: FontFamily) => Promise<void>;
 }
 
 const TokensContext = createContext<TokensContextValue | undefined>(undefined);
@@ -24,17 +51,32 @@ const TokensContext = createContext<TokensContextValue | undefined>(undefined);
 interface TokensProviderProps {
   children: React.ReactNode;
   customTokens?: Partial<DesignTokens>;
+  // Multi-brand props
+  initialBrand?: string;
+  customBrands?: BrandPalette[];
+  // Multi-typography props
+  initialFont?: string;
+  customFonts?: FontFamily[];
 }
 
-export function TokensProvider({ children, customTokens }: TokensProviderProps) {
+export function TokensProvider({ 
+  children, 
+  customTokens, 
+  initialBrand = 'Default Blue',
+  customBrands = [],
+  initialFont = 'inter',
+  customFonts = []
+}: TokensProviderProps) {
   const { theme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [activeBrand, setActiveBrand] = useState(initialBrand);
+  const [activeFont, setActiveFont] = useState(initialFont);
   
-  // Merge custom tokens with defaults
-  const tokens = React.useMemo(() => 
-    customTokens ? { ...designTokens, ...customTokens } : designTokens,
-    [customTokens]
-  );
+  // Generate tokens based on active brand and font
+  const tokens = React.useMemo(() => {
+    const generatedTokens = generateDesignTokens(activeBrand, customBrands, activeFont, customFonts);
+    return customTokens ? { ...generatedTokens, ...customTokens } : generatedTokens;
+  }, [activeBrand, customBrands, activeFont, customFonts, customTokens]);
   
   // Determine current theme
   const currentTheme = theme === 'system' ? systemTheme : theme;
@@ -42,6 +84,37 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
   
   // Get semantic colors based on theme
   const semanticColors = isDark ? tokens.colors.dark : tokens.colors.light;
+  
+  // Multi-brand functions
+  const switchBrand = React.useCallback((brandName: string) => {
+    setActiveBrand(brandName);
+  }, []);
+  
+  const addCustomBrand = React.useCallback((brand: BrandPalette) => {
+    // This would typically update a persistent store
+    console.log('Adding custom brand:', brand);
+  }, []);
+  
+  // Multi-typography functions
+  const switchFont = React.useCallback((fontName: string) => {
+    setActiveFont(fontName);
+  }, []);
+  
+  const addCustomFont = React.useCallback((font: FontFamily) => {
+    // This would typically update a persistent store
+    console.log('Adding custom font:', font);
+  }, []);
+  
+  const loadFont = React.useCallback(async (font: FontFamily) => {
+    try {
+      await fontLoader.loadFont(font);
+    } catch (error) {
+      console.error('Failed to load font:', error);
+    }
+  }, []);
+  
+  const availableBrands = tokens.multiBrand.brands;
+  const availableFonts = tokens.multiTypography.availableFonts;
   
   // Update CSS custom properties
   const updateCSSVariables = React.useCallback(() => {
@@ -59,22 +132,34 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
       root.style.setProperty(`--color-neutral-${key}`, value);
     });
     
-    // Accent scale
-    Object.entries(tokens.accent).forEach(([key, value]) => {
-      root.style.setProperty(`--color-accent-${key}`, value);
+    // Primary scale (brand colors)
+    Object.entries(tokens.primary).forEach(([key, value]) => {
+      root.style.setProperty(`--color-primary-${key}`, value);
+    });
+    
+    // Secondary scale (complementary colors)
+    Object.entries(tokens.secondary).forEach(([key, value]) => {
+      root.style.setProperty(`--color-secondary-${key}`, value);
     });
     
     // Typography tokens
-    Object.entries(tokens.typography.fontSize).forEach(([key, value]) => {
+    root.style.setProperty('--font-family-sans', tokens.typography.fontFamily.fallbacks.join(', '));
+    root.style.setProperty('--font-family-display', tokens.typography.fontFamily.displayName);
+    
+    Object.entries(tokens.typography.scale).forEach(([key, value]) => {
       root.style.setProperty(`--font-size-${key}`, value);
     });
     
-    Object.entries(tokens.typography.fontWeight).forEach(([key, value]) => {
+    Object.entries(tokens.typography.weights).forEach(([key, value]) => {
       root.style.setProperty(`--font-weight-${key}`, value);
     });
     
-    Object.entries(tokens.typography.lineHeight).forEach(([key, value]) => {
+    Object.entries(tokens.typography.lineHeights).forEach(([key, value]) => {
       root.style.setProperty(`--line-height-${key}`, value);
+    });
+    
+    Object.entries(tokens.typography.letterSpacing).forEach(([key, value]) => {
+      root.style.setProperty(`--letter-spacing-${key}`, value);
     });
     
     // Spacing tokens
@@ -160,30 +245,36 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
     root.style.setProperty(`--toast-max-width`, tokens.components.toast.maxWidth);
     
     // Layout tokens - Grid
-    root.style.setProperty(`--grid-columns`, tokens.layout.grid.columns.toString());
-    root.style.setProperty(`--grid-max-width`, tokens.layout.grid.maxWidth);
+    root.style.setProperty(`--grid-columns`, tokens.layout?.grid?.columns?.toString() || '12');
+    root.style.setProperty(`--grid-max-width`, tokens.layout?.grid?.maxWidth || '1120px');
     
-    Object.entries(tokens.layout.grid.gutters).forEach(([key, value]) => {
-      root.style.setProperty(`--grid-gutter-${key}`, value);
-    });
+    if (tokens.layout?.grid?.gutter) {
+      root.style.setProperty(`--grid-gutter`, tokens.layout.grid.gutter);
+    }
     
-    Object.entries(tokens.layout.grid.breakpoints).forEach(([key, value]) => {
-      root.style.setProperty(`--grid-breakpoint-${key}`, value);
-    });
+    if (tokens.layout?.grid?.margin) {
+      root.style.setProperty(`--grid-margin`, tokens.layout.grid.margin);
+    }
+    
+    if (tokens.layout?.grid?.breakpoints) {
+      Object.entries(tokens.layout.grid.breakpoints).forEach(([key, value]) => {
+        root.style.setProperty(`--grid-breakpoint-${key}`, value);
+      });
+    }
     
     // Layout tokens - Section
-    Object.entries(tokens.layout.section.spacing).forEach(([key, value]) => {
-      root.style.setProperty(`--section-spacing-${key}`, value);
-    });
-    
-    Object.entries(tokens.layout.section.rhythm).forEach(([key, value]) => {
-      root.style.setProperty(`--section-rhythm-${key}`, value);
-    });
+    if (tokens.layout?.spacing) {
+      Object.entries(tokens.layout.spacing).forEach(([key, value]) => {
+        root.style.setProperty(`--section-spacing-${key}`, value);
+      });
+    }
     
     // Layout tokens - Container
-    Object.entries(tokens.layout.container).forEach(([key, value]) => {
-      root.style.setProperty(`--container-${key}`, value);
-    });
+    if (tokens.layout?.container) {
+      Object.entries(tokens.layout.container).forEach(([key, value]) => {
+        root.style.setProperty(`--container-${key}`, value);
+      });
+    }
     
   }, [semanticColors, tokens, isDark]);
   
@@ -202,6 +293,19 @@ export function TokensProvider({ children, customTokens }: TokensProviderProps) 
     tokens,
     semanticColors,
     updateCSSVariables,
+    // Multi-brand functionality
+    activeBrand,
+    availableBrands,
+    switchBrand,
+    addCustomBrand,
+    multiBrandConfig: tokens.multiBrand,
+    // Multi-typography functionality
+    activeFont,
+    availableFonts,
+    switchFont,
+    addCustomFont,
+    multiTypographyConfig: tokens.multiTypography,
+    loadFont,
   };
   
   return (
@@ -236,4 +340,67 @@ export function useSemanticColors() {
 export function useDesignTokens() {
   const { tokens } = useTokens();
   return tokens;
+}
+
+// Multi-brand hooks
+export function useMultiBrand() {
+  const context = useContext(TokensContext);
+  if (!context) {
+    throw new Error('useMultiBrand must be used within a TokensProvider');
+  }
+  return {
+    activeBrand: context.activeBrand,
+    availableBrands: context.availableBrands,
+    switchBrand: context.switchBrand,
+    addCustomBrand: context.addCustomBrand,
+    multiBrandConfig: context.multiBrandConfig,
+  };
+}
+
+export function useActiveBrand(): string {
+  const context = useContext(TokensContext);
+  if (!context) {
+    throw new Error('useActiveBrand must be used within a TokensProvider');
+  }
+  return context.activeBrand;
+}
+
+export function useBrandPalettes(): BrandPalette[] {
+  const context = useContext(TokensContext);
+  if (!context) {
+    throw new Error('useBrandPalettes must be used within a TokensProvider');
+  }
+  return context.availableBrands;
+}
+
+// Multi-typography hooks
+export function useMultiTypography() {
+  const context = useContext(TokensContext);
+  if (!context) {
+    throw new Error('useMultiTypography must be used within a TokensProvider');
+  }
+  return {
+    activeFont: context.activeFont,
+    availableFonts: context.availableFonts,
+    switchFont: context.switchFont,
+    addCustomFont: context.addCustomFont,
+    multiTypographyConfig: context.multiTypographyConfig,
+    loadFont: context.loadFont,
+  };
+}
+
+export function useActiveFont(): string {
+  const context = useContext(TokensContext);
+  if (!context) {
+    throw new Error('useActiveFont must be used within a TokensProvider');
+  }
+  return context.activeFont;
+}
+
+export function useFontFamilies(): FontFamily[] {
+  const context = useContext(TokensContext);
+  if (!context) {
+    throw new Error('useFontFamilies must be used within a TokensProvider');
+  }
+  return context.availableFonts;
 }

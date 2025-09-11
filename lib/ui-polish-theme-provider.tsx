@@ -60,12 +60,12 @@ const uiPolishTokens: Record<'light' | 'dark', UiPolishSemanticTokens> = {
     border: '#262626',            // Primary borders
     borderSubtle: '#171717',      // Subtle borders
     
-    // Single accent (royal blue inspired)
-    accent: '#3b82f6',            // Primary accent
-    accentContrast: '#ffffff',    // Accent text
+    // Monochromatic accent - pure white for dark theme
+    accent: '#ffffff',            // Primary accent
+    accentContrast: '#000000',    // Accent text
     
     // Interactive states
-    ring: '#3b82f6',              // Focus rings
+    ring: '#ffffff',              // Focus rings
     shadow: '0 1px 2px 0 rgb(0 0 0 / 0.3)',      // Subtle shadow
     shadowElevated: '0 4px 6px -1px rgb(0 0 0 / 0.4)', // Elevated shadow
   },
@@ -84,12 +84,12 @@ const uiPolishTokens: Record<'light' | 'dark', UiPolishSemanticTokens> = {
     border: '#e5e7eb',            // Primary borders
     borderSubtle: '#f3f4f6',      // Subtle borders
     
-    // Single accent (royal blue)
-    accent: '#2563eb',            // Primary accent
+    // Monochromatic accent - pure black for light theme
+    accent: '#000000',            // Primary accent
     accentContrast: '#ffffff',    // Accent text
     
     // Interactive states
-    ring: '#2563eb',              // Focus rings
+    ring: '#000000',              // Focus rings
     shadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',     // Subtle shadow
     shadowElevated: '0 4px 6px -1px rgb(0 0 0 / 0.1)', // Elevated shadow
   },

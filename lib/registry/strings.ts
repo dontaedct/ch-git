@@ -1,27 +1,31 @@
 // System strings registry - All system names, brand references, and user-facing text
+// Note: Brand-specific strings are now managed by the dynamic branding system
+// This file contains only non-brand-specific system strings
+
+import { generateDynamicSystemStrings, initializeSystemStrings } from '@/lib/branding/system-strings';
+import { DEFAULT_BRAND_CONFIG } from '@/lib/branding/logo-manager';
+
+// Initialize dynamic system strings
+const dynamicStrings = generateDynamicSystemStrings(DEFAULT_BRAND_CONFIG.brandName);
+initializeSystemStrings(DEFAULT_BRAND_CONFIG.brandName);
+
 export const systemStrings = {
-  // Core application names
-  appName: 'Micro App Template',
-  organizationName: 'Your Organization',
-  fullBrand: 'Your Organization — Micro App',
+  // Core application names (non-brand-specific)
+  // Brand-specific names are now handled by DynamicBrandName component
   
-  // Email and communication
-  emailFrom: 'Micro App <no-reply@example.com>',
-  welcomeMessage: 'Welcome to Your Micro App',
-  transactionalFooter: 'This is a transactional message from Your Micro App.',
+  // Email and communication (now dynamic)
+  emailFrom: dynamicStrings.emailFrom,
+  welcomeMessage: dynamicStrings.welcomeMessage,
+  transactionalFooter: dynamicStrings.transactionalFooter,
   
-  // Page titles and metadata
-  pageTitle: 'Micro App Template',
-  pageDescription: 'A modern micro web application template',
-  
-  // Navigation and UI
-  navBrand: 'Micro App',
-  navFullBrand: 'Your Organization — Micro App',
+  // Page titles and metadata (now dynamic)
+  pageTitle: dynamicStrings.pageTitle,
+  pageDescription: dynamicStrings.pageDescription,
   
   // System names (for future rename capability)
-  aiSystem: 'OSS Hero',
-  guardianSystem: 'Guardian',
-  designSystem: 'Design Guardian',
+  aiSystem: dynamicStrings.aiSystem,
+  guardianSystem: dynamicStrings.guardianSystem,
+  designSystem: dynamicStrings.designSystem,
 } as const;
 
 export type SystemStringKey = keyof typeof systemStrings;

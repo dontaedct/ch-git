@@ -52,7 +52,7 @@ export async function runWeeklyDigest(args: RunArgs = {}): Promise<JobResult> {
 function parseRecipients(csv?: string, fallbackFrom?: string): string[] {
   const list = (csv || "").split(",").map(s => s.trim()).filter(Boolean);
   if (list.length > 0) return list;
-  if (fallbackFrom && fallbackFrom.includes("@")) return [fallbackFrom];
+  if (fallbackFrom?.includes("@")) return [fallbackFrom];
   return [];
 }
 

@@ -590,7 +590,7 @@ export function getTierRecommendations(requirements: {
 } {
   const { users = 1, paymentProcessing, aiFeatures, customIntegrations, prioritySupport } = requirements;
   
-  let score = { starter: 0, pro: 0, advanced: 0 };
+  const score = { starter: 0, pro: 0, advanced: 0 };
   const reasons: string[] = [];
   
   // User requirements

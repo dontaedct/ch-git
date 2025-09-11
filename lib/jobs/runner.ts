@@ -73,7 +73,7 @@ async function withTimeout<T>(p: Promise<T>, timeoutMs: number): Promise<T> {
   try {
     return await Promise.race([p, timeout]);
   } finally {
-    // @ts-ignore
+    // @ts-expect-error - clearTimeout type issue
     clearTimeout(to);
   }
 }

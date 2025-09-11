@@ -1,4 +1,10 @@
 // Emails registry - All email template IDs and subjects
+import { generateDynamicSystemStrings } from '@/lib/branding/system-strings';
+import { DEFAULT_BRAND_CONFIG } from '@/lib/branding/logo-manager';
+
+// Generate dynamic email subjects
+const dynamicStrings = generateDynamicSystemStrings(DEFAULT_BRAND_CONFIG.brandName);
+
 export const emails = {
   // Template IDs
   templates: {
@@ -10,11 +16,11 @@ export const emails = {
     'check-in-reminder': 'check-in-reminder',
   },
   
-  // Email subjects
+  // Email subjects (now dynamic)
   subjects: {
     invite: 'You\'re invited: {session_title}',
     confirmation: 'Confirmed: {session_title}',
-    welcome: 'Welcome to Your Micro App',
+    welcome: dynamicStrings.welcomeMessage,
     'weekly-recap': 'Your weekly recap',
     'plan-ready': 'Your plan is ready',
     'check-in-reminder': 'Please check in',

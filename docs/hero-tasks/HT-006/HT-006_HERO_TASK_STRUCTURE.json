@@ -1,0 +1,704 @@
+{
+  "mainTask": {
+    "task_number": "HT-006",
+    "title": "HT-006: Token-Driven Design System & Block-Based Architecture — Universal Rebranding Engine",
+    "description": "Implement a comprehensive token-driven design system and block-based page architecture with sandbox-first development, enabling instant brand switching, safe refactoring, and visual regression protection. Transform from hardcoded components to a universal rebranding engine supporting multiple verticals (tech, salon, realtor) with zero-downtime migration strategies.\n\n**Key Objectives:**\n- Token-driven design system with DTCG-style base + brand override architecture\n- Block-based page model with typed content schemas (Zod validation)\n- Comprehensive refactoring toolkit with where-used scanner and automated codemods\n- Visual regression safety net with Storybook and automated screenshot baselines\n- Sandbox-first development preventing production disruption during iteration\n- Multi-brand theming system enabling instant vertical switching\n- Zero-downtime migration from legacy to new architecture\n- Production-ready documentation and developer experience artifacts\n\n**Methodology:** AUDIT → DECIDE → APPLY → VERIFY (strict adherence)\n**Development Strategy:** Sandbox isolation → Production migration\n**Total Phases:** 10 comprehensive implementation phases\n**Estimated Hours:** 120+ hours (12+ hours per phase)\n**Risk Level:** Medium (sandbox isolation minimizes production risk)",
+    "type": "architecture",
+    "priority": "high",
+    "status": "pending",
+    "created_at": "2025-09-06T20:32:00.000Z",
+    "updated_at": "2025-09-06T20:32:00.000Z",
+    "tags": [
+      "design-system",
+      "token-architecture",
+      "block-based-design",
+      "multi-brand-theming",
+      "visual-regression",
+      "sandbox-development",
+      "refactoring-toolkit",
+      "zero-downtime-migration",
+      "production-hardening",
+      "developer-experience"
+    ],
+    "metadata": {
+      "run_date": "2025-09-06T20:32:00.000Z",
+      "phases": 10,
+      "total_steps": 40,
+      "estimated_hours": 120,
+      "methodology": "AUDIT → DECIDE → APPLY → VERIFY",
+      "development_strategy": "Sandbox isolation → Production migration",
+      "deliverables": [
+        "Token-driven design system (base + brand overrides)",
+        "Block-based page architecture with typed schemas",
+        "Comprehensive refactoring toolkit (where-used + codemods)",
+        "Visual regression safety net (Storybook + snapshots)",
+        "Multi-brand theming system (tech/salon/realtor)",
+        "Zero-downtime migration strategy and tooling",
+        "Production documentation and developer guides",
+        "Templates and checklists for future expansion"
+      ],
+      "success_criteria": {
+        "brand_switching": "Instant brand flipping across all components with 2-3 vertical presets",
+        "page_architecture": "JSON-driven block lists for Home and Questionnaire pages",
+        "refactoring_safety": "Where-used analysis and safe codemods for prop/import changes",
+        "visual_protection": "Automated baseline capture and regression detection",
+        "documentation": "Comprehensive guides enabling seamless AI and human handoffs",
+        "migration_success": "At least one real page migrated without breaking changes",
+        "performance": "No degradation in Core Web Vitals or bundle size",
+        "accessibility": "WCAG 2.1 AA compliance maintained across all variants"
+      },
+      "constraints": {
+        "sandbox_first": "No changes to live pages until Phase 7",
+        "library_policy": "No new libraries without approval via OPCR process",
+        "reversibility": "Every Apply step includes rollback procedures",
+        "windows_compatibility": "All scripts and paths Windows-safe",
+        "api_stability": "No breaking component APIs without codemod support",
+        "chunk_size": "Maximum 300 LOC diffs to maintain context windows"
+      }
+    }
+  },
+  "subtasks": [
+    {
+      "subtask_number": "HT-006.1",
+      "title": "Phase 0: Project Audit & Safety Envelope — Sandbox Infrastructure",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nEstablish comprehensive repository understanding and create isolated sandbox environment for safe iteration without touching production pages.\n\n**AUDIT:**\n- Scan entire repository for current Tailwind version, config, PostCSS setup, and global CSS patterns\n- Inventory existing ThemeProvider, dark mode implementation, and component architecture\n- Catalog all hardcoded colors, radii, fonts, and spacing values across components and styles\n- Map component trees (atoms/molecules/organisms) and identify Radix/shadcn/CVA usage\n- Document all live pages vs experimental routes for production protection\n\n**DECIDE:**\n- Design safety envelope with branching strategy, commit conventions, and rollback procedures\n- Plan sandbox architecture (app/_sandbox) with development isolation guarantees\n- Define off-plan change request (OPCR) process for library additions or structural changes\n- Establish repository documentation structure for AI context preservation\n\n**APPLY:**\n- Create comprehensive REPO_MAP.md documenting directories, modules, entry points, and build chain\n- Generate TECH_BASELINE.md covering Next.js version, Tailwind setup, and existing theming\n- Implement SAFETY_ENVELOPE.md with branching, commit style, revert plans, and sandbox rules\n- Build /app/_sandbox layout with navigation and \"TEST AREA\" banner for clear distinction\n- Create sandbox test home page with placeholder content and development guards\n\n**VERIFY:**\n- Validate sandbox routes load correctly on Windows development environment\n- Confirm all documentation artifacts are committed and accessible\n- Test sandbox isolation (no imports from sandbox to production)\n- Verify development build stability and navigation functionality",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "repository-audit",
+        "sandbox-infrastructure",
+        "safety-envelope",
+        "documentation-foundation",
+        "development-isolation"
+      ],
+      "metadata": {
+        "phase_number": 0,
+        "estimated_hours": 8,
+        "risk_level": "low",
+        "deliverables": [
+          "/docs/system/REPO_MAP.md",
+          "/docs/system/TECH_BASELINE.md", 
+          "/docs/system/SAFETY_ENVELOPE.md",
+          "/app/_sandbox layout and navigation",
+          "Sandbox test home page"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Scan repository for Tailwind config and version",
+            "Inventory existing theming and component architecture",
+            "Catalog all hardcoded visual tokens by file",
+            "Map component trees and library usage",
+            "Document live vs experimental pages"
+          ],
+          "decide": [
+            "Design safety envelope with branching and rollback",
+            "Plan sandbox architecture for isolation",
+            "Define OPCR process for structural changes",
+            "Establish documentation structure for AI context"
+          ],
+          "apply": [
+            "Create REPO_MAP.md with comprehensive directory mapping",
+            "Generate TECH_BASELINE.md with current stack details",
+            "Implement SAFETY_ENVELOPE.md with procedures",
+            "Build /app/_sandbox with layout and navigation",
+            "Create test home page with development guards"
+          ],
+          "verify": [
+            "Test sandbox routes on Windows environment",
+            "Confirm documentation commits and accessibility",
+            "Validate sandbox isolation from production",
+            "Verify development build stability"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.2",
+      "title": "Phase 1: Design Tokens & Theme Provider — DTCG Foundation",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nEstablish DTCG-style design tokens with base + brand override architecture, CSS variable integration, and next-themes powered light/dark switching within sandbox environment.\n\n**AUDIT:**\n- Confirm current Tailwind version and assess CSS variable compatibility\n- Inventory existing global CSS and variable usage patterns\n- Review hardcoded token inventory from Phase 0 for migration planning\n- Analyze current theming approach and dark mode implementation\n\n**DECIDE:**\n- Define token categories: color, radius, spacing, size, font, shadow, opacity, zIndex\n- Design minimal but comprehensive palette: brand, neutral, accent, success, warning, danger\n- Plan dark mode strategy using HTML class with next-themes persistence\n- Choose CSS variable naming convention and Tailwind integration approach\n- Design brand override system for multi-vertical support\n\n**APPLY:**\n- Create /tokens/base.json with foundational design tokens\n- Implement /tokens/brands/default.json and /tokens/brands/salon.json for demo\n- Integrate tokens with Tailwind config (v4 native variables or v3 Style Dictionary)\n- Install and configure next-themes wrapper around sandbox layout only\n- Build ModeToggle component for light/dark switching\n- Create BrandToggle component applying .brand-[slug] class to HTML\n- Generate styles/tokens.css with CSS variables from token definitions\n\n**VERIFY:**\n- Create /app/_sandbox/tokens/page.tsx showcasing all token categories\n- Test theme switching (light/dark) and brand switching (default/salon)\n- Capture screenshots for visual baselines and future regression detection\n- Validate TOKENS_GUIDE.md with step-by-step brand addition checklist\n- Verify Windows compatibility of build process and token generation",
+      "status": "pending", 
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "design-tokens",
+        "dtcg-architecture",
+        "css-variables",
+        "theme-provider",
+        "brand-switching",
+        "next-themes"
+      ],
+      "metadata": {
+        "phase_number": 1,
+        "estimated_hours": 12,
+        "risk_level": "low",
+        "deliverables": [
+          "/tokens/base.json with foundational tokens",
+          "/tokens/brands/default.json and salon.json",
+          "Tailwind config integration with CSS variables",
+          "next-themes ThemeProvider in sandbox",
+          "ModeToggle and BrandToggle components",
+          "/docs/design/TOKENS_GUIDE.md",
+          "Token demonstration page in sandbox"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Confirm Tailwind version and CSS variable support",
+            "Inventory existing global CSS and variables",
+            "Review Phase 0 hardcoded token catalog",
+            "Analyze current theming and dark mode setup"
+          ],
+          "decide": [
+            "Define token categories and naming structure",
+            "Design color palette with semantic roles",
+            "Plan dark mode strategy with next-themes",
+            "Choose CSS variable naming and Tailwind integration",
+            "Design brand override architecture"
+          ],
+          "apply": [
+            "Create base.json with foundational tokens",
+            "Implement brand override files (default + salon)",
+            "Integrate tokens with Tailwind configuration",
+            "Configure next-themes in sandbox layout",
+            "Build theme and brand toggle components",
+            "Generate CSS variables from token definitions"
+          ],
+          "verify": [
+            "Create comprehensive token demonstration page",
+            "Test light/dark and brand switching functionality",
+            "Capture visual baselines for regression testing",
+            "Validate brand addition guide with live test",
+            "Confirm Windows build compatibility"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.3",
+      "title": "Phase 2: Elements & CVA Variants — Token-Driven Primitives",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nImplement core UI elements (Button, Input, Card, Badge) using class-variance-authority for typed variants, all styled exclusively by design tokens within sandbox namespace.\n\n**AUDIT:**\n- Inventory existing Button, Input, Card, Badge components and their current APIs\n- Document hardcoded styles and variant systems in current components\n- Analyze usage patterns and prop requirements across the codebase\n- Review accessibility requirements and current compliance levels\n\n**DECIDE:**\n- Define comprehensive Element APIs with CVA variant specifications:\n  - Button: variant(primary|secondary|ghost|link), size(sm|md|lg), tone(brand|neutral|success|danger), fullWidth\n  - Input: size(sm|md|lg), state(default|invalid|success), variant(outline|filled)\n  - Card: elevation(none|sm|md|lg), padding(none|sm|md|lg), variant(default|outlined|filled)\n  - Badge: tone(brand|neutral|success|warning|danger), variant(solid|soft|outline), size(sm|md|lg)\n- Plan accessibility requirements: focus rings, contrast ratios, disabled states, keyboard navigation\n- Design token binding strategy ensuring no hardcoded styles\n\n**APPLY:**\n- Create /components-sandbox/ui/button.tsx with comprehensive CVA configuration\n- Implement /components-sandbox/ui/input.tsx with validation states and accessibility\n- Build /components-sandbox/ui/card.tsx with elevation and padding variants\n- Develop /components-sandbox/ui/badge.tsx with tone and variant combinations\n- Create barrel export /components-sandbox/ui/index.ts for organized imports\n- Bind all styles exclusively to design tokens with proper fallbacks\n- Implement comprehensive accessibility features (ARIA labels, focus management)\n\n**VERIFY:**\n- Build /app/_sandbox/elements/page.tsx showcasing all variants and combinations\n- Create Storybook stories or lightweight preview for visual validation\n- Capture screenshots of all variants in light/dark and default/salon brands\n- Generate ELEMENTS_GUIDE.md with props tables, usage examples, and migration notes\n- Validate accessibility with keyboard navigation and screen reader testing\n- Test token switching to ensure no hardcoded values remain",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z", 
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "ui-elements",
+        "cva-variants",
+        "token-binding",
+        "accessibility",
+        "sandbox-components",
+        "typescript-safety"
+      ],
+      "metadata": {
+        "phase_number": 2,
+        "estimated_hours": 14,
+        "risk_level": "low",
+        "deliverables": [
+          "/components-sandbox/ui/button.tsx with CVA variants",
+          "/components-sandbox/ui/input.tsx with states and accessibility",
+          "/components-sandbox/ui/card.tsx with elevation variants", 
+          "/components-sandbox/ui/badge.tsx with tone combinations",
+          "Barrel export /components-sandbox/ui/index.ts",
+          "/docs/design/ELEMENTS_GUIDE.md with migration notes",
+          "Element demonstration page with all variants"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Inventory existing component APIs and styles",
+            "Document hardcoded values in current components",
+            "Analyze usage patterns across codebase",
+            "Review accessibility compliance levels"
+          ],
+          "decide": [
+            "Define CVA variant specifications for all elements",
+            "Plan accessibility requirements and implementations",
+            "Design token binding strategy with fallbacks",
+            "Choose naming conventions for variant props"
+          ],
+          "apply": [
+            "Implement Button with comprehensive CVA config",
+            "Create Input with validation states and a11y",
+            "Build Card with elevation and padding variants",
+            "Develop Badge with tone and variant combinations",
+            "Create organized barrel export structure",
+            "Bind all styles to tokens with proper fallbacks"
+          ],
+          "verify": [
+            "Create comprehensive element showcase page",
+            "Build Storybook stories for visual validation",
+            "Capture variant screenshots in all theme combinations",
+            "Generate detailed ELEMENTS_GUIDE.md",
+            "Test accessibility with keyboard and screen readers",
+            "Validate token switching without hardcoded values"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.4",
+      "title": "Phase 3: Blocks & Content Schemas — JSON-Driven Page Architecture", 
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nTransform pages into JSON-driven block lists with Zod validation schemas, implementing core sections (Hero, Features, Testimonials, Pricing, FAQ, CTA) within sandbox environment.\n\n**AUDIT:**\n- Analyze existing page sections and identify reusable patterns\n- Review current content management approach and data structures\n- Document section variants and customization requirements\n- Assess error handling needs for invalid content\n\n**DECIDE:**\n- Design block API policy: content + layout knobs only, styling via tokens\n- Define error handling strategy: graceful degradation for schema failures\n- Plan Zod schema patterns for type safety and validation\n- Choose block registry architecture for extensibility\n- Design content JSON structure for maintainability\n\n**APPLY:**\n- Create /blocks-sandbox/Hero/{schema.ts, view.tsx, demo.json} with dynamic content support\n- Implement /blocks-sandbox/Features/{schema.ts, view.tsx, demo.json} with grid layouts\n- Build /blocks-sandbox/Testimonials/{schema.ts, view.tsx, demo.json} with carousel support\n- Develop /blocks-sandbox/Pricing/{schema.ts, view.tsx, demo.json} with tier comparisons\n- Create /blocks-sandbox/FAQ/{schema.ts, view.tsx, demo.json} with accordion functionality\n- Implement /blocks-sandbox/CTA/{schema.ts, view.tsx, demo.json} with conversion optimization\n- Build /blocks-sandbox/registry.ts exporting {id, schema, component} for each block\n- Create /components-sandbox/BlocksRenderer.tsx with validation and error boundaries\n- Generate /content-sandbox/pages/home.json and questionnaire.json with block arrays\n\n**VERIFY:**\n- Build /app/_sandbox/home/page.tsx rendering full demo (Hero → Features → Testimonials → CTA)\n- Create /app/_sandbox/questionnaire/page.tsx with intro blocks before form\n- Test schema validation with intentionally invalid JSON to verify error handling\n- Generate BLOCKS_GUIDE.md with schema patterns and content authoring guidelines\n- Capture screenshots of all block variants in different theme combinations\n- Validate responsive behavior and accessibility across all blocks",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z", 
+      "tags": [
+        "block-architecture",
+        "zod-schemas",
+        "json-content",
+        "page-composition",
+        "error-boundaries",
+        "content-validation"
+      ],
+      "metadata": {
+        "phase_number": 3,
+        "estimated_hours": 16,
+        "risk_level": "medium",
+        "deliverables": [
+          "Six core blocks with schema/view/demo structure",
+          "/blocks-sandbox/registry.ts with type-safe exports",
+          "/components-sandbox/BlocksRenderer.tsx with validation",
+          "/content-sandbox/pages/ JSON content files",
+          "/docs/content/BLOCKS_GUIDE.md authoring guide",
+          "Demo pages showcasing full block composition"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Analyze existing page sections for patterns",
+            "Review current content management approach",
+            "Document section customization requirements",
+            "Assess error handling needs for content"
+          ],
+          "decide": [
+            "Design block API with content + layout separation",
+            "Plan error handling for schema validation failures",
+            "Define Zod schema patterns for type safety",
+            "Choose block registry architecture",
+            "Design maintainable JSON content structure"
+          ],
+          "apply": [
+            "Implement Hero block with dynamic content support",
+            "Create Features block with responsive grid layouts",
+            "Build Testimonials block with carousel functionality",
+            "Develop Pricing block with tier comparison features",
+            "Create FAQ block with accessible accordion",
+            "Implement CTA block with conversion optimization",
+            "Build type-safe block registry and renderer"
+          ],
+          "verify": [
+            "Create full demo pages with block composition",
+            "Test schema validation with invalid JSON",
+            "Generate comprehensive blocks authoring guide",
+            "Capture block variant screenshots in all themes",
+            "Validate responsive behavior and accessibility",
+            "Test error boundaries and graceful degradation"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.5",
+      "title": "Phase 4: Refactoring Toolkit — Where-Used Scanner & Codemods",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nImplement comprehensive refactoring toolkit with where-used analysis (ts-morph) and automated codemods (jscodeshift) for safe component and import transformations.\n\n**AUDIT:**\n- Analyze TypeScript project configuration, tsconfig paths, and alias patterns\n- Review existing component import patterns and usage across codebase\n- Document current refactoring challenges and manual processes\n- Assess Windows-specific path handling requirements\n\n**DECIDE:**\n- Design where-used output format: JSON + table with file paths, lines, import types\n- Plan codemod architecture for common transformations (prop rename, import redirect)\n- Choose dry-run and rollback strategies for safe transformations\n- Define npm script interface for developer accessibility\n\n**APPLY:**\n- Create scripts/where-used.ts using ts-morph for comprehensive symbol analysis\n- Implement scripts/codemods/rename-component-prop.js with jscodeshift\n- Build scripts/codemods/redirect-import.js for import path transformations\n- Add npm scripts: \"where-used\", \"codemod:rename-prop\", \"codemod:redirect-import\"\n- Create scripts/codemod-runner.ts with dry-run and backup functionality\n- Implement Windows-safe path handling using Node's path module\n- Add comprehensive error handling and rollback procedures\n\n**VERIFY:**\n- Test where-used scanner on sandbox Button component\n- Validate codemods with dry-run on sandbox components\n- Generate and apply patch files, then test rollback procedures\n- Create REFACTORING_TOOLKIT.md with usage examples and safety procedures\n- Test all scripts on Windows environment for compatibility\n- Verify backup and restore functionality works correctly",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "refactoring-toolkit",
+        "where-used-analysis",
+        "codemods",
+        "ts-morph",
+        "jscodeshift",
+        "safe-transformations"
+      ],
+      "metadata": {
+        "phase_number": 4,
+        "estimated_hours": 12,
+        "risk_level": "medium",
+        "deliverables": [
+          "scripts/where-used.ts with comprehensive analysis",
+          "scripts/codemods/ with rename and redirect transformations",
+          "npm scripts for developer-friendly access",
+          "/docs/engineering/REFACTORING_TOOLKIT.md guide",
+          "Backup and rollback automation"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Analyze TypeScript config and alias patterns",
+            "Review component import usage across codebase",
+            "Document current refactoring pain points",
+            "Assess Windows path handling requirements"
+          ],
+          "decide": [
+            "Design where-used output format and data structure",
+            "Plan codemod architecture for common transformations",
+            "Choose dry-run and rollback safety strategies",
+            "Define developer-friendly npm script interface"
+          ],
+          "apply": [
+            "Implement ts-morph based where-used scanner",
+            "Create jscodeshift codemods for prop and import changes",
+            "Build codemod runner with dry-run capabilities",
+            "Add npm scripts for easy developer access",
+            "Implement Windows-safe path handling",
+            "Add comprehensive error handling and rollbacks"
+          ],
+          "verify": [
+            "Test where-used on sandbox components",
+            "Validate codemods with dry-run and rollback",
+            "Generate detailed refactoring toolkit guide",
+            "Test Windows compatibility for all scripts",
+            "Verify backup and restore functionality",
+            "Document safety procedures and best practices"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.6",
+      "title": "Phase 5: Visual Regression Safety — Storybook & Automated Baselines",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nEstablish visual regression testing with Storybook configuration for sandbox components and automated screenshot baseline capture across themes and brands.\n\n**AUDIT:**\n- Confirm Windows Storybook compatibility and performance requirements\n- Review existing testing infrastructure and CI/CD capabilities\n- Assess visual testing tool options (Storybook addons vs Playwright)\n- Analyze component coverage needs for comprehensive visual testing\n\n**DECIDE:**\n- Choose visual testing approach: local Playwright vs hosted Chromatic\n- Plan story organization for Elements and Blocks across theme combinations\n- Design baseline management workflow (capture, update, review)\n- Define visual diff thresholds and approval processes\n\n**APPLY:**\n- Configure Storybook for sandbox components with theme switching support\n- Create comprehensive stories for all Elements with variant combinations\n- Build Block stories with multiple JSON content variations\n- Implement theme and brand switching within Storybook interface\n- Add visual testing toolkit (Playwright or Chromatic integration)\n- Create baseline capture automation for light/dark + default/salon combinations\n- Set up visual diff review workflow with approval gates\n\n**VERIFY:**\n- Capture initial baselines for all Element and Block variants\n- Test visual diff detection by making intentional token changes\n- Validate cross-browser consistency (Chrome, Firefox, Safari, Edge)\n- Create VISUAL_QA.md guide for baseline management and review processes\n- Test baseline update workflow and diff approval procedures\n- Verify Windows compatibility for visual testing pipeline",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "visual-regression",
+        "storybook",
+        "screenshot-baselines",
+        "cross-browser-testing",
+        "automated-qa",
+        "visual-diffing"
+      ],
+      "metadata": {
+        "phase_number": 5,
+        "estimated_hours": 10,
+        "risk_level": "medium",
+        "deliverables": [
+          "Storybook configuration for sandbox components",
+          "Comprehensive Element and Block stories",
+          "Visual testing automation (Playwright or Chromatic)",
+          "Baseline screenshots for all theme combinations",
+          "/docs/quality/VISUAL_QA.md workflow guide"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Confirm Storybook Windows compatibility",
+            "Review existing testing and CI infrastructure",
+            "Assess visual testing tool options and trade-offs",
+            "Analyze component coverage requirements"
+          ],
+          "decide": [
+            "Choose visual testing approach and tooling",
+            "Plan story organization across theme combinations",
+            "Design baseline management and update workflow",
+            "Define visual diff thresholds and approval gates"
+          ],
+          "apply": [
+            "Configure Storybook with theme switching support",
+            "Create comprehensive Element stories with variants",
+            "Build Block stories with JSON content variations",
+            "Implement visual testing automation",
+            "Set up baseline capture for all theme combinations",
+            "Create visual diff review and approval workflow"
+          ],
+          "verify": [
+            "Capture initial baselines for all variants",
+            "Test visual diff detection with token changes",
+            "Validate cross-browser visual consistency",
+            "Generate visual QA workflow documentation",
+            "Test baseline update and approval procedures",
+            "Confirm Windows pipeline compatibility"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.7",
+      "title": "Phase 6: Documentation & Developer Experience — Living Artifact System",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nCreate comprehensive documentation ecosystem with living guides, developer tours, and AI-optimized artifacts for seamless context handoffs and future development.\n\n**AUDIT:**\n- Review all documentation created in previous phases for completeness\n- Analyze developer onboarding needs and context requirements\n- Assess AI context preservation requirements for future sessions\n- Identify gaps in current documentation coverage\n\n**DECIDE:**\n- Design documentation hierarchy and cross-linking strategy\n- Plan developer tour experience for sandbox exploration\n- Choose AI-optimized artifact format for context preservation\n- Define documentation maintenance and update procedures\n\n**APPLY:**\n- Create /docs/index.md as central documentation hub with comprehensive links\n- Aggregate and organize all phase-specific guides with consistent formatting\n- Build Developer Tour page in sandbox linking to demos and documentation\n- Create /docs/logs/PHASE-JOURNAL.md template for ongoing decision tracking\n- Implement documentation linting and consistency validation\n- Add \"Decision Gate\" summaries to each phase for quick context\n- Create searchable documentation index with tags and categories\n\n**VERIFY:**\n- Test documentation navigation and link integrity\n- Validate developer tour provides complete sandbox overview\n- Confirm all artifacts are accessible and properly formatted\n- Test documentation searchability and cross-references\n- Verify AI context preservation through mock session handoff\n- Validate documentation maintenance procedures work correctly",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "documentation",
+        "developer-experience",
+        "ai-context-preservation",
+        "living-artifacts",
+        "knowledge-management",
+        "onboarding"
+      ],
+      "metadata": {
+        "phase_number": 6,
+        "estimated_hours": 8,
+        "risk_level": "low",
+        "deliverables": [
+          "/docs/index.md central documentation hub",
+          "Organized and cross-linked guide collection",
+          "Interactive Developer Tour in sandbox",
+          "Phase Journal template for decision tracking",
+          "Documentation linting and validation"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Review all existing documentation for completeness",
+            "Analyze developer onboarding and context needs",
+            "Assess AI context preservation requirements",
+            "Identify documentation gaps and inconsistencies"
+          ],
+          "decide": [
+            "Design documentation hierarchy and navigation",
+            "Plan comprehensive developer tour experience",
+            "Choose AI-optimized artifact preservation format",
+            "Define maintenance and update procedures"
+          ],
+          "apply": [
+            "Create central documentation hub with links",
+            "Organize phase guides with consistent formatting",
+            "Build interactive Developer Tour in sandbox",
+            "Implement Phase Journal template system",
+            "Add documentation linting and validation",
+            "Create searchable index with categorization"
+          ],
+          "verify": [
+            "Test documentation navigation and integrity",
+            "Validate developer tour completeness",
+            "Confirm artifact accessibility and formatting",
+            "Test searchability and cross-reference functionality",
+            "Verify AI context preservation capability",
+            "Validate maintenance procedure effectiveness"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.8",
+      "title": "Phase 7: Migration Strategy — Zero-Downtime Production Integration",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nDevelop and execute zero-downtime migration strategy from sandbox to production, starting with single low-risk page and scaling to full system integration.\n\n**AUDIT:**\n- Run where-used analysis on all current production components\n- Identify risky hot spots with custom overrides and one-off CSS\n- Map component dependencies and blast radius for each migration target\n- Assess visual diff thresholds and rollback triggers\n\n**DECIDE:**\n- Choose first target page (lowest risk, highest impact)\n- Plan exact codemod sequence for import redirects and prop renames\n- Define visual diff acceptance criteria and rollback procedures\n- Design gradual rollout strategy (page-by-page vs component-by-component)\n\n**APPLY:**\n- Create MIGRATION_PLAN.md with detailed sequence and rollback procedures\n- Copy stable components from components-sandbox/ui to components/ui\n- Migrate blocks from blocks-sandbox to production blocks directory\n- Execute codemods on target page with comprehensive dry-run validation\n- Implement BlocksRenderer integration or hybrid approach as needed\n- Apply import redirects and prop transformations with backup procedures\n\n**VERIFY:**\n- Run visual snapshot comparison against established baselines\n- Execute accessibility testing (tab order, focus, contrast, screen readers)\n- Validate Core Web Vitals and performance impact measurements\n- Conduct stakeholder review and sign-off process\n- Test rollback procedures and confirm rapid revert capability\n- Document migration success metrics and lessons learned",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z", 
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "migration-strategy",
+        "zero-downtime",
+        "production-integration",
+        "risk-mitigation",
+        "rollback-procedures",
+        "gradual-rollout"
+      ],
+      "metadata": {
+        "phase_number": 7,
+        "estimated_hours": 14,
+        "risk_level": "high",
+        "deliverables": [
+          "/docs/migration/MIGRATION_PLAN.md with sequence",
+          "Production component migration (sandbox → components/ui)",
+          "First page migration with codemod automation",
+          "Visual and accessibility validation suite",
+          "Rollback procedures and rapid revert capability"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Run where-used on all production components",
+            "Identify risky customizations and edge cases",
+            "Map component dependencies and impact radius",
+            "Define visual diff thresholds and triggers"
+          ],
+          "decide": [
+            "Choose lowest-risk first migration target",
+            "Plan exact codemod sequence and transformations",
+            "Define acceptance criteria and rollback triggers",
+            "Design gradual rollout and scaling strategy"
+          ],
+          "apply": [
+            "Create detailed MIGRATION_PLAN.md documentation",
+            "Copy stable sandbox components to production",
+            "Execute codemods with dry-run validation",
+            "Implement BlocksRenderer or hybrid integration",
+            "Apply transformations with backup procedures",
+            "Set up rapid rollback and revert capability"
+          ],
+          "verify": [
+            "Run visual snapshot comparison validation",
+            "Execute comprehensive accessibility testing",
+            "Validate performance impact and Core Web Vitals",
+            "Conduct stakeholder review and approval",
+            "Test rollback procedures and revert speed",
+            "Document success metrics and learnings"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.9",
+      "title": "Phase 8: Multi-Brand Theming — Vertical Switching Demonstration",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nImplement comprehensive multi-brand theming system with 2-3 vertical presets (tech, salon, realtor) and create brand switching demonstration showcasing instant re-skinning capabilities.\n\n**AUDIT:**\n- Review current brand token structure and extension points\n- Analyze vertical-specific design requirements (tech vs salon vs realtor)\n- Assess brand switching performance and bundle size impact\n- Test current theming system scalability for multiple brands\n\n**DECIDE:**\n- Design comprehensive brand packs for chosen verticals\n- Plan brand switching UX with seamless transitions\n- Define contrast and accessibility validation for all brand combinations\n- Choose demonstration format (video, interactive demo, screenshots)\n\n**APPLY:**\n- Create /tokens/brands/tech.json with modern tech aesthetic\n- Implement /tokens/brands/salon.json with beauty industry styling\n- Build /tokens/brands/realtor.json with professional real estate theme\n- Add Brand Switcher component with smooth transitions\n- Implement brand preview functionality in sandbox\n- Create comprehensive brand switching demonstration\n- Add brand validation ensuring accessibility compliance\n\n**VERIFY:**\n- Test all brand combinations across Elements and Blocks\n- Validate contrast ratios and accessibility in all brand/theme combinations\n- Create brand switching demo video (30-60 seconds)\n- Measure performance impact of brand switching\n- Test brand persistence and loading behavior\n- Verify all Blocks remain legible and attractive across brands",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "multi-brand-theming",
+        "vertical-presets",
+        "brand-switching",
+        "accessibility-validation",
+        "performance-optimization",
+        "demo-creation"
+      ],
+      "metadata": {
+        "phase_number": 8,
+        "estimated_hours": 10,
+        "risk_level": "medium",
+        "deliverables": [
+          "Three brand packs (tech, salon, realtor)",
+          "Brand Switcher with smooth transitions",
+          "Comprehensive brand switching demonstration",
+          "Accessibility validation across all combinations",
+          "Performance impact analysis"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Review brand token structure and extension points",
+            "Analyze vertical-specific design requirements",
+            "Assess brand switching performance impact",
+            "Test theming system scalability for multiple brands"
+          ],
+          "decide": [
+            "Design comprehensive vertical brand aesthetics",
+            "Plan seamless brand switching UX and transitions",
+            "Define accessibility validation requirements",
+            "Choose demonstration format and showcase strategy"
+          ],
+          "apply": [
+            "Create tech.json with modern aesthetic",
+            "Implement salon.json with beauty industry styling",
+            "Build realtor.json with professional theme",
+            "Add Brand Switcher with transition animations",
+            "Create comprehensive switching demonstration",
+            "Implement brand accessibility validation"
+          ],
+          "verify": [
+            "Test all brand/theme combination functionality",
+            "Validate contrast and accessibility compliance",
+            "Create brand switching demonstration video",
+            "Measure and optimize performance impact",
+            "Test brand persistence and loading behavior",
+            "Verify legibility across all brand variations"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.10",
+      "title": "Phase 9: Production Hardening — QA, Performance & Accessibility",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nComprehensive production hardening with Lighthouse audits, accessibility compliance, performance optimization, and quality assurance across all components and themes.\n\n**AUDIT:**\n- Run comprehensive Lighthouse audits on all sandbox pages\n- Execute Axe accessibility scans across Elements and Blocks\n- Analyze bundle size impact and CSS variable usage\n- Test performance across all brand and theme combinations\n\n**DECIDE:**\n- Set performance budgets and optimization targets\n- Define accessibility compliance requirements (WCAG 2.1 AA)\n- Plan dead CSS elimination and optimization strategies\n- Choose monitoring and alerting thresholds for production\n\n**APPLY:**\n- Optimize CSS variable usage and eliminate duplication\n- Implement token fallbacks for missing brand entries\n- Add comprehensive keyboard navigation support\n- Optimize screen reader labels and ARIA attributes\n- Implement lazy loading and code splitting optimizations\n- Add performance monitoring and bundle size alerts\n- Create automated accessibility testing integration\n\n**VERIFY:**\n- Achieve 90+ Lighthouse scores across all metrics\n- Validate WCAG 2.1 AA compliance across all components\n- Confirm Core Web Vitals meet Google thresholds\n- Test performance under various network conditions\n- Validate keyboard navigation and screen reader compatibility\n- Generate QA_REPORT.md with findings and resolutions",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "production-hardening",
+        "lighthouse-optimization",
+        "accessibility-compliance",
+        "performance-optimization",
+        "quality-assurance",
+        "monitoring"
+      ],
+      "metadata": {
+        "phase_number": 9,
+        "estimated_hours": 12,
+        "risk_level": "medium",
+        "deliverables": [
+          "Lighthouse reports with 90+ scores",
+          "WCAG 2.1 AA accessibility compliance",
+          "Performance optimization and monitoring",
+          "Automated accessibility testing integration",
+          "/docs/quality/QA_REPORT.md with findings"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Run Lighthouse audits on all sandbox pages",
+            "Execute Axe accessibility scans comprehensively",
+            "Analyze bundle size and CSS variable usage",
+            "Test performance across brand/theme combinations"
+          ],
+          "decide": [
+            "Set performance budgets and optimization targets",
+            "Define WCAG 2.1 AA compliance requirements",
+            "Plan CSS optimization and dead code elimination",
+            "Choose production monitoring thresholds"
+          ],
+          "apply": [
+            "Optimize CSS variables and eliminate duplication",
+            "Implement token fallbacks for missing entries",
+            "Add comprehensive keyboard navigation",
+            "Optimize screen reader and ARIA support",
+            "Implement performance optimization techniques",
+            "Add monitoring and automated testing"
+          ],
+          "verify": [
+            "Achieve 90+ Lighthouse scores across metrics",
+            "Validate WCAG 2.1 AA compliance completely",
+            "Confirm Core Web Vitals meet thresholds",
+            "Test performance under network variations",
+            "Validate keyboard and screen reader support",
+            "Generate comprehensive QA report"
+          ]
+        }
+      }
+    },
+    {
+      "subtask_number": "HT-006.11",
+      "title": "Phase 10: Templates & Productization — Reusable Capability Framework",
+      "description": "**AUDIT → DECIDE → APPLY → VERIFY**\n\nCreate productized capability framework with templates, checklists, and runbooks enabling rapid deployment for future micro-apps and client projects.\n\n**AUDIT:**\n- Review entire system for reusable patterns and components\n- Analyze common workflows and repetitive processes\n- Identify template opportunities for rapid deployment\n- Assess documentation completeness for handoff scenarios\n\n**DECIDE:**\n- Design template structure for client brand packs\n- Plan new block skeleton architecture for rapid development\n- Define comprehensive checklists for common operations\n- Choose packaging format for template distribution\n\n**APPLY:**\n- Create /templates/client-brand-pack.zip with JSON tokens and README\n- Build /templates/new-block-skeleton.zip with schema.ts, view.tsx, demo.json\n- Generate /docs/runbooks/NEW_CLIENT_REBRAND_CHECKLIST.md\n- Create /docs/runbooks/NEW_BLOCK_CHECKLIST.md for development workflow\n- Implement /docs/runbooks/SAFE_REFACTOR_CHECKLIST.md for transformations\n- Package examples and create quick-start documentation\n- Record demonstration videos for common workflows\n\n**VERIFY:**\n- Test template deployment in clean environment\n- Validate checklists with mock client onboarding scenario\n- Confirm runbooks enable independent development\n- Test template customization and modification workflows\n- Verify documentation completeness for handoff scenarios\n- Validate system scalability for multiple concurrent projects",
+      "status": "pending",
+      "created_at": "2025-09-06T20:32:00.000Z",
+      "updated_at": "2025-09-06T20:32:00.000Z",
+      "tags": [
+        "templates",
+        "productization",
+        "reusable-framework",
+        "client-onboarding",
+        "rapid-deployment",
+        "scalability"
+      ],
+      "metadata": {
+        "phase_number": 10,
+        "estimated_hours": 8,
+        "risk_level": "low",
+        "deliverables": [
+          "/templates/client-brand-pack.zip template",
+          "/templates/new-block-skeleton.zip development kit",
+          "Comprehensive runbooks for common operations",
+          "Quick-start documentation and examples",
+          "Demonstration videos for key workflows"
+        ],
+        "ADAV_checklist": {
+          "audit": [
+            "Review system for reusable patterns",
+            "Analyze workflows for template opportunities",
+            "Identify common processes and repetition",
+            "Assess documentation handoff completeness"
+          ],
+          "decide": [
+            "Design client brand pack template structure",
+            "Plan new block development skeleton",
+            "Define operation checklists and runbooks",
+            "Choose template packaging and distribution"
+          ],
+          "apply": [
+            "Create client brand pack template with docs",
+            "Build new block skeleton with examples",
+            "Generate comprehensive operation runbooks",
+            "Package examples with quick-start guides",
+            "Record workflow demonstration videos",
+            "Create independent development documentation"
+          ],
+          "verify": [
+            "Test template deployment in clean environment",
+            "Validate checklists with mock scenarios",
+            "Confirm runbook independence and clarity",
+            "Test template customization workflows",
+            "Verify handoff documentation completeness",
+            "Validate multi-project scalability"
+          ]
+        }
+      }
+    }
+  ]
+}

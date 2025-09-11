@@ -214,14 +214,6 @@ export default function PrivacyPolicyPage() {
             </p>
           </CardContent>
         </Card>
-
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-500 mt-12">
-          <p>© 2025 Your Organization. All rights reserved.</p>
-          <p className="mt-2">
-            This privacy policy is effective as of January 27, 2025.
-          </p>
-        </div>
       </div>
     </div>
   );

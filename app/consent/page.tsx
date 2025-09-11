@@ -78,8 +78,8 @@ export default function ConsentManagementPage() {
       <div className="max-w-4xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
-            <Shield className="w-8 h-8 text-blue-600" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full mb-6">
+            <Shield className="w-8 h-8 text-gray-900 dark:text-gray-100" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Privacy & Consent Settings
@@ -231,21 +231,6 @@ export default function ConsentManagementPage() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-500">
-          <p>
-            Questions about your privacy?{" "}
-            <Link href="/privacy" className="text-blue-600 hover:text-blue-700 underline">
-              Read our full Privacy Policy
-            </Link>
-            {" "}or{" "}
-            <a href="mailto:privacy@yourorganization.com" className="text-blue-600 hover:text-blue-700 underline">
-              contact us
-            </a>
-            .
-          </p>
-        </div>
       </div>
     </div>
   );

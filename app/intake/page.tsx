@@ -46,7 +46,7 @@ export default function Page() {
                   name="coach_id"
                   type="text"
                   placeholder="Enter your coach ID"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none"
                   required
                 />
               </div>
@@ -61,7 +61,7 @@ export default function Page() {
                   name="email"
                   type="email"
                   placeholder="your.email@example.com"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none"
                   required
                 />
               </div>
@@ -76,7 +76,7 @@ export default function Page() {
                   name="name"
                   type="text"
                   placeholder="Enter your full name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none"
                   required
                 />
               </div>
@@ -91,7 +91,7 @@ export default function Page() {
                   name="phone"
                   type="tel"
                   placeholder="+1 (555) 123-4567"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-gray-500 outline-none"
                 />
               </div>
 
@@ -106,13 +106,13 @@ export default function Page() {
                       <input
                         type="checkbox"
                         name="privacy_consent"
-                        className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:ring-2 mt-1"
+                        className="w-5 h-5 text-gray-900 bg-white border-2 border-gray-300 rounded-lg focus:ring-gray-500 focus:ring-2 mt-1"
                         required
                       />
                       <div className="flex-1">
                         <span className="text-sm text-gray-600 leading-relaxed">
                           I agree to the{" "}
-                          <Link href="/privacy" className="text-blue-600 hover:text-blue-700 underline">
+                          <Link href="/privacy" className="text-gray-900 hover:text-gray-700 underline">
                             Privacy Policy
                           </Link>
                           {" "}and consent to the processing of my personal information.
@@ -127,7 +127,7 @@ export default function Page() {
                       <input
                         type="checkbox"
                         name="marketing_consent"
-                        className="w-5 h-5 text-blue-600 bg-white border-2 border-gray-300 rounded-lg focus:ring-blue-500 focus:ring-2 mt-1"
+                        className="w-5 h-5 text-gray-900 bg-white border-2 border-gray-300 rounded-lg focus:ring-gray-500 focus:ring-2 mt-1"
                       />
                       <div className="flex-1">
                         <span className="text-sm text-gray-600 leading-relaxed">
@@ -147,7 +147,7 @@ export default function Page() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center gap-2">
@@ -162,17 +162,6 @@ export default function Page() {
                 )}
               </button>
             </form>
-
-            {/* Footer Note */}
-            <div className="mt-8 pt-6 border-t border-gray-100">
-              <p className="text-xs text-gray-500 text-center">
-                Your information is secure and will only be used for coaching purposes.{" "}
-                <Link href="/privacy" className="text-blue-600 hover:text-blue-700 underline">
-                  Learn more about our privacy practices
-                </Link>
-                .
-              </p>
-            </div>
           </div>
         </div>
       </div>

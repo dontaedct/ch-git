@@ -11,6 +11,9 @@ import { execSync } from 'child_process';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = new URL('.', import.meta.url).pathname;
@@ -19,6 +22,8 @@ const __dirname = new URL('.', import.meta.url).pathname;
 const CONFIG_PATHS = {
   eslint: join(process.cwd(), '.eslintrc.json'),
   designGuardian: join(process.cwd(), 'design', 'policies', 'eslint-design.config.cjs'),
+  designGuardianBrandAware: join(process.cwd(), 'design', 'policies', 'eslint-design-brand-aware.config.cjs'),
+  designGuardianConfigurable: join(process.cwd(), 'design', 'policies', 'eslint-design-configurable.config.cjs'),
   importBoundaries: join(process.cwd(), 'design', 'policies', 'import-boundaries.cjs'),
   tokenGuards: join(process.cwd(), 'design', 'policies', 'token-guards.cjs')
 };
@@ -26,7 +31,9 @@ const CONFIG_PATHS = {
 // Design Guardian modes
 const MODES = {
   ADVISORY: 'advisory',
-  REQUIRED: 'required'
+  REQUIRED: 'required',
+  BRAND_AWARE: 'brand-aware',
+  CONFIGURABLE: 'configurable'
 };
 
 class DesignGuardian {
@@ -43,22 +50,42 @@ class DesignGuardian {
       
       if (existsSync(modeFile)) {
         const mode = readFileSync(modeFile, 'utf8').trim();
-        return mode === MODES.REQUIRED ? MODES.REQUIRED : MODES.ADVISORY;
+        if (mode === MODES.REQUIRED) return MODES.REQUIRED;
+        if (mode === MODES.BRAND_AWARE) return MODES.BRAND_AWARE;
+        if (mode === MODES.CONFIGURABLE) return MODES.CONFIGURABLE;
+        return MODES.ADVISORY;
       }
       
-      // Default to advisory mode if no mode file exists
-      return MODES.ADVISORY;
+      // Default to configurable mode if no mode file exists
+      return MODES.CONFIGURABLE;
     } catch (error) {
       console.error('Error detecting current mode:', error.message);
-      return MODES.ADVISORY; // Default to advisory
+      return MODES.CONFIGURABLE; // Default to configurable
     }
   }
 
   /**
-   * Toggle between advisory and required modes
+   * Toggle between advisory, brand-aware, required, and configurable modes
    */
   toggleMode() {
-    const newMode = this.currentMode === MODES.ADVISORY ? MODES.REQUIRED : MODES.ADVISORY;
+    let newMode;
+    switch (this.currentMode) {
+      case MODES.ADVISORY:
+        newMode = MODES.BRAND_AWARE;
+        break;
+      case MODES.BRAND_AWARE:
+        newMode = MODES.REQUIRED;
+        break;
+      case MODES.REQUIRED:
+        newMode = MODES.CONFIGURABLE;
+        break;
+      case MODES.CONFIGURABLE:
+        newMode = MODES.ADVISORY;
+        break;
+      default:
+        newMode = MODES.CONFIGURABLE;
+    }
+    
     console.log(`🔄 Toggling Design Guardian from ${this.currentMode} to ${newMode} mode...`);
     
     try {
@@ -92,11 +119,25 @@ class DesignGuardian {
       );
       
       if (designPolicyIndex !== -1) {
-        if (mode === MODES.ADVISORY) {
-          eslintConfig.extends[designPolicyIndex] = './design/policies/eslint-design-advisory.config.cjs';
-        } else {
-          eslintConfig.extends[designPolicyIndex] = './design/policies/eslint-design-required.config.cjs';
+        let policyFile;
+        switch (mode) {
+          case MODES.ADVISORY:
+            policyFile = './design/policies/eslint-design-advisory.config.cjs';
+            break;
+          case MODES.BRAND_AWARE:
+            policyFile = './design/policies/eslint-design-brand-aware.config.cjs';
+            break;
+          case MODES.REQUIRED:
+            policyFile = './design/policies/eslint-design-required.config.cjs';
+            break;
+          case MODES.CONFIGURABLE:
+            policyFile = './design/policies/eslint-design-configurable.config.cjs';
+            break;
+          default:
+            policyFile = './design/policies/eslint-design-configurable.config.cjs';
         }
+        
+        eslintConfig.extends[designPolicyIndex] = policyFile;
         
         // Write the updated config
         writeFileSync(eslintConfigPath, JSON.stringify(eslintConfig, null, 2));
@@ -112,11 +153,151 @@ class DesignGuardian {
   }
 
   /**
+   * Run brand-aware validation checks
+   */
+  async runBrandAwareValidation() {
+    console.log('🎨 Running brand-aware validation checks...');
+    
+    try {
+      // Get current brand configuration
+      const brandContext = this.getBrandContext();
+      
+      if (!brandContext) {
+        console.log('⚠️  Brand context not available - running standard validation');
+        await this.runChecks();
+        return;
+      }
+      
+      console.log(`📊 Current brand: ${brandContext.brandConfig.brandName.organizationName}`);
+      console.log(`🎨 Brand colors: ${brandContext.brandColors.join(', ')}`);
+      console.log(`🔤 Brand fonts: ${brandContext.brandFonts.join(', ')}`);
+      
+      // Run ESLint with brand-aware configuration
+      const result = execSync('npm run lint', { 
+        encoding: 'utf8',
+        stdio: 'pipe'
+      });
+      
+      console.log('✅ Brand-aware validation completed successfully');
+      console.log(result);
+      
+    } catch (error) {
+      if (error.status === 0) {
+        console.log('✅ Brand-aware validation completed successfully');
+        console.log(error.stdout);
+      } else {
+        console.log('⚠️  Brand-aware validation found violations:');
+        console.log(error.stdout);
+        console.log(error.stderr);
+        
+        if (this.currentMode === MODES.REQUIRED) {
+          console.log('❌ Required mode enabled - violations must be fixed');
+          process.exit(1);
+        } else {
+          console.log('⚠️  Brand-aware mode - violations are warnings only');
+        }
+      }
+    }
+  }
+
+  /**
+   * Get brand context for validation
+   */
+  getBrandContext() {
+    try {
+      // Try to import brand context
+      const brandContextPath = join(process.cwd(), 'lib', 'branding', 'brand-context.ts');
+      if (existsSync(brandContextPath)) {
+        // In a real implementation, this would dynamically import the brand context
+        // For now, we'll return a mock context
+        return {
+          brandConfig: {
+            brandName: {
+              organizationName: 'Your Organization',
+              appName: 'Micro App',
+            },
+            isCustom: false,
+          },
+          brandColors: ['#007AFF', '#f9fafb', '#111827'],
+          brandFonts: ['system-ui', 'sans-serif', 'Geist'],
+          validationRules: {
+            allowCustomColors: false,
+            allowCustomFonts: false,
+            requireBrandConsistency: true,
+            allowBrandOverrides: false,
+          },
+        };
+      }
+      return null;
+    } catch (error) {
+      console.error('Error getting brand context:', error.message);
+      return null;
+    }
+  }
+
+  /**
+   * Run configurable validation checks
+   */
+  async runConfigurableValidation() {
+    console.log('⚙️  Running configurable validation checks...');
+    
+    try {
+      // Get current brand configuration
+      const brandContext = this.getBrandContext();
+      
+      if (!brandContext) {
+        console.log('⚠️  Brand context not available - running standard validation');
+        await this.runChecks();
+        return;
+      }
+      
+      console.log(`📊 Current brand: ${brandContext.brandConfig.brandName.organizationName}`);
+      console.log(`🎨 Brand colors: ${brandContext.brandColors.join(', ')}`);
+      console.log(`🔤 Brand fonts: ${brandContext.brandFonts.join(', ')}`);
+      
+      // Get current tenant ID
+      const tenantId = process.env.TENANT_ID || 'default';
+      console.log(`🏢 Current tenant: ${tenantId}`);
+      
+      // Run ESLint with configurable configuration
+      const result = execSync('npm run lint', { 
+        encoding: 'utf8',
+        stdio: 'pipe'
+      });
+      
+      console.log('✅ Configurable validation completed successfully');
+      console.log(result);
+      
+    } catch (error) {
+      if (error.status === 0) {
+        console.log('✅ Configurable validation completed successfully');
+        console.log(error.stdout);
+      } else {
+        console.log('⚠️  Configurable validation found violations:');
+        console.log(error.stdout);
+        console.log('💡 These violations are based on your current brand and tenant configuration');
+      }
+    }
+  }
+
+  /**
    * Run design safety checks
    */
   async runChecks() {
     console.log('🔍 Running Design Guardian checks...');
     console.log(`📊 Current mode: ${this.currentMode}`);
+    
+    // Use brand-aware validation if in brand-aware mode
+    if (this.currentMode === MODES.BRAND_AWARE) {
+      await this.runBrandAwareValidation();
+      return;
+    }
+    
+    // Use configurable validation if in configurable mode
+    if (this.currentMode === MODES.CONFIGURABLE) {
+      await this.runConfigurableValidation();
+      return;
+    }
     
     try {
       // Run ESLint with current config
@@ -219,17 +400,32 @@ class DesignGuardian {
     console.log(`📁 Policies: ${Object.keys(CONFIG_PATHS).length} active`);
     console.log('');
     console.log('📋 Available Commands:');
-    console.log('  npm run design:guardian:advisory  - Run in advisory mode (warnings only)');
-    console.log('  npm run design:guardian:required  - Run in required mode (errors block)');
-    console.log('  npm run design:guardian:toggle    - Toggle between modes');
-    console.log('  npm run design:guardian           - Run current mode');
+    console.log('  npm run design:guardian:advisory      - Run in advisory mode (warnings only)');
+    console.log('  npm run design:guardian:brand-aware   - Run in brand-aware mode');
+    console.log('  npm run design:guardian:required      - Run in required mode (errors block)');
+    console.log('  npm run design:guardian:configurable  - Run in configurable mode (default)');
+    console.log('  npm run design:guardian:toggle        - Toggle between modes');
+    console.log('  npm run design:guardian              - Run current mode');
     console.log('');
     console.log('🎯 Design Safety Rules:');
     console.log('  ✅ No raw hex colors in JSX/classNames');
     console.log('  ✅ No inline styles (controlled exceptions via comment)');
-    console.log('  ✅ Single icon set (Lucide) and single font (Geist)');
+    console.log('  ✅ Single icon set (Lucide) and brand-aware font system');
     console.log('  ✅ UI components cannot import from data/db/supabase');
     console.log('  ✅ Tailwind token validation for class strings');
+    console.log('  ✅ Brand-aware color and font validation');
+    
+    // Show brand context if available
+    const brandContext = this.getBrandContext();
+    if (brandContext) {
+      console.log('');
+      console.log('🎨 Brand Configuration:');
+      console.log(`  Organization: ${brandContext.brandConfig.brandName.organizationName}`);
+      console.log(`  App Name: ${brandContext.brandConfig.brandName.appName}`);
+      console.log(`  Custom Brand: ${brandContext.brandConfig.isCustom ? 'Yes' : 'No'}`);
+      console.log(`  Brand Colors: ${brandContext.brandColors.length} configured`);
+      console.log(`  Brand Fonts: ${brandContext.brandFonts.length} configured`);
+    }
   }
 }
 
@@ -258,13 +454,21 @@ async function main() {
       await guardian.runChecks();
       break;
       
+    case '--brand-aware':
+      await guardian.runBrandAwareValidation();
+      break;
+      
+    case '--configurable':
+      await guardian.runConfigurableValidation();
+      break;
+      
     case '--status':
       guardian.showStatus();
       break;
       
     default:
       console.log('❌ Unknown command:', command);
-      console.log('📋 Available commands: --toggle-mode, --contracts, --check, --status');
+      console.log('📋 Available commands: --toggle-mode, --contracts, --check, --brand-aware, --configurable, --status');
       process.exit(1);
   }
 }

@@ -5,6 +5,7 @@ import { AuthService } from '@/lib/auth/auth'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { ArrowLeft, Mail, AlertCircle, CheckCircle } from 'lucide-react'
+import { SecureNavigation } from '@/lib/security/navigation'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
@@ -25,8 +26,8 @@ export default function LoginPage() {
     const checkAuth = async () => {
       const user = await AuthService.getCurrentUser()
       if (user) {
-        const redirectTo = searchParams.get('redirectTo') ?? '/'
-        window.location.href = redirectTo
+        const redirectTo = SecureNavigation.getSafeRedirectUrl(searchParams, '/')
+        SecureNavigation.navigateToPath(redirectTo)
       }
     }
     
@@ -49,7 +50,7 @@ export default function LoginPage() {
       
       if (result.success) {
         if (result.user) {
-          window.location.href = '/'
+          SecureNavigation.navigateToPath('/')
         } else {
           setSuccess(result.error ?? 'Check your email for a magic link to sign in!')
         }

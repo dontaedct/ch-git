@@ -1,9 +1,8 @@
+import { DynamicEmailRenderer } from '../../../lib/branding/email-templates';
+import { DEFAULT_BRAND_CONFIG } from '../../../lib/branding/logo-manager';
+
 export function renderWelcome(args: { coachName?: string }): { subject: string; html: string } {
-  const subject = 'Welcome to Your Micro App'
-  const html = `
-    <h2>Welcome to Your Micro App</h2>
-    <p>${args.coachName ? `${args.coachName} ` : ''}will follow up with your next steps shortly.</p>
-  `
-  return { subject, html }
+  const emailRenderer = new DynamicEmailRenderer(DEFAULT_BRAND_CONFIG.brandName);
+  return emailRenderer.renderWelcome({ coachName: args.coachName });
 }
 

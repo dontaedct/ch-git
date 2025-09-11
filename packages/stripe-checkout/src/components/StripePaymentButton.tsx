@@ -9,6 +9,7 @@ import { useStripe } from './StripeProvider';
 import { createStripeCheckout } from '../actions/create-checkout';
 import type { CheckoutState, FallbackCheckoutResult } from '../types';
 import type { StripeCheckoutData } from '../schemas/checkout';
+import { SecureNavigation } from '@/lib/security/navigation';
 
 interface StripePaymentButtonProps {
   /** Checkout data */
@@ -69,7 +70,7 @@ export function StripePaymentButton({
 
           // Redirect to Stripe checkout
           if (session.url) {
-            window.location.href = session.url;
+            SecureNavigation.navigateToUrl(session.url);
           }
 
           if (onSuccess) {

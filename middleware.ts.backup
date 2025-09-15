@@ -1,0 +1,39 @@
+import { NextResponse, type NextRequest } from "next/server";
+import { createSecurityMiddleware } from "./lib/security/enhanced-middleware";
+
+// Initialize enhanced security middleware
+const securityMiddleware = createSecurityMiddleware({
+  enforceHttps: process.env.NODE_ENV === 'production',
+  threatProtection: {
+    enabled: true,
+    blockSuspiciousIPs: true,
+    scanUserAgents: true,
+    detectBots: true,
+  },
+  rateLimiting: {
+    enabled: true,
+    maxRequests: 100,
+    windowMs: 900000, // 15 minutes
+  },
+});
+
+export async function middleware(req: NextRequest) {
+  // Apply security headers to response
+  const res = NextResponse.next();
+  
+  // Basic CSP that allows Google Fonts in development
+  const csp = process.env.NODE_ENV === 'production' 
+    ? "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:;"
+    : "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https: ws:;";
+  
+  res.headers.set('Content-Security-Policy', csp);
+  
+  return res;
+}
+
+export const config = { 
+  matcher: [
+    '/((?!_next|api|favicon.ico|manifest.json|sw.js).*)',
+  ],
+};
+

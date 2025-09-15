@@ -34,7 +34,7 @@ jest.mock('stripe', () => {
     },
   }));
 
-  mockStripeClass.errors = {
+  (mockStripeClass as any).errors = {
     StripeError: MockStripeError,
     StripeCardError: MockStripeCardError,
     StripeRateLimitError: MockStripeRateLimitError,

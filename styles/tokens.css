@@ -1,0 +1,230 @@
+/**
+ * @fileoverview HT-006 Design Tokens CSS Variables
+ * @module styles/tokens
+ * @author OSS Hero System
+ * @version 1.0.0
+ * 
+ * UNIVERSAL HEADER: HT-006 Phase 1 - Design Tokens & Theme Provider
+ * Purpose: CSS variables generated from design tokens for sandbox components
+ * Safety: Sandbox-isolated styling with proper fallbacks
+ * Status: Phase 1 implementation
+ */
+
+/* Base Design Tokens - Generated from tokens/base.json */
+:root {
+  /* Colors - Neutral Scale */
+  --color-neutral-50: #ffffff;
+  --color-neutral-100: #f8f9fa;
+  --color-neutral-200: #f1f3f4;
+  --color-neutral-300: #e8eaed;
+  --color-neutral-400: #dadce0;
+  --color-neutral-500: #9aa0a6;
+  --color-neutral-600: #5f6368;
+  --color-neutral-700: #3c4043;
+  --color-neutral-800: #202124;
+  --color-neutral-900: #171717;
+  --color-neutral-950: #0a0a0a;
+
+  /* Colors - Brand Scale */
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+  --color-brand-950: #172554;
+
+  /* Colors - Success Scale */
+  --color-success-50: #f0fdf4;
+  --color-success-500: #22c55e;
+  --color-success-900: #14532d;
+
+  /* Colors - Warning Scale */
+  --color-warning-50: #fffbeb;
+  --color-warning-500: #f59e0b;
+  --color-warning-900: #78350f;
+
+  /* Colors - Danger Scale */
+  --color-danger-50: #fef2f2;
+  --color-danger-500: #ef4444;
+  --color-danger-900: #7f1d1d;
+
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  --spacing-4xl: 6rem;
+  --spacing-section: 5rem;
+  --spacing-section-sm: 3rem;
+  --spacing-section-lg: 7rem;
+  --spacing-section-xl: 10rem;
+
+  /* Border Radius */
+  --border-radius-none: 0;
+  --border-radius-sm: 0.125rem;
+  --border-radius-md: 0.375rem;
+  --border-radius-lg: 0.5rem;
+  --border-radius-xl: 0.75rem;
+  --border-radius-2xl: 1rem;
+  --border-radius-full: 9999px;
+
+  /* Font Sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+  --font-size-4xl: 2.25rem;
+  --font-size-5xl: 3rem;
+  --font-size-6xl: 3.75rem;
+
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Line Heights */
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+
+  /* Shadows */
+  --shadow-sm: 0px 1px 2px 0px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0px 4px 6px -1px rgba(0, 0, 0, 0.1), 0px 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0px 10px 15px -3px rgba(0, 0, 0, 0.1), 0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Default Brand - Light Theme (Minimalist Monochromatic) */
+:root,
+.brand-default {
+  /* Brand Colors - Monochromatic */
+  --brand-primary: var(--color-neutral-900);
+  --brand-primary-hover: var(--color-neutral-800);
+  --brand-accent: var(--color-neutral-700);
+  --brand-accent-subtle: var(--color-neutral-100);
+
+  /* Semantic Colors - Light */
+  --semantic-background: var(--color-neutral-50);
+  --semantic-foreground: var(--color-neutral-900);
+  --semantic-muted: var(--color-neutral-100);
+  --semantic-muted-foreground: var(--color-neutral-600);
+  --semantic-card: var(--color-neutral-50);
+  --semantic-card-foreground: var(--color-neutral-900);
+  --semantic-border: var(--color-neutral-200);
+  --semantic-input: var(--color-neutral-200);
+  --semantic-primary: var(--brand-primary);
+  --semantic-primary-foreground: var(--color-neutral-50);
+  --semantic-secondary: var(--color-neutral-100);
+  --semantic-secondary-foreground: var(--color-neutral-900);
+  --semantic-accent: var(--brand-accent-subtle);
+  --semantic-accent-foreground: var(--brand-primary);
+}
+
+/* Default Brand - Dark Theme (Minimalist Monochromatic) */
+.dark.brand-default {
+  /* Semantic Colors - Dark */
+  --semantic-background: var(--color-neutral-950);
+  --semantic-foreground: var(--color-neutral-100);
+  --semantic-muted: var(--color-neutral-900);
+  --semantic-muted-foreground: var(--color-neutral-400);
+  --semantic-card: var(--color-neutral-900);
+  --semantic-card-foreground: var(--color-neutral-100);
+  --semantic-border: var(--color-neutral-800);
+  --semantic-input: var(--color-neutral-800);
+  --semantic-primary: var(--color-neutral-100);
+  --semantic-primary-foreground: var(--color-neutral-900);
+  --semantic-secondary: var(--color-neutral-800);
+  --semantic-secondary-foreground: var(--color-neutral-100);
+  --semantic-accent: var(--color-neutral-800);
+  --semantic-accent-foreground: var(--color-neutral-200);
+}
+
+/* Salon Brand - Light Theme (Subtle Monochromatic) */
+.brand-salon {
+  /* Brand Colors - Subtle warm grays */
+  --brand-primary: var(--color-neutral-800);
+  --brand-primary-hover: var(--color-neutral-700);
+  --brand-accent: var(--color-neutral-600);
+  --brand-accent-subtle: var(--color-neutral-100);
+
+  /* Semantic Colors - Light with subtle warmth */
+  --semantic-background: var(--color-neutral-50);
+  --semantic-foreground: var(--color-neutral-900);
+  --semantic-muted: var(--color-neutral-100);
+  --semantic-muted-foreground: var(--color-neutral-600);
+  --semantic-card: var(--color-neutral-50);
+  --semantic-card-foreground: var(--color-neutral-900);
+  --semantic-border: var(--color-neutral-200);
+  --semantic-input: var(--color-neutral-200);
+  --semantic-primary: var(--brand-primary);
+  --semantic-primary-foreground: var(--color-neutral-50);
+  --semantic-secondary: var(--color-neutral-100);
+  --semantic-secondary-foreground: var(--color-neutral-900);
+  --semantic-accent: var(--brand-accent-subtle);
+  --semantic-accent-foreground: var(--brand-primary);
+}
+
+/* Salon Brand - Dark Theme (Subtle Monochromatic) */
+.dark.brand-salon {
+  /* Semantic Colors - Dark */
+  --semantic-background: var(--color-neutral-950);
+  --semantic-foreground: var(--color-neutral-100);
+  --semantic-muted: var(--color-neutral-900);
+  --semantic-muted-foreground: var(--color-neutral-400);
+  --semantic-card: var(--color-neutral-900);
+  --semantic-card-foreground: var(--color-neutral-100);
+  --semantic-border: var(--color-neutral-800);
+  --semantic-input: var(--color-neutral-800);
+  --semantic-primary: var(--color-neutral-100);
+  --semantic-primary-foreground: var(--color-neutral-900);
+  --semantic-secondary: var(--color-neutral-800);
+  --semantic-secondary-foreground: var(--color-neutral-100);
+  --semantic-accent: var(--color-neutral-800);
+  --semantic-accent-foreground: var(--color-neutral-200);
+}
+
+/* Component-specific CSS Variables */
+:root {
+  /* Button Variables */
+  --button-text-size: var(--font-size-sm);
+  --button-font-weight: var(--font-weight-medium);
+  --button-line-height: var(--line-height-normal);
+  --button-border-radius: var(--border-radius-md);
+  --button-border-width: 1px;
+  --button-focus-ring: var(--brand-primary);
+
+  /* Input Variables */
+  --input-border-radius: var(--border-radius-md);
+  --input-focus-ring: var(--semantic-primary);
+
+  /* Badge Variables */
+  --badge-padding-x: var(--spacing-sm);
+  --badge-padding-y: var(--spacing-xs);
+}
+
+/* Ensure proper fallbacks for all CSS variables */
+* {
+  /* Fallback values for critical variables */
+  --semantic-background: var(--semantic-background, #ffffff);
+  --semantic-foreground: var(--semantic-foreground, #000000);
+  --semantic-primary: var(--semantic-primary, #3b82f6);
+  --semantic-primary-foreground: var(--semantic-primary-foreground, #ffffff);
+  --semantic-border: var(--semantic-border, #e5e7eb);
+}

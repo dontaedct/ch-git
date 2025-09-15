@@ -1,0 +1,143 @@
+{
+  "id": "features-demo",
+  "type": "features",
+  "content": {
+    "header": {
+      "title": "U.S.-Focused Micro-Apps",
+      "subtitle": "You can clone fast",
+      "description": "Each template solves one specific admin/ops problem with proven results.",
+      "alignment": "center"
+    },
+    "features": [
+      {
+        "id": "salon-waitlist",
+        "title": "Salon/Med-Spa Waitlist",
+        "description": "Waitlist & Fill-Gaps - Public form → prioritized waitlist; staff panel posts today's gaps; one-click \"notify 10\" email burst.",
+        "icon": {
+          "type": "emoji",
+          "value": "⏰"
+        },
+        "tags": ["Waitlist", "Email Automation", "Staff Panel"],
+        "price": {
+          "amount": "499–899",
+          "currency": "$"
+        },
+        "cta": {
+          "text": "Try Booking Demo",
+          "href": "/demo/salon-booking",
+          "variant": "primary",
+          "external": false
+        }
+      },
+      {
+        "id": "realtor-hub",
+        "title": "Realtor Listing Hub",
+        "description": "U.S. MLS-friendly assets - Intake form → branded listing page + zip for MLS/social with time-boxed links.",
+        "icon": {
+          "type": "emoji",
+          "value": "🏠"
+        },
+        "tags": ["MLS Integration", "Listing Management", "Social Media"],
+        "price": {
+          "amount": "699–1,200",
+          "currency": "$"
+        },
+        "cta": {
+          "text": "Try Listing Demo",
+          "href": "/demo/realtor-hub",
+          "variant": "primary",
+          "external": false
+        }
+      },
+      {
+        "id": "gym-tracker",
+        "title": "Gym Progress Tracker",
+        "description": "Session + Progress - Client log + coach notes; automatic weekly progress email; CSV export.",
+        "icon": {
+          "type": "emoji",
+          "value": "📈"
+        },
+        "tags": ["Progress Tracking", "Client Management", "Reports"],
+        "price": {
+          "amount": "599–999",
+          "currency": "$"
+        },
+        "cta": {
+          "text": "Try Progress Demo",
+          "href": "/demo/gym-tracker",
+          "variant": "primary",
+          "external": false
+        }
+      },
+      {
+        "id": "custom-app",
+        "title": "Custom Business App",
+        "description": "Tailored Solution - Custom-built application designed specifically for your business needs with full integration capabilities.",
+        "icon": {
+          "type": "emoji",
+          "value": "🏢"
+        },
+        "tags": ["Custom Development", "Full Integration", "Tailored Solution"],
+        "price": {
+          "amount": "1,200–2,500",
+          "currency": "$"
+        },
+        "cta": {
+          "text": "Try Dashboard Demo",
+          "href": "/demo/custom-app",
+          "variant": "primary",
+          "external": false
+        }
+      }
+    ],
+    "cta": {
+      "title": "Ready to get your micro-app?",
+      "description": "• Fixed scope — no scope creep\n• ~1 week delivery — fast turnaround\n• One-time fee — no subscriptions\n• U.S.-focused — proven templates",
+      "primary": {
+        "text": "Get Started",
+        "href": "/get-started",
+        "variant": "primary",
+        "size": "lg",
+        "external": false
+      },
+      "secondary": {
+        "text": "View Examples",
+        "href": "/examples",
+        "variant": "secondary",
+        "size": "lg",
+        "external": false
+      }
+    }
+  },
+  "layout": {
+    "grid": {
+      "columns": "4",
+      "gap": "lg",
+      "responsive": {
+        "mobile": "1",
+        "tablet": "2",
+        "desktop": "4"
+      }
+    },
+    "card": {
+      "variant": "default",
+      "padding": "lg",
+      "hover": true,
+      "className": ""
+    },
+    "alignment": "center",
+    "maxWidth": "7xl",
+    "padding": "lg",
+    "background": "subtle",
+    "className": ""
+  },
+  "accessibility": {
+    "ariaLabel": "Features showcase section",
+    "ariaDescribedBy": "features-description"
+  },
+  "seo": {
+    "title": "Micro-App Features - U.S.-Focused Solutions",
+    "description": "Discover our proven micro-app templates: Salon Waitlist, Realtor Hub, Gym Tracker, and Custom Business Apps. Fixed scope, fast delivery, one-time fee.",
+    "keywords": ["micro-apps", "salon booking", "realtor tools", "gym tracking", "business apps", "custom development"]
+  }
+}

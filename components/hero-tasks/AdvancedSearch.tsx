@@ -10,14 +10,14 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
-import { Button } from '@ui/button';
-import { Input } from '@ui/input';
-import { Badge } from '@ui/badge';
-import { Label } from '@ui/label';
-import { Textarea } from '@ui/textarea';
-import { Switch } from '@ui/switch';
-import { Separator } from '@ui/separator';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
 import { 
   Search, 
   Filter, 
@@ -42,12 +42,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@ui/select';
+} from '@/components/ui/select';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@ui/popover';
+} from '@/components/ui/popover';
 import {
   Command,
   CommandEmpty,
@@ -55,7 +55,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from '@ui/command';
+} from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import { QueryBuilder } from './QueryBuilder';
 import {
@@ -385,13 +385,13 @@ export function AdvancedSearch({
       {/* Quick Filters */}
       <div className="flex flex-wrap gap-2">
         <Button
-          variant={filters.status?.includes('in_progress') ? 'default' : 'outline'}
+          variant={filters.status?.includes(TaskStatus.IN_PROGRESS) ? 'default' : 'outline'}
           size="sm"
           onClick={() => {
             const currentStatus = filters.status || [];
-            const newStatus = currentStatus.includes('in_progress')
-              ? currentStatus.filter(s => s !== 'in_progress')
-              : [...currentStatus, 'in_progress'];
+            const newStatus = currentStatus.includes(TaskStatus.IN_PROGRESS)
+              ? currentStatus.filter(s => s !== TaskStatus.IN_PROGRESS)
+              : [...currentStatus, TaskStatus.IN_PROGRESS];
             updateFilter('status', newStatus);
           }}
         >
@@ -400,13 +400,13 @@ export function AdvancedSearch({
         </Button>
         
         <Button
-          variant={filters.priority?.includes('high') ? 'default' : 'outline'}
+          variant={filters.priority?.includes(TaskPriority.HIGH) ? 'default' : 'outline'}
           size="sm"
           onClick={() => {
             const currentPriority = filters.priority || [];
-            const newPriority = currentPriority.includes('high')
-              ? currentPriority.filter(p => p !== 'high')
-              : [...currentPriority, 'high'];
+            const newPriority = currentPriority.includes(TaskPriority.HIGH)
+              ? currentPriority.filter(p => p !== TaskPriority.HIGH)
+              : [...currentPriority, TaskPriority.HIGH];
             updateFilter('priority', newPriority);
           }}
         >

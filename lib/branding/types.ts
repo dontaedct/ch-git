@@ -29,6 +29,18 @@ export interface BrandPalette {
   primary: string;
   /** Secondary brand color */
   secondary: string;
+  /** Neutral brand color */
+  neutral?: string;
+  /** Accent brand color */
+  accent?: string;
+  /** Success color */
+  success?: string;
+  /** Warning color */
+  warning?: string;
+  /** Error color */
+  error?: string;
+  /** Info color */
+  info?: string;
   /** Brand description */
   description?: string;
 }
@@ -40,6 +52,22 @@ export interface BrandTheme {
   typography: {
     fontFamily: string;
     fontWeights: number[];
+    fontDisplay?: string;
+    scale?: {
+      xs: string;
+      sm: string;
+      base: string;
+      lg: string;
+      xl: string;
+      '2xl': string;
+    };
+  };
+  /** Brand spacing system */
+  spacing?: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
   };
   /** Brand logo configuration */
   logo: {
@@ -49,6 +77,7 @@ export interface BrandTheme {
     height: number;
     initials: string;
     fallbackBgColor: string;
+    showAsImage?: boolean;
   };
 }
 

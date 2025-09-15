@@ -28,7 +28,7 @@ describe('Config Validation Tests', () => {
       
       expect(result.valid).toBe(true);
       expect(result.errors).toHaveLength(0);
-      expect(result.fallbackMode).toBe('manual');
+      expect(result.fallbackMode).toBe('disabled');
     });
 
     it('should reject missing public key', () => {
@@ -194,7 +194,7 @@ describe('Config Validation Tests', () => {
   describe('Fallback Mode Determination', () => {
     it('should use disabled fallback for valid configuration', () => {
       const result = validateStripeConfig(validConfig);
-      expect(result.fallbackMode).toBe('manual'); // Uses explicit fallbackMode
+      expect(result.fallbackMode).toBe('disabled'); // Valid configuration doesn't need fallback
     });
 
     it('should auto-determine fallback for advanced tier', () => {

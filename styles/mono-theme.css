@@ -1,0 +1,603 @@
+/**
+ * @fileoverview HT-007 Mono-Theme Design System
+ * @module styles/mono-theme
+ * @author OSS Hero System
+ * @version 1.0.0
+ * 
+ * UNIVERSAL HEADER: HT-007 Phase 1 - Mono-Theme Foundation
+ * Purpose: Sophisticated grayscale design system inspired by production home page
+ * Safety: Sandbox-isolated mono-theme implementation
+ * Status: Phase 1 implementation - Mono-theme foundation
+ */
+
+/* ========================================
+   HT-007 Mono-Theme Design Tokens
+   Sophisticated grayscale palette inspired by production home page
+======================================== */
+
+:root {
+  /* HT-007: Sophisticated Mono-Theme Color Scale */
+  --mono-theme-white: #ffffff;
+  --mono-theme-gray-50: #fafafa;
+  --mono-theme-gray-100: #f5f5f5;
+  --mono-theme-gray-200: #e5e5e5;
+  --mono-theme-gray-300: #d4d4d4;
+  --mono-theme-gray-400: #a3a3a3;
+  --mono-theme-gray-500: #737373;
+  --mono-theme-gray-600: #525252;
+  --mono-theme-gray-700: #404040;
+  --mono-theme-gray-800: #262626;
+  --mono-theme-gray-900: #171717;
+  --mono-theme-black: #0a0a0a;
+
+  /* HT-007: Sophisticated Semantic Colors */
+  --mono-theme-primary: var(--mono-theme-gray-900);
+  --mono-theme-primary-foreground: var(--mono-theme-white);
+  --mono-theme-secondary: var(--mono-theme-gray-100);
+  --mono-theme-secondary-foreground: var(--mono-theme-gray-900);
+  --mono-theme-muted: var(--mono-theme-gray-100);
+  --mono-theme-muted-foreground: var(--mono-theme-gray-500);
+  --mono-theme-accent: var(--mono-theme-gray-200);
+  --mono-theme-accent-foreground: var(--mono-theme-gray-900);
+  --mono-theme-destructive: var(--mono-theme-gray-500);
+  --mono-theme-destructive-foreground: var(--mono-theme-white);
+  --mono-theme-border: var(--mono-theme-gray-200);
+  --mono-theme-input: var(--mono-theme-gray-200);
+  --mono-theme-ring: var(--mono-theme-gray-400);
+
+  /* HT-007: Sophisticated Background System */
+  --mono-theme-background: var(--mono-theme-white);
+  --mono-theme-foreground: var(--mono-theme-gray-900);
+  --mono-theme-card: var(--mono-theme-white);
+  --mono-theme-card-foreground: var(--mono-theme-gray-900);
+  --mono-theme-popover: var(--mono-theme-white);
+  --mono-theme-popover-foreground: var(--mono-theme-gray-900);
+
+  /* HT-007: High-Tech Glass Morphism Effects */
+  --mono-theme-glass-bg: rgba(255, 255, 255, 0.8);
+  --mono-theme-glass-bg-strong: rgba(255, 255, 255, 0.9);
+  --mono-theme-glass-bg-subtle: rgba(255, 255, 255, 0.6);
+  --mono-theme-glass-border: rgba(0, 0, 0, 0.1);
+  --mono-theme-glass-border-strong: rgba(0, 0, 0, 0.15);
+  --mono-theme-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --mono-theme-glass-shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.15);
+
+  /* HT-007: Sophisticated Gradient System */
+  --mono-theme-gradient-primary: linear-gradient(135deg, #ffffff 0%, #f8f8f8 50%, #f0f0f0 100%);
+  --mono-theme-gradient-secondary: linear-gradient(135deg, #f5f5f5 0%, #e5e5e5 50%, #d4d4d4 100%);
+  --mono-theme-gradient-accent: linear-gradient(135deg, #e5e5e5 0%, #d4d4d4 50%, #a3a3a3 100%);
+  --mono-theme-gradient-subtle: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0.05) 100%);
+
+  /* HT-007: High-Tech Mesh Pattern */
+  --mono-theme-mesh-pattern: 
+    repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(0, 0, 0, 0.03) 20px, rgba(0, 0, 0, 0.03) 21px),
+    repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0, 0, 0, 0.03) 20px, rgba(0, 0, 0, 0.03) 21px),
+    repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(0, 0, 0, 0.02) 28px, rgba(0, 0, 0, 0.02) 29px),
+    repeating-linear-gradient(-45deg, transparent, transparent 28px, rgba(0, 0, 0, 0.02) 28px, rgba(0, 0, 0, 0.02) 29px),
+    linear-gradient(135deg, #ffffff 0%, #f8f8f8 20%, #f0f0f0 40%, #e8e8e8 60%, #e0e0e0 80%, #d8d8d8 100%);
+
+  /* HT-007: Sophisticated Shadow System */
+  --mono-theme-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --mono-theme-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --mono-theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --mono-theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --mono-theme-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --mono-theme-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --mono-theme-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+
+  /* HT-007: Sophisticated Typography Scale */
+  --mono-theme-text-xs: 0.75rem;      /* 12px */
+  --mono-theme-text-sm: 0.875rem;     /* 14px */
+  --mono-theme-text-base: 1rem;       /* 16px */
+  --mono-theme-text-lg: 1.125rem;     /* 18px */
+  --mono-theme-text-xl: 1.25rem;      /* 20px */
+  --mono-theme-text-2xl: 1.5rem;      /* 24px */
+  --mono-theme-text-3xl: 1.875rem;    /* 30px */
+  --mono-theme-text-4xl: 2.25rem;     /* 36px */
+  --mono-theme-text-5xl: 3rem;       /* 48px */
+  --mono-theme-text-6xl: 3.75rem;     /* 60px */
+  --mono-theme-text-7xl: 4.5rem;      /* 72px */
+  --mono-theme-text-8xl: 6rem;        /* 96px */
+  --mono-theme-text-9xl: 8rem;        /* 128px */
+
+  /* HT-007: Sophisticated Spacing System */
+  --mono-theme-spacing-xs: 0.25rem;    /* 4px */
+  --mono-theme-spacing-sm: 0.5rem;     /* 8px */
+  --mono-theme-spacing-md: 1rem;       /* 16px */
+  --mono-theme-spacing-lg: 1.5rem;     /* 24px */
+  --mono-theme-spacing-xl: 2rem;       /* 32px */
+  --mono-theme-spacing-2xl: 3rem;      /* 48px */
+  --mono-theme-spacing-3xl: 4rem;      /* 64px */
+  --mono-theme-spacing-4xl: 6rem;      /* 96px */
+  --mono-theme-spacing-5xl: 8rem;      /* 128px */
+
+  /* HT-007: Sophisticated Border Radius System */
+  --mono-theme-radius-none: 0px;
+  --mono-theme-radius-sm: 0.125rem;   /* 2px */
+  --mono-theme-radius-md: 0.375rem;   /* 6px */
+  --mono-theme-radius-lg: 0.5rem;     /* 8px */
+  --mono-theme-radius-xl: 0.75rem;    /* 12px */
+  --mono-theme-radius-2xl: 1rem;      /* 16px */
+  --mono-theme-radius-3xl: 1.5rem;    /* 24px */
+  --mono-theme-radius-full: 9999px;
+}
+
+/* HT-007: Dark Mode Mono-Theme Overrides */
+.dark {
+  /* HT-007: Dark Mode Color Scale */
+  --mono-theme-white: #0a0a0a;
+  --mono-theme-gray-50: #171717;
+  --mono-theme-gray-100: #262626;
+  --mono-theme-gray-200: #404040;
+  --mono-theme-gray-300: #525252;
+  --mono-theme-gray-400: #737373;
+  --mono-theme-gray-500: #a3a3a3;
+  --mono-theme-gray-600: #d4d4d4;
+  --mono-theme-gray-700: #e5e5e5;
+  --mono-theme-gray-800: #f5f5f5;
+  --mono-theme-gray-900: #fafafa;
+  --mono-theme-black: #ffffff;
+
+  /* HT-007: Dark Mode Semantic Colors */
+  --mono-theme-primary: var(--mono-theme-gray-900);
+  --mono-theme-primary-foreground: var(--mono-theme-black);
+  --mono-theme-secondary: var(--mono-theme-gray-800);
+  --mono-theme-secondary-foreground: var(--mono-theme-black);
+  --mono-theme-muted: var(--mono-theme-gray-800);
+  --mono-theme-muted-foreground: var(--mono-theme-gray-400);
+  --mono-theme-accent: var(--mono-theme-gray-700);
+  --mono-theme-accent-foreground: var(--mono-theme-black);
+  --mono-theme-destructive: var(--mono-theme-gray-400);
+  --mono-theme-destructive-foreground: var(--mono-theme-black);
+  --mono-theme-border: var(--mono-theme-gray-700);
+  --mono-theme-input: var(--mono-theme-gray-700);
+  --mono-theme-ring: var(--mono-theme-gray-500);
+
+  /* HT-007: Dark Mode Background System */
+  --mono-theme-background: var(--mono-theme-black);
+  --mono-theme-foreground: var(--mono-theme-gray-900);
+  --mono-theme-card: var(--mono-theme-gray-50);
+  --mono-theme-card-foreground: var(--mono-theme-gray-900);
+  --mono-theme-popover: var(--mono-theme-gray-50);
+  --mono-theme-popover-foreground: var(--mono-theme-gray-900);
+
+  /* HT-007: Dark Mode Glass Morphism Effects */
+  --mono-theme-glass-bg: rgba(10, 10, 10, 0.8);
+  --mono-theme-glass-bg-strong: rgba(10, 10, 10, 0.9);
+  --mono-theme-glass-bg-subtle: rgba(10, 10, 10, 0.6);
+  --mono-theme-glass-border: rgba(255, 255, 255, 0.1);
+  --mono-theme-glass-border-strong: rgba(255, 255, 255, 0.15);
+  --mono-theme-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --mono-theme-glass-shadow-strong: 0 20px 50px rgba(0, 0, 0, 0.6);
+
+  /* HT-007: Dark Mode Gradient System */
+  --mono-theme-gradient-primary: linear-gradient(135deg, #0a0a0a 0%, #171717 50%, #262626 100%);
+  --mono-theme-gradient-secondary: linear-gradient(135deg, #262626 0%, #404040 50%, #525252 100%);
+  --mono-theme-gradient-accent: linear-gradient(135deg, #525252 0%, #737373 50%, #a3a3a3 100%);
+  --mono-theme-gradient-subtle: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(0, 0, 0, 0.1) 100%);
+
+  /* HT-007: Dark Mode Mesh Pattern */
+  --mono-theme-mesh-pattern: 
+    repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(255, 255, 255, 0.06) 20px, rgba(255, 255, 255, 0.06) 21px),
+    repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(255, 255, 255, 0.06) 20px, rgba(255, 255, 255, 0.06) 21px),
+    repeating-linear-gradient(45deg, transparent, transparent 28px, rgba(255, 255, 255, 0.04) 28px, rgba(255, 255, 255, 0.04) 29px),
+    repeating-linear-gradient(-45deg, transparent, transparent 28px, rgba(255, 255, 255, 0.04) 28px, rgba(255, 255, 255, 0.04) 29px),
+    linear-gradient(135deg, #0a0a0a 0%, #171717 20%, #262626 40%, #404040 60%, #525252 80%, #737373 100%);
+
+  /* HT-007: Dark Mode Shadow System */
+  --mono-theme-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --mono-theme-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --mono-theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --mono-theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --mono-theme-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --mono-theme-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  --mono-theme-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   HT-007 Mono-Theme Utility Classes
+   Sophisticated utility classes for mono-theme implementation
+======================================== */
+
+/* HT-007: Mono-Theme Background Utilities */
+.mono-bg-primary { background-color: var(--mono-theme-background); }
+.mono-bg-secondary { background-color: var(--mono-theme-card); }
+.mono-bg-muted { background-color: var(--mono-theme-muted); }
+.mono-bg-accent { background-color: var(--mono-theme-accent); }
+
+/* HT-007: Mono-Theme Text Utilities */
+.mono-text-primary { color: var(--mono-theme-foreground); }
+.mono-text-secondary { color: var(--mono-theme-muted-foreground); }
+.mono-text-accent { color: var(--mono-theme-accent-foreground); }
+
+/* HT-007: Mono-Theme Border Utilities */
+.mono-border { border-color: var(--mono-theme-border); }
+.mono-border-strong { border-color: var(--mono-theme-ring); }
+
+/* HT-007: Mono-Theme Shadow Utilities */
+.mono-shadow-xs { box-shadow: var(--mono-theme-shadow-xs); }
+.mono-shadow-sm { box-shadow: var(--mono-theme-shadow-sm); }
+.mono-shadow-md { box-shadow: var(--mono-theme-shadow-md); }
+.mono-shadow-lg { box-shadow: var(--mono-theme-shadow-lg); }
+.mono-shadow-xl { box-shadow: var(--mono-theme-shadow-xl); }
+.mono-shadow-2xl { box-shadow: var(--mono-theme-shadow-2xl); }
+
+/* HT-007: Mono-Theme Glass Morphism Utilities */
+.mono-glass {
+  background: var(--mono-theme-glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--mono-theme-glass-border);
+  box-shadow: var(--mono-theme-glass-shadow);
+}
+
+.mono-glass-strong {
+  background: var(--mono-theme-glass-bg-strong);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid var(--mono-theme-glass-border);
+  box-shadow: var(--mono-theme-glass-shadow-strong);
+}
+
+.mono-glass-subtle {
+  background: var(--mono-theme-glass-bg-subtle);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--mono-theme-glass-border);
+  box-shadow: var(--mono-theme-glass-shadow);
+}
+
+/* HT-007: Mono-Theme Gradient Utilities */
+.mono-gradient-primary { background: var(--mono-theme-gradient-primary); }
+.mono-gradient-secondary { background: var(--mono-theme-gradient-secondary); }
+.mono-gradient-accent { background: var(--mono-theme-gradient-accent); }
+.mono-gradient-subtle { background: var(--mono-theme-gradient-subtle); }
+
+/* HT-007: Mono-Theme Mesh Background */
+.mono-mesh-bg {
+  background: var(--mono-theme-mesh-pattern);
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+}
+
+/* HT-007: Mono-Theme Spacing Utilities */
+.mono-spacing-xs { padding: var(--mono-theme-spacing-xs); }
+.mono-spacing-sm { padding: var(--mono-theme-spacing-sm); }
+.mono-spacing-md { padding: var(--mono-theme-spacing-md); }
+.mono-spacing-lg { padding: var(--mono-theme-spacing-lg); }
+.mono-spacing-xl { padding: var(--mono-theme-spacing-xl); }
+.mono-spacing-2xl { padding: var(--mono-theme-spacing-2xl); }
+.mono-spacing-3xl { padding: var(--mono-theme-spacing-3xl); }
+
+/* HT-007: Mono-Theme Typography Utilities */
+.mono-text-xs { font-size: var(--mono-theme-text-xs); }
+.mono-text-sm { font-size: var(--mono-theme-text-sm); }
+.mono-text-base { font-size: var(--mono-theme-text-base); }
+.mono-text-lg { font-size: var(--mono-theme-text-lg); }
+.mono-text-xl { font-size: var(--mono-theme-text-xl); }
+.mono-text-2xl { font-size: var(--mono-theme-text-2xl); }
+.mono-text-3xl { font-size: var(--mono-theme-text-3xl); }
+.mono-text-4xl { font-size: var(--mono-theme-text-4xl); }
+.mono-text-5xl { font-size: var(--mono-theme-text-5xl); }
+.mono-text-6xl { font-size: var(--mono-theme-text-6xl); }
+.mono-text-7xl { font-size: var(--mono-theme-text-7xl); }
+.mono-text-8xl { font-size: var(--mono-theme-text-8xl); }
+.mono-text-9xl { font-size: var(--mono-theme-text-9xl); }
+
+/* HT-007: Mono-Theme Border Radius Utilities */
+.mono-radius-none { border-radius: var(--mono-theme-radius-none); }
+.mono-radius-sm { border-radius: var(--mono-theme-radius-sm); }
+.mono-radius-md { border-radius: var(--mono-theme-radius-md); }
+.mono-radius-lg { border-radius: var(--mono-theme-radius-lg); }
+.mono-radius-xl { border-radius: var(--mono-theme-radius-xl); }
+.mono-radius-2xl { border-radius: var(--mono-theme-radius-2xl); }
+.mono-radius-3xl { border-radius: var(--mono-theme-radius-3xl); }
+.mono-radius-full { border-radius: var(--mono-theme-radius-full); }
+
+/* ========================================
+   HT-007 Mono-Theme Component Classes
+   Sophisticated component classes for mono-theme implementation
+======================================== */
+
+/* HT-007: Mono-Theme Card Component */
+.mono-card {
+  background-color: var(--mono-theme-card);
+  color: var(--mono-theme-card-foreground);
+  border: 1px solid var(--mono-theme-border);
+  border-radius: var(--mono-theme-radius-lg);
+  box-shadow: var(--mono-theme-shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mono-card:hover {
+  box-shadow: var(--mono-theme-shadow-md);
+  transform: translateY(-2px);
+}
+
+.mono-card-elevated {
+  box-shadow: var(--mono-theme-shadow-lg);
+}
+
+.mono-card-elevated:hover {
+  box-shadow: var(--mono-theme-shadow-xl);
+  transform: translateY(-4px);
+}
+
+/* HT-007: Mono-Theme Button Component */
+.mono-button {
+  background-color: var(--mono-theme-primary);
+  color: var(--mono-theme-primary-foreground);
+  border: 1px solid var(--mono-theme-primary);
+  border-radius: var(--mono-theme-radius-md);
+  padding: var(--mono-theme-spacing-sm) var(--mono-theme-spacing-md);
+  font-weight: 500;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.mono-button:hover {
+  background-color: var(--mono-theme-gray-800);
+  transform: translateY(-1px);
+  box-shadow: var(--mono-theme-shadow-sm);
+}
+
+.mono-button:active {
+  transform: translateY(0);
+  box-shadow: var(--mono-theme-shadow-xs);
+}
+
+.mono-button-secondary {
+  background-color: var(--mono-theme-secondary);
+  color: var(--mono-theme-secondary-foreground);
+  border: 1px solid var(--mono-theme-border);
+}
+
+.mono-button-secondary:hover {
+  background-color: var(--mono-theme-accent);
+}
+
+.mono-button-ghost {
+  background-color: transparent;
+  color: var(--mono-theme-foreground);
+  border: 1px solid transparent;
+}
+
+.mono-button-ghost:hover {
+  background-color: var(--mono-theme-muted);
+}
+
+/* HT-007: Mono-Theme Input Component */
+.mono-input {
+  background-color: var(--mono-theme-background);
+  color: var(--mono-theme-foreground);
+  border: 1px solid var(--mono-theme-border);
+  border-radius: var(--mono-theme-radius-md);
+  padding: var(--mono-theme-spacing-sm) var(--mono-theme-spacing-md);
+  font-size: var(--mono-theme-text-base);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mono-input:focus {
+  outline: none;
+  border-color: var(--mono-theme-ring);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.mono-input::placeholder {
+  color: var(--mono-theme-muted-foreground);
+}
+
+/* HT-007: Mono-Theme Surface Component */
+.mono-surface {
+  background-color: var(--mono-theme-card);
+  color: var(--mono-theme-card-foreground);
+  border: 1px solid var(--mono-theme-border);
+  border-radius: var(--mono-theme-radius-lg);
+}
+
+.mono-surface-elevated {
+  background-color: var(--mono-theme-card);
+  color: var(--mono-theme-card-foreground);
+  border: 1px solid var(--mono-theme-border);
+  border-radius: var(--mono-theme-radius-lg);
+  box-shadow: var(--mono-theme-shadow-md);
+}
+
+.mono-surface-glass {
+  background: var(--mono-theme-glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--mono-theme-glass-border);
+  border-radius: var(--mono-theme-radius-lg);
+  box-shadow: var(--mono-theme-glass-shadow);
+}
+
+/* HT-007: Mono-Theme Badge Component */
+.mono-badge {
+  background-color: var(--mono-theme-accent);
+  color: var(--mono-theme-accent-foreground);
+  border-radius: var(--mono-theme-radius-full);
+  padding: var(--mono-theme-spacing-xs) var(--mono-theme-spacing-sm);
+  font-size: var(--mono-theme-text-xs);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mono-theme-spacing-xs);
+}
+
+.mono-badge-primary {
+  background-color: var(--mono-theme-primary);
+  color: var(--mono-theme-primary-foreground);
+}
+
+.mono-badge-secondary {
+  background-color: var(--mono-theme-secondary);
+  color: var(--mono-theme-secondary-foreground);
+}
+
+.mono-badge-outline {
+  background-color: transparent;
+  color: var(--mono-theme-foreground);
+  border: 1px solid var(--mono-theme-border);
+}
+
+/* ========================================
+   HT-007 Mono-Theme Animation Utilities
+   Sophisticated animation utilities for mono-theme implementation
+======================================== */
+
+/* HT-007: Mono-Theme Hover Animations */
+.mono-hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mono-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--mono-theme-shadow-md);
+}
+
+.mono-hover-scale {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mono-hover-scale:hover {
+  transform: scale(1.02);
+}
+
+.mono-hover-glow {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mono-hover-glow:hover {
+  box-shadow: var(--mono-theme-shadow-lg), 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* HT-007: Mono-Theme Focus Animations */
+.mono-focus-ring {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mono-focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* HT-007: Mono-Theme Loading Animations */
+@keyframes mono-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.mono-pulse {
+  animation: mono-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes mono-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mono-spin {
+  animation: mono-spin 1s linear infinite;
+}
+
+/* HT-007: Mono-Theme Fade Animations */
+@keyframes mono-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mono-fade-in {
+  animation: mono-fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes mono-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.mono-fade-out {
+  animation: mono-fade-out 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   HT-007 Mono-Theme Responsive Utilities
+   Sophisticated responsive utilities for mono-theme implementation
+======================================== */
+
+/* HT-007: Mono-Theme Mobile Optimizations */
+@media (max-width: 768px) {
+  .mono-spacing-xs { padding: calc(var(--mono-theme-spacing-xs) * 0.75); }
+  .mono-spacing-sm { padding: calc(var(--mono-theme-spacing-sm) * 0.75); }
+  .mono-spacing-md { padding: calc(var(--mono-theme-spacing-md) * 0.75); }
+  .mono-spacing-lg { padding: calc(var(--mono-theme-spacing-lg) * 0.75); }
+  .mono-spacing-xl { padding: calc(var(--mono-theme-spacing-xl) * 0.75); }
+  
+  .mono-text-xs { font-size: calc(var(--mono-theme-text-xs) * 0.9); }
+  .mono-text-sm { font-size: calc(var(--mono-theme-text-sm) * 0.9); }
+  .mono-text-base { font-size: calc(var(--mono-theme-text-base) * 0.9); }
+  .mono-text-lg { font-size: calc(var(--mono-theme-text-lg) * 0.9); }
+  .mono-text-xl { font-size: calc(var(--mono-theme-text-xl) * 0.9); }
+}
+
+/* HT-007: Mono-Theme Touch Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .mono-hover-lift:hover,
+  .mono-hover-scale:hover,
+  .mono-hover-glow:hover {
+    transform: none;
+    box-shadow: var(--mono-theme-shadow-sm);
+  }
+  
+  .mono-card:hover {
+    transform: none;
+    box-shadow: var(--mono-theme-shadow-sm);
+  }
+  
+  .mono-button:hover {
+    transform: none;
+    box-shadow: var(--mono-theme-shadow-xs);
+  }
+}
+
+/* HT-007: Mono-Theme Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .mono-hover-lift,
+  .mono-hover-scale,
+  .mono-hover-glow,
+  .mono-focus-ring,
+  .mono-pulse,
+  .mono-spin,
+  .mono-fade-in,
+  .mono-fade-out {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .mono-card,
+  .mono-button,
+  .mono-input {
+    transition: none !important;
+  }
+}

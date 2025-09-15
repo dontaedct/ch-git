@@ -56,7 +56,7 @@ import {
   Eye,
   EyeOff,
   Filter,
-  Sort,
+  ArrowUpDown,
   Grid,
   List,
   MoreHorizontal,
@@ -228,7 +228,7 @@ export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(
             {actions.map((action, index) => (
               <InteractiveButton
                 key={index}
-                variant={action.variant || 'primary'}
+                variant={action.variant === 'outline' ? 'secondary' : (action.variant || 'primary')}
                 onClick={action.onClick}
                 className="min-w-[120px]"
               >
@@ -364,7 +364,7 @@ export const OnboardingEmptyState = forwardRef<HTMLDivElement, OnboardingEmptySt
         {/* Navigation */}
         <div className="flex items-center justify-between w-full max-w-xs mt-6">
           <InteractiveButton
-            variant="outline"
+            variant="secondary"
             onClick={onPrevious}
             disabled={step === 1}
           >
@@ -676,15 +676,4 @@ export const GenericListEmptyState = forwardRef<HTMLDivElement, GenericListEmpty
 )
 GenericListEmptyState.displayName = "GenericListEmptyState"
 
-export {
-  WelcomeEmptyState,
-  OnboardingEmptyState,
-  SearchEmptyState,
-  ErrorEmptyState,
-  LoadingEmptyState,
-  PermissionEmptyState,
-  CelebrationEmptyState,
-  GenericListEmptyState,
-}
-
-export { EmptyState }
+// All components are already exported as const above

@@ -32,14 +32,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/73</span>
+                <span class='fraction'>0/75</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/33</span>
+                <span class='fraction'>0/34</span>
             </div>
         
             
@@ -1362,7 +1362,7 @@ export interface TenantConfig {
 }
 &nbsp;
 // Circuit Breaker States
-export enum <span class="cstat-no" title="statement not covered" >CircuitState {</span>
+export enum <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >CircuitState {</span></span>
   CLOSED = 'CLOSED',     // Normal operation
   OPEN = 'OPEN',         // Failing, blocking requests
   HALF_OPEN = 'HALF_OPEN' <span class="cstat-no" title="statement not covered" >// Testing if service recovered</span>
@@ -1380,7 +1380,7 @@ interface CircuitBreakerEntry {
 const circuitBreakerStore = <span class="cstat-no" title="statement not covered" >new Map&lt;string, CircuitBreakerEntry&gt;();</span>
 &nbsp;
 // Default configurations
-export const <span class="cstat-no" title="statement not covered" >DEFAULT_CONFIGS = <span class="cstat-no" title="statement not covered" >{</span></span>
+export const <span class="cstat-no" title="statement not covered" >DEFAULT_CONFIGS </span>= <span class="cstat-no" title="statement not covered" >{</span>
   BACKOFF: {
     baseDelayMs: 1000,
     maxDelayMs: 30000,
@@ -1429,14 +1429,14 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Sleep for specified milliseconds
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >sleep(m</span></span>s: number): Promise&lt;void&gt; {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >sleep(</span></span>ms: number): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >  return new Promise(<span class="fstat-no" title="function not covered" >resolve =&gt; <span class="cstat-no" title="statement not covered" >s</span>etTimeout(resolve, ms));</span></span>
 }
 &nbsp;
 /**
  * Execute operation with exponential backoff retry
  */
-export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >withBackoff&lt;T&gt;(</span></span>
+export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >withBackoff&lt;</span></span>T&gt;(
   operation: () =&gt; Promise&lt;T&gt;,
   config: BackoffConfig = <span class="branch-0 cbranch-no" title="branch not covered" >DEFAULT_CONFIGS.BACKOFF,</span>
   tenantId?: string
@@ -1473,7 +1473,7 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 /**
  * Circuit Breaker Implementation
  */
-export class <span class="cstat-no" title="statement not covered" >CircuitBreaker {</span>
+export class <span class="cstat-no" title="statement not covered" >CircuitBreaker </span>{
   private config: CircuitBreakerConfig;
   private tenantId: string;
   
@@ -1601,7 +1601,7 @@ export class <span class="cstat-no" title="statement not covered" >CircuitBreake
 /**
  * Dead Letter Queue (DLQ) Operations
  */
-export class <span class="cstat-no" title="statement not covered" >DeadLetterQueue {</span>
+export class <span class="cstat-no" title="statement not covered" >DeadLetterQueue </span>{
   private config: DLQConfig;
   
 <span class="fstat-no" title="function not covered" >  constructor(c</span>onfig: DLQConfig = <span class="branch-0 cbranch-no" title="branch not covered" >DEFAULT_CONFIGS.DLQ)</span> {
@@ -1746,7 +1746,7 @@ export class <span class="cstat-no" title="statement not covered" >DeadLetterQue
 /**
  * Concurrency Limiter
  */
-export class <span class="cstat-no" title="statement not covered" >ConcurrencyLimiter {</span>
+export class <span class="cstat-no" title="statement not covered" >ConcurrencyLimiter </span>{
   private config: ConcurrencyConfig;
   private <span class="cstat-no" title="statement not covered" >activeExecutions = new Map&lt;string, number&gt;();</span>
   
@@ -1798,7 +1798,7 @@ export class <span class="cstat-no" title="statement not covered" >ConcurrencyLi
 /**
  * Stripe Replay Protection
  */
-export class <span class="cstat-no" title="statement not covered" >StripeReplayProtection {</span>
+export class <span class="cstat-no" title="statement not covered" >StripeReplayProtection </span>{
 <span class="fstat-no" title="function not covered" >  async g</span>etLastProcessedEvent(tenantId: string): Promise&lt;string | null&gt; {
     const supabase = <span class="cstat-no" title="statement not covered" >createServiceRoleClient();</span>
     
@@ -1841,7 +1841,7 @@ export class <span class="cstat-no" title="statement not covered" >StripeReplayP
 /**
  * Main Reliability Controller
  */
-export class <span class="cstat-no" title="statement not covered" >N8nReliabilityController {</span>
+export class <span class="cstat-no" title="statement not covered" >N8nReliabilityController </span>{
   private <span class="cstat-no" title="statement not covered" >circuitBreakers = new Map&lt;string, CircuitBreaker&gt;();</span>
   private dlq: DeadLetterQueue;
   private concurrencyLimiter: ConcurrencyLimiter;
@@ -1943,7 +1943,7 @@ export class <span class="cstat-no" title="statement not covered" >N8nReliabilit
 }
 &nbsp;
 // Global instance
-export const <span class="cstat-no" title="statement not covered" >n8nReliability = <span class="cstat-no" title="statement not covered" >n</span>ew N8nReliabilityController();</span>
+export const <span class="cstat-no" title="statement not covered" >n8nReliability </span>= <span class="cstat-no" title="statement not covered" >new N8nReliabilityController();</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1951,7 +1951,7 @@ export const <span class="cstat-no" title="statement not covered" >n8nReliabilit
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

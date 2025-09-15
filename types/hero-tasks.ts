@@ -434,13 +434,24 @@ export interface SearchAnalytics {
   timestamp: string;
 }
 
-export interface TaskSearchResult {
+// Generic API response wrapper
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data?: T;
+  error?: string;
+  message?: string;
+  timestamp: string;
+}
+
+export interface TaskSearchData {
   tasks: HeroTask[];
   total_count: number;
   page: number;
   page_size: number;
   has_more: boolean;
 }
+
+export interface TaskSearchResult extends ApiResponse<TaskSearchData> {}
 
 export interface TaskSearchRequest {
   filters?: TaskSearchFilters;
@@ -482,13 +493,6 @@ export interface TeamAnalytics {
 // API RESPONSE INTERFACES
 // ============================================================================
 
-export interface ApiResponse<T> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-  timestamp: string;
-}
 
 export interface PaginatedResponse<T> {
   success: boolean;

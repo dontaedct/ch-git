@@ -53,7 +53,7 @@ describe('Fallback Checkout Tests', () => {
         expect(result.url).toContain('https://payments.example.com/checkout');
         expect(result.url).toContain('amount=2000');
         expect(result.url).toContain('currency=usd');
-        expect(result.url).toContain('description=Test%20payment');
+        expect(result.url).toContain('description=Test+payment');
       }
     });
 

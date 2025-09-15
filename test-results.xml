@@ -1,0 +1,1022 @@
+<testsuites id="" name="" tests="42" failures="18" skipped="0" errors="0" time="24.903516">
+<testsuite name="ui\accessibility-enhanced.spec.ts" timestamp="2025-09-14T00:39:49.656Z" hostname="chromium" tests="7" failures="3" skipped="0" time="4.378" errors="0">
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit" classname="ui\accessibility-enhanced.spec.ts" time="0.747">
+<failure message="accessibility-enhanced.spec.ts:1073:3 Comprehensive Accessibility Audit" type="FAILURE">
+<![CDATA[  [chromium] › ui\accessibility-enhanced.spec.ts:1073:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Array.forEach (<anonymous>)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at new Promise (<anonymous>)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:47:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1074:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🔍 Running Comprehensive Accessibility Audit...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Screen Reader Compatibility" classname="ui\accessibility-enhanced.spec.ts" time="0.849">
+<system-out>
+<![CDATA[📢 Testing Screen Reader Compatibility...
+
+📢 Screen Reader Compatibility Results:
+Heading Structure: Valid
+ARIA Labels: 0 missing
+Form Labels: 0 missing
+Image Alt Text: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation" classname="ui\accessibility-enhanced.spec.ts" time="0.751">
+<failure message="accessibility-enhanced.spec.ts:1109:3 Keyboard Navigation" type="FAILURE">
+<![CDATA[  [chromium] › ui\accessibility-enhanced.spec.ts:1109:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 1
+    Received:    0
+
+      1112 |     // Assert keyboard navigation
+      1113 |     expect(results.focusIndicators.elementsWithoutFocusIndicators).toBeLessThanOrEqual(2);
+    > 1114 |     expect(results.skipLinks.totalSkipLinks).toBeGreaterThanOrEqual(1);
+           |                                              ^
+      1115 |     
+      1116 |     console.log(`\n⌨️ Keyboard Navigation Results:`);
+      1117 |     console.log(`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`);
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1114:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[⌨️ Testing Keyboard Navigation...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast" classname="ui\accessibility-enhanced.spec.ts" time="0.72">
+<failure message="accessibility-enhanced.spec.ts:1122:3 Color Contrast" type="FAILURE">
+<![CDATA[  [chromium] › ui\accessibility-enhanced.spec.ts:1122:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Array.forEach (<anonymous>)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at new Promise (<anonymous>)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.testColorContrast (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:204:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1123:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🎨 Testing Color Contrast...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-chromium\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Reduced Motion Support" classname="ui\accessibility-enhanced.spec.ts" time="0.51">
+<system-out>
+<![CDATA[🎭 Testing Reduced Motion Support...
+
+🎭 Reduced Motion Support Results:
+Reduced Motion Supported: true
+Animated Elements: 3
+Transition Elements: 3
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Form Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.552">
+<system-out>
+<![CDATA[📝 Testing Form Accessibility...
+
+📝 Form Accessibility Results:
+Form Labels: 0 missing
+Error Associations: 0 missing
+Required Field Indicators: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Component Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.249">
+<system-out>
+<![CDATA[🧩 Testing Component Accessibility...
+📝 Testing Form Accessibility...
+
+🧩 Component Accessibility Results:
+Buttons: 0 missing descriptions
+Links: 0 missing descriptions
+Images: 0 missing alt text
+Tables: 0 missing headers
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui\accessibility-enhanced.spec.ts" timestamp="2025-09-14T00:39:49.656Z" hostname="firefox" tests="7" failures="3" skipped="0" time="14.582" errors="0">
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit" classname="ui\accessibility-enhanced.spec.ts" time="2.628">
+<failure message="accessibility-enhanced.spec.ts:1073:3 Comprehensive Accessibility Audit" type="FAILURE">
+<![CDATA[  [firefox] › ui\accessibility-enhanced.spec.ts:1073:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit 
+
+    Error: frame.evaluate: unknown rule `[object Object]` in options.runOnly
+    normalizeOptions/<@debugger eval code line 291 > eval:28406:25
+    normalizeOptions@debugger eval code line 291 > eval:28404:27
+    run@debugger eval code line 291 > eval:28282:16
+    runPartial/<@debugger eval code line 291 > eval:28959:20
+    runPartial@debugger eval code line 291 > eval:28958:14
+    @debugger eval code line 291 > eval:5:21
+    evaluate@debugger eval code:293:16
+    @debugger eval code:1:44
+
+        at normalizeOptions/<@debugger eval code line 291 > eval:28406:25
+        at normalizeOptions@debugger eval code line 291 > eval:28404:27
+        at run@debugger eval code line 291 > eval:28282:16
+        at runPartial/<@debugger eval code line 291 > eval:28959:20
+        at runPartial@debugger eval code line 291 > eval:28958:14
+        at @debugger eval code line 291 > eval:5:21
+        at evaluate@debugger eval code:293:16
+        at @debugger eval code:1:44
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:47:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1074:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-firefox\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🔍 Running Comprehensive Accessibility Audit...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-firefox\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-firefox\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Screen Reader Compatibility" classname="ui\accessibility-enhanced.spec.ts" time="1.945">
+<system-out>
+<![CDATA[📢 Testing Screen Reader Compatibility...
+
+📢 Screen Reader Compatibility Results:
+Heading Structure: Valid
+ARIA Labels: 0 missing
+Form Labels: 0 missing
+Image Alt Text: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation" classname="ui\accessibility-enhanced.spec.ts" time="2.605">
+<failure message="accessibility-enhanced.spec.ts:1109:3 Keyboard Navigation" type="FAILURE">
+<![CDATA[  [firefox] › ui\accessibility-enhanced.spec.ts:1109:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 1
+    Received:    0
+
+      1112 |     // Assert keyboard navigation
+      1113 |     expect(results.focusIndicators.elementsWithoutFocusIndicators).toBeLessThanOrEqual(2);
+    > 1114 |     expect(results.skipLinks.totalSkipLinks).toBeGreaterThanOrEqual(1);
+           |                                              ^
+      1115 |     
+      1116 |     console.log(`\n⌨️ Keyboard Navigation Results:`);
+      1117 |     console.log(`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`);
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1114:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-firefox\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[⌨️ Testing Keyboard Navigation...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-firefox\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-firefox\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast" classname="ui\accessibility-enhanced.spec.ts" time="2.351">
+<failure message="accessibility-enhanced.spec.ts:1122:3 Color Contrast" type="FAILURE">
+<![CDATA[  [firefox] › ui\accessibility-enhanced.spec.ts:1122:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast 
+
+    Error: frame.evaluate: unknown rule `[object Object]` in options.runOnly
+    normalizeOptions/<@debugger eval code line 291 > eval:28406:25
+    normalizeOptions@debugger eval code line 291 > eval:28404:27
+    run@debugger eval code line 291 > eval:28282:16
+    runPartial/<@debugger eval code line 291 > eval:28959:20
+    runPartial@debugger eval code line 291 > eval:28958:14
+    @debugger eval code line 291 > eval:5:21
+    evaluate@debugger eval code:293:16
+    @debugger eval code:1:44
+
+        at normalizeOptions/<@debugger eval code line 291 > eval:28406:25
+        at normalizeOptions@debugger eval code line 291 > eval:28404:27
+        at run@debugger eval code line 291 > eval:28282:16
+        at runPartial/<@debugger eval code line 291 > eval:28959:20
+        at runPartial@debugger eval code line 291 > eval:28958:14
+        at @debugger eval code line 291 > eval:5:21
+        at evaluate@debugger eval code:293:16
+        at @debugger eval code:1:44
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.testColorContrast (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:204:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1123:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-firefox\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-firefox\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🎨 Testing Color Contrast...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-firefox\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-firefox\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Reduced Motion Support" classname="ui\accessibility-enhanced.spec.ts" time="2.168">
+<system-out>
+<![CDATA[🎭 Testing Reduced Motion Support...
+
+🎭 Reduced Motion Support Results:
+Reduced Motion Supported: true
+Animated Elements: 3
+Transition Elements: 3
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Form Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="2.176">
+<system-out>
+<![CDATA[📝 Testing Form Accessibility...
+
+📝 Form Accessibility Results:
+Form Labels: 0 missing
+Error Associations: 0 missing
+Required Field Indicators: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Component Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.709">
+<system-out>
+<![CDATA[🧩 Testing Component Accessibility...
+📝 Testing Form Accessibility...
+
+🧩 Component Accessibility Results:
+Buttons: 0 missing descriptions
+Links: 0 missing descriptions
+Images: 0 missing alt text
+Tables: 0 missing headers
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui\accessibility-enhanced.spec.ts" timestamp="2025-09-14T00:39:49.656Z" hostname="webkit" tests="7" failures="3" skipped="0" time="5.42" errors="0">
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit" classname="ui\accessibility-enhanced.spec.ts" time="1.149">
+<failure message="accessibility-enhanced.spec.ts:1073:3 Comprehensive Accessibility Audit" type="FAILURE">
+<![CDATA[  [webkit] › ui\accessibility-enhanced.spec.ts:1073:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+
+      45 |     console.log('🔍 Running Comprehensive Accessibility Audit...');
+      46 |     
+    > 47 |     const results = await new AxeBuilder({ page: this.page })
+         |                     ^
+      48 |       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag2aaa', 'wcag21aaa'])
+      49 |       .withRules({
+      50 |         // Critical WCAG 2.1 AAA rules
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:47:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1074:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🔍 Running Comprehensive Accessibility Audit...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-webkit\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Screen Reader Compatibility" classname="ui\accessibility-enhanced.spec.ts" time="0.944">
+<system-out>
+<![CDATA[📢 Testing Screen Reader Compatibility...
+
+📢 Screen Reader Compatibility Results:
+Heading Structure: Valid
+ARIA Labels: 0 missing
+Form Labels: 0 missing
+Image Alt Text: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation" classname="ui\accessibility-enhanced.spec.ts" time="0.995">
+<failure message="accessibility-enhanced.spec.ts:1109:3 Keyboard Navigation" type="FAILURE">
+<![CDATA[  [webkit] › ui\accessibility-enhanced.spec.ts:1109:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 1
+    Received:    0
+
+      1112 |     // Assert keyboard navigation
+      1113 |     expect(results.focusIndicators.elementsWithoutFocusIndicators).toBeLessThanOrEqual(2);
+    > 1114 |     expect(results.skipLinks.totalSkipLinks).toBeGreaterThanOrEqual(1);
+           |                                              ^
+      1115 |     
+      1116 |     console.log(`\n⌨️ Keyboard Navigation Results:`);
+      1117 |     console.log(`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`);
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1114:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[⌨️ Testing Keyboard Navigation...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-webkit\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast" classname="ui\accessibility-enhanced.spec.ts" time="0.756">
+<failure message="accessibility-enhanced.spec.ts:1122:3 Color Contrast" type="FAILURE">
+<![CDATA[  [webkit] › ui\accessibility-enhanced.spec.ts:1122:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+
+      202 |     console.log('🎨 Testing Color Contrast...');
+      203 |     
+    > 204 |     const results = await new AxeBuilder({ page: this.page })
+          |                     ^
+      205 |       .withRules({
+      206 |         'color-contrast': { enabled: true },
+      207 |         'color-contrast-enhanced': { enabled: true }
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.testColorContrast (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:204:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1123:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-webkit\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-webkit\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🎨 Testing Color Contrast...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-webkit\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-webkit\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Reduced Motion Support" classname="ui\accessibility-enhanced.spec.ts" time="0.486">
+<system-out>
+<![CDATA[🎭 Testing Reduced Motion Support...
+
+🎭 Reduced Motion Support Results:
+Reduced Motion Supported: true
+Animated Elements: 3
+Transition Elements: 3
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Form Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.516">
+<system-out>
+<![CDATA[📝 Testing Form Accessibility...
+
+📝 Form Accessibility Results:
+Form Labels: 0 missing
+Error Associations: 0 missing
+Required Field Indicators: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Component Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.574">
+<system-out>
+<![CDATA[🧩 Testing Component Accessibility...
+📝 Testing Form Accessibility...
+
+🧩 Component Accessibility Results:
+Buttons: 0 missing descriptions
+Links: 0 missing descriptions
+Images: 0 missing alt text
+Tables: 0 missing headers
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui\accessibility-enhanced.spec.ts" timestamp="2025-09-14T00:39:49.656Z" hostname="Mobile Chrome" tests="7" failures="3" skipped="0" time="3.269" errors="0">
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit" classname="ui\accessibility-enhanced.spec.ts" time="0.633">
+<failure message="accessibility-enhanced.spec.ts:1073:3 Comprehensive Accessibility Audit" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › ui\accessibility-enhanced.spec.ts:1073:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Array.forEach (<anonymous>)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at new Promise (<anonymous>)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:47:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1074:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🔍 Running Comprehensive Accessibility Audit...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Chrome\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Screen Reader Compatibility" classname="ui\accessibility-enhanced.spec.ts" time="0.43">
+<system-out>
+<![CDATA[📢 Testing Screen Reader Compatibility...
+
+📢 Screen Reader Compatibility Results:
+Heading Structure: Valid
+ARIA Labels: 0 missing
+Form Labels: 0 missing
+Image Alt Text: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation" classname="ui\accessibility-enhanced.spec.ts" time="0.468">
+<failure message="accessibility-enhanced.spec.ts:1109:3 Keyboard Navigation" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › ui\accessibility-enhanced.spec.ts:1109:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 1
+    Received:    0
+
+      1112 |     // Assert keyboard navigation
+      1113 |     expect(results.focusIndicators.elementsWithoutFocusIndicators).toBeLessThanOrEqual(2);
+    > 1114 |     expect(results.skipLinks.totalSkipLinks).toBeGreaterThanOrEqual(1);
+           |                                              ^
+      1115 |     
+      1116 |     console.log(`\n⌨️ Keyboard Navigation Results:`);
+      1117 |     console.log(`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`);
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1114:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[⌨️ Testing Keyboard Navigation...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Chrome\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast" classname="ui\accessibility-enhanced.spec.ts" time="0.583">
+<failure message="accessibility-enhanced.spec.ts:1122:3 Color Contrast" type="FAILURE">
+<![CDATA[  [Mobile Chrome] › ui\accessibility-enhanced.spec.ts:1122:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Array.forEach (<anonymous>)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at new Promise (<anonymous>)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.testColorContrast (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:204:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1123:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Chrome\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Chrome\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🎨 Testing Color Contrast...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Chrome\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Chrome\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Reduced Motion Support" classname="ui\accessibility-enhanced.spec.ts" time="0.418">
+<system-out>
+<![CDATA[🎭 Testing Reduced Motion Support...
+
+🎭 Reduced Motion Support Results:
+Reduced Motion Supported: true
+Animated Elements: 3
+Transition Elements: 3
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Form Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.415">
+<system-out>
+<![CDATA[📝 Testing Form Accessibility...
+
+📝 Form Accessibility Results:
+Form Labels: 0 missing
+Error Associations: 0 missing
+Required Field Indicators: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Component Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.322">
+<system-out>
+<![CDATA[🧩 Testing Component Accessibility...
+📝 Testing Form Accessibility...
+
+🧩 Component Accessibility Results:
+Buttons: 0 missing descriptions
+Links: 0 missing descriptions
+Images: 0 missing alt text
+Tables: 0 missing headers
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui\accessibility-enhanced.spec.ts" timestamp="2025-09-14T00:39:49.656Z" hostname="Mobile Safari" tests="7" failures="3" skipped="0" time="4.026" errors="0">
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit" classname="ui\accessibility-enhanced.spec.ts" time="0.669">
+<failure message="accessibility-enhanced.spec.ts:1073:3 Comprehensive Accessibility Audit" type="FAILURE">
+<![CDATA[  [Mobile Safari] › ui\accessibility-enhanced.spec.ts:1073:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+
+      45 |     console.log('🔍 Running Comprehensive Accessibility Audit...');
+      46 |     
+    > 47 |     const results = await new AxeBuilder({ page: this.page })
+         |                     ^
+      48 |       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag2aaa', 'wcag21aaa'])
+      49 |       .withRules({
+      50 |         // Critical WCAG 2.1 AAA rules
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:47:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1074:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🔍 Running Comprehensive Accessibility Audit...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Safari\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Screen Reader Compatibility" classname="ui\accessibility-enhanced.spec.ts" time="0.545">
+<system-out>
+<![CDATA[📢 Testing Screen Reader Compatibility...
+
+📢 Screen Reader Compatibility Results:
+Heading Structure: Valid
+ARIA Labels: 0 missing
+Form Labels: 0 missing
+Image Alt Text: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation" classname="ui\accessibility-enhanced.spec.ts" time="0.57">
+<failure message="accessibility-enhanced.spec.ts:1109:3 Keyboard Navigation" type="FAILURE">
+<![CDATA[  [Mobile Safari] › ui\accessibility-enhanced.spec.ts:1109:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 1
+    Received:    0
+
+      1112 |     // Assert keyboard navigation
+      1113 |     expect(results.focusIndicators.elementsWithoutFocusIndicators).toBeLessThanOrEqual(2);
+    > 1114 |     expect(results.skipLinks.totalSkipLinks).toBeGreaterThanOrEqual(1);
+           |                                              ^
+      1115 |     
+      1116 |     console.log(`\n⌨️ Keyboard Navigation Results:`);
+      1117 |     console.log(`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`);
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1114:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[⌨️ Testing Keyboard Navigation...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Safari\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast" classname="ui\accessibility-enhanced.spec.ts" time="0.642">
+<failure message="accessibility-enhanced.spec.ts:1122:3 Color Contrast" type="FAILURE">
+<![CDATA[  [Mobile Safari] › ui\accessibility-enhanced.spec.ts:1122:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+
+      202 |     console.log('🎨 Testing Color Contrast...');
+      203 |     
+    > 204 |     const results = await new AxeBuilder({ page: this.page })
+          |                     ^
+      205 |       .withRules({
+      206 |         'color-contrast': { enabled: true },
+      207 |         'color-contrast-enhanced': { enabled: true }
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.testColorContrast (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:204:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1123:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Safari\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Safari\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🎨 Testing Color Contrast...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Safari\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Safari\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Reduced Motion Support" classname="ui\accessibility-enhanced.spec.ts" time="0.541">
+<system-out>
+<![CDATA[🎭 Testing Reduced Motion Support...
+
+🎭 Reduced Motion Support Results:
+Reduced Motion Supported: true
+Animated Elements: 3
+Transition Elements: 3
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Form Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.485">
+<system-out>
+<![CDATA[📝 Testing Form Accessibility...
+
+📝 Form Accessibility Results:
+Form Labels: 0 missing
+Error Associations: 0 missing
+Required Field Indicators: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Component Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.574">
+<system-out>
+<![CDATA[🧩 Testing Component Accessibility...
+📝 Testing Form Accessibility...
+
+🧩 Component Accessibility Results:
+Buttons: 0 missing descriptions
+Links: 0 missing descriptions
+Images: 0 missing alt text
+Tables: 0 missing headers
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="ui\accessibility-enhanced.spec.ts" timestamp="2025-09-14T00:39:49.656Z" hostname="ui-tests" tests="7" failures="3" skipped="0" time="3.408" errors="0">
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit" classname="ui\accessibility-enhanced.spec.ts" time="0.496">
+<failure message="accessibility-enhanced.spec.ts:1073:3 Comprehensive Accessibility Audit" type="FAILURE">
+<![CDATA[  [ui-tests] › ui\accessibility-enhanced.spec.ts:1073:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Comprehensive Accessibility Audit 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Array.forEach (<anonymous>)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at new Promise (<anonymous>)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:47:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1074:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-ui-tests\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-ui-tests\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🔍 Running Comprehensive Accessibility Audit...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-ui-tests\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-ui-tests\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Screen Reader Compatibility" classname="ui\accessibility-enhanced.spec.ts" time="0.783">
+<system-out>
+<![CDATA[📢 Testing Screen Reader Compatibility...
+
+📢 Screen Reader Compatibility Results:
+Heading Structure: Valid
+ARIA Labels: 0 missing
+Form Labels: 0 missing
+Image Alt Text: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation" classname="ui\accessibility-enhanced.spec.ts" time="0.803">
+<failure message="accessibility-enhanced.spec.ts:1109:3 Keyboard Navigation" type="FAILURE">
+<![CDATA[  [ui-tests] › ui\accessibility-enhanced.spec.ts:1109:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Keyboard Navigation 
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 1
+    Received:    0
+
+      1112 |     // Assert keyboard navigation
+      1113 |     expect(results.focusIndicators.elementsWithoutFocusIndicators).toBeLessThanOrEqual(2);
+    > 1114 |     expect(results.skipLinks.totalSkipLinks).toBeGreaterThanOrEqual(1);
+           |                                              ^
+      1115 |     
+      1116 |     console.log(`\n⌨️ Keyboard Navigation Results:`);
+      1117 |     console.log(`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`);
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1114:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-ui-tests\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-ui-tests\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[⌨️ Testing Keyboard Navigation...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-ui-tests\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-ui-tests\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast" classname="ui\accessibility-enhanced.spec.ts" time="0.481">
+<failure message="accessibility-enhanced.spec.ts:1122:3 Color Contrast" type="FAILURE">
+<![CDATA[  [ui-tests] › ui\accessibility-enhanced.spec.ts:1122:3 › HT-008.7.6: Enhanced Accessibility Testing Suite › Color Contrast 
+
+    Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Array.forEach (<anonymous>)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at new Promise (<anonymous>)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at eval (eval at evaluate (:291:30), <anonymous>:28406:25)
+        at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)
+        at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)
+        at eval (eval at evaluate (:291:30), <anonymous>:28959:20)
+        at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)
+        at eval (eval at evaluate (:291:30), <anonymous>:5:21)
+        at UtilityScript.evaluate (<anonymous>:293:16)
+        at UtilityScript.<anonymous> (<anonymous>:1:44)
+        at AxeBuilder.runPartialRecursive (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:283:34)
+        at AxeBuilder.analyze (C:\Users\Dontae-PC\my-app\node_modules\@axe-core\playwright\dist\index.mjs:210:28)
+        at EnhancedAccessibilityTesting.testColorContrast (C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:204:21)
+        at C:\Users\Dontae-PC\my-app\tests\ui\accessibility-enhanced.spec.ts:1123:21
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-ui-tests\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ..\test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-ui-tests\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[🎨 Testing Color Contrast...
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-ui-tests\test-failed-1.png]]
+
+[[ATTACHMENT|test-results\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-ui-tests\video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Reduced Motion Support" classname="ui\accessibility-enhanced.spec.ts" time="0.294">
+<system-out>
+<![CDATA[🎭 Testing Reduced Motion Support...
+
+🎭 Reduced Motion Support Results:
+Reduced Motion Supported: true
+Animated Elements: 3
+Transition Elements: 3
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Form Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.297">
+<system-out>
+<![CDATA[📝 Testing Form Accessibility...
+
+📝 Form Accessibility Results:
+Form Labels: 0 missing
+Error Associations: 0 missing
+Required Field Indicators: 0 missing
+]]>
+</system-out>
+</testcase>
+<testcase name="HT-008.7.6: Enhanced Accessibility Testing Suite › Component Accessibility" classname="ui\accessibility-enhanced.spec.ts" time="0.254">
+<system-out>
+<![CDATA[🧩 Testing Component Accessibility...
+📝 Testing Form Accessibility...
+
+🧩 Component Accessibility Results:
+Buttons: 0 missing descriptions
+Links: 0 missing descriptions
+Images: 0 missing alt text
+Tables: 0 missing headers
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

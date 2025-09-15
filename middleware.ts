@@ -36,37 +36,11 @@ const securityMiddleware = createSecurityMiddleware({
 });
 
 export async function middleware(req: NextRequest) {
-  try {
-    // Process request through enhanced security middleware
-    const securityResult = await securityMiddleware.processRequest(req);
-    
-    // If request should be blocked, return the security response
-    if (securityResult.shouldBlock && securityResult.response) {
-      console.warn(`Request blocked: ${securityResult.blockReason}`, {
-        url: req.url,
-        userAgent: req.headers.get('user-agent'),
-        ip: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip'),
-      });
-      return securityResult.response;
-    }
-    
-    // Continue with normal response and apply security headers
-    const response = NextResponse.next();
-    
-    // Apply all security headers
-    Object.entries(securityResult.headers).forEach(([key, value]) => {
-      response.headers.set(key, value);
-    });
-    
-    return response;
-  } catch (error) {
-    console.error('Middleware security error:', error);
-    // Fail securely - continue with basic protection
-    const response = NextResponse.next();
-    response.headers.set('X-Frame-Options', 'DENY');
-    response.headers.set('X-Content-Type-Options', 'nosniff');
-    return response;
-  }
+  // Temporarily simplified middleware for debugging
+  const response = NextResponse.next();
+  response.headers.set('X-Frame-Options', 'DENY');
+  response.headers.set('X-Content-Type-Options', 'nosniff');
+  return response;
 }
 
 export const config = { 

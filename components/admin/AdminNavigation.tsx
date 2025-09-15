@@ -21,7 +21,6 @@ import {
   Shield,
   Activity,
   Flag,
-  Brand,
   ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -47,9 +46,17 @@ interface AdminRoute {
 
 const adminRoutes: AdminRoute[] = [
   {
+    href: '/admin/modules',
+    label: 'Module Management',
+    icon: Package,
+    description: 'Manage modules, themes, and tenant configuration',
+    requiresPermission: 'canManageSettings',
+    category: 'Configuration'
+  },
+  {
     href: '/admin/brand-management',
     label: 'Brand Management',
-    icon: Brand,
+    icon: Palette,
     description: 'Manage logos, colors, and brand identity',
     requiresPermission: 'canManageSettings',
     category: 'Branding'

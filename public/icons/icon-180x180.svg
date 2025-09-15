@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="90" cy="90" r="88" fill="url(#gradient)" stroke="#ffffff" stroke-width="2"/>
+  
+  <!-- Task list icon -->
+  <g transform="translate(63, 54)">
+    <!-- Clipboard -->
+    <rect x="0" y="0" width="54" height="72" rx="2" fill="#ffffff" opacity="0.9"/>
+    
+    <!-- Clipboard top -->
+    <rect x="9" y="-9" width="36" height="18" rx="2" fill="#ffffff" opacity="0.9"/>
+    
+    <!-- Task lines -->
+    <line x1="14.4" y1="14.4" x2="39.6" y2="14.4" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14.4" y1="27" x2="39.6" y2="27" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="14.4" y1="39.6" x2="32.4" y2="39.6" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round"/>
+    
+    <!-- Checkmark -->
+    <path d="M10.799999999999999 21.599999999999998 L18 28.8 L25.200000000000003 21.599999999999998" stroke="#10b981" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

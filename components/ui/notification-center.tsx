@@ -14,7 +14,7 @@
 'use client';
 
 import * as React from 'react';
-import { Bell, Check, X, MoreHorizontal, Filter, MarkAsRead, Trash2, Settings } from 'lucide-react';
+import { Bell, Check, X, MoreHorizontal, Filter, CheckCheck, Trash2, Settings } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -213,7 +213,7 @@ const NotificationItem: React.FC<{
                       </DropdownMenuItem>
                     )}
                     <DropdownMenuItem onClick={() => onArchive(notification.id)}>
-                      <MarkAsRead className="mr-2 h-4 w-4" />
+                      <CheckCheck className="mr-2 h-4 w-4" />
                       Archive
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

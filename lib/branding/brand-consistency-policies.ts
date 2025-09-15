@@ -41,7 +41,7 @@ export class BrandConsistencyPolicies {
           condition: 'Primary color is defined with valid hex value',
           validator: (config) => {
             const primary = config.theme?.colors?.primary;
-            return primary && /^#[0-9a-fA-F]{6}$/.test(primary);
+            return Boolean(primary && /^#[0-9a-fA-F]{6}$/.test(primary));
           },
           errorMessage: 'Primary brand color must be a valid hex color (e.g., #007AFF)',
         },
@@ -52,7 +52,7 @@ export class BrandConsistencyPolicies {
           condition: 'Secondary color is defined with valid hex value',
           validator: (config) => {
             const secondary = config.theme?.colors?.secondary;
-            return secondary && /^#[0-9a-fA-F]{6}$/.test(secondary);
+            return Boolean(secondary && /^#[0-9a-fA-F]{6}$/.test(secondary));
           },
           errorMessage: 'Secondary brand color must be a valid hex color (e.g., #34C759)',
         },
@@ -63,7 +63,7 @@ export class BrandConsistencyPolicies {
           condition: 'Neutral color is defined with valid hex value',
           validator: (config) => {
             const neutral = config.theme?.colors?.neutral;
-            return neutral && /^#[0-9a-fA-F]{6}$/.test(neutral);
+            return Boolean(neutral && /^#[0-9a-fA-F]{6}$/.test(neutral));
           },
           errorMessage: 'Neutral brand color must be a valid hex color (e.g., #8E8E93)',
         },
@@ -74,7 +74,7 @@ export class BrandConsistencyPolicies {
           condition: 'Accent color is defined with valid hex value',
           validator: (config) => {
             const accent = config.theme?.colors?.accent;
-            return accent && /^#[0-9a-fA-F]{6}$/.test(accent);
+            return Boolean(accent && /^#[0-9a-fA-F]{6}$/.test(accent));
           },
           errorMessage: 'Accent brand color must be a valid hex color (e.g., #FF9500)',
         },
@@ -85,11 +85,11 @@ export class BrandConsistencyPolicies {
           condition: 'All semantic colors are defined with valid hex values',
           validator: (config) => {
             const colors = config.theme?.colors;
-            return colors?.success && colors?.warning && colors?.error && colors?.info &&
+            return Boolean(colors?.success && colors?.warning && colors?.error && colors?.info &&
                    /^#[0-9a-fA-F]{6}$/.test(colors.success) &&
                    /^#[0-9a-fA-F]{6}$/.test(colors.warning) &&
                    /^#[0-9a-fA-F]{6}$/.test(colors.error) &&
-                   /^#[0-9a-fA-F]{6}$/.test(colors.info);
+                   /^#[0-9a-fA-F]{6}$/.test(colors.info));
           },
           errorMessage: 'All semantic colors (success, warning, error, info) must be defined with valid hex values',
         },
@@ -190,7 +190,7 @@ const brandColors = {
           condition: 'Font family is defined and not empty',
           validator: (config) => {
             const fontFamily = config.theme?.typography?.fontFamily;
-            return fontFamily && fontFamily.trim().length > 0;
+            return Boolean(fontFamily && fontFamily.trim().length > 0);
           },
           errorMessage: 'Brand font family must be defined',
         },
@@ -201,8 +201,8 @@ const brandColors = {
           condition: 'Font weights array is defined with valid values',
           validator: (config) => {
             const fontWeights = config.theme?.typography?.fontWeights;
-            return fontWeights && Array.isArray(fontWeights) && fontWeights.length > 0 &&
-                   fontWeights.every(weight => typeof weight === 'number' && weight >= 100 && weight <= 900);
+            return Boolean(fontWeights && Array.isArray(fontWeights) && fontWeights.length > 0 &&
+                   fontWeights.every(weight => typeof weight === 'number' && weight >= 100 && weight <= 900));
           },
           errorMessage: 'Brand font weights must be defined as array of valid numbers (100-900)',
         },
@@ -213,7 +213,7 @@ const brandColors = {
           condition: 'Font display is defined with valid value',
           validator: (config) => {
             const fontDisplay = config.theme?.typography?.fontDisplay;
-            return fontDisplay && ['auto', 'block', 'swap', 'fallback', 'optional'].includes(fontDisplay);
+            return Boolean(fontDisplay && ['auto', 'block', 'swap', 'fallback', 'optional'].includes(fontDisplay));
           },
           errorMessage: 'Font display must be defined with valid value (auto, block, swap, fallback, optional)',
         },
@@ -222,9 +222,9 @@ const brandColors = {
           name: 'Typography Scale Definition',
           description: 'Typography scale must be defined for consistent sizing',
           condition: 'Typography scale includes all required sizes',
-          validator: (config) => {
+          validator: (config): boolean => {
             const scale = config.theme?.typography?.scale;
-            return scale && scale.xs && scale.sm && scale.base && scale.lg && scale.xl && scale['2xl'];
+            return !!(scale && scale.xs && scale.sm && scale.base && scale.lg && scale.xl && scale['2xl']);
           },
           errorMessage: 'Typography scale must include all required sizes (xs, sm, base, lg, xl, 2xl)',
         },
@@ -306,9 +306,9 @@ const brandTypography = {
           name: 'Logo Consistency',
           description: 'Brand logo must be consistently used across all interfaces',
           condition: 'Logo is defined with proper dimensions and alt text',
-          validator: (config) => {
+          validator: (config): boolean => {
             const logo = config.theme?.logo;
-            return logo && logo.src && logo.alt && logo.width && logo.height;
+            return !!(logo && logo.src && logo.alt && logo.width && logo.height);
           },
           errorMessage: 'Brand logo must be defined with src, alt text, width, and height',
         },
@@ -319,7 +319,7 @@ const brandTypography = {
           condition: 'Brand name is defined and not empty',
           validator: (config) => {
             const brandName = config.brand?.name;
-            return brandName && brandName.trim().length > 0;
+            return Boolean(brandName && brandName.trim().length > 0);
           },
           errorMessage: 'Brand name must be defined and not empty',
         },
@@ -339,9 +339,9 @@ const brandTypography = {
           name: 'Spacing Consistency',
           description: 'Spacing must be consistent across all components',
           condition: 'Spacing system is defined and used consistently',
-          validator: (config) => {
+          validator: (config): boolean => {
             const spacing = config.theme?.spacing;
-            return spacing && spacing.sm && spacing.md && spacing.lg && spacing.xl;
+            return !!(spacing && spacing.sm && spacing.md && spacing.lg && spacing.xl);
           },
           errorMessage: 'Spacing system must be defined with sm, md, lg, xl values',
         },

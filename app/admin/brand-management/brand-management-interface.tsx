@@ -28,7 +28,7 @@ import {
   CheckCircle,
   AlertCircle,
   Settings,
-  Brand
+  Tag as Brand
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { logoManager, BRAND_PRESETS, BrandUtils } from '@/lib/branding/logo-manager';

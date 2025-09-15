@@ -1,0 +1,174 @@
+{
+  "name": "hero-tasks",
+  "displayName": "Hero Tasks",
+  "description": "Hero Tasks integration for VS Code",
+  "version": "1.0.0",
+  "publisher": "oss-hero",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other",
+    "Productivity"
+  ],
+  "keywords": [
+    "tasks",
+    "project-management",
+    "productivity",
+    "hero-tasks"
+  ],
+  "activationEvents": [
+    "onCommand:hero-tasks.openPanel",
+    "onCommand:hero-tasks.createTask",
+    "onCommand:hero-tasks.refreshTasks"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "hero-tasks.openPanel",
+        "title": "Open Hero Tasks Panel",
+        "category": "Hero Tasks"
+      },
+      {
+        "command": "hero-tasks.createTask",
+        "title": "Create New Task",
+        "category": "Hero Tasks"
+      },
+      {
+        "command": "hero-tasks.refreshTasks",
+        "title": "Refresh Tasks",
+        "category": "Hero Tasks"
+      },
+      {
+        "command": "hero-tasks.updateTaskStatus",
+        "title": "Update Task Status",
+        "category": "Hero Tasks"
+      },
+      {
+        "command": "hero-tasks.showAnalytics",
+        "title": "Show Analytics",
+        "category": "Hero Tasks"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "hero-tasks-view",
+          "name": "Hero Tasks",
+          "when": "true"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "hero-tasks",
+          "title": "Hero Tasks",
+          "icon": "$(checklist)"
+        }
+      ],
+      "panel": [
+        {
+          "id": "hero-tasks-panel",
+          "title": "Hero Tasks",
+          "icon": "$(checklist)"
+        }
+      ]
+    },
+    "views": {
+      "hero-tasks": [
+        {
+          "id": "hero-tasks-view",
+          "name": "Tasks",
+          "when": "true"
+        }
+      ],
+      "hero-tasks-panel": [
+        {
+          "id": "hero-tasks-panel-view",
+          "name": "Task Details",
+          "when": "true"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "hero-tasks.refreshTasks",
+          "when": "view == hero-tasks-view",
+          "group": "navigation"
+        },
+        {
+          "command": "hero-tasks.createTask",
+          "when": "view == hero-tasks-view",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "hero-tasks.updateTaskStatus",
+          "when": "view == hero-tasks-view",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "hero-tasks.openPanel",
+          "when": "true"
+        },
+        {
+          "command": "hero-tasks.createTask",
+          "when": "true"
+        },
+        {
+          "command": "hero-tasks.refreshTasks",
+          "when": "true"
+        },
+        {
+          "command": "hero-tasks.updateTaskStatus",
+          "when": "true"
+        },
+        {
+          "command": "hero-tasks.showAnalytics",
+          "when": "true"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Hero Tasks",
+      "properties": {
+        "hero-tasks.apiUrl": {
+          "type": "string",
+          "default": "http://localhost:3000",
+          "description": "Hero Tasks API URL"
+        },
+        "hero-tasks.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically refresh tasks"
+        },
+        "hero-tasks.refreshInterval": {
+          "type": "number",
+          "default": 30000,
+          "description": "Auto-refresh interval in milliseconds"
+        },
+        "hero-tasks.showNotifications": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show task notifications"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  }
+}

@@ -83,21 +83,21 @@ export function useBrandStyling(initialConfig?: BrandStylingConfig): UseBrandSty
 
   // Sync with dynamic brand configuration
   useEffect(() => {
-    if (brandConfig.theme?.colors) {
+    if ((brandConfig as any).theme?.colors) {
       const brandColors = {
-        primary: brandConfig.theme.colors.primary || config.colors.primary,
-        secondary: brandConfig.theme.colors.secondary || config.colors.secondary,
-        accent: brandConfig.theme.colors.accent || config.colors.accent,
-        success: brandConfig.theme.colors.success || config.colors.success,
-        warning: brandConfig.theme.colors.warning || config.colors.warning,
-        error: brandConfig.theme.colors.error || config.colors.error,
-        info: brandConfig.theme.colors.info || config.colors.info,
-        destructive: brandConfig.theme.colors.destructive || config.colors.destructive,
+        primary: (brandConfig as any).theme.colors.primary || config.colors.primary,
+        secondary: (brandConfig as any).theme.colors.secondary || config.colors.secondary,
+        accent: (brandConfig as any).theme.colors.accent || config.colors.accent,
+        success: (brandConfig as any).theme.colors.success || config.colors.success,
+        warning: (brandConfig as any).theme.colors.warning || config.colors.warning,
+        error: (brandConfig as any).theme.colors.error || config.colors.error,
+        info: (brandConfig as any).theme.colors.info || config.colors.info,
+        destructive: (brandConfig as any).theme.colors.destructive || config.colors.destructive,
       };
 
       updateConfig({ colors: brandColors });
     }
-  }, [brandConfig.theme?.colors]);
+  }, [(brandConfig as any).theme?.colors]);
 
   const updateConfig = useCallback(async (newConfig: Partial<BrandStylingConfig>) => {
     setIsLoading(true);
@@ -177,7 +177,7 @@ export function useBrandColors() {
     Object.keys(config.colors).forEach((colorType) => {
       const color = config.colors[colorType as keyof BrandStylingConfig['colors']];
       if (color) {
-        properties[`--brand-${colorType}` as keyof React.CSSProperties] = color;
+        (properties as any)[`--brand-${colorType}`] = color;
       }
     });
 

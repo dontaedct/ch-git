@@ -7,7 +7,7 @@
  * HT-011.2.1: Tests for React hooks in enhanced configuration system
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import {
   useEnhancedConfig,
@@ -27,13 +27,13 @@ import { TenantBrandingConfig, DEFAULT_BRAND_COLORS, DEFAULT_TYPOGRAPHY_CONFIG }
 // MOCK SETUP
 // =============================================================================
 
-vi.mock('@/lib/config/brand-config-service', () => ({
+jest.mock('@/lib/config/brand-config-service', () => ({
   brandConfigService: {
-    getEnhancedConfig: vi.fn(),
-    getBrandOverrides: vi.fn(),
-    applyBrandOverride: vi.fn(),
-    validateBrandConfig: vi.fn(),
-    clearCache: vi.fn()
+    getEnhancedConfig: jest.fn(),
+    getBrandOverrides: jest.fn(),
+    applyBrandOverride: jest.fn(),
+    validateBrandConfig: jest.fn(),
+    clearCache: jest.fn()
   }
 }));
 
@@ -130,11 +130,11 @@ const mockValidationResult = {
 
 describe('useEnhancedConfig', () => {
   beforeEach(() => {
-    vi.mocked(brandConfigService.getEnhancedConfig).mockResolvedValue(mockEnhancedConfig);
+    (brandConfigService.getEnhancedConfig as jest.Mock).mockResolvedValue(mockEnhancedConfig);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should load enhanced configuration', async () => {
@@ -153,7 +153,7 @@ describe('useEnhancedConfig', () => {
 
   it('should handle configuration loading errors', async () => {
     const errorMessage = 'Failed to load configuration';
-    vi.mocked(brandConfigService.getEnhancedConfig).mockRejectedValue(new Error(errorMessage));
+    jest.mocked(brandConfigService.getEnhancedConfig).mockRejectedValue(new Error(errorMessage));
 
     const { result } = renderHook(() => useEnhancedConfig('test-tenant'));
 
@@ -198,12 +198,12 @@ describe('useEnhancedConfig', () => {
 
 describe('useBrandOverrides', () => {
   beforeEach(() => {
-    vi.mocked(brandConfigService.getBrandOverrides).mockResolvedValue(mockBrandOverrides);
-    vi.mocked(brandConfigService.applyBrandOverride).mockResolvedValue(true);
+    (brandConfigService.getBrandOverrides as jest.Mock).mockResolvedValue(mockBrandOverrides);
+    (brandConfigService.applyBrandOverride as jest.Mock).mockResolvedValue(true);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should load brand overrides', async () => {
@@ -272,7 +272,7 @@ describe('useBrandOverrides', () => {
   });
 
   it('should handle override application errors', async () => {
-    vi.mocked(brandConfigService.applyBrandOverride).mockResolvedValue(false);
+    (brandConfigService.applyBrandOverride as jest.Mock).mockResolvedValue(false);
 
     const { result } = renderHook(() => useBrandOverrides());
 
@@ -293,11 +293,11 @@ describe('useBrandOverrides', () => {
 
 describe('useBrandValidation', () => {
   beforeEach(() => {
-    vi.mocked(brandConfigService.validateBrandConfig).mockResolvedValue(mockValidationResult);
+    (brandConfigService.validateBrandConfig as jest.Mock).mockResolvedValue(mockValidationResult);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should validate brand configuration', async () => {
@@ -342,7 +342,7 @@ describe('useBrandValidation', () => {
 
   it('should handle validation errors', async () => {
     const errorResult = { ...mockValidationResult, isValid: false, errors: ['Invalid color'] };
-    vi.mocked(brandConfigService.validateBrandConfig).mockResolvedValue(errorResult);
+    (brandConfigService.validateBrandConfig as jest.Mock).mockResolvedValue(errorResult);
 
     const { result } = renderHook(() => useBrandValidation(mockEnhancedConfig));
 
@@ -356,11 +356,11 @@ describe('useBrandValidation', () => {
 
 describe('useTenantBranding', () => {
   beforeEach(() => {
-    vi.mocked(brandConfigService.getEnhancedConfig).mockResolvedValue(mockEnhancedConfig);
+    (brandConfigService.getEnhancedConfig as jest.Mock).mockResolvedValue(mockEnhancedConfig);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should load tenant branding configuration', async () => {
@@ -445,11 +445,11 @@ describe('useTenantBranding', () => {
 
 describe('useBrandTheme', () => {
   beforeEach(() => {
-    vi.mocked(brandConfigService.getEnhancedConfig).mockResolvedValue(mockEnhancedConfig);
+    (brandConfigService.getEnhancedConfig as jest.Mock).mockResolvedValue(mockEnhancedConfig);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should provide brand theme data', async () => {
@@ -531,11 +531,11 @@ describe('useBrandPersistence', () => {
 
 describe('useBrandAnalytics', () => {
   beforeEach(() => {
-    vi.mocked(brandConfigService.getEnhancedConfig).mockResolvedValue(mockEnhancedConfig);
+    (brandConfigService.getEnhancedConfig as jest.Mock).mockResolvedValue(mockEnhancedConfig);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should track configuration loads', async () => {
@@ -571,15 +571,15 @@ describe('useBrandAnalytics', () => {
 
 describe('useDebouncedConfigUpdate', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
+    jest.useFakeTimers();
   });
 
   afterEach(() => {
-    vi.useRealTimers();
+    jest.useRealTimers();
   });
 
   it('should debounce configuration updates', async () => {
-    const onUpdate = vi.fn();
+    const onUpdate = jest.fn();
     const { result } = renderHook(() => 
       useDebouncedConfigUpdate('#ff0000', 500, onUpdate)
     );
@@ -588,14 +588,14 @@ describe('useDebouncedConfigUpdate', () => {
     expect(onUpdate).not.toHaveBeenCalled();
 
     act(() => {
-      vi.advanceTimersByTime(500);
+      jest.advanceTimersByTime(500);
     });
 
     expect(onUpdate).toHaveBeenCalledWith('#ff0000');
   });
 
   it('should cancel previous updates when value changes', async () => {
-    const onUpdate = vi.fn();
+    const onUpdate = jest.fn();
     const { result, rerender } = renderHook(
       ({ value }) => useDebouncedConfigUpdate(value, 500, onUpdate),
       { initialProps: { value: '#ff0000' } }
@@ -605,7 +605,7 @@ describe('useDebouncedConfigUpdate', () => {
     rerender({ value: '#0000ff' });
 
     act(() => {
-      vi.advanceTimersByTime(500);
+      jest.advanceTimersByTime(500);
     });
 
     expect(onUpdate).toHaveBeenCalledTimes(1);
@@ -615,7 +615,7 @@ describe('useDebouncedConfigUpdate', () => {
 
 describe('useConfigChangeDetection', () => {
   it('should detect configuration changes', async () => {
-    const onConfigChange = vi.fn();
+    const onConfigChange = jest.fn();
     const { rerender } = renderHook(
       ({ config }) => useConfigChangeDetection(config, onConfigChange),
       { initialProps: { config: null } }
@@ -630,7 +630,7 @@ describe('useConfigChangeDetection', () => {
   });
 
   it('should not trigger on initial load', async () => {
-    const onConfigChange = vi.fn();
+    const onConfigChange = jest.fn();
     renderHook(() => useConfigChangeDetection(mockEnhancedConfig, onConfigChange));
 
     expect(onConfigChange).not.toHaveBeenCalled();

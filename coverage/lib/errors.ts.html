@@ -197,14 +197,14 @@
 export type Ok&lt;T = unknown&gt; = { ok: true; data?: T };
 export type Fail = { ok: false; code: string; message: string };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >ok = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >&lt;</span>T = unknown&gt;(d</span>ata?: T): Ok&lt;T&gt; =&gt; (<span class="cstat-no" title="statement not covered" >{ ok: true, data });</span></span>
-export const <span class="cstat-no" title="statement not covered" >fail = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>m</span>essage: string, code = <span class="branch-0 cbranch-no" title="branch not covered" >"ERR")</span>: Fail =&gt; (<span class="cstat-no" title="statement not covered" >{ ok: false, code, message });</span></span>
+export const <span class="cstat-no" title="statement not covered" >ok </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >&lt;T = unknown&gt;(d</span>ata?: T): Ok&lt;T&gt; =&gt; (<span class="cstat-no" title="statement not covered" >{ ok: true, data });</span></span>
+export const <span class="cstat-no" title="statement not covered" >fail </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(m</span>essage: string, code = <span class="branch-0 cbranch-no" title="branch not covered" >"ERR")</span>: Fail =&gt; (<span class="cstat-no" title="statement not covered" >{ ok: false, code, message });</span></span>
 &nbsp;
 // If a caller expects a Response, use this wrapper.
-export const <span class="cstat-no" title="statement not covered" >asResponse = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>f</span>: Fail, status = <span class="branch-0 cbranch-no" title="branch not covered" >400)</span>: Response =&gt; <span class="cstat-no" title="statement not covered" >Response.json(f, { status });</span></span>
+export const <span class="cstat-no" title="statement not covered" >asResponse </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>: Fail, status = <span class="branch-0 cbranch-no" title="branch not covered" >400)</span>: Response =&gt; <span class="cstat-no" title="statement not covered" >Response.json(f, { status });</span></span>
 &nbsp;
 // Convert Fail to HTTP Response
-export const <span class="cstat-no" title="statement not covered" >toHttpResponse = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>f</span>: Fail, status = <span class="branch-0 cbranch-no" title="branch not covered" >400)</span>: Response =&gt; <span class="cstat-no" title="statement not covered" >Response.json(f, { status });</span></span>
+export const <span class="cstat-no" title="statement not covered" >toHttpResponse </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>: Fail, status = <span class="branch-0 cbranch-no" title="branch not covered" >400)</span>: Response =&gt; <span class="cstat-no" title="statement not covered" >Response.json(f, { status });</span></span>
 &nbsp;
 /**
  * Migration helpers for transitioning to the new error system
@@ -222,7 +222,7 @@ import {
  * Convert legacy Fail to AppError
  * @deprecated Use AppError constructors directly
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >failToAppError(f</span></span>: Fail): ValidationError | AuthenticationError | AuthorizationError | DatabaseError | SystemError {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >failToAppError(</span></span>f: Fail): ValidationError | AuthenticationError | AuthorizationError | DatabaseError | SystemError {
 <span class="cstat-no" title="statement not covered" >  switch (f.code) {</span>
     case 'VALIDATION_ERROR':
 <span class="cstat-no" title="statement not covered" >      return new ValidationError(f.message);</span>
@@ -242,7 +242,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * Enhanced response helper that uses the new error system
  * @deprecated Use errorResponse helpers from @/lib/errors/index
  */
-export const <span class="cstat-no" title="statement not covered" >enhancedResponse = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>f</span>: Fail, status = <span class="branch-0 cbranch-no" title="branch not covered" >400)</span>: Response =&gt; {</span>
+export const <span class="cstat-no" title="statement not covered" >enhancedResponse </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>: Fail, status = <span class="branch-0 cbranch-no" title="branch not covered" >400)</span>: Response =&gt; {</span>
   const appError = <span class="cstat-no" title="statement not covered" >failToAppError(f);</span>
 <span class="cstat-no" title="statement not covered" >  return newHandleApiError(appError);</span>
 };
@@ -253,7 +253,7 @@ export const <span class="cstat-no" title="statement not covered" >enhancedRespo
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../prettify.js"></script>
         <script>

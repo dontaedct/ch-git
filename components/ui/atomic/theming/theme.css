@@ -1,0 +1,87 @@
+/**
+ * HT-022.2.2: Simple Client Theming System - CSS Variables
+ * Agency Component System v1.0.0
+ *
+ * Base CSS variables for client theming system
+ */
+
+:root {
+  /* Default Agency Theme Colors */
+  --primary: hsl(222, 84%, 4.9%);
+  --secondary: hsl(210, 40%, 96%);
+  --accent: hsl(210, 40%, 98%);
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222, 84%, 4.9%);
+
+  /* Default Typography */
+  --font-family-primary: Inter, system-ui, sans-serif;
+  --font-family-heading: var(--font-family-primary);
+
+  /* Theme Transition */
+  --theme-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Theme-aware components */
+[data-slot="button"] {
+  transition: var(--theme-transition);
+}
+
+[data-slot="input"] {
+  transition: var(--theme-transition);
+}
+
+[data-slot="card"] {
+  transition: var(--theme-transition);
+}
+
+/* Corporate Blue Theme */
+:root[data-agency-theme="corporate"] {
+  --primary: hsl(221, 83%, 53%);
+  --secondary: hsl(221, 83%, 93%);
+  --accent: hsl(221, 83%, 98%);
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(221, 83%, 13%);
+}
+
+/* Startup Green Theme */
+:root[data-agency-theme="startup"] {
+  --primary: hsl(142, 76%, 36%);
+  --secondary: hsl(142, 76%, 93%);
+  --accent: hsl(142, 76%, 98%);
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(142, 76%, 6%);
+}
+
+/* Creative Purple Theme */
+:root[data-agency-theme="creative"] {
+  --primary: hsl(262, 83%, 58%);
+  --secondary: hsl(262, 83%, 93%);
+  --accent: hsl(262, 83%, 98%);
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(262, 83%, 8%);
+}
+
+/* Theme switch animation */
+@keyframes themeSwitch {
+  0% { opacity: 0.8; }
+  50% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+:root[data-theme-switching="true"] * {
+  animation: themeSwitch 0.3s ease-out;
+}
+
+/* Custom theme indicator */
+[data-agency-theme*="custom"]::before {
+  content: '';
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--primary);
+  border-radius: 50%;
+  z-index: 9999;
+  opacity: 0.7;
+}

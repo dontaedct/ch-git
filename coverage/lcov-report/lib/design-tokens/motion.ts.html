@@ -555,14 +555,14 @@ const defaultConfig: MotionConfig = <span class="cstat-no" title="statement not 
   respectReducedMotion: true,
 };
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getMotionPreference(): MotionPreference {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getMotionPreference(</span></span>): MotionPreference {
 <span class="cstat-no" title="statement not covered" >  if (typeof window === 'undefined') <span class="cstat-no" title="statement not covered" >return 'no-preference';</span></span>
   
   const mediaQuery = <span class="cstat-no" title="statement not covered" >window.matchMedia('(prefers-reduced-motion: reduce)');</span>
 <span class="cstat-no" title="statement not covered" >  return mediaQuery.matches ? 'reduce' : 'no-preference';</span>
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >shouldReduceMotion(c</span></span>onfig: MotionConfig = <span class="branch-0 cbranch-no" title="branch not covered" >defaultConfig)</span>: boolean {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >shouldReduceMotion(</span></span>config: MotionConfig = <span class="branch-0 cbranch-no" title="branch not covered" >defaultConfig)</span>: boolean {
 <span class="cstat-no" title="statement not covered" >  if (!config.respectReducedMotion) <span class="cstat-no" title="statement not covered" >return false;</span></span>
 <span class="cstat-no" title="statement not covered" >  return getMotionPreference() === 'reduce';</span>
 }
@@ -577,7 +577,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  return transition;</span>
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >createMotionCSS(c</span></span>onfig: MotionConfig = <span class="branch-0 cbranch-no" title="branch not covered" >defaultConfig)</span> {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >createMotionCSS(</span></span>config: MotionConfig = <span class="branch-0 cbranch-no" title="branch not covered" >defaultConfig)</span> {
 <span class="cstat-no" title="statement not covered" >  if (shouldReduceMotion(config)) {</span>
 <span class="cstat-no" title="statement not covered" >    return {</span>
       transition: 'none !important',
@@ -590,9 +590,9 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 <span class="cstat-no" title="statement not covered" >  return {};</span>
 }
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >motionTokens = <span class="cstat-no" title="statement not covered" >d</span>esignTokens.motion;</span>
+export const <span class="cstat-no" title="statement not covered" >motionTokens </span>= <span class="cstat-no" title="statement not covered" >designTokens.motion;</span>
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >transitions = <span class="cstat-no" title="statement not covered" >{</span></span>
+export const <span class="cstat-no" title="statement not covered" >transitions </span>= <span class="cstat-no" title="statement not covered" >{</span>
   button: {
     hover: <span class="fstat-no" title="function not covered" >(c</span>onfig?: MotionConfig) =&gt; <span class="cstat-no" title="statement not covered" >getTransition(motionTokens.transitions.button.hover, config),</span>
     press: <span class="fstat-no" title="function not covered" >(c</span>onfig?: MotionConfig) =&gt; <span class="cstat-no" title="statement not covered" >getTransition(motionTokens.transitions.button.press, config),</span>
@@ -623,7 +623,7 @@ export const <span class="cstat-no" title="statement not covered" >transitions =
   },
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >keyframes = <span class="cstat-no" title="statement not covered" >{</span></span>
+export const <span class="cstat-no" title="statement not covered" >keyframes </span>= <span class="cstat-no" title="statement not covered" >{</span>
   fadeIn: {
     from: { opacity: 0 },
     to: { opacity: 1 },
@@ -671,7 +671,7 @@ export const <span class="cstat-no" title="statement not covered" >keyframes = <
   },
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >animations = <span class="cstat-no" title="statement not covered" >{</span></span>
+export const <span class="cstat-no" title="statement not covered" >animations </span>= <span class="cstat-no" title="statement not covered" >{</span>
   fadeIn: <span class="fstat-no" title="function not covered" >(c</span>onfig?: MotionConfig) =&gt; 
 <span class="cstat-no" title="statement not covered" >    shouldReduceMotion(config) ? 'none' : `fadeIn ${motionTokens.duration.normal} ${motionTokens.easing.spring}`,</span>
   fadeOut: <span class="fstat-no" title="function not covered" >(c</span>onfig?: MotionConfig) =&gt; 
@@ -696,7 +696,7 @@ export const <span class="cstat-no" title="statement not covered" >animations = 
 <span class="cstat-no" title="statement not covered" >    shouldReduceMotion(config) ? 'none' : `wiggle ${motionTokens.duration.slower} ${motionTokens.easing['ease-in-out']} infinite`,</span>
 };
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >motionPresets = <span class="cstat-no" title="statement not covered" >{</span></span>
+export const <span class="cstat-no" title="statement not covered" >motionPresets </span>= <span class="cstat-no" title="statement not covered" >{</span>
   button: {
     idle: {
       transform: 'translateY(0px)',
@@ -775,7 +775,7 @@ const motionSystem = <span class="cstat-no" title="statement not covered" >{</sp
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:50.860Z
+                at 2025-09-12T17:02:49.199Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

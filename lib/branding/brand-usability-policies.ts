@@ -42,7 +42,7 @@ export class BrandUsabilityPolicies {
           validator: (config) => {
             const logo = config.theme?.logo;
             const brandName = config.brand?.name;
-            return logo && logo.src && brandName && brandName.trim().length > 0;
+            return Boolean(logo && logo.src && brandName && brandName.trim().length > 0);
           },
           errorMessage: 'Brand must be easily recognizable with consistent logo and name',
         },
@@ -54,7 +54,7 @@ export class BrandUsabilityPolicies {
           validator: (config) => {
             const logo = config.theme?.logo;
             const brandName = config.brand?.name;
-            return logo && logo.alt && logo.alt !== 'logo' && brandName && brandName.trim().length > 0;
+            return Boolean(logo && logo.alt && logo.alt !== 'logo' && brandName && brandName.trim().length > 0);
           },
           errorMessage: 'Brand elements must be clear and unambiguous',
         },
@@ -298,7 +298,7 @@ const optimizedUX = {
           condition: 'Fonts use appropriate loading strategies and fallbacks',
           validator: (config) => {
             const fontDisplay = config.theme?.typography?.fontDisplay;
-            return fontDisplay && ['swap', 'fallback', 'optional'].includes(fontDisplay);
+            return Boolean(fontDisplay && ['swap', 'fallback', 'optional'].includes(fontDisplay));
           },
           errorMessage: 'Brand fonts must use optimized loading strategies (swap, fallback, or optional)',
         },

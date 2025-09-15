@@ -208,7 +208,7 @@ const CustomWidget: React.FC<{ widget: DashboardWidget }> = ({ widget }) => {
         <div className="h-[200px] flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg">
           <div className="text-center">
             <p className="text-sm text-gray-500">Custom widget</p>
-            <p className="text-xs text-gray-400">Component: {widget.component?.name || 'None'}</p>
+            <p className="text-xs text-gray-400">Component: {(widget.component as any)?.displayName || (widget.component as any)?.name || 'Custom Component'}</p>
           </div>
         </div>
       </CardContent>

@@ -82,9 +82,9 @@ export default function DesignTokensPage() {
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {Object.entries(semanticColors).map(([key, value]) => (
                     <div key={key} className="space-y-2">
-                      <div 
+                      <div
                         className="w-full h-16 rounded-lg border relative group cursor-pointer"
-                        style={{ backgroundColor: value }}
+                        style={{ backgroundColor: typeof value === 'string' ? value : String(value) }}
                       >
                         <div className="absolute inset-0 bg-black/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                           <span className="text-xs font-mono text-white bg-black/50 px-2 py-1 rounded">
@@ -94,7 +94,7 @@ export default function DesignTokensPage() {
                       </div>
                       <div>
                         <p className="text-sm font-medium">{key}</p>
-                        <p className="text-xs text-muted-foreground font-mono">{value}</p>
+                        <p className="text-xs text-muted-foreground font-mono">{typeof value === 'string' ? value : String(value)}</p>
                         <p className="text-xs text-muted-foreground">var(--color-{key.replace(/([A-Z])/g, '-$1').toLowerCase()})</p>
                       </div>
                     </div>
@@ -133,12 +133,12 @@ export default function DesignTokensPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle>Accent Scale</CardTitle>
-                  <CardDescription>Single configurable accent color slot</CardDescription>
+                  <CardTitle>Primary Scale</CardTitle>
+                  <CardDescription>Primary brand color scale</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-6 gap-2">
-                    {Object.entries(tokens.accent).map(([key, value]) => (
+                    {Object.entries(tokens.primary).map(([key, value]) => (
                       <div key={key} className="space-y-2">
                         <div 
                           className="w-full h-12 rounded border group cursor-pointer relative"
@@ -168,7 +168,7 @@ export default function DesignTokensPage() {
                 <CardDescription>Consistent typography scale from design tokens</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                {Object.entries(tokens.typography.fontSize).map(([key, value]) => (
+                {Object.entries(tokens.typography.scale).map(([key, value]) => (
                   <div key={key} className="border-b pb-4 last:border-b-0">
                     <div className="flex items-baseline justify-between mb-2">
                       <div style={{ fontSize: value, lineHeight: '1.2' }} className="text-foreground">
@@ -195,7 +195,7 @@ export default function DesignTokensPage() {
                 <CardDescription>Available font weight tokens</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {Object.entries(tokens.typography.fontWeight).map(([key, value]) => (
+                {Object.entries(tokens.typography.weights).map(([key, value]) => (
                   <div key={key} className="flex items-center justify-between border-b pb-3 last:border-b-0">
                     <div style={{ fontWeight: value }} className="text-lg text-foreground">
                       Design tokens make theming consistent and brandless

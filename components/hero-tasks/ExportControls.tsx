@@ -7,11 +7,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
-import { Button } from '@ui/button';
-import { Label } from '@ui/label';
-import { Checkbox } from '@ui/checkbox';
-import { Badge } from '@ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -19,14 +19,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@ui/dialog';
+} from '@/components/ui/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@ui/select';
+} from '@/components/ui/select';
 import {
   Download,
   FileText,

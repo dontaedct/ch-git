@@ -1,0 +1,30 @@
+{
+  "title": "Frequently Asked Questions",
+  "description": "Find answers to common questions about our platform",
+  "faqs": [
+    {
+      "question": "How do I get started?",
+      "answer": "Getting started is easy! Simply sign up for an account, choose your plan, and follow our onboarding guide. You'll be up and running in minutes."
+    },
+    {
+      "question": "What payment methods do you accept?",
+      "answer": "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for enterprise customers."
+    },
+    {
+      "question": "Can I cancel my subscription anytime?",
+      "answer": "Yes, you can cancel your subscription at any time. There are no cancellation fees, and you'll continue to have access until the end of your billing period."
+    },
+    {
+      "question": "Do you offer customer support?",
+      "answer": "Absolutely! We provide 24/7 customer support via email, chat, and phone. Enterprise customers also get dedicated account managers."
+    },
+    {
+      "question": "Is my data secure?",
+      "answer": "Yes, we take security seriously. All data is encrypted in transit and at rest, and we're SOC 2 compliant with regular security audits."
+    },
+    {
+      "question": "Can I integrate with other tools?",
+      "answer": "Yes! We offer integrations with over 100+ popular tools including Slack, Zapier, Salesforce, and many more. Custom integrations are available for enterprise customers."
+    }
+  ]
+}

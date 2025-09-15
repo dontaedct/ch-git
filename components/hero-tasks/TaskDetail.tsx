@@ -7,11 +7,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
-import { Button } from '@ui/button';
-import { Badge } from '@ui/badge';
-import { Progress } from '@ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   Calendar, 
   Clock, 
@@ -35,6 +35,7 @@ import { useLiveCollaboration } from '@/hooks/useLiveCollaboration';
 import { PresenceIndicator } from './PresenceIndicator';
 import { TypingIndicator } from './TypingIndicator';
 import { ConflictResolution } from './ConflictResolution';
+import { useKeyboardShortcuts, createPlatformShortcut } from '@/hooks/useKeyboardShortcuts';
 import {
   HeroTask,
   HeroSubtask,

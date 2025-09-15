@@ -4,7 +4,7 @@
  * Created: 2025-09-15
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { TimeTrackingService } from '@/lib/time-tracking/service';
 import { AutoTimeTracking } from '@/lib/time-tracking/auto-tracking';
 import {
@@ -18,37 +18,37 @@ import {
 
 // Mock Supabase client
 const mockSupabase = {
-  from: vi.fn(() => ({
-    insert: vi.fn(() => ({
-      select: vi.fn(() => ({
-        single: vi.fn()
+  from: jest.fn(() => ({
+    insert: jest.fn(() => ({
+      select: jest.fn(() => ({
+        single: jest.fn()
       }))
     })),
-    update: vi.fn(() => ({
-      eq: vi.fn(() => ({
-        select: vi.fn(() => ({
-          single: vi.fn()
+    update: jest.fn(() => ({
+      eq: jest.fn(() => ({
+        select: jest.fn(() => ({
+          single: jest.fn()
         }))
       }))
     })),
-    select: vi.fn(() => ({
-      eq: vi.fn(() => ({
-        order: vi.fn(() => ({
-          limit: vi.fn(() => ({
-            single: vi.fn()
+    select: jest.fn(() => ({
+      eq: jest.fn(() => ({
+        order: jest.fn(() => ({
+          limit: jest.fn(() => ({
+            single: jest.fn()
           }))
         }))
       }))
     })),
-    delete: vi.fn(() => ({
-      eq: vi.fn()
+    delete: jest.fn(() => ({
+      eq: jest.fn()
     })),
-    rpc: vi.fn()
+    rpc: jest.fn()
   }))
 };
 
-vi.mock('@supabase/supabase-js', () => ({
-  createClient: vi.fn(() => mockSupabase)
+jest.mock('@supabase/supabase-js', () => ({
+  createClient: jest.fn(() => mockSupabase)
 }));
 
 describe('TimeTrackingService', () => {
@@ -56,7 +56,7 @@ describe('TimeTrackingService', () => {
   const mockTaskId = 'test-task-456';
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('startTracking', () => {
@@ -343,8 +343,8 @@ describe('AutoTimeTracking', () => {
     });
 
     // Mock addEventListener and removeEventListener
-    vi.spyOn(document, 'addEventListener').mockImplementation(() => {});
-    vi.spyOn(document, 'removeEventListener').mockImplementation(() => {});
+    jest.spyOn(document, 'addEventListener').mockImplementation(() => {});
+    jest.spyOn(document, 'removeEventListener').mockImplementation(() => {});
 
     autoTracking = new AutoTimeTracking({
       userId: mockUserId,
@@ -356,7 +356,7 @@ describe('AutoTimeTracking', () => {
 
   afterEach(() => {
     autoTracking.destroy();
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should initialize with correct settings', () => {
@@ -364,7 +364,7 @@ describe('AutoTimeTracking', () => {
   });
 
   it('should handle activity detection', () => {
-    const onActivityDetected = vi.fn();
+    const onActivityDetected = jest.fn();
     autoTracking = new AutoTimeTracking({
       userId: mockUserId,
       enabled: true,
@@ -379,7 +379,7 @@ describe('AutoTimeTracking', () => {
   });
 
   it('should handle idle detection', () => {
-    const onIdleDetected = vi.fn();
+    const onIdleDetected = jest.fn();
     autoTracking = new AutoTimeTracking({
       userId: mockUserId,
       enabled: true,

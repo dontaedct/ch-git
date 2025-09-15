@@ -162,8 +162,8 @@ export function loadPresetConfig(preset: PresetName): MicroAppConfig | null {
   
   try {
     // Dynamic import for server-side only
-    const fs = require('fs');
-    const path = require('path');
+    const fs = eval('require')('fs');
+    const path = eval('require')('path');
     const presetPath = path.join(process.cwd(), 'packages', 'templates', 'presets', `${preset}.json`);
     const presetJson = fs.readFileSync(presetPath, 'utf-8');
     return JSON.parse(presetJson) as MicroAppConfig;

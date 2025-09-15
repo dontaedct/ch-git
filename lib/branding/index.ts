@@ -25,7 +25,6 @@ export * from './preset-hooks';
 
 // Brand validation framework exports
 export * from './validation-framework';
-export * from './validation-hooks';
 
 // Email system exports (HT-011.3.5)
 export * from './email-templates';
@@ -40,7 +39,13 @@ export * from './types';
 // Brand quality assurance exports (HT-011.4.8)
 export * from './brand-quality-assurance';
 
-// Design tokens exports
-export * from '../design-tokens/multi-brand-generator';
+// Design tokens exports - explicit exports to avoid conflicts
+export {
+  generateColorScaleFromBase,
+  generateComplementaryScale,
+  generateBrandSemanticColors,
+  DEFAULT_BRAND_PALETTES,
+  createMultiBrandConfig,
+  validateBrandPalette
+} from '../design-tokens/multi-brand-generator';
 export * from '../design-tokens/provider';
-export * from '../design-tokens/tokens';

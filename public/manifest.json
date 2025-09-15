@@ -1,0 +1,26 @@
+{
+  "name": "Hero Tasks - Productivity Platform",
+  "short_name": "Hero Tasks",
+  "description": "World-class productivity platform with real-time collaboration, AI-powered insights, and mobile-first design",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": [
+    "productivity",
+    "business",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

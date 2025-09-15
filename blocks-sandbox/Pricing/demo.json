@@ -1,0 +1,50 @@
+{
+  "title": "Pricing Plans",
+  "description": "Choose the perfect plan for your needs",
+  "plans": [
+    {
+      "name": "Starter",
+      "price": "$9",
+      "period": "/month",
+      "description": "Perfect for individuals",
+      "features": [
+        "Up to 5 projects",
+        "Basic support",
+        "Standard templates",
+        "Email notifications"
+      ],
+      "cta": "Get Started",
+      "popular": false
+    },
+    {
+      "name": "Professional",
+      "price": "$29",
+      "period": "/month",
+      "description": "Best for growing teams",
+      "features": [
+        "Unlimited projects",
+        "Priority support",
+        "Premium templates",
+        "Advanced analytics",
+        "Team collaboration"
+      ],
+      "cta": "Start Free Trial",
+      "popular": true
+    },
+    {
+      "name": "Enterprise",
+      "price": "$99",
+      "period": "/month",
+      "description": "For large organizations",
+      "features": [
+        "Everything in Professional",
+        "Custom integrations",
+        "Dedicated support",
+        "Advanced security",
+        "Custom branding"
+      ],
+      "cta": "Contact Sales",
+      "popular": false
+    }
+  ]
+}

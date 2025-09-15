@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/9</span>
+                <span class='fraction'>6/9</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">57.14% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>4/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/9</span>
+                <span class='fraction'>6/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -164,16 +164,26 @@
 <a name='L99'></a><a href='#L99'>99</a>
 <a name='L100'></a><a href='#L100'>100</a>
 <a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,26 +267,43 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-yes">31x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">31x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">31x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import * as React from "react"
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
+ * @fileoverview Card primitive component
+ * @module components/ui/card
+ * 
+ * UI POLISH NOTE: This component will be EXTENDED (not duplicated) for Swift-inspired
+ * aesthetic changes. All modifications behind FEATURE_UI_POLISH_TARGET_STYLE flag.
+ */
+&nbsp;
+import * as React from "react"
 &nbsp;
 import { cn } from "@/lib/utils"
 &nbsp;
-function <span class="fstat-no" title="function not covered" >Card({</span> className, ...props }: React.ComponentProps&lt;"div"&gt;) {
+function Card({ className, ...props }: React.ComponentProps&lt;"div"&gt;) {
   return (
     &lt;div
       data-slot="card"
       className={cn(
-        "bg-background text-foreground flex flex-col",
-        "rounded-[var(--card-border-radius)] border-[var(--border-width-hairline)] border-[var(--border-color-hairline)]",
-        "shadow-[var(--elevation-sm)]",
+        "bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col",
+        "rounded-2xl border border-gray-200 dark:border-gray-700",
+        "shadow-lg hover:shadow-xl transition-all duration-300 ease-out",
+        "high-tech-card",
         className
       )}
       {...props}
@@ -284,15 +311,15 @@ function <span class="fstat-no" title="function not covered" >Card({</span> clas
   )
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >CardHeader({</span> className, ...props }: React.ComponentProps&lt;"div"&gt;) {
+function CardHeader({ className, ...props }: React.ComponentProps&lt;"div"&gt;) {
   return (
     &lt;div
       data-slot="card-header"
       className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5",
-        "p-[var(--card-padding)] pb-0",
+        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2",
+        "p-6 pb-0",
         "has-data-[slot=card-action]:grid-cols-[1fr_auto]",
-        "[&amp;:has(+[data-slot=card-content])]:border-b [&amp;:has(+[data-slot=card-content])]:border-[var(--border-color-hairline)] [&amp;:has(+[data-slot=card-content])]:pb-[var(--card-padding)]",
+        "[&amp;:has(+[data-slot=card-content])]:border-b [&amp;:has(+[data-slot=card-content])]:border-gray-200 dark:[&amp;:has(+[data-slot=card-content])]:border-gray-700 [&amp;:has(+[data-slot=card-content])]:pb-6",
         className
       )}
       {...props}
@@ -300,11 +327,11 @@ function <span class="fstat-no" title="function not covered" >CardHeader({</span
   )
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >CardTitle({</span> className, ...props }: React.ComponentProps&lt;"div"&gt;) {
+function CardTitle({ className, ...props }: React.ComponentProps&lt;"div"&gt;) {
   return (
     &lt;div
       data-slot="card-title"
-      className={cn("leading-none font-semibold", className)}
+      className={cn("leading-tight font-bold text-lg text-gray-900 dark:text-gray-100", className)}
       {...props}
     /&gt;
   )
@@ -314,7 +341,7 @@ function <span class="fstat-no" title="function not covered" >CardDescription({<
   return (
     &lt;div
       data-slot="card-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-gray-600 dark:text-gray-400 text-sm leading-relaxed", className)}
       {...props}
     /&gt;
   )
@@ -333,11 +360,11 @@ function <span class="fstat-no" title="function not covered" >CardAction({</span
   )
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >CardContent({</span> className, ...props }: React.ComponentProps&lt;"div"&gt;) {
+function CardContent({ className, ...props }: React.ComponentProps&lt;"div"&gt;) {
   return (
     &lt;div
       data-slot="card-content"
-      className={cn("p-[var(--card-padding)] pt-0 flex-1", className)}
+      className={cn("p-6 pt-0 flex-1", className)}
       {...props}
     /&gt;
   )
@@ -348,8 +375,8 @@ function <span class="fstat-no" title="function not covered" >CardFooter({</span
     &lt;div
       data-slot="card-footer"
       className={cn(
-        "flex items-center p-[var(--card-padding)] pt-0",
-        "[&amp;:has([data-slot=card-content]+&amp;)]:border-t [&amp;:has([data-slot=card-content]+&amp;)]:border-[var(--border-color-hairline)] [&amp;:has([data-slot=card-content]+&amp;)]:pt-[var(--card-padding)]",
+        "flex items-center p-6 pt-0",
+        "[&amp;:has([data-slot=card-content]+&amp;)]:border-t [&amp;:has([data-slot=card-content]+&amp;)]:border-gray-200 dark:[&amp;:has([data-slot=card-content]+&amp;)]:border-gray-700 [&amp;:has([data-slot=card-content]+&amp;)]:pt-6",
         className
       )}
       {...props}
@@ -358,13 +385,13 @@ function <span class="fstat-no" title="function not covered" >CardFooter({</span
 }
 &nbsp;
 export {
-<span class="cstat-no" title="statement not covered" >  Card,</span>
-<span class="cstat-no" title="statement not covered" >  CardHeader,</span>
+  Card,
+  CardHeader,
 <span class="cstat-no" title="statement not covered" >  CardFooter,</span>
-<span class="cstat-no" title="statement not covered" >  CardTitle,</span>
+  CardTitle,
 <span class="cstat-no" title="statement not covered" >  CardAction,</span>
 <span class="cstat-no" title="statement not covered" >  CardDescription,</span>
-<span class="cstat-no" title="statement not covered" >  CardContent,</span>
+  CardContent,
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -373,7 +400,7 @@ export {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:50.860Z
+                at 2025-09-12T17:02:49.199Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

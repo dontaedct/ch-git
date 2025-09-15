@@ -10,16 +10,16 @@ We will perform a safe, reversible cleanup of the template to remove temporary p
 
 ## Context
 
-This template has gone through a 36-prompt development cycle (SOS process) and accumulated planning documentation that should be archived before client delivery. The goal is to clean up development artifacts while ensuring the template remains fully functional with placeholder values.
+This template has gone through a comprehensive development cycle and accumulated planning documentation that should be archived before client delivery. The goal is to clean up development artifacts while ensuring the template remains fully functional with placeholder values.
 
 ## Items Analysis
 
 ### Safe to Archive (Move to `/docs/ops/_archive/2025-08-31T05-51-43Z/`)
 
-**SOS Planning Documents:**
+**Development Planning Documents:**
 
-- `SOS_JOB_PHASES.md` - 36-prompt development methodology documentation
-- `SOS_QUICK_REFERENCE.md` - Quick reference for the SOS development process
+- Development methodology documentation
+- Quick reference for the development process
 
 **Prompt Suite Documentation:**
 
@@ -34,7 +34,6 @@ This template has gone through a 36-prompt development cycle (SOS process) and a
 
 - `supabase/notes.md` - Contains infrastructure setup notes, referenced by deployment processes
 - All files in `docs/ops/baseline/` - Baseline inventories needed for operations
-- All files in `docs/ops/sos/` - Already properly organized in subdirectory
 - README files in packages - Contain usage examples and API documentation
 
 **Code Comments:**

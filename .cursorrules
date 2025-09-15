@@ -1,0 +1,21 @@
+# Cursor AI Rules for this project
+
+## Code Style
+- Use TypeScript for all new files
+- Follow the existing project structure
+- Use 2-space indentation
+- Prefer functional components with hooks
+- Use proper TypeScript types
+
+## File Organization
+- Components go in `components/`
+- Utilities go in `lib/`
+- Types go in `types/`
+- Follow the existing import patterns
+
+## Best Practices
+- Always add proper error handling
+- Use meaningful variable names
+- Add JSDoc comments for complex functions
+- Follow React best practices
+- Ensure accessibility compliance

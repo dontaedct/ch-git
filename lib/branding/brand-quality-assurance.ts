@@ -215,7 +215,7 @@ export class BrandQualityAssuranceSystem {
       const policyResult = this.policyEnforcement.enforcePolicies(brandConfig);
       
       // Run validation tests
-      const validationResult = await this.validationTestSuite.runComprehensiveTestSuite();
+      const validationResult = await (this.validationTestSuite as any).runComprehensiveTestSuite();
       
       // Evaluate quality categories
       const categoryResults = {

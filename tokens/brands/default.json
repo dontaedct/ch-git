@@ -1,0 +1,159 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "name": "Default Tech Brand",
+  "description": "Modern tech aesthetic with blue accent and clean typography",
+  "brand": {
+    "colors": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.brand.600}"
+      },
+      "primaryHover": {
+        "$type": "color",
+        "$value": "{color.brand.700}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.brand.500}"
+      },
+      "accentSubtle": {
+        "$type": "color",
+        "$value": "{color.brand.50}"
+      }
+    },
+    "typography": {
+      "headingFont": {
+        "$type": "fontFamily",
+        "$value": ["-apple-system", "BlinkMacSystemFont", "SF Pro Display", "Segoe UI", "sans-serif"]
+      },
+      "bodyFont": {
+        "$type": "fontFamily", 
+        "$value": ["-apple-system", "BlinkMacSystemFont", "SF Pro Text", "Segoe UI", "sans-serif"]
+      }
+    },
+    "spacing": {
+      "sectionPadding": {
+        "$type": "dimension",
+        "$value": "{spacing.section}"
+      }
+    }
+  },
+  "semantic": {
+    "light": {
+      "background": {
+        "$type": "color",
+        "$value": "{color.neutral.50}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "mutedForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.600}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.neutral.50}"
+      },
+      "cardForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.neutral.200}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.neutral.200}"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{brand.colors.primary}"
+      },
+      "primaryForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.50}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "secondaryForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{brand.colors.accentSubtle}"
+      },
+      "accentForeground": {
+        "$type": "color",
+        "$value": "{brand.colors.primary}"
+      }
+    },
+    "dark": {
+      "background": {
+        "$type": "color",
+        "$value": "{color.neutral.950}"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "mutedForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.400}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "cardForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{color.neutral.800}"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "{color.neutral.800}"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{brand.colors.primary}"
+      },
+      "primaryForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.50}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.neutral.800}"
+      },
+      "secondaryForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.100}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{color.neutral.800}"
+      },
+      "accentForeground": {
+        "$type": "color",
+        "$value": "{brand.colors.accent}"
+      }
+    }
+  }
+}

@@ -7,17 +7,16 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent } from '@ui/card';
-import { Button } from '@ui/button';
-import { Badge } from '@ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { 
   WifiOff, 
   Wifi, 
-  Sync, 
+  RefreshCw, 
   AlertTriangle, 
   CheckCircle,
-  Clock,
-  RefreshCw
+  Clock
 } from 'lucide-react';
 import { useOfflineData, OfflineMetadata } from '@/lib/offline/OfflineDataManager';
 
@@ -28,17 +27,17 @@ interface OfflineIndicatorProps {
 
 export function OfflineIndicator({ className, showDetails = false }: OfflineIndicatorProps) {
   const { isOnline, metadata, offlineDataManager } = useOfflineData();
-  const [isSyncing, setIsSyncing] = React.useState(false);
+  const [isRefreshCwing, setIsRefreshCwing] = React.useState(false);
 
-  const handleManualSync = async () => {
-    if (isOnline && !isSyncing) {
-      setIsSyncing(true);
+  const handleManualRefreshCw = async () => {
+    if (isOnline && !isRefreshCwing) {
+      setIsRefreshCwing(true);
       try {
         await offlineDataManager.performSync();
       } catch (error) {
         console.error('Manual sync failed:', error);
       } finally {
-        setIsSyncing(false);
+        setIsRefreshCwing(false);
       }
     }
   };
@@ -83,14 +82,14 @@ export function OfflineIndicator({ className, showDetails = false }: OfflineIndi
         </Card>
       )}
 
-      {/* Pending Sync */}
+      {/* Pending RefreshCw */}
       {isOnline && metadata.pendingSyncCount > 0 && (
         <Card className="border-blue-500 bg-blue-50 dark:bg-blue-950 mb-4">
           <CardContent className="flex items-center gap-3 py-3">
-            <Sync className="h-5 w-5 text-blue-600" />
+            <RefreshCw className="h-5 w-5 text-blue-600" />
             <div className="flex-1">
               <p className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                {isSyncing ? 'Syncing changes...' : 'Pending sync'}
+                {isRefreshCwing ? 'RefreshCwing changes...' : 'Pending sync'}
               </p>
               <p className="text-xs text-blue-600 dark:text-blue-300">
                 {metadata.pendingSyncCount} change{metadata.pendingSyncCount !== 1 ? 's' : ''} waiting to sync
@@ -98,14 +97,14 @@ export function OfflineIndicator({ className, showDetails = false }: OfflineIndi
             </div>
             <Button
               size="sm"
-              onClick={handleManualSync}
-              disabled={isSyncing}
+              onClick={handleManualRefreshCw}
+              disabled={isRefreshCwing}
               className="bg-blue-600 hover:bg-blue-700"
             >
-              {isSyncing ? (
+              {isRefreshCwing ? (
                 <RefreshCw className="h-4 w-4 animate-spin" />
               ) : (
-                <Sync className="h-4 w-4" />
+                <RefreshCw className="h-4 w-4" />
               )}
             </Button>
           </CardContent>
@@ -146,7 +145,7 @@ export function OfflineIndicator({ className, showDetails = false }: OfflineIndi
               
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1">
-                  <Sync className="h-3 w-3" />
+                  <RefreshCw className="h-3 w-3" />
                   Pending changes:
                 </span>
                 <span>{metadata.pendingSyncCount}</span>
@@ -188,15 +187,15 @@ export function OfflineTaskBadge({ syncStatus, className }: OfflineTaskBadgeProp
         return {
           variant: 'secondary' as const,
           className: 'bg-blue-100 text-blue-800 border-blue-200',
-          icon: Sync,
-          text: 'Syncing'
+          icon: RefreshCw,
+          text: 'RefreshCwing'
         };
       case 'synced':
         return {
           variant: 'secondary' as const,
           className: 'bg-green-100 text-green-800 border-green-200',
           icon: CheckCircle,
-          text: 'Synced'
+          text: 'RefreshCwed'
         };
       case 'failed':
         return {
@@ -225,37 +224,37 @@ export function OfflineTaskBadge({ syncStatus, className }: OfflineTaskBadgeProp
   );
 }
 
-interface OfflineSyncButtonProps {
-  onSync?: () => void;
-  isSyncing?: boolean;
+interface OfflineRefreshCwButtonProps {
+  onRefreshCw?: () => void;
+  isRefreshCwing?: boolean;
   pendingCount?: number;
   className?: string;
 }
 
-export function OfflineSyncButton({ 
-  onSync, 
-  isSyncing = false, 
+export function OfflineRefreshCwButton({ 
+  onRefreshCw, 
+  isRefreshCwing = false, 
   pendingCount = 0,
   className 
-}: OfflineSyncButtonProps) {
+}: OfflineRefreshCwButtonProps) {
   if (pendingCount === 0) return null;
 
   return (
     <Button
-      onClick={onSync}
-      disabled={isSyncing}
+      onClick={onRefreshCw}
+      disabled={isRefreshCwing}
       size="sm"
       className={className}
     >
-      {isSyncing ? (
+      {isRefreshCwing ? (
         <>
           <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-          Syncing...
+          RefreshCwing...
         </>
       ) : (
         <>
-          <Sync className="h-4 w-4 mr-2" />
-          Sync ({pendingCount})
+          <RefreshCw className="h-4 w-4 mr-2" />
+          RefreshCw ({pendingCount})
         </>
       )}
     </Button>

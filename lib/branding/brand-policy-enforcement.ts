@@ -470,9 +470,5 @@ export class BrandPolicyEnforcementSystem {
 export const brandPolicyEnforcementSystem = new BrandPolicyEnforcementSystem();
 
 /**
- * Export types and interfaces
+ * Types are already exported as interfaces above
  */
-export type {
-  BrandPolicyEnforcementResult,
-  BrandPolicyEnforcementConfig,
-};

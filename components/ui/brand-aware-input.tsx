@@ -99,7 +99,7 @@ export interface BrandAwareInputProps extends
 function generateInputBrandCSSProperties(brandColors: BrandAwareInputProps['brandColors']) {
   if (!brandColors) return {};
   
-  const cssProps: React.CSSProperties = {};
+  const cssProps: React.CSSProperties & Record<string, string> = {};
   
   if (brandColors.primary) {
     cssProps['--brand-primary'] = brandColors.primary;
@@ -138,7 +138,7 @@ function generateInputBrandCSSProperties(brandColors: BrandAwareInputProps['bran
  * Generate brand-aware CSS classes for input variant
  */
 function getInputVariantClasses(variant: string, brandColors?: BrandAwareInputProps['brandColors']) {
-  const baseClasses = brandAwareInputVariants({ variant });
+  const baseClasses = brandAwareInputVariants({ variant: variant as any });
   
   if (!brandColors) {
     // Fallback to default colors
@@ -220,12 +220,12 @@ const BrandAwareInput = React.forwardRef<HTMLInputElement, BrandAwareInputProps>
   
   // Get brand colors from configuration if not provided
   const effectiveBrandColors = brandColors || (useBrandColors ? {
-    primary: config.theme?.colors?.primary || '#007AFF',
-    error: config.theme?.colors?.error || '#EF4444',
-    success: config.theme?.colors?.success || '#10B981',
-    warning: config.theme?.colors?.warning || '#F59E0B',
-    info: config.theme?.colors?.info || '#3B82F6',
-    focus: config.theme?.colors?.focus || '#007AFF',
+    primary: (config as any).theme?.colors?.primary || '#007AFF',
+    error: (config as any).theme?.colors?.error || '#EF4444',
+    success: (config as any).theme?.colors?.success || '#10B981',
+    warning: (config as any).theme?.colors?.warning || '#F59E0B',
+    info: (config as any).theme?.colors?.info || '#3B82F6',
+    focus: (config as any).theme?.colors?.focus || '#007AFF',
   } : undefined);
   
   // Generate CSS custom properties for brand colors
@@ -235,7 +235,7 @@ const BrandAwareInput = React.forwardRef<HTMLInputElement, BrandAwareInputProps>
   const effectiveVariant = error ? 'error' : success ? 'success' : variant;
   
   // Get brand-aware CSS classes
-  const variantClasses = getInputVariantClasses(effectiveVariant, effectiveBrandColors);
+  const variantClasses = getInputVariantClasses(effectiveVariant || 'default', effectiveBrandColors);
   
   return (
     <div className="w-full">
@@ -279,6 +279,9 @@ const BrandAwareInput = React.forwardRef<HTMLInputElement, BrandAwareInputProps>
 
 BrandAwareInput.displayName = "BrandAwareInput";
 
+// Export the main component
+export { BrandAwareInput, brandAwareInputVariants };
+
 // Specialized brand-aware input components
 export const BrandAwareTextInput = React.forwardRef<HTMLInputElement, Omit<BrandAwareInputProps, 'type'>>(
   ({ children, ...props }, ref) => (
@@ -316,11 +319,4 @@ export const BrandAwareNumberInput = React.forwardRef<HTMLInputElement, Omit<Bra
 );
 BrandAwareNumberInput.displayName = "BrandAwareNumberInput";
 
-export { 
-  BrandAwareInput,
-  brandAwareInputVariants,
-  BrandAwareTextInput,
-  BrandAwareEmailInput,
-  BrandAwarePasswordInput,
-  BrandAwareNumberInput
-};
+// All exports are already declared above individually

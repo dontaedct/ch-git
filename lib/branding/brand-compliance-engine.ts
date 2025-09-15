@@ -709,7 +709,7 @@ export class BrandComplianceEngine {
     // For now, we'll do a basic validation
     return {
       ruleId: 'usability-navigation-consistency',
-      ruleName: 'Navigation Consistency',
+        ruleName: 'Navigation Consistency',
       description: 'Ensure consistent navigation patterns',
       category: 'usability',
       severity: 'medium',
@@ -727,7 +727,7 @@ export class BrandComplianceEngine {
     if (!colors) {
       return {
         ruleId: 'design-color-consistency',
-        name: 'Color System Consistency',
+        ruleName: 'Color System Consistency',
         description: 'Ensure consistent color usage across brand elements',
         category: 'design-consistency',
         severity: 'high',
@@ -742,7 +742,7 @@ export class BrandComplianceEngine {
     if (!colors.primary) {
       return {
         ruleId: 'design-color-consistency',
-        name: 'Color System Consistency',
+        ruleName: 'Color System Consistency',
         description: 'Ensure consistent color usage across brand elements',
         category: 'design-consistency',
         severity: 'high',
@@ -755,7 +755,7 @@ export class BrandComplianceEngine {
 
     return {
       ruleId: 'design-color-consistency',
-      name: 'Color System Consistency',
+      ruleName: 'Color System Consistency',
       description: 'Ensure consistent color usage across brand elements',
       category: 'design-consistency',
       severity: 'high',
@@ -773,7 +773,7 @@ export class BrandComplianceEngine {
     if (!typography) {
       return {
         ruleId: 'design-typography-consistency',
-        name: 'Typography Consistency',
+        ruleName: 'Typography Consistency',
         description: 'Ensure consistent typography usage',
         category: 'design-consistency',
         severity: 'medium',
@@ -786,7 +786,7 @@ export class BrandComplianceEngine {
 
     return {
       ruleId: 'design-typography-consistency',
-      name: 'Typography Consistency',
+      ruleName: 'Typography Consistency',
       description: 'Ensure consistent typography usage',
       category: 'design-consistency',
       severity: 'medium',
@@ -806,7 +806,7 @@ export class BrandComplianceEngine {
     if (colors?.primary && !this.isHealthcareAppropriate(colors.primary)) {
       return {
         ruleId: 'industry-healthcare-compliance',
-        name: 'Healthcare Industry Compliance',
+        ruleName: 'Healthcare Industry Compliance',
         description: 'Ensure compliance with healthcare industry standards',
         category: 'industry-standards',
         severity: 'critical',
@@ -820,7 +820,7 @@ export class BrandComplianceEngine {
 
     return {
       ruleId: 'industry-healthcare-compliance',
-      name: 'Healthcare Industry Compliance',
+      ruleName: 'Healthcare Industry Compliance',
       description: 'Ensure compliance with healthcare industry standards',
       category: 'industry-standards',
       severity: 'critical',
@@ -841,7 +841,7 @@ export class BrandComplianceEngine {
     if (colors?.primary && !this.isFinancialAppropriate(colors.primary)) {
       return {
         ruleId: 'industry-financial-compliance',
-        name: 'Financial Industry Compliance',
+        ruleName: 'Financial Industry Compliance',
         description: 'Ensure compliance with financial industry standards',
         category: 'industry-standards',
         severity: 'critical',
@@ -855,7 +855,7 @@ export class BrandComplianceEngine {
 
     return {
       ruleId: 'industry-financial-compliance',
-      name: 'Financial Industry Compliance',
+      ruleName: 'Financial Industry Compliance',
       description: 'Ensure compliance with financial industry standards',
       category: 'industry-standards',
       severity: 'critical',
@@ -874,7 +874,7 @@ export class BrandComplianceEngine {
     if (!logo) {
       return {
         ruleId: 'brand-logo-usage',
-        name: 'Logo Usage Guidelines',
+        ruleName: 'Logo Usage Guidelines',
         description: 'Ensure logo usage follows brand guidelines',
         category: 'brand-guidelines',
         severity: 'high',
@@ -889,7 +889,7 @@ export class BrandComplianceEngine {
     if (logo.width < 20 || logo.height < 20) {
       return {
         ruleId: 'brand-logo-usage',
-        name: 'Logo Usage Guidelines',
+        ruleName: 'Logo Usage Guidelines',
         description: 'Ensure logo usage follows brand guidelines',
         category: 'brand-guidelines',
         severity: 'high',
@@ -902,7 +902,7 @@ export class BrandComplianceEngine {
 
     return {
       ruleId: 'brand-logo-usage',
-      name: 'Logo Usage Guidelines',
+      ruleName: 'Logo Usage Guidelines',
       description: 'Ensure logo usage follows brand guidelines',
       category: 'brand-guidelines',
       severity: 'high',
@@ -920,7 +920,7 @@ export class BrandComplianceEngine {
     if (!colors) {
       return {
         ruleId: 'brand-color-palette',
-        name: 'Brand Color Palette Compliance',
+        ruleName: 'Brand Color Palette Compliance',
         description: 'Ensure color palette follows brand guidelines',
         category: 'brand-guidelines',
         severity: 'medium',
@@ -933,7 +933,7 @@ export class BrandComplianceEngine {
 
     return {
       ruleId: 'brand-color-palette',
-      name: 'Brand Color Palette Compliance',
+      ruleName: 'Brand Color Palette Compliance',
       description: 'Ensure color palette follows brand guidelines',
       category: 'brand-guidelines',
       severity: 'medium',

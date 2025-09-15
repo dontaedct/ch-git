@@ -246,6 +246,7 @@ export const Observing = {
   // Tracing
   trace: tracedOperation,
   recordMetric: recordBusinessMetric,
+  recordBusinessMetric: recordBusinessMetric,
 };
 
 /**

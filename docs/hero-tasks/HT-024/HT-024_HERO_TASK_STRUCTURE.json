@@ -1,0 +1,421 @@
+{
+  "mainTask": {
+    "task_number": "HT-024",
+    "title": "HT-024: Simple State Management & Data Architecture",
+    "description": "SIMPLE STATE MANAGEMENT: Build streamlined state management system with basic client separation, data persistence, and simple synchronization for agency custom micro-app toolkit.\n\n**Mission:** Create a practical state management system that ensures basic client separation, efficient data persistence, and simple synchronization for custom micro-app delivery with ≤7-day deployment using AI assistance.\n\n**Scope:** Simple state management with basic client separation, persistent storage, simple synchronization, basic caching strategies, and straightforward data architecture for client micro-apps.\n\n**Methodology:** AUDIT → DECIDE → APPLY → VERIFY with 15+ state management verification checkpoints, basic client separation testing, and data consistency validation.\n\n**Business Impact:**\n- Ensure basic client data separation and security\n- Enable efficient data persistence and retrieval\n- Support simple synchronization for basic collaborative features\n- Optimize performance with basic caching\n- Create maintainable data architecture for agency scalability",
+    "type": "state-management",
+    "priority": "critical",
+    "status": "blocked",
+    "created_at": "2025-09-11T21:30:00.000Z",
+    "updated_at": "2025-09-12T19:15:00.000Z",
+    "due_date": "2025-10-23T23:59:59.000Z",
+    "estimated_hours": 8,
+    "actual_hours": 0,
+    "blocking_issue": "HT-021 foundation completion required",
+    "dependency_status": "BLOCKED - Awaiting HT-021 completion",
+    "tags": [
+      "simple-state",
+      "basic-data-separation",
+      "persistent-storage",
+      "simple-sync",
+      "basic-caching",
+      "data-architecture",
+      "client-management",
+      "state-optimization",
+      "client-data",
+      "maintainable-architecture"
+    ],
+    "workflow_phase": "audit",
+    "assignee": "state-management-team",
+    "metadata": {
+      "phases": 4,
+      "total_subtasks": 4,
+      "estimated_total_hours": 8,
+      "target_completion": "2025-10-09",
+      "business_value": "critical",
+      "technical_complexity": "low",
+      "risk_level": "low",
+      "client_isolation": "basic",
+      "data_persistence": "simple",
+      "real_time_sync": "basic",
+      "caching_layers": 1,
+      "performance_targets": {
+        "state_update_time": "<200ms",
+        "data_retrieval_time": "<100ms",
+        "client_switching_time": "<500ms",
+        "cache_hit_ratio": ">70%"
+      },
+      "dependencies": [
+        "HT-021 foundation completion",
+        "HT-022 component system completion",
+        "Database architecture setup"
+      ],
+      "success_metrics": {
+        "client_isolation": "100% client data isolation",
+        "data_consistency": "99% data consistency across clients",
+        "state_performance": "<200ms state update time",
+        "cache_efficiency": ">70% cache hit ratio",
+        "real_time_sync": "Sub-500ms real-time synchronization",
+        "data_persistence": "99% data persistence reliability"
+      }
+    }
+  },
+  "subtasks": [
+    {
+      "subtask_number": "HT-024.1",
+      "title": "Phase 1: Client Data Architecture & Isolation Design",
+      "description": "AUDIT & DECIDE: Design client data architecture with basic client isolation, data separation, and security boundaries.",
+      "status": "ready",
+      "priority": "critical",
+      "estimated_hours": 2,
+      "workflow_phase": "audit",
+      "tags": ["client-architecture", "data-isolation", "client-separation", "security-boundaries"],
+      "actions": [
+        {
+          "action_number": "HT-024.1.1",
+          "title": "Client Data Architecture",
+          "description": "Design simple client data architecture with basic client isolation and data separation",
+          "estimated_hours": 1,
+          "status": "ready",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Client data architecture designed",
+            "Client isolation strategy defined",
+            "Data separation boundaries established",
+            "Database schema design completed",
+            "Data access patterns defined"
+          ]
+        },
+        {
+          "action_number": "HT-024.1.2",
+          "title": "Client Isolation & Security",
+          "description": "Design client isolation system with security boundaries, access controls, and data protection mechanisms",
+          "estimated_hours": 1,
+          "status": "ready",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Client isolation system designed",
+            "Security boundaries established",
+            "Access control mechanisms defined",
+            "Data protection strategies planned",
+            "Security audit requirements defined"
+          ]
+        },
+        {
+          "action_number": "HT-024.1.3",
+          "title": "Data Persistence Strategy",
+          "description": "Design simple data persistence strategy with basic storage and backup systems",
+          "estimated_hours": 0,
+          "status": "ready",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Data persistence strategy designed",
+            "Basic storage optimization planned",
+            "Backup systems architecture defined",
+            "Data recovery mechanisms planned",
+            "Persistence performance targets set"
+          ]
+        },
+        {
+          "action_number": "HT-024.1.4",
+          "title": "State Management Patterns",
+          "description": "Design simple state management patterns for custom micro-apps with basic state updates and data flow",
+          "estimated_hours": 0,
+          "status": "ready",
+          "priority": "high",
+          "verification_checkpoints": [
+            "State management patterns designed",
+            "State update strategies defined",
+            "Data flow optimization planned",
+            "State synchronization patterns established",
+            "Performance optimization strategies planned"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-024.2",
+      "title": "Phase 2: State Management Implementation & Data Layer",
+      "description": "APPLY: Implement simple state management system with client support, data persistence, and basic caching strategies.",
+      "status": "pending",
+      "priority": "critical",
+      "estimated_hours": 3,
+      "workflow_phase": "apply",
+      "tags": ["state-implementation", "data-persistence", "caching-strategies", "client-support"],
+      "actions": [
+        {
+          "action_number": "HT-024.2.1",
+          "title": "Core State Management System",
+          "description": "Implement core state management system with client support and basic state updates",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Core state management system implemented",
+            "Client support operational",
+            "State update mechanisms working",
+            "State synchronization functional",
+            "Performance optimization applied"
+          ]
+        },
+        {
+          "action_number": "HT-024.2.2",
+          "title": "Data Persistence Layer",
+          "description": "Implement simple data persistence layer with database integration, data validation, and basic storage",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Data persistence layer implemented",
+            "Database integration functional",
+            "Data validation system working",
+            "Basic storage optimization applied",
+            "Data consistency mechanisms operational"
+          ]
+        },
+        {
+          "action_number": "HT-024.2.3",
+          "title": "Caching & Performance Optimization",
+          "description": "Implement basic caching system with performance optimization and cache invalidation strategies",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Basic caching system implemented",
+            "Cache invalidation strategies working",
+            "Performance optimization applied",
+            "Cache hit ratio optimization achieved",
+            "Cache management system operational"
+          ]
+        },
+        {
+          "action_number": "HT-024.2.4",
+          "title": "Client Management & Isolation",
+          "description": "Implement client management system with basic isolation, access controls, and security boundaries",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Client management system implemented",
+            "Client isolation mechanisms working",
+            "Access controls functional",
+            "Security boundaries enforced",
+            "Client switching optimization applied"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-024.3",
+      "title": "Phase 3: Basic Synchronization & Data Consistency",
+      "description": "APPLY: Implement basic synchronization system with data consistency, conflict resolution, and simple collaborative features.",
+      "status": "pending",
+      "priority": "critical",
+      "estimated_hours": 2,
+      "workflow_phase": "apply",
+      "tags": ["basic-sync", "data-consistency", "conflict-resolution", "simple-collaborative"],
+      "actions": [
+        {
+          "action_number": "HT-024.3.1",
+          "title": "Basic Synchronization Engine",
+          "description": "Implement basic synchronization engine with simple WebSocket integration and data streaming",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Basic synchronization engine implemented",
+            "WebSocket integration functional",
+            "Data streaming optimization applied",
+            "Connection management working",
+            "Synchronization performance optimized"
+          ]
+        },
+        {
+          "action_number": "HT-024.3.2",
+          "title": "Data Consistency & Conflict Resolution",
+          "description": "Implement basic data consistency mechanisms with conflict resolution and simple locking strategies",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Data consistency mechanisms implemented",
+            "Conflict resolution system working",
+            "Basic locking strategies applied",
+            "Data integrity validation functional",
+            "Consistency monitoring operational"
+          ]
+        },
+        {
+          "action_number": "HT-024.3.3",
+          "title": "Simple Collaborative Features & Live Updates",
+          "description": "Implement simple collaborative features with live updates and basic user presence",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Simple collaborative features implemented",
+            "Live updates system working",
+            "Basic user presence tracking functional",
+            "Simple collaboration operational",
+            "Collaboration performance optimized"
+          ]
+        },
+        {
+          "action_number": "HT-024.3.4",
+          "title": "State Synchronization Testing",
+          "description": "Implement basic testing for state synchronization, data consistency, and real-time features",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "State synchronization tests implemented",
+            "Data consistency tests passing",
+            "Real-time feature tests functional",
+            "Performance tests completed",
+            "Integration tests passing"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-024.4",
+      "title": "Phase 4: Performance Optimization & Data Validation",
+      "description": "VERIFY: Optimize performance, validate data consistency, and ensure client isolation for custom micro-app delivery.",
+      "status": "pending",
+      "priority": "critical",
+      "estimated_hours": 1,
+      "workflow_phase": "verify",
+      "tags": ["performance-optimization", "data-validation", "client-isolation", "system-validation"],
+      "actions": [
+        {
+          "action_number": "HT-024.4.1",
+          "title": "Performance Optimization & Monitoring",
+          "description": "Optimize system performance with basic monitoring, profiling, and performance tuning for custom micro-app delivery",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Performance optimization completed",
+            "Basic monitoring system operational",
+            "Profiling tools implemented",
+            "Performance tuning applied",
+            "Performance targets achieved"
+          ]
+        },
+        {
+          "action_number": "HT-024.4.2",
+          "title": "Data Validation & Integrity",
+          "description": "Implement basic data validation and integrity checks with error handling and recovery",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Data validation system implemented",
+            "Integrity checks operational",
+            "Error handling mechanisms working",
+            "Data recovery systems functional",
+            "Validation performance optimized"
+          ]
+        },
+        {
+          "action_number": "HT-024.4.3",
+          "title": "Client Isolation Validation",
+          "description": "Validate client isolation with basic testing, security audits, and isolation verification",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Client isolation validation completed",
+            "Security audits passed",
+            "Isolation testing comprehensive",
+            "Data leakage prevention verified",
+            "Isolation performance confirmed"
+          ]
+        },
+        {
+          "action_number": "HT-024.4.4",
+          "title": "System Integration & Testing",
+          "description": "Perform basic system integration testing with end-to-end validation and performance verification",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "System integration testing completed",
+            "End-to-end validation passed",
+            "Performance verification successful",
+            "Load testing completed",
+            "System reliability confirmed"
+          ]
+        }
+      ]
+    }
+  ],
+  "implementation_timeline": {
+    "phase_1": {
+      "duration": "2 days",
+      "start_date": "2025-10-22",
+      "end_date": "2025-10-23",
+      "focus": "Multi-tenant data architecture and isolation design",
+      "critical_checkpoints": [
+        "Multi-tenant data architecture designed",
+        "Tenant isolation strategy defined",
+        "Data persistence strategy planned"
+      ]
+    },
+    "phase_2": {
+      "duration": "4 days",
+      "start_date": "2025-10-24",
+      "end_date": "2025-10-27",
+      "focus": "State management implementation and data layer",
+      "critical_checkpoints": [
+        "Core state management system implemented",
+        "Data persistence layer operational",
+        "Caching system functional"
+      ]
+    },
+    "phase_3": {
+      "duration": "2 days",
+      "start_date": "2025-10-28",
+      "end_date": "2025-10-29",
+      "focus": "Real-time synchronization and data consistency",
+      "critical_checkpoints": [
+        "Real-time synchronization engine implemented",
+        "Data consistency mechanisms working",
+        "Collaborative features operational"
+      ]
+    },
+    "phase_4": {
+      "duration": "1 day",
+      "start_date": "2025-10-30",
+      "end_date": "2025-10-30",
+      "focus": "Performance optimization and validation",
+      "critical_checkpoints": [
+        "Performance optimization completed",
+        "Data validation system operational",
+        "Tenant isolation validated"
+      ]
+    }
+  },
+  "success_criteria": {
+    "client_isolation": "100% client data isolation with basic security boundaries",
+    "state_management": "Efficient state management with <200ms update times",
+    "data_persistence": "Reliable data persistence with 99% consistency",
+    "real_time_sync": "Sub-500ms real-time synchronization with conflict resolution",
+    "caching_performance": ">70% cache hit ratio with optimized performance",
+    "data_architecture": "Scalable data architecture supporting multiple clients"
+  },
+  "risk_assessment": {
+    "technical_risks": [
+      "Tenant isolation complexity may impact performance",
+      "Real-time synchronization may cause data consistency issues",
+      "Multi-tenant caching may lead to data leakage",
+      "State management complexity may slow development velocity"
+    ],
+    "mitigation_strategies": [
+      "Comprehensive tenant isolation testing and validation",
+      "Robust conflict resolution and data consistency mechanisms",
+      "Secure caching strategies with tenant-aware invalidation",
+      "Simplified state management patterns with clear documentation"
+    ]
+  }
+}

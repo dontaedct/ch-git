@@ -46,6 +46,30 @@ export interface DynamicBrandConfig {
   isCustom: boolean;
   /** Brand preset name if applicable */
   presetName?: string;
+  /** Theme configuration for brand styling */
+  theme?: {
+    colors?: {
+      primary?: string;
+      secondary?: string;
+      accent?: string;
+      success?: string;
+      warning?: string;
+      error?: string;
+      info?: string;
+      destructive?: string;
+      neutral?: string;
+    };
+    typography?: {
+      fontFamily?: string;
+    };
+    spacing?: {
+      sm?: string;
+      md?: string;
+      lg?: string;
+      xl?: string;
+    };
+    logo?: LogoConfig;
+  };
 }
 
 /**

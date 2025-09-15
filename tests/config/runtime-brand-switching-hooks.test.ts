@@ -7,7 +7,7 @@
  * HT-011.2.2: Tests for React hooks in runtime brand switching system
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { renderHook, act, waitFor } from '@testing-library/react';
 import {
   useRuntimeBrandSwitching,
@@ -28,17 +28,17 @@ import { TenantBrandingConfig, DEFAULT_BRAND_COLORS, DEFAULT_TYPOGRAPHY_CONFIG }
 // MOCK SETUP
 // =============================================================================
 
-vi.mock('@/lib/config/runtime-brand-switching', () => ({
+jest.mock('@/lib/config/runtime-brand-switching', () => ({
   runtimeBrandSwitchingService: {
-    switchBrand: vi.fn(),
-    queueBrandSwitch: vi.fn(),
-    cancelBrandSwitch: vi.fn(),
-    resetToDefaultBrand: vi.fn(),
-    getSwitchState: vi.fn(),
-    getAvailableBrands: vi.fn(),
-    getSwitchHistory: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn()
+    switchBrand: jest.fn(),
+    queueBrandSwitch: jest.fn(),
+    cancelBrandSwitch: jest.fn(),
+    resetToDefaultBrand: jest.fn(),
+    getSwitchState: jest.fn(),
+    getAvailableBrands: jest.fn(),
+    getSwitchHistory: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn()
   }
 }));
 
@@ -157,15 +157,15 @@ const mockSwitchState = {
 
 describe('useRuntimeBrandSwitching', () => {
   beforeEach(() => {
-    vi.mocked(runtimeBrandSwitchingService.getSwitchState).mockReturnValue(mockSwitchState);
-    vi.mocked(runtimeBrandSwitchingService.switchBrand).mockResolvedValue(mockBrandSwitchResult);
-    vi.mocked(runtimeBrandSwitchingService.queueBrandSwitch).mockResolvedValue();
-    vi.mocked(runtimeBrandSwitchingService.cancelBrandSwitch).mockReturnValue(true);
-    vi.mocked(runtimeBrandSwitchingService.resetToDefaultBrand).mockResolvedValue(mockBrandSwitchResult);
+    (runtimeBrandSwitchingService.getSwitchState as jest.Mock).mockReturnValue(mockSwitchState);
+    (runtimeBrandSwitchingService.switchBrand as jest.Mock).mockResolvedValue(mockBrandSwitchResult);
+    (runtimeBrandSwitchingService.queueBrandSwitch as jest.Mock).mockResolvedValue();
+    (runtimeBrandSwitchingService.cancelBrandSwitch as jest.Mock).mockReturnValue(true);
+    (runtimeBrandSwitchingService.resetToDefaultBrand as jest.Mock).mockResolvedValue(mockBrandSwitchResult);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should return switch state and functions', () => {
@@ -203,7 +203,7 @@ describe('useRuntimeBrandSwitching', () => {
 
   it('should handle brand switching errors', async () => {
     const errorMessage = 'Switch failed';
-    vi.mocked(runtimeBrandSwitchingService.switchBrand).mockRejectedValue(new Error(errorMessage));
+    jest.mocked(runtimeBrandSwitchingService.switchBrand).mockRejectedValue(new Error(errorMessage));
 
     const { result } = renderHook(() => useRuntimeBrandSwitching());
 
@@ -260,11 +260,11 @@ describe('useRuntimeBrandSwitching', () => {
 
 describe('useAvailableBrands', () => {
   beforeEach(() => {
-    vi.mocked(runtimeBrandSwitchingService.getAvailableBrands).mockResolvedValue([mockBrandConfiguration]);
+    (runtimeBrandSwitchingService.getAvailableBrands as jest.Mock).mockResolvedValue([mockBrandConfiguration]);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should load available brands', async () => {
@@ -283,7 +283,7 @@ describe('useAvailableBrands', () => {
 
   it('should handle loading errors', async () => {
     const errorMessage = 'Failed to load brands';
-    vi.mocked(runtimeBrandSwitchingService.getAvailableBrands).mockRejectedValue(new Error(errorMessage));
+    jest.mocked(runtimeBrandSwitchingService.getAvailableBrands).mockRejectedValue(new Error(errorMessage));
 
     const { result } = renderHook(() => useAvailableBrands());
 
@@ -325,7 +325,7 @@ describe('useAvailableBrands', () => {
 
   it('should separate preset and custom brands', async () => {
     const customBrand = { ...mockBrandConfiguration, id: 'custom-brand', isPreset: false };
-    vi.mocked(runtimeBrandSwitchingService.getAvailableBrands).mockResolvedValue([
+    (runtimeBrandSwitchingService.getAvailableBrands as jest.Mock).mockResolvedValue([
       mockBrandConfiguration,
       customBrand
     ]);
@@ -365,11 +365,11 @@ describe('useBrandSwitchHistory', () => {
   ];
 
   beforeEach(() => {
-    vi.mocked(runtimeBrandSwitchingService.getSwitchHistory).mockReturnValue(mockHistory);
+    (runtimeBrandSwitchingService.getSwitchHistory as jest.Mock).mockReturnValue(mockHistory);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should return switch history', () => {
@@ -409,12 +409,12 @@ describe('useBrandSwitchHistory', () => {
 
 describe('useBrandSwitchingWithTransitions', () => {
   beforeEach(() => {
-    vi.mocked(runtimeBrandSwitchingService.getSwitchState).mockReturnValue(mockSwitchState);
-    vi.mocked(runtimeBrandSwitchingService.switchBrand).mockResolvedValue(mockBrandSwitchResult);
+    (runtimeBrandSwitchingService.getSwitchState as jest.Mock).mockReturnValue(mockSwitchState);
+    (runtimeBrandSwitchingService.switchBrand as jest.Mock).mockResolvedValue(mockBrandSwitchResult);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should handle brand switching with transitions', async () => {
@@ -489,11 +489,11 @@ describe('useBrandSwitchingAnalytics', () => {
   ];
 
   beforeEach(() => {
-    vi.mocked(runtimeBrandSwitchingService.getSwitchHistory).mockReturnValue(mockHistory);
+    (runtimeBrandSwitchingService.getSwitchHistory as jest.Mock).mockReturnValue(mockHistory);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should calculate analytics correctly', () => {
@@ -523,12 +523,12 @@ describe('useBrandSwitchingAnalytics', () => {
 
 describe('useBrandSwitchingWithLoading', () => {
   beforeEach(() => {
-    vi.mocked(runtimeBrandSwitchingService.getSwitchState).mockReturnValue(mockSwitchState);
-    vi.mocked(runtimeBrandSwitchingService.switchBrand).mockResolvedValue(mockBrandSwitchResult);
+    (runtimeBrandSwitchingService.getSwitchState as jest.Mock).mockReturnValue(mockSwitchState);
+    (runtimeBrandSwitchingService.switchBrand as jest.Mock).mockResolvedValue(mockBrandSwitchResult);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should handle brand switching with loading states', async () => {
@@ -573,13 +573,13 @@ describe('useBrandSwitchingWithLoading', () => {
 
 describe('useDebouncedBrandSwitching', () => {
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.mocked(runtimeBrandSwitchingService.switchBrand).mockResolvedValue(mockBrandSwitchResult);
+    jest.useFakeTimers();
+    (runtimeBrandSwitchingService.switchBrand as jest.Mock).mockResolvedValue(mockBrandSwitchResult);
   });
 
   afterEach(() => {
-    vi.useRealTimers();
-    vi.clearAllMocks();
+    jest.useRealTimers();
+    jest.clearAllMocks();
   });
 
   it('should debounce brand switching', async () => {
@@ -597,7 +597,7 @@ describe('useDebouncedBrandSwitching', () => {
     expect(result.current.pendingRequest).toEqual(request);
 
     act(() => {
-      vi.advanceTimersByTime(500);
+      jest.advanceTimersByTime(500);
     });
 
     await waitFor(() => {
@@ -632,11 +632,11 @@ describe('useDebouncedBrandSwitching', () => {
 
 describe('useBrandSwitchingWithErrorHandling', () => {
   beforeEach(() => {
-    vi.mocked(runtimeBrandSwitchingService.switchBrand).mockResolvedValue(mockBrandSwitchResult);
+    (runtimeBrandSwitchingService.switchBrand as jest.Mock).mockResolvedValue(mockBrandSwitchResult);
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should handle brand switching with retry', async () => {
@@ -657,7 +657,7 @@ describe('useBrandSwitchingWithErrorHandling', () => {
 
   it('should retry on failure', async () => {
     const errorMessage = 'Switch failed';
-    vi.mocked(runtimeBrandSwitchingService.switchBrand)
+    jest.mocked(runtimeBrandSwitchingService.switchBrand)
       .mockRejectedValueOnce(new Error(errorMessage))
       .mockRejectedValueOnce(new Error(errorMessage))
       .mockResolvedValueOnce(mockBrandSwitchResult);
@@ -691,8 +691,8 @@ describe('useBrandSwitchingWithErrorHandling', () => {
 
 describe('useBrandSwitchingKeyboardShortcuts', () => {
   beforeEach(() => {
-    vi.mocked(runtimeBrandSwitchingService.switchBrand).mockResolvedValue(mockBrandSwitchResult);
-    vi.mocked(runtimeBrandSwitchingService.getAvailableBrands).mockResolvedValue([
+    (runtimeBrandSwitchingService.switchBrand as jest.Mock).mockResolvedValue(mockBrandSwitchResult);
+    (runtimeBrandSwitchingService.getAvailableBrands as jest.Mock).mockResolvedValue([
       mockBrandConfiguration,
       { ...mockBrandConfiguration, id: 'brand-2', name: 'Brand 2' },
       { ...mockBrandConfiguration, id: 'brand-3', name: 'Brand 3' }
@@ -700,7 +700,7 @@ describe('useBrandSwitchingKeyboardShortcuts', () => {
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should handle keyboard shortcuts', async () => {

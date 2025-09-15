@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -87,19 +87,11 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -126,15 +118,11 @@ import { getPublicEnv } from <span class="cstat-no" title="statement not covered
 const { NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY } = <span class="cstat-no" title="statement not covered" >getPublicEnv();</span>
 &nbsp;
 /** Browser client singleton - prevents multiple instances and Node polyfill pulls */
-export const <span class="cstat-no" title="statement not covered" >supabaseBrowser = <span class="cstat-no" title="statement not covered" >c</span>reateBrowserClient(</span>
+// Use default browser storage/session handling so auth persists across reloads
+export const <span class="cstat-no" title="statement not covered" >supabaseBrowser </span>= <span class="cstat-no" title="statement not covered" >createBrowserClient(</span>
   NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY,
   {
-    cookies: {
-      get: <span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >u</span>ndefined,</span>
-      set: <span class="fstat-no" title="function not covered" >() =&gt; {}</span>,
-      remove: <span class="fstat-no" title="function not covered" >() =&gt; {}</span>,
-    },
     auth: {
       persistSession: true,
       autoRefreshToken: true,
@@ -143,10 +131,10 @@ export const <span class="cstat-no" title="statement not covered" >supabaseBrows
 );
 &nbsp;
 /** Back-compat alias used by older files */
-export const <span class="cstat-no" title="statement not covered" >createClient = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =&gt; <span class="cstat-no" title="statement not covered" >s</span>upabaseBrowser;</span></span>
+export const <span class="cstat-no" title="statement not covered" >createClient </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>upabaseBrowser;</span></span>
 &nbsp;
 /** Back-compat alias used by older files */
-export const <span class="cstat-no" title="statement not covered" >createBrowserSupabase = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span>) =&gt; <span class="cstat-no" title="statement not covered" >s</span>upabaseBrowser;</span></span>
+export const <span class="cstat-no" title="statement not covered" >createBrowserSupabase </span>= <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>upabaseBrowser;</span></span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -154,7 +142,7 @@ export const <span class="cstat-no" title="statement not covered" >createBrowser
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:50.860Z
+                at 2025-09-12T17:02:49.199Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

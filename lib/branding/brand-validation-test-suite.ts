@@ -230,7 +230,7 @@ export class BrandValidationTestSuite {
             configVersion: '1.0.0',
             tenantId: scenario.brandConfig.tenantId,
             testEnvironment: this.testConfig.testEnvironment,
-          },
+  },
         });
       }
     }
@@ -249,7 +249,7 @@ export class BrandValidationTestSuite {
         executedBy: 'BrandValidationTestSuite',
         environment: this.testConfig.testEnvironment,
         version: '1.0.0',
-      },
+  },
     };
 
     const duration = Date.now() - startTime;
@@ -344,7 +344,7 @@ export class BrandValidationTestSuite {
         configVersion: '1.0.0',
         tenantId: scenario.brandConfig.tenantId,
         testEnvironment: this.testConfig.testEnvironment,
-      },
+  },
     };
   }
 
@@ -658,22 +658,21 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
+          name: 'Test Brand',
           primary: '#007AFF',
           secondary: '#34C759',
-          neutral: '#8E8E93',
           accent: '#FF9500',
           success: '#34C759',
           warning: '#FF9500',
           error: '#FF3B30',
           info: '#007AFF',
-        },
+        } as any,
         typography: {
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeights: [400, 500, 600, 700],
-          fontDisplay: 'swap',
           scale: {
             xs: '0.75rem',
             sm: '0.875rem',
@@ -681,8 +680,8 @@ export class BrandValidationTestSuite {
             lg: '1.125rem',
             xl: '1.25rem',
             '2xl': '1.5rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '/logo.svg',
           alt: 'Valid Test Brand Logo',
@@ -690,14 +689,14 @@ export class BrandValidationTestSuite {
           height: 40,
           initials: 'VT',
           fallbackBgColor: '#007AFF',
-        },
+        } as any,
         spacing: {
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'valid',
     };
@@ -716,7 +715,7 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
           primary: 'invalid-color', // Invalid: not a hex color
@@ -727,7 +726,7 @@ export class BrandValidationTestSuite {
           warning: '#FF9500',
           error: '#FF3B30',
           info: '#007AFF',
-        },
+        } as any,
         typography: {
           fontFamily: '', // Invalid: empty font family
           fontWeights: [], // Invalid: empty font weights
@@ -739,8 +738,8 @@ export class BrandValidationTestSuite {
             lg: '1.125rem',
             xl: '1.25rem',
             '2xl': '1.5rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '', // Invalid: empty src
           alt: 'logo', // Invalid: generic alt text
@@ -748,14 +747,14 @@ export class BrandValidationTestSuite {
           height: 0, // Invalid: zero height
           initials: 'IT',
           fallbackBgColor: '#007AFF',
-        },
+        } as any,
         spacing: {
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'invalid',
     };
@@ -774,16 +773,21 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
+          name: 'Test Brand',
           primary: '#007AFF',
-          // Missing secondary, neutral, accent, and semantic colors
-        },
+          secondary: '#34C759',
+          accent: '#FF9500',
+          success: '#34C759',
+          warning: '#FF9500',
+          error: '#FF3B30',
+          info: '#007AFF',
+        } as any,
         typography: {
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeights: [400, 500, 600, 700],
-          fontDisplay: 'swap',
           scale: {
             xs: '0.75rem',
             sm: '0.875rem',
@@ -791,8 +795,8 @@ export class BrandValidationTestSuite {
             lg: '1.125rem',
             xl: '1.25rem',
             '2xl': '1.5rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '/logo.svg',
           alt: 'Incomplete Brand Logo',
@@ -800,14 +804,14 @@ export class BrandValidationTestSuite {
           height: 40,
           initials: 'IB',
           fallbackBgColor: '#007AFF',
-        },
+        } as any,
         spacing: {
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'pending',
     };
@@ -826,7 +830,7 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
           primary: '#CCCCCC', // Low contrast color
@@ -837,7 +841,7 @@ export class BrandValidationTestSuite {
           warning: '#FF9500',
           error: '#FF3B30',
           info: '#007AFF',
-        },
+        } as any,
         typography: {
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeights: [400, 500, 600, 700],
@@ -849,8 +853,8 @@ export class BrandValidationTestSuite {
             lg: '1.125rem',
             xl: '1.25rem',
             '2xl': '1.5rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '/logo.svg',
           alt: 'logo', // Generic alt text
@@ -858,14 +862,14 @@ export class BrandValidationTestSuite {
           height: 40,
           initials: 'AV',
           fallbackBgColor: '#CCCCCC',
-        },
+        } as any,
         spacing: {
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'invalid',
     };
@@ -884,22 +888,21 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
+          name: 'Test Brand',
           primary: '#007AFF',
           secondary: '#34C759',
-          neutral: '#8E8E93',
           accent: '#FF9500',
           success: '#34C759',
           warning: '#FF9500',
           error: '#FF3B30',
           info: '#007AFF',
-        },
+        } as any,
         typography: {
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeights: [400, 500, 600, 700],
-          fontDisplay: 'swap',
           scale: {
             xs: '0.75rem',
             sm: '0.875rem',
@@ -907,8 +910,8 @@ export class BrandValidationTestSuite {
             lg: '1.125rem',
             xl: '1.25rem',
             '2xl': '1.5rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '', // Missing logo src
           alt: 'logo', // Generic alt text
@@ -916,14 +919,14 @@ export class BrandValidationTestSuite {
           height: 40,
           initials: 'UV',
           fallbackBgColor: '#007AFF',
-        },
+        } as any,
         spacing: {
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'invalid',
     };
@@ -942,18 +945,18 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
+          name: 'Test Brand',
           primary: '#007AFF',
           secondary: '#34C759',
-          neutral: '#8E8E93',
           accent: '#FF9500',
           success: '#34C759',
           warning: '#FF9500',
           error: '#FF3B30',
           info: '#007AFF',
-        },
+        } as any,
         typography: {
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeights: [400, 500, 600, 700],
@@ -965,8 +968,8 @@ export class BrandValidationTestSuite {
             lg: '1.125rem',
             xl: '1.25rem',
             '2xl': '1.5rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '/logo.svg',
           alt: 'Performance Violation Brand Logo',
@@ -974,14 +977,14 @@ export class BrandValidationTestSuite {
           height: 40,
           initials: 'PV',
           fallbackBgColor: '#007AFF',
-        },
+        } as any,
         spacing: {
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'valid',
     };
@@ -1000,7 +1003,7 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
           primary: '#FF0000', // Bright red - may not be appropriate for all industries
@@ -1011,11 +1014,10 @@ export class BrandValidationTestSuite {
           warning: '#FF9500',
           error: '#FF3B30',
           info: '#007AFF',
-        },
+        } as any,
         typography: {
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeights: [400, 500, 600, 700],
-          fontDisplay: 'swap',
           scale: {
             xs: '0.75rem',
             sm: '0.875rem',
@@ -1023,8 +1025,8 @@ export class BrandValidationTestSuite {
             lg: '1.125rem',
             xl: '1.25rem',
             '2xl': '1.5rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '/logo.svg',
           alt: 'Compliance Violation Brand Logo',
@@ -1032,14 +1034,14 @@ export class BrandValidationTestSuite {
           height: 40,
           initials: 'CV',
           fallbackBgColor: '#FF0000',
-        },
+        } as any,
         spacing: {
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'invalid',
     };
@@ -1058,19 +1060,21 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
+          name: 'Test Brand',
           primary: '#007AFF',
-        },
+          secondary: '#34C759',
+        } as any,
         typography: {
           fontFamily: 'system-ui',
           fontWeights: [400],
           fontDisplay: 'swap',
           scale: {
             base: '1rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '/logo.svg',
           alt: 'Minimal Brand Logo',
@@ -1078,11 +1082,11 @@ export class BrandValidationTestSuite {
           height: 40,
           initials: 'MB',
           fallbackBgColor: '#007AFF',
-        },
+        } as any,
         spacing: {
           md: '1rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'valid',
     };
@@ -1101,7 +1105,7 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
           primary: '#007AFF',
@@ -1117,7 +1121,7 @@ export class BrandValidationTestSuite {
           surface: '#F2F2F7',
           text: '#000000',
           textSecondary: '#8E8E93',
-        },
+        } as any,
         typography: {
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeights: [100, 200, 300, 400, 500, 600, 700, 800, 900],
@@ -1133,8 +1137,8 @@ export class BrandValidationTestSuite {
             '4xl': '2.25rem',
             '5xl': '3rem',
             '6xl': '3.75rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '/logo.svg',
           alt: 'Large Complex Brand Logo',
@@ -1142,18 +1146,15 @@ export class BrandValidationTestSuite {
           height: 80,
           initials: 'LC',
           fallbackBgColor: '#007AFF',
-        },
+        } as any,
         spacing: {
           xs: '0.25rem',
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-          '2xl': '3rem',
-          '3xl': '4rem',
-          '4xl': '6rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'valid',
     };
@@ -1172,22 +1173,21 @@ export class BrandValidationTestSuite {
         isCustom: true,
         createdAt: new Date(),
         updatedAt: new Date(),
-      },
+  },
       theme: {
         colors: {
+          name: 'Test Brand',
           primary: '#007AFF',
           secondary: '#34C759',
-          neutral: '#8E8E93',
           accent: '#FF9500',
           success: '#34C759',
           warning: '#FF9500',
           error: '#FF3B30',
           info: '#007AFF',
-        },
+        } as any,
         typography: {
           fontFamily: 'Inter, system-ui, sans-serif',
           fontWeights: [400, 500, 600, 700],
-          fontDisplay: 'swap',
           scale: {
             xs: '0.75rem',
             sm: '0.875rem',
@@ -1195,8 +1195,8 @@ export class BrandValidationTestSuite {
             lg: '1.125rem',
             xl: '1.25rem',
             '2xl': '1.5rem',
-          },
-        },
+  },
+        } as any,
         logo: {
           src: '/logo.svg',
           alt: 'Integration Test Brand Logo',
@@ -1204,14 +1204,14 @@ export class BrandValidationTestSuite {
           height: 40,
           initials: 'IT',
           fallbackBgColor: '#007AFF',
-        },
+        } as any,
         spacing: {
           sm: '0.5rem',
           md: '1rem',
           lg: '1.5rem',
           xl: '2rem',
-        },
-      },
+        } as any,
+  },
       isActive: true,
       validationStatus: 'valid',
     };
@@ -1332,14 +1332,5 @@ export const BrandValidationTestUtils = {
 };
 
 /**
- * Export types and interfaces
+ * Export types and interfaces - already exported above
  */
-export type {
-  BrandValidationTestResult,
-  BrandValidationTestSuiteResult,
-  BrandValidationTestConfig,
-  BrandValidationTestScenario,
-  TestScenarioType,
-  TestSeverity,
-  TestResultStatus,
-};

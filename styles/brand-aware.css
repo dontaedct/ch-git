@@ -1,0 +1,722 @@
+/**
+ * @fileoverview Brand-Aware Styling System for HT-011.3.2
+ * @module styles/brand-aware.css
+ * @author OSS Hero System
+ * @version 1.0.0
+ * 
+ * HT-011.3.2: Implement Brand-Aware Styling System
+ * 
+ * This CSS file provides brand-aware styling utilities that automatically
+ * apply client brand colors, fonts, and styling throughout the application.
+ * 
+ * Features:
+ * - Dynamic CSS custom properties for brand colors
+ * - Brand-aware utility classes
+ * - Automatic dark/light mode variants
+ * - Integration with existing Tailwind system
+ * - Support for custom brand configurations
+ */
+
+/* Brand-Aware CSS Custom Properties */
+:root {
+  /* Default brand colors - will be overridden by dynamic branding */
+  --brand-primary: #007AFF;
+  --brand-primary-hover: #0056CC;
+  --brand-primary-active: #004499;
+  --brand-primary-light: #E6F2FF;
+  --brand-primary-dark: #003D7A;
+  
+  --brand-secondary: #6B7280;
+  --brand-secondary-hover: #4B5563;
+  --brand-secondary-active: #374151;
+  --brand-secondary-light: #F3F4F6;
+  --brand-secondary-dark: #1F2937;
+  
+  --brand-accent: #10B981;
+  --brand-accent-hover: #059669;
+  --brand-accent-active: #047857;
+  --brand-accent-light: #D1FAE5;
+  --brand-accent-dark: #064E3B;
+  
+  --brand-success: #10B981;
+  --brand-success-hover: #059669;
+  --brand-success-active: #047857;
+  --brand-success-light: #D1FAE5;
+  --brand-success-dark: #064E3B;
+  
+  --brand-warning: #F59E0B;
+  --brand-warning-hover: #D97706;
+  --brand-warning-active: #B45309;
+  --brand-warning-light: #FEF3C7;
+  --brand-warning-dark: #92400E;
+  
+  --brand-error: #EF4444;
+  --brand-error-hover: #DC2626;
+  --brand-error-active: #B91C1C;
+  --brand-error-light: #FEE2E2;
+  --brand-error-dark: #991B1B;
+  
+  --brand-info: #3B82F6;
+  --brand-info-hover: #2563EB;
+  --brand-info-active: #1D4ED8;
+  --brand-info-light: #DBEAFE;
+  --brand-info-dark: #1E3A8A;
+  
+  --brand-destructive: #DC2626;
+  --brand-destructive-hover: #B91C1C;
+  --brand-destructive-active: #991B1B;
+  --brand-destructive-light: #FEE2E2;
+  --brand-destructive-dark: #7F1D1D;
+  
+  /* Brand typography */
+  --brand-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --brand-font-display: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  
+  /* Brand spacing and sizing */
+  --brand-border-radius: 0.5rem;
+  --brand-border-radius-sm: 0.25rem;
+  --brand-border-radius-lg: 0.75rem;
+  --brand-border-radius-xl: 1rem;
+  
+  /* Brand shadows */
+  --brand-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --brand-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --brand-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --brand-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Brand transitions */
+  --brand-transition: all 0.2s ease-in-out;
+  --brand-transition-fast: all 0.15s ease-in-out;
+  --brand-transition-slow: all 0.3s ease-in-out;
+}
+
+/* Dark mode brand colors */
+.dark {
+  --brand-primary: #3B82F6;
+  --brand-primary-hover: #2563EB;
+  --brand-primary-active: #1D4ED8;
+  --brand-primary-light: #1E3A8A;
+  --brand-primary-dark: #1E40AF;
+  
+  --brand-secondary: #9CA3AF;
+  --brand-secondary-hover: #6B7280;
+  --brand-secondary-active: #4B5563;
+  --brand-secondary-light: #374151;
+  --brand-secondary-dark: #1F2937;
+  
+  --brand-accent: #34D399;
+  --brand-accent-hover: #10B981;
+  --brand-accent-active: #059669;
+  --brand-accent-light: #064E3B;
+  --brand-accent-dark: #047857;
+  
+  --brand-success: #34D399;
+  --brand-success-hover: #10B981;
+  --brand-success-active: #059669;
+  --brand-success-light: #064E3B;
+  --brand-success-dark: #047857;
+  
+  --brand-warning: #FBBF24;
+  --brand-warning-hover: #F59E0B;
+  --brand-warning-active: #D97706;
+  --brand-warning-light: #92400E;
+  --brand-warning-dark: #B45309;
+  
+  --brand-error: #F87171;
+  --brand-error-hover: #EF4444;
+  --brand-error-active: #DC2626;
+  --brand-error-light: #991B1B;
+  --brand-error-dark: #B91C1C;
+  
+  --brand-info: #60A5FA;
+  --brand-info-hover: #3B82F6;
+  --brand-info-active: #2563EB;
+  --brand-info-light: #1E3A8A;
+  --brand-info-dark: #1D4ED8;
+  
+  --brand-destructive: #F87171;
+  --brand-destructive-hover: #EF4444;
+  --brand-destructive-active: #DC2626;
+  --brand-destructive-light: #991B1B;
+  --brand-destructive-dark: #B91C1C;
+}
+
+/* Brand-Aware Utility Classes */
+@layer utilities {
+  /* Brand Color Utilities */
+  .brand-primary {
+    color: var(--brand-primary);
+  }
+  
+  .brand-primary-bg {
+    background-color: var(--brand-primary);
+  }
+  
+  .brand-primary-border {
+    border-color: var(--brand-primary);
+  }
+  
+  .brand-primary-hover:hover {
+    color: var(--brand-primary-hover);
+  }
+  
+  .brand-primary-bg-hover:hover {
+    background-color: var(--brand-primary-hover);
+  }
+  
+  .brand-primary-border-hover:hover {
+    border-color: var(--brand-primary-hover);
+  }
+  
+  .brand-primary-active:active {
+    color: var(--brand-primary-active);
+  }
+  
+  .brand-primary-bg-active:active {
+    background-color: var(--brand-primary-active);
+  }
+  
+  .brand-primary-border-active:active {
+    border-color: var(--brand-primary-active);
+  }
+  
+  /* Secondary Brand Colors */
+  .brand-secondary {
+    color: var(--brand-secondary);
+  }
+  
+  .brand-secondary-bg {
+    background-color: var(--brand-secondary);
+  }
+  
+  .brand-secondary-border {
+    border-color: var(--brand-secondary);
+  }
+  
+  .brand-secondary-hover:hover {
+    color: var(--brand-secondary-hover);
+  }
+  
+  .brand-secondary-bg-hover:hover {
+    background-color: var(--brand-secondary-hover);
+  }
+  
+  .brand-secondary-border-hover:hover {
+    border-color: var(--brand-secondary-hover);
+  }
+  
+  /* Accent Brand Colors */
+  .brand-accent {
+    color: var(--brand-accent);
+  }
+  
+  .brand-accent-bg {
+    background-color: var(--brand-accent);
+  }
+  
+  .brand-accent-border {
+    border-color: var(--brand-accent);
+  }
+  
+  .brand-accent-hover:hover {
+    color: var(--brand-accent-hover);
+  }
+  
+  .brand-accent-bg-hover:hover {
+    background-color: var(--brand-accent-hover);
+  }
+  
+  .brand-accent-border-hover:hover {
+    border-color: var(--brand-accent-hover);
+  }
+  
+  /* Success Brand Colors */
+  .brand-success {
+    color: var(--brand-success);
+  }
+  
+  .brand-success-bg {
+    background-color: var(--brand-success);
+  }
+  
+  .brand-success-border {
+    border-color: var(--brand-success);
+  }
+  
+  .brand-success-hover:hover {
+    color: var(--brand-success-hover);
+  }
+  
+  .brand-success-bg-hover:hover {
+    background-color: var(--brand-success-hover);
+  }
+  
+  .brand-success-border-hover:hover {
+    border-color: var(--brand-success-hover);
+  }
+  
+  /* Warning Brand Colors */
+  .brand-warning {
+    color: var(--brand-warning);
+  }
+  
+  .brand-warning-bg {
+    background-color: var(--brand-warning);
+  }
+  
+  .brand-warning-border {
+    border-color: var(--brand-warning);
+  }
+  
+  .brand-warning-hover:hover {
+    color: var(--brand-warning-hover);
+  }
+  
+  .brand-warning-bg-hover:hover {
+    background-color: var(--brand-warning-hover);
+  }
+  
+  .brand-warning-border-hover:hover {
+    border-color: var(--brand-warning-hover);
+  }
+  
+  /* Error Brand Colors */
+  .brand-error {
+    color: var(--brand-error);
+  }
+  
+  .brand-error-bg {
+    background-color: var(--brand-error);
+  }
+  
+  .brand-error-border {
+    border-color: var(--brand-error);
+  }
+  
+  .brand-error-hover:hover {
+    color: var(--brand-error-hover);
+  }
+  
+  .brand-error-bg-hover:hover {
+    background-color: var(--brand-error-hover);
+  }
+  
+  .brand-error-border-hover:hover {
+    border-color: var(--brand-error-hover);
+  }
+  
+  /* Info Brand Colors */
+  .brand-info {
+    color: var(--brand-info);
+  }
+  
+  .brand-info-bg {
+    background-color: var(--brand-info);
+  }
+  
+  .brand-info-border {
+    border-color: var(--brand-info);
+  }
+  
+  .brand-info-hover:hover {
+    color: var(--brand-info-hover);
+  }
+  
+  .brand-info-bg-hover:hover {
+    background-color: var(--brand-info-hover);
+  }
+  
+  .brand-info-border-hover:hover {
+    border-color: var(--brand-info-hover);
+  }
+  
+  /* Destructive Brand Colors */
+  .brand-destructive {
+    color: var(--brand-destructive);
+  }
+  
+  .brand-destructive-bg {
+    background-color: var(--brand-destructive);
+  }
+  
+  .brand-destructive-border {
+    border-color: var(--brand-destructive);
+  }
+  
+  .brand-destructive-hover:hover {
+    color: var(--brand-destructive-hover);
+  }
+  
+  .brand-destructive-bg-hover:hover {
+    background-color: var(--brand-destructive-hover);
+  }
+  
+  .brand-destructive-border-hover:hover {
+    border-color: var(--brand-destructive-hover);
+  }
+  
+  /* Brand Typography */
+  .brand-font {
+    font-family: var(--brand-font-family);
+  }
+  
+  .brand-font-display {
+    font-family: var(--brand-font-display);
+  }
+  
+  /* Brand Border Radius */
+  .brand-rounded {
+    border-radius: var(--brand-border-radius);
+  }
+  
+  .brand-rounded-sm {
+    border-radius: var(--brand-border-radius-sm);
+  }
+  
+  .brand-rounded-lg {
+    border-radius: var(--brand-border-radius-lg);
+  }
+  
+  .brand-rounded-xl {
+    border-radius: var(--brand-border-radius-xl);
+  }
+  
+  /* Brand Shadows */
+  .brand-shadow-sm {
+    box-shadow: var(--brand-shadow-sm);
+  }
+  
+  .brand-shadow-md {
+    box-shadow: var(--brand-shadow-md);
+  }
+  
+  .brand-shadow-lg {
+    box-shadow: var(--brand-shadow-lg);
+  }
+  
+  .brand-shadow-xl {
+    box-shadow: var(--brand-shadow-xl);
+  }
+  
+  /* Brand Transitions */
+  .brand-transition {
+    transition: var(--brand-transition);
+  }
+  
+  .brand-transition-fast {
+    transition: var(--brand-transition-fast);
+  }
+  
+  .brand-transition-slow {
+    transition: var(--brand-transition-slow);
+  }
+  
+  /* Brand Focus States */
+  .brand-focus-primary:focus {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 2px;
+  }
+  
+  .brand-focus-secondary:focus {
+    outline: 2px solid var(--brand-secondary);
+    outline-offset: 2px;
+  }
+  
+  .brand-focus-accent:focus {
+    outline: 2px solid var(--brand-accent);
+    outline-offset: 2px;
+  }
+  
+  /* Brand Ring States */
+  .brand-ring-primary {
+    --tw-ring-color: var(--brand-primary);
+  }
+  
+  .brand-ring-secondary {
+    --tw-ring-color: var(--brand-secondary);
+  }
+  
+  .brand-ring-accent {
+    --tw-ring-color: var(--brand-accent);
+  }
+  
+  /* Brand Background Variants */
+  .brand-bg-primary-light {
+    background-color: var(--brand-primary-light);
+  }
+  
+  .brand-bg-secondary-light {
+    background-color: var(--brand-secondary-light);
+  }
+  
+  .brand-bg-accent-light {
+    background-color: var(--brand-accent-light);
+  }
+  
+  .brand-bg-success-light {
+    background-color: var(--brand-success-light);
+  }
+  
+  .brand-bg-warning-light {
+    background-color: var(--brand-warning-light);
+  }
+  
+  .brand-bg-error-light {
+    background-color: var(--brand-error-light);
+  }
+  
+  .brand-bg-info-light {
+    background-color: var(--brand-info-light);
+  }
+  
+  .brand-bg-destructive-light {
+    background-color: var(--brand-destructive-light);
+  }
+}
+
+/* Brand-Aware Component Classes */
+@layer components {
+  /* Brand-Aware Button Base */
+  .brand-button {
+    @apply brand-transition brand-rounded brand-font;
+    font-weight: 500;
+  }
+  
+  .brand-button-primary {
+    @apply brand-button brand-primary-bg text-white brand-primary-bg-hover brand-shadow-md;
+  }
+  
+  .brand-button-secondary {
+    @apply brand-button brand-secondary-bg text-white brand-secondary-bg-hover brand-shadow-sm;
+  }
+  
+  .brand-button-outline {
+    @apply brand-button brand-primary-border border brand-primary text-brand-primary brand-primary-border-hover brand-primary-hover;
+  }
+  
+  .brand-button-ghost {
+    @apply brand-button brand-primary text-brand-primary hover:brand-bg-primary-light;
+  }
+  
+  /* Brand-Aware Input Base */
+  .brand-input {
+    @apply brand-transition brand-rounded brand-font border border-gray-300 focus:brand-border-primary focus:brand-ring-primary;
+  }
+  
+  .brand-input-error {
+    @apply brand-input brand-error-border focus:brand-border-error focus:brand-ring-error;
+  }
+  
+  .brand-input-success {
+    @apply brand-input brand-success-border focus:brand-border-success focus:brand-ring-success;
+  }
+  
+  /* Brand-Aware Card Base */
+  .brand-card {
+    @apply brand-transition brand-rounded brand-shadow-sm bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
+  }
+  
+  .brand-card-primary {
+    @apply brand-card brand-primary-border border-l-4;
+  }
+  
+  .brand-card-secondary {
+    @apply brand-card brand-secondary-border border-l-4;
+  }
+  
+  .brand-card-accent {
+    @apply brand-card brand-accent-border border-l-4;
+  }
+  
+  /* Brand-Aware Badge Base */
+  .brand-badge {
+    @apply brand-transition brand-rounded-sm brand-font text-xs font-medium px-2 py-1;
+  }
+  
+  .brand-badge-primary {
+    @apply brand-badge brand-primary-bg text-white;
+  }
+  
+  .brand-badge-secondary {
+    @apply brand-badge brand-secondary-bg text-white;
+  }
+  
+  .brand-badge-success {
+    @apply brand-badge brand-success-bg text-white;
+  }
+  
+  .brand-badge-warning {
+    @apply brand-badge brand-warning-bg text-white;
+  }
+  
+  .brand-badge-error {
+    @apply brand-badge brand-error-bg text-white;
+  }
+  
+  .brand-badge-info {
+    @apply brand-badge brand-info-bg text-white;
+  }
+  
+  .brand-badge-outline {
+    @apply brand-badge brand-primary-border border brand-primary text-brand-primary;
+  }
+  
+  /* Brand-Aware Alert Base */
+  .brand-alert {
+    @apply brand-transition brand-rounded brand-font p-4 border-l-4;
+  }
+  
+  .brand-alert-info {
+    @apply brand-alert brand-info-border brand-bg-info-light text-brand-info;
+  }
+  
+  .brand-alert-success {
+    @apply brand-alert brand-success-border brand-bg-success-light text-brand-success;
+  }
+  
+  .brand-alert-warning {
+    @apply brand-alert brand-warning-border brand-bg-warning-light text-brand-warning;
+  }
+  
+  .brand-alert-error {
+    @apply brand-alert brand-error-border brand-bg-error-light text-brand-error;
+  }
+  
+  /* Brand-Aware Navigation */
+  .brand-nav {
+    @apply brand-transition brand-font;
+  }
+  
+  .brand-nav-item {
+    @apply brand-nav text-gray-600 hover:text-brand-primary brand-transition-fast;
+  }
+  
+  .brand-nav-item-active {
+    @apply brand-nav-item text-brand-primary font-medium;
+  }
+  
+  /* Brand-Aware Typography */
+  .brand-heading {
+    @apply brand-font-display font-semibold tracking-tight;
+  }
+  
+  .brand-heading-primary {
+    @apply brand-heading text-brand-primary;
+  }
+  
+  .brand-heading-secondary {
+    @apply brand-heading text-brand-secondary;
+  }
+  
+  .brand-text {
+    @apply brand-font;
+  }
+  
+  .brand-text-primary {
+    @apply brand-text text-brand-primary;
+  }
+  
+  .brand-text-secondary {
+    @apply brand-text text-brand-secondary;
+  }
+  
+  .brand-text-muted {
+    @apply brand-text text-gray-500 dark:text-gray-400;
+  }
+  
+  /* Brand-Aware Links */
+  .brand-link {
+    @apply brand-transition-fast brand-primary text-brand-primary hover:text-brand-primary-hover underline underline-offset-4 decoration-1 hover:decoration-2;
+  }
+  
+  .brand-link-secondary {
+    @apply brand-link brand-secondary text-brand-secondary hover:text-brand-secondary-hover;
+  }
+  
+  /* Brand-Aware Dividers */
+  .brand-divider {
+    @apply border-gray-200 dark:border-gray-700;
+  }
+  
+  .brand-divider-primary {
+    @apply brand-divider border-brand-primary;
+  }
+  
+  .brand-divider-secondary {
+    @apply brand-divider border-brand-secondary;
+  }
+  
+  /* Brand-Aware Loading States */
+  .brand-loading {
+    @apply brand-transition opacity-50 pointer-events-none;
+  }
+  
+  .brand-loading-spinner {
+    @apply brand-primary text-brand-primary;
+  }
+}
+
+/* Brand-Aware Responsive Utilities */
+@layer utilities {
+  /* Responsive brand colors */
+  @screen sm {
+    .sm\:brand-primary {
+      color: var(--brand-primary);
+    }
+    
+    .sm\:brand-primary-bg {
+      background-color: var(--brand-primary);
+    }
+  }
+  
+  @screen md {
+    .md\:brand-primary {
+      color: var(--brand-primary);
+    }
+    
+    .md\:brand-primary-bg {
+      background-color: var(--brand-primary);
+    }
+  }
+  
+  @screen lg {
+    .lg\:brand-primary {
+      color: var(--brand-primary);
+    }
+    
+    .lg\:brand-primary-bg {
+      background-color: var(--brand-primary);
+    }
+  }
+  
+  @screen xl {
+    .xl\:brand-primary {
+      color: var(--brand-primary);
+    }
+    
+    .xl\:brand-primary-bg {
+      background-color: var(--brand-primary);
+    }
+  }
+}
+
+/* Brand-Aware Print Styles */
+@media print {
+  .brand-primary {
+    color: #000 !important;
+  }
+  
+  .brand-primary-bg {
+    background-color: #f0f0f0 !important;
+  }
+  
+  .brand-button-primary {
+    background-color: #000 !important;
+    color: #fff !important;
+  }
+  
+  .brand-card {
+    border: 1px solid #000 !important;
+    box-shadow: none !important;
+  }
+}

@@ -1,0 +1,420 @@
+{
+  "mainTask": {
+    "task_number": "HT-023",
+    "title": "HT-023: Agency UI/UX System & Simple Template Engine",
+    "description": "AGENCY UI/UX SYSTEM: Build streamlined UI/UX system with simple template engine, responsive layouts, and user experience optimization for agency custom micro-app delivery.\n\n**Mission:** Create a practical UI/UX system that enables rapid template customization, responsive design automation, and good user experience for custom micro-app delivery in ≤7 days using AI assistance.\n\n**Scope:** Simple template engine with responsive layouts, basic user experience optimization, accessibility compliance, form builder system, document generation, and essential UX patterns for client micro-apps.\n\n**Methodology:** AUDIT → DECIDE → APPLY → VERIFY with 25+ UX verification checkpoints, responsive design testing, and user experience validation.\n\n**Business Impact:**\n- Enable rapid template customization and responsive design for clients\n- Optimize user experience for client micro-app end users\n- Reduce design and development time for client projects\n- Ensure consistent UX patterns across all client deliveries\n- Create maintainable template system for agency scalability",
+    "type": "ui-ux-system",
+    "priority": "critical",
+    "status": "blocked",
+    "created_at": "2025-09-11T21:25:00.000Z",
+    "updated_at": "2025-09-12T19:15:00.000Z",
+    "due_date": "2025-10-16T23:59:59.000Z",
+    "estimated_hours": 12,
+    "actual_hours": 0,
+    "blocking_issue": "HT-021 foundation completion required",
+    "dependency_status": "BLOCKED - Awaiting HT-021 completion",
+    "tags": [
+      "simple-template-engine",
+      "responsive-design",
+      "basic-ux-optimization",
+      "simple-form-builder",
+      "basic-document-generation",
+      "accessibility",
+      "client-templates",
+      "rapid-customization",
+      "user-experience",
+      "template-toolkit"
+    ],
+    "workflow_phase": "audit",
+    "assignee": "ui-ux-team",
+    "metadata": {
+      "phases": 4,
+      "total_subtasks": 4,
+      "estimated_total_hours": 12,
+      "target_completion": "2025-10-20",
+      "business_value": "critical",
+      "technical_complexity": "low",
+      "risk_level": "low",
+      "template_engine": "simple",
+      "responsive_layouts": 5,
+      "ux_patterns": 8,
+      "form_templates": 4,
+      "document_templates": 3,
+      "accessibility_target": "WCAG 2.1 AA",
+      "performance_targets": {
+        "page_load_time": "<2s",
+        "form_submission_time": "<1s",
+        "template_rendering_time": "<500ms",
+        "responsive_breakpoint_switching": "<100ms"
+      },
+      "dependencies": [
+        "HT-021 foundation completion",
+        "HT-022 component system completion",
+        "Design token system operational"
+      ],
+      "success_metrics": {
+        "template_library_size": "5+ custom micro-app templates",
+        "responsive_design_coverage": "100% mobile-first responsive",
+        "ux_optimization_score": "85+ user experience score",
+        "form_builder_templates": "4+ form templates",
+        "document_generation_templates": "3+ document templates",
+        "accessibility_compliance": "100% WCAG 2.1 AA compliance"
+      }
+    }
+  },
+  "subtasks": [
+    {
+      "subtask_number": "HT-023.1",
+      "title": "Phase 1: Template Engine & Responsive Design System",
+      "description": "AUDIT & DECIDE: Design template engine architecture with responsive design system, layout patterns, and custom micro-app template structure.",
+      "status": "ready",
+      "priority": "critical",
+      "estimated_hours": 3,
+      "workflow_phase": "audit",
+      "tags": ["template-engine", "responsive-design", "layout-patterns", "custom-micro-app-templates"],
+      "actions": [
+        {
+          "action_number": "HT-023.1.1",
+          "title": "Template Engine Architecture",
+          "description": "Design simple template engine that supports rapid customization, client branding, and custom micro-app template management",
+          "estimated_hours": 1,
+          "status": "ready",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Template engine architecture designed",
+            "Template composition system planned",
+            "Client branding integration designed",
+            "Template versioning system planned",
+            "Template inheritance patterns defined"
+          ]
+        },
+        {
+          "action_number": "HT-023.1.2",
+          "title": "Responsive Design System",
+          "description": "Design responsive design system with mobile-first approach, breakpoint management, and layout optimization",
+          "estimated_hours": 1,
+          "status": "ready",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Responsive breakpoint system designed",
+            "Mobile-first layout patterns defined",
+            "Grid system architecture planned",
+            "Flexible layout components designed",
+            "Responsive image handling planned"
+          ]
+        },
+        {
+          "action_number": "HT-023.1.3",
+          "title": "Custom Micro-App Template Structure",
+          "description": "Design custom micro-app template structure with common patterns, layout templates, and customization points",
+          "estimated_hours": 1,
+          "status": "ready",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Custom micro-app template patterns defined",
+            "Common layout templates designed",
+            "Customization points identified",
+            "Template composition rules established",
+            "Template validation system planned"
+          ]
+        },
+        {
+          "action_number": "HT-023.1.4",
+          "title": "Layout Pattern Library",
+          "description": "Design simple layout pattern library for common custom micro-app use cases and client requirements",
+          "estimated_hours": 0,
+          "status": "ready",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Layout pattern library designed",
+            "Common use case patterns defined",
+            "Client requirement patterns identified",
+            "Pattern composition rules established",
+            "Pattern documentation planned"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-023.2",
+      "title": "Phase 2: Form Builder & User Input System",
+      "description": "APPLY: Implement simple form builder system with validation, user input optimization, and submission handling.",
+      "status": "pending",
+      "priority": "critical",
+      "estimated_hours": 4,
+      "workflow_phase": "apply",
+      "tags": ["form-builder", "user-input", "validation", "submission-handling"],
+      "actions": [
+        {
+          "action_number": "HT-023.2.1",
+          "title": "Form Builder Engine",
+          "description": "Implement simple form builder engine with basic interface, field types, and validation rules",
+          "estimated_hours": 2,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Form builder engine implemented",
+            "Basic interface functional",
+            "Field type library complete",
+            "Validation rule system operational",
+            "Form preview system working"
+          ]
+        },
+        {
+          "action_number": "HT-023.2.2",
+          "title": "Form Templates & Patterns",
+          "description": "Implement form templates and patterns for common custom micro-app use cases and client requirements",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Form template library implemented",
+            "Common use case patterns available",
+            "Client requirement templates created",
+            "Template customization system working",
+            "Form pattern documentation complete"
+          ]
+        },
+        {
+          "action_number": "HT-023.2.3",
+          "title": "User Input Optimization",
+          "description": "Implement user input optimization with basic accessibility and user experience improvements",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Basic accessibility compliance achieved",
+            "User experience optimizations applied",
+            "Input validation feedback system working",
+            "Error handling and recovery implemented"
+          ]
+        },
+        {
+          "action_number": "HT-023.2.4",
+          "title": "Form Submission & Data Handling",
+          "description": "Implement form submission handling with data validation, storage, and basic integration",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Form submission handling implemented",
+            "Data validation system operational",
+            "Storage integration working",
+            "Basic integration functional",
+            "Submission confirmation system working"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-023.3",
+      "title": "Phase 3: Document Generation & Output System",
+      "description": "APPLY: Implement simple document generation system with template engine, PDF/HTML export, and basic delivery.",
+      "status": "pending",
+      "priority": "critical",
+      "estimated_hours": 3,
+      "workflow_phase": "apply",
+      "tags": ["document-generation", "template-engine", "pdf-export", "basic-delivery"],
+      "actions": [
+        {
+          "action_number": "HT-023.3.1",
+          "title": "Document Template Engine",
+          "description": "Implement simple document template engine with dynamic content, client branding, and template management",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Document template engine implemented",
+            "Dynamic content system working",
+            "Client branding integration functional",
+            "Template management system operational",
+            "Template versioning system working"
+          ]
+        },
+        {
+          "action_number": "HT-023.3.2",
+          "title": "PDF/HTML Export System",
+          "description": "Implement PDF and HTML export system with basic rendering and client customization",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "PDF export system implemented",
+            "HTML export system functional",
+            "Basic rendering achieved",
+            "Client customization support working",
+            "Export optimization implemented"
+          ]
+        },
+        {
+          "action_number": "HT-023.3.3",
+          "title": "Document Templates & Patterns",
+          "description": "Implement document templates and patterns for common custom micro-app outputs and client deliverables",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Document template library implemented",
+            "Common output patterns available",
+            "Client deliverable templates created",
+            "Template customization system working",
+            "Document pattern documentation complete"
+          ]
+        },
+        {
+          "action_number": "HT-023.3.4",
+          "title": "Basic Delivery System",
+          "description": "Implement basic delivery system with file storage and delivery tracking",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Basic delivery system implemented",
+            "File storage system working",
+            "Delivery tracking system operational",
+            "Delivery confirmation system working"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-023.4",
+      "title": "Phase 4: UX Optimization & Performance Validation",
+      "description": "VERIFY: Optimize user experience, validate performance targets, and ensure accessibility compliance for custom micro-app delivery.",
+      "status": "pending",
+      "priority": "critical",
+      "estimated_hours": 2,
+      "workflow_phase": "verify",
+      "tags": ["ux-optimization", "performance-validation", "accessibility", "user-experience"],
+      "actions": [
+        {
+          "action_number": "HT-023.4.1",
+          "title": "User Experience Optimization",
+          "description": "Optimize user experience with basic usability testing and UX pattern refinement",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Basic usability testing completed",
+            "UX patterns refined and optimized",
+            "User feedback integration implemented",
+            "UX metrics tracking operational"
+          ]
+        },
+        {
+          "action_number": "HT-023.4.2",
+          "title": "Performance Optimization",
+          "description": "Optimize performance with page load optimization, form submission speed, and template rendering performance",
+          "estimated_hours": 1,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Page load time <2s achieved",
+            "Form submission time <1s achieved",
+            "Template rendering time <500ms achieved",
+            "Performance monitoring implemented",
+            "Performance optimization documented"
+          ]
+        },
+        {
+          "action_number": "HT-023.4.3",
+          "title": "Accessibility Compliance",
+          "description": "Ensure accessibility compliance with WCAG 2.1 AA standards and basic accessibility testing",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "WCAG 2.1 AA compliance achieved",
+            "Accessibility testing completed",
+            "Screen reader compatibility verified",
+            "Keyboard navigation implemented",
+            "Accessibility documentation complete"
+          ]
+        },
+        {
+          "action_number": "HT-023.4.4",
+          "title": "Template Quality Assurance",
+          "description": "Perform basic quality assurance on all templates, forms, and document generation systems",
+          "estimated_hours": 0,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Template quality assurance completed",
+            "Form system testing passed",
+            "Document generation testing passed",
+            "Cross-browser compatibility verified",
+            "Quality metrics validated"
+          ]
+        }
+      ]
+    }
+  ],
+  "implementation_timeline": {
+    "phase_1": {
+      "duration": "3 days",
+      "start_date": "2025-10-10",
+      "end_date": "2025-10-12",
+      "focus": "Template engine and responsive design system design",
+      "critical_checkpoints": [
+        "Template engine architecture designed",
+        "Responsive design system planned",
+        "Micro-app template structure defined"
+      ]
+    },
+    "phase_2": {
+      "duration": "4 days",
+      "start_date": "2025-10-13",
+      "end_date": "2025-10-16",
+      "focus": "Form builder and user input system implementation",
+      "critical_checkpoints": [
+        "Form builder engine implemented",
+        "Form templates and patterns complete",
+        "User input optimization operational"
+      ]
+    },
+    "phase_3": {
+      "duration": "3 days",
+      "start_date": "2025-10-17",
+      "end_date": "2025-10-19",
+      "focus": "Document generation and output system implementation",
+      "critical_checkpoints": [
+        "Document template engine implemented",
+        "PDF/HTML export system functional",
+        "Automated delivery system operational"
+      ]
+    },
+    "phase_4": {
+      "duration": "2 days",
+      "start_date": "2025-10-20",
+      "end_date": "2025-10-21",
+      "focus": "UX optimization and performance validation",
+      "critical_checkpoints": [
+        "User experience optimization complete",
+        "Performance targets achieved",
+        "Accessibility compliance verified"
+      ]
+    }
+  },
+  "success_criteria": {
+    "template_engine": "Simple template engine with rapid customization capabilities",
+    "responsive_design": "100% mobile-first responsive design system",
+    "form_builder": "Simple form builder with 4+ templates and validation",
+    "document_generation": "Document generation system with PDF/HTML export",
+    "user_experience": "85+ user experience score with optimized UX patterns",
+    "accessibility": "100% WCAG 2.1 AA compliance across all templates"
+  },
+  "risk_assessment": {
+    "technical_risks": [
+      "Template engine complexity may impact performance",
+      "Responsive design system may limit customization flexibility",
+      "Form builder complexity may slow development velocity",
+      "Document generation may have rendering inconsistencies"
+    ],
+    "mitigation_strategies": [
+      "Performance monitoring and optimization throughout development",
+      "Flexible responsive design system with clear customization guidelines",
+      "Simplified form builder with comprehensive documentation",
+      "Comprehensive testing and validation for document generation"
+    ]
+  }
+}

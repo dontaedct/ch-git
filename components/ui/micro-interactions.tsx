@@ -97,9 +97,11 @@ export const InteractiveButton = forwardRef<HTMLButtonElement, InteractiveButton
         ref={(node) => {
           if (ref) {
             if (typeof ref === 'function') ref(node)
-            else ref.current = node
+            else if (ref.current !== undefined) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node
           }
-          elementRef.current = node
+          if (elementRef && elementRef.current !== undefined) {
+            (elementRef as React.MutableRefObject<HTMLElement | null>).current = node
+          }
         }}
         className={cn(interactiveButtonVariants({ variant, size, interaction }), className)}
         onMouseDown={handleMouseDown}
@@ -146,7 +148,7 @@ InteractiveButton.displayName = "InteractiveButton"
 /**
  * Hover Card with Micro-Interactions
  */
-export interface HoverCardProps {
+export interface InteractiveHoverCardProps {
   children: React.ReactNode
   content: React.ReactNode
   side?: 'top' | 'right' | 'bottom' | 'left'
@@ -155,7 +157,7 @@ export interface HoverCardProps {
   className?: string
 }
 
-export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(
+export const InteractiveHoverCard = forwardRef<HTMLDivElement, InteractiveHoverCardProps>(
   ({ children, content, side = 'bottom', align = 'center', delayDuration = 200, className }, ref) => {
     const [isOpen, setIsOpen] = useState(false)
     const [position, setPosition] = useState({ x: 0, y: 0 })
@@ -203,7 +205,7 @@ export const HoverCard = forwardRef<HTMLDivElement, HoverCardProps>(
     )
   }
 )
-HoverCard.displayName = "HoverCard"
+InteractiveHoverCard.displayName = "InteractiveHoverCard"
 
 /**
  * Animated Card with Scroll Effects
@@ -254,9 +256,11 @@ export const AnimatedCard = forwardRef<HTMLDivElement, AnimatedCardProps>(
         ref={(node) => {
           if (ref) {
             if (typeof ref === 'function') ref(node)
-            else ref.current = node
+            else if (ref.current !== undefined) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
           }
-          elementRef.current = node
+          if (elementRef && elementRef.current !== undefined) {
+            (elementRef as React.MutableRefObject<HTMLElement | null>).current = node
+          }
         }}
         className={cn("card-theme rounded-lg p-6", className)}
         style={getAnimationStyle()}
@@ -554,9 +558,11 @@ export const FloatingActionButton = forwardRef<HTMLButtonElement, FloatingAction
         ref={(node) => {
           if (ref) {
             if (typeof ref === 'function') ref(node)
-            else ref.current = node
+            else if (ref.current !== undefined) (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node
           }
-          elementRef.current = node
+          if (elementRef && elementRef.current !== undefined) {
+            (elementRef as React.MutableRefObject<HTMLElement | null>).current = node
+          }
         }}
         className={cn(
           "fixed z-50 rounded-full shadow-lg hover:shadow-xl transition-all duration-200",
@@ -582,13 +588,4 @@ export const FloatingActionButton = forwardRef<HTMLButtonElement, FloatingAction
 )
 FloatingActionButton.displayName = "FloatingActionButton"
 
-export {
-  HoverCard,
-  AnimatedCard,
-  InteractiveInput,
-  LoadingSpinner,
-  ProgressBar,
-  FloatingActionButton,
-}
-
-export { InteractiveButton }
+// All components are already exported as const above

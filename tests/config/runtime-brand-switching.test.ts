@@ -7,7 +7,7 @@
  * HT-011.2.2: Comprehensive tests for runtime brand switching system
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { 
   RuntimeBrandSwitchingService, 
   runtimeBrandSwitchingService,
@@ -109,7 +109,7 @@ describe('RuntimeBrandSwitchingService', () => {
     Object.defineProperty(document, 'documentElement', {
       value: {
         style: {
-          setProperty: vi.fn()
+          setProperty: jest.fn()
         }
       },
       writable: true
@@ -118,16 +118,16 @@ describe('RuntimeBrandSwitchingService', () => {
     // Mock localStorage
     Object.defineProperty(window, 'localStorage', {
       value: {
-        setItem: vi.fn(),
-        getItem: vi.fn(),
-        removeItem: vi.fn()
+        setItem: jest.fn(),
+        getItem: jest.fn(),
+        removeItem: jest.fn()
       },
       writable: true
     });
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('Singleton Pattern', () => {
@@ -163,7 +163,7 @@ describe('RuntimeBrandSwitchingService', () => {
     });
 
     it('should emit switch events during brand switching', async () => {
-      const eventListener = vi.fn();
+      const eventListener = jest.fn();
       service.addEventListener('switch_started', eventListener);
       service.addEventListener('switch_completed', eventListener);
 
@@ -242,7 +242,7 @@ describe('RuntimeBrandSwitchingService', () => {
       const request1: BrandSwitchRequest = { brandId: 'brand-1' };
       const request2: BrandSwitchRequest = { brandId: 'brand-2' };
 
-      const switchSpy = vi.spyOn(service, 'switchBrand').mockResolvedValue({
+      const switchSpy = jest.spyOn(service, 'switchBrand').mockResolvedValue({
         success: true,
         duration: 100
       });
@@ -323,7 +323,7 @@ describe('RuntimeBrandSwitchingService', () => {
 
   describe('Event Listeners', () => {
     it('should add and remove event listeners', () => {
-      const listener = vi.fn();
+      const listener = jest.fn();
       
       service.addEventListener('test-event', listener);
       expect(service['eventListeners'].get('test-event')).toContain(listener);
@@ -333,8 +333,8 @@ describe('RuntimeBrandSwitchingService', () => {
     });
 
     it('should handle multiple listeners for the same event', () => {
-      const listener1 = vi.fn();
-      const listener2 = vi.fn();
+      const listener1 = jest.fn();
+      const listener2 = jest.fn();
       
       service.addEventListener('test-event', listener1);
       service.addEventListener('test-event', listener2);
@@ -389,7 +389,7 @@ describe('RuntimeBrandSwitchingService', () => {
 
     it('should handle CSS variable update errors gracefully', async () => {
       // Mock CSS variable update to throw error
-      document.documentElement.style.setProperty = vi.fn().mockImplementation(() => {
+      document.documentElement.style.setProperty = jest.fn().mockImplementation(() => {
         throw new Error('CSS update failed');
       });
 
@@ -401,7 +401,7 @@ describe('RuntimeBrandSwitchingService', () => {
 
     it('should handle localStorage errors gracefully', async () => {
       // Mock localStorage to throw error
-      localStorage.setItem = vi.fn().mockImplementation(() => {
+      localStorage.setItem = jest.fn().mockImplementation(() => {
         throw new Error('localStorage failed');
       });
 
@@ -492,7 +492,7 @@ describe('Runtime Brand Switching Integration', () => {
   });
 
   it('should handle event emission correctly', async () => {
-    const eventListener = vi.fn();
+    const eventListener = jest.fn();
     runtimeBrandSwitchingService.addEventListener('switch_completed', eventListener);
 
     await runtimeBrandSwitchingService.switchBrand(mockBrandSwitchRequest);

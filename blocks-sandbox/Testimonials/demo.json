@@ -1,0 +1,127 @@
+{
+  "id": "testimonials-demo",
+  "type": "testimonials",
+  "content": {
+    "header": {
+      "title": "What Our Clients Say",
+      "subtitle": "Real feedback from businesses",
+      "description": "Hear from businesses who got their micro-apps delivered in ~a week.",
+      "alignment": "center"
+    },
+    "testimonials": [
+      {
+        "id": "salon-owner",
+        "content": "The salon booking system was delivered exactly as promised. Our waitlist management is now automated and our staff loves the simple interface. We've seen a 40% increase in bookings since implementing it.",
+        "author": {
+          "name": "Sarah Johnson",
+          "title": "Owner",
+          "company": "Bella Vista Salon",
+          "avatar": {
+            "src": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
+            "alt": "Sarah Johnson headshot"
+          },
+          "verified": true
+        },
+        "rating": {
+          "value": 5,
+          "max": 5,
+          "show": true
+        },
+        "tags": ["Salon Booking", "Waitlist Management", "Staff Efficiency"],
+        "featured": true
+      },
+      {
+        "id": "realtor-agent",
+        "content": "As a realtor, the MLS integration saved me hours every week. The branded listing pages look professional and convert better than our old system. My clients love the modern interface.",
+        "author": {
+          "name": "Mike Chen",
+          "title": "Real Estate Agent",
+          "company": "Premier Properties",
+          "avatar": {
+            "src": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+            "alt": "Mike Chen headshot"
+          },
+          "verified": true
+        },
+        "rating": {
+          "value": 5,
+          "max": 5,
+          "show": true
+        },
+        "tags": ["MLS Integration", "Listing Management", "Client Experience"]
+      },
+      {
+        "id": "gym-owner",
+        "content": "The gym progress tracker has transformed how we manage client relationships. The automatic progress emails keep clients engaged, and the CSV export makes reporting so much easier.",
+        "author": {
+          "name": "Jessica Martinez",
+          "title": "Gym Owner",
+          "company": "FitLife Gym",
+          "avatar": {
+            "src": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+            "alt": "Jessica Martinez headshot"
+          },
+          "verified": true
+        },
+        "rating": {
+          "value": 5,
+          "max": 5,
+          "show": true
+        },
+        "tags": ["Progress Tracking", "Client Engagement", "Reporting"]
+      },
+      {
+        "id": "business-owner",
+        "content": "The custom business app exceeded our expectations. The team delivered exactly what we needed, on time, and the ongoing support has been excellent. Highly recommend for any business looking for a tailored solution.",
+        "author": {
+          "name": "David Thompson",
+          "title": "CEO",
+          "company": "Thompson Enterprises",
+          "avatar": {
+            "src": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+            "alt": "David Thompson headshot"
+          },
+          "verified": true
+        },
+        "rating": {
+          "value": 5,
+          "max": 5,
+          "show": true
+        },
+        "tags": ["Custom Development", "On-Time Delivery", "Support"]
+      }
+    ],
+    "carousel": {
+      "enabled": true,
+      "autoPlay": true,
+      "autoPlayInterval": 6000,
+      "showDots": true,
+      "showArrows": true,
+      "slidesToShow": 1,
+      "slidesToScroll": 1,
+      "infinite": true
+    }
+  },
+  "layout": {
+    "variant": "carousel",
+    "alignment": "center",
+    "maxWidth": "6xl",
+    "padding": "lg",
+    "background": "subtle",
+    "card": {
+      "variant": "default",
+      "padding": "lg",
+      "className": ""
+    },
+    "className": ""
+  },
+  "accessibility": {
+    "ariaLabel": "Customer testimonials section",
+    "ariaDescribedBy": "testimonials-description"
+  },
+  "seo": {
+    "title": "Client Testimonials - Micro-App Success Stories",
+    "description": "Read real feedback from businesses who got their micro-apps delivered in ~a week. Salon owners, realtors, gym owners, and business leaders share their success stories.",
+    "keywords": ["testimonials", "client feedback", "micro-app success", "business reviews", "customer stories"]
+  }
+}

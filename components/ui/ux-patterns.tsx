@@ -71,7 +71,9 @@ export const StaggeredContainer = forwardRef<HTMLDivElement, StaggeredContainerP
             if (typeof ref === 'function') ref(node)
             else ref.current = node
           }
-          elementRef.current = node
+          if (elementRef && elementRef.current !== undefined) {
+            (elementRef as React.MutableRefObject<HTMLElement | null>).current = node
+          }
         }}
         className={cn("space-y-4", className)}
       >
@@ -187,7 +189,9 @@ export const RevealAnimation = forwardRef<HTMLDivElement, RevealAnimationProps>(
             if (typeof ref === 'function') ref(node)
             else ref.current = node
           }
-          elementRef.current = node
+          if (elementRef && elementRef.current !== undefined) {
+            (elementRef as React.MutableRefObject<HTMLElement | null>).current = node
+          }
         }}
         className={cn("transition-all ease-out", className)}
         style={{
@@ -366,9 +370,11 @@ export const VirtualScroll = forwardRef<HTMLDivElement, VirtualScrollProps>(
         ref={(node) => {
           if (ref) {
             if (typeof ref === 'function') ref(node)
-            else ref.current = node
+            else if (ref.current !== undefined) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
           }
-          containerRef.current = node
+          if (containerRef && containerRef.current !== undefined) {
+            (containerRef as React.MutableRefObject<HTMLElement | null>).current = node
+          }
         }}
         className={cn("overflow-auto", className)}
         style={{ height: containerHeight }}
@@ -602,14 +608,4 @@ export const GestureContainer = forwardRef<HTMLDivElement, GestureContainerProps
 )
 GestureContainer.displayName = "GestureContainer"
 
-export {
-  StaggeredContainer,
-  ParallaxSection,
-  RevealAnimation,
-  DragDropContainer,
-  InfiniteScroll,
-  VirtualScroll,
-  MorphingButton,
-  StatusToast,
-  GestureContainer,
-}
+// All components are already exported as const above

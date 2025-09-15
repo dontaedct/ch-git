@@ -124,7 +124,7 @@ export function TokensProvider({
     
     // Color tokens
     Object.entries(semanticColors).forEach(([key, value]) => {
-      root.style.setProperty(`--color-${key}`, value);
+      root.style.setProperty(`--color-${key}`, String(value));
     });
     
     // Neutral scale
@@ -203,15 +203,15 @@ export function TokensProvider({
     
     // Component tokens - Button
     Object.entries(tokens.components.button.height).forEach(([key, value]) => {
-      root.style.setProperty(`--button-height-${key}`, value);
+      root.style.setProperty(`--button-height-${key}`, String(value));
     });
     
     Object.entries(tokens.components.button.padding).forEach(([key, value]) => {
-      root.style.setProperty(`--button-padding-${key}`, value);
+      root.style.setProperty(`--button-padding-${key}`, String(value));
     });
     
     Object.entries(tokens.components.button.fontSize).forEach(([key, value]) => {
-      root.style.setProperty(`--button-font-size-${key}`, value);
+      root.style.setProperty(`--button-font-size-${key}`, String(value));
     });
     
     root.style.setProperty(`--button-border-radius`, tokens.components.button.borderRadius);

@@ -640,7 +640,7 @@ export async function deleteAction(actionId: string): Promise<ApiResponse<void>>
 // SEARCH AND FILTERING
 // ============================================================================
 
-export async function searchTasks(request: TaskSearchRequest): Promise<ApiResponse<TaskSearchResult>> {
+export async function searchTasks(request: TaskSearchRequest): Promise<TaskSearchResult> {
   try {
     const page = request.page || 1;
     const pageSize = Math.min(request.page_size || 20, 100);

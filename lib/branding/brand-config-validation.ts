@@ -16,6 +16,9 @@ import { DynamicBrandConfig } from './logo-manager';
 import { BrandPreset } from './preset-manager';
 import { TenantBrandConfig } from './types';
 
+// Re-export TenantBrandConfig for external usage
+export type { TenantBrandConfig };
+
 /**
  * Enhanced validation severity levels
  */
@@ -53,6 +56,8 @@ export interface BrandValidationWarning {
   path: string;
   /** Suggestion for improvement */
   suggestion?: string;
+  /** WCAG level if applicable */
+  wcagLevel?: 'A' | 'AA' | 'AAA';
   /** Category of validation */
   category: 'accessibility' | 'usability' | 'design' | 'branding' | 'technical';
 }
@@ -668,14 +673,14 @@ export class BrandConfigValidationService {
    */
   private convertToDynamicConfig(config: TenantBrandConfig): DynamicBrandConfig {
     return {
-      logo: config.theme?.logo || {
-        src: '',
-        alt: '',
-        width: 40,
-        height: 40,
-        initials: '',
-        fallbackBgColor: 'from-blue-600 to-indigo-600',
-        showAsImage: false
+      logo: {
+        src: config.theme?.logo?.src || '',
+        alt: config.theme?.logo?.alt || '',
+        width: config.theme?.logo?.width || 40,
+        height: config.theme?.logo?.height || 40,
+        initials: config.theme?.logo?.initials || '',
+        fallbackBgColor: config.theme?.logo?.fallbackBgColor || 'from-blue-600 to-indigo-600',
+        showAsImage: config.theme?.logo?.showAsImage || false
       },
       brandName: {
         organizationName: config.brand?.name || 'Your Organization',

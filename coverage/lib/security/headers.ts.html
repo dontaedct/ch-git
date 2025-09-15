@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.4% </span>
+                <span class="strong">93.1% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>85/91</span>
+                <span class='fraction'>81/87</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">96.92% </span>
+                <span class="strong">96.61% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>63/65</span>
+                <span class='fraction'>57/59</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.68% </span>
+                <span class="strong">92.3% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>76/82</span>
+                <span class='fraction'>72/78</span>
             </div>
         
             
@@ -408,10 +408,7 @@
 <a name='L343'></a><a href='#L343'>343</a>
 <a name='L344'></a><a href='#L344'>344</a>
 <a name='L345'></a><a href='#L345'>345</a>
-<a name='L346'></a><a href='#L346'>346</a>
-<a name='L347'></a><a href='#L347'>347</a>
-<a name='L348'></a><a href='#L348'>348</a>
-<a name='L349'></a><a href='#L349'>349</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L346'></a><a href='#L346'>346</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -420,6 +417,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -620,6 +619,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">66x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -656,25 +659,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -759,6 +752,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Security Headers Middleware
  * 
@@ -790,6 +784,8 @@ export interface SecurityHeaders {
   'X-DNS-Prefetch-Control': string;
   'X-Download-Options': string;
   'X-Permitted-Cross-Domain-Policies': string;
+  // Expose CSP nonce for Next.js to propagate to inline scripts/styles
+  'x-nonce'?: string;
 }
 &nbsp;
 /**
@@ -952,9 +948,10 @@ export function getContentSecurityPolicy(nonce: string): string {
   ];
   
   if (isProduction &amp;&amp; !isPreview) {
-    // Strict production CSP
+    // Production CSP with strict nonce-based security
     return [
       ...baseDirectives,
+      // Use nonce for scripts and styles
       `script-src 'self' 'nonce-${nonce}' https://js.stripe.com`,
       `script-src-elem 'self' 'nonce-${nonce}' https://js.stripe.com`,
       `style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com`,
@@ -964,15 +961,18 @@ export function getContentSecurityPolicy(nonce: string): string {
       "font-src 'self' data: https://fonts.gstatic.com",
       "frame-src 'self' https://js.stripe.com https://hooks.stripe.com",
       "worker-src 'self' blob:",
-      "manifest-src 'self'"
+      "manifest-src 'self'",
+      // Additional security directives
+      "require-trusted-types-for 'script'",
+      "trusted-types default"
     ].join("; ");
   } else {
-    // Development/Preview CSP with more flexibility
+    // Development/Preview CSP with more flexibility but still secure
     return [
       ...baseDirectives.filter(d =&gt; !d.includes('upgrade-insecure-requests')), // Remove HTTPS requirement in dev
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live https://js.stripe.com",
-      "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://vercel.live https://*.vercel.live https://js.stripe.com",
-      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      `script-src 'self' 'nonce-${nonce}' 'unsafe-eval' https://vercel.live https://*.vercel.live https://js.stripe.com`,
+      `script-src-elem 'self' 'nonce-${nonce}' 'unsafe-eval' https://vercel.live https://*.vercel.live https://js.stripe.com`,
+      `style-src 'self' 'nonce-${nonce}' 'unsafe-inline' https://fonts.googleapis.com`,
       "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://*.stripe.com",
       "media-src 'self' blob:",
       "connect-src 'self' https://*.supabase.co https://*.supabase.in https://api.resend.com https://api.stripe.com https://*.sentry.io https://vercel.live https://*.vercel.live wss://*.supabase.co wss://vercel.live wss://*.vercel.live",
@@ -1000,7 +1000,9 @@ export function generateSecurityHeaders(context: SecurityContext): SecurityHeade
     'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()',
     'X-DNS-Prefetch-Control': 'off',
     'X-Download-Options': 'noopen',
-    'X-Permitted-Cross-Domain-Policies': 'none'
+    'X-Permitted-Cross-Domain-Policies': 'none',
+    // Provide nonce header so Next.js can attach it to inline runtime scripts/styles
+    'x-nonce': nonce
   };
   
   // Add HSTS in production
@@ -1008,21 +1010,9 @@ export function generateSecurityHeaders(context: SecurityContext): SecurityHeade
     headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
   }
   
-  // CSP based on environment and risk level
+  // Re-enable CSP with proper Google Fonts support
   const csp = getContentSecurityPolicy(nonce);
-  
-  if (isProduction &amp;&amp; !isPreview) {
-    // Strict CSP for production
-    if (context.riskLevel === 'high') {
-      // Even stricter CSP for high-risk requests
-      headers['Content-Security-Policy'] = csp.replace(/https:\/\/[^;\s]*/g, "'self'");
-    } else {
-      headers['Content-Security-Policy'] = csp;
-    }
-  } else {
-    // Report-only CSP for preview/development
-    headers['Content-Security-Policy-Report-Only'] = csp;
-  }
+  headers['Content-Security-Policy'] = csp;
   
   return headers;
 }
@@ -1107,14 +1097,15 @@ export function securityHeadersMiddleware(req: NextRequest): {
     shouldBlock,
     blockReason
   };
-}</pre></td></tr></table></pre>
+}
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

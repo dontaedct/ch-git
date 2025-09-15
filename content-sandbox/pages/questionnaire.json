@@ -1,0 +1,169 @@
+{
+  "page": {
+    "id": "questionnaire-demo",
+    "title": "Questionnaire - Get Started",
+    "description": "Answer a few questions to help us understand your business needs and recommend the best micro-app solution.",
+    "blocks": [
+      {
+        "id": "questionnaire-hero",
+        "type": "hero",
+        "content": {
+          "headline": {
+            "text": "Let's Build Your Micro-App",
+            "level": "h1",
+            "className": ""
+          },
+          "subheading": {
+            "text": "Answer a few questions",
+            "level": "h2",
+            "className": ""
+          },
+          "description": {
+            "text": "Help us understand your business needs so we can recommend the perfect micro-app solution for you.",
+            "className": ""
+          },
+          "cta": {
+            "primary": {
+              "text": "Start Questionnaire",
+              "href": "#questionnaire-form",
+              "variant": "primary",
+              "size": "lg",
+              "className": "",
+              "external": false
+            }
+          }
+        },
+        "layout": {
+          "alignment": "center",
+          "maxWidth": "4xl",
+          "padding": "md",
+          "background": "gradient",
+          "className": ""
+        },
+        "accessibility": {
+          "ariaLabel": "Questionnaire introduction section",
+          "ariaDescribedBy": "questionnaire-description"
+        },
+        "seo": {
+          "title": "Business Questionnaire - Get Your Micro-App",
+          "description": "Answer a few questions to help us understand your business needs and recommend the best micro-app solution.",
+          "keywords": ["questionnaire", "business needs", "micro-app", "consultation", "get started"]
+        }
+      },
+      {
+        "id": "questionnaire-features",
+        "type": "features",
+        "content": {
+          "header": {
+            "title": "What We'll Ask",
+            "subtitle": "Quick and easy",
+            "description": "Just a few questions to understand your business and recommend the best solution.",
+            "alignment": "center"
+          },
+          "features": [
+            {
+              "id": "business-type",
+              "title": "Business Type",
+              "description": "Tell us about your industry and business model to match you with the right template.",
+              "icon": {
+                "type": "emoji",
+                "value": "🏢"
+              },
+              "tags": ["Industry", "Business Model", "Template Matching"]
+            },
+            {
+              "id": "pain-points",
+              "title": "Pain Points",
+              "description": "Identify the specific admin/ops problems you're facing that we can solve.",
+              "icon": {
+                "type": "emoji",
+                "value": "🎯"
+              },
+              "tags": ["Problem Identification", "Admin Issues", "Ops Challenges"]
+            },
+            {
+              "id": "requirements",
+              "title": "Requirements",
+              "description": "Share your specific needs, integrations, and customization requirements.",
+              "icon": {
+                "type": "emoji",
+                "value": "⚙️"
+              },
+              "tags": ["Customization", "Integrations", "Specific Needs"]
+            },
+            {
+              "id": "timeline",
+              "title": "Timeline",
+              "description": "Let us know your preferred delivery timeline and any urgent deadlines.",
+              "icon": {
+                "type": "emoji",
+                "value": "⏰"
+              },
+              "tags": ["Delivery Timeline", "Deadlines", "Urgency"]
+            }
+          ]
+        },
+        "layout": {
+          "grid": {
+            "columns": "4",
+            "gap": "md",
+            "responsive": {
+              "mobile": "1",
+              "tablet": "2",
+              "desktop": "4"
+            }
+          },
+          "card": {
+            "variant": "default",
+            "padding": "md",
+            "hover": true,
+            "className": ""
+          },
+          "alignment": "center",
+          "maxWidth": "6xl",
+          "padding": "md",
+          "background": "subtle",
+          "className": ""
+        },
+        "accessibility": {
+          "ariaLabel": "Questionnaire process overview",
+          "ariaDescribedBy": "questionnaire-process-description"
+        }
+      },
+      {
+        "id": "questionnaire-cta",
+        "type": "cta",
+        "content": {
+          "headline": "Ready to Get Started?",
+          "description": "Complete the questionnaire and we'll provide a customized recommendation for your micro-app solution.",
+          "primary": {
+            "text": "Start Questionnaire",
+            "href": "#questionnaire-form",
+            "variant": "primary",
+            "size": "lg",
+            "external": false
+          },
+          "secondary": {
+            "text": "View Examples First",
+            "href": "/examples",
+            "variant": "secondary",
+            "size": "lg",
+            "external": false
+          }
+        },
+        "layout": {
+          "variant": "centered",
+          "alignment": "center",
+          "maxWidth": "4xl",
+          "padding": "md",
+          "background": "gradient",
+          "className": ""
+        },
+        "accessibility": {
+          "ariaLabel": "Questionnaire call-to-action",
+          "ariaDescribedBy": "questionnaire-cta-description"
+        }
+      }
+    ]
+  }
+}

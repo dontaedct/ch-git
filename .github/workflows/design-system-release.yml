@@ -1,0 +1,313 @@
+/**
+ * @fileoverview HT-008.10.5: Design System CI/CD Pipeline
+ * @module .github/workflows/design-system-release.yml
+ * @author OSS Hero System
+ * @version 2.0.0
+ * 
+ * UNIVERSAL HEADER: Hero Tasks System Integration
+ * Task: HT-008.10.5 - Design System Automation and Versioning
+ * Focus: Automated CI/CD pipeline for design system releases
+ * Methodology: AUDIT → DECIDE → APPLY → VERIFY (strict adherence)
+ * Risk Level: HIGH (design system automation)
+ */
+
+name: Design System Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'components/ui/**'
+      - 'lib/design-tokens/**'
+      - 'docs/DESIGN_SYSTEM_DOCUMENTATION.md'
+      - '.storybook/**'
+      - 'package.json'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'components/ui/**'
+      - 'lib/design-tokens/**'
+      - 'docs/DESIGN_SYSTEM_DOCUMENTATION.md'
+      - '.storybook/**'
+      - 'package.json'
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+          - prerelease
+
+env:
+  NODE_VERSION: '18'
+  DESIGN_SYSTEM_VERSION: ${{ github.ref_name }}
+
+jobs:
+  validate:
+    name: Validate Design System
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run type checking
+        run: npm run typecheck
+
+      - name: Validate design system
+        run: npm run design-system:validate
+
+      - name: Run unit tests
+        run: npm run design-system:test
+
+      - name: Run visual regression tests
+        run: npm run design-system:test:visual
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: |
+            test-results/
+            coverage/
+            reports/
+
+  build:
+    name: Build Design System
+    runs-on: ubuntu-latest
+    needs: validate
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      - name: Build Storybook
+        run: npm run build-storybook
+
+      - name: Analyze bundle
+        run: npm run bundle:analyze
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            .next/
+            storybook-static/
+            reports/
+
+  test-storybook:
+    name: Test Storybook
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Test Storybook
+        run: npm run test-storybook
+
+  accessibility:
+    name: Accessibility Testing
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Run accessibility tests
+        run: npm run test:accessibility:comprehensive
+
+      - name: Upload accessibility results
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-results
+          path: reports/accessibility/
+
+  performance:
+    name: Performance Testing
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Run performance tests
+        run: npm run test:performance:lighthouse
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-results
+          path: reports/performance/
+
+  release:
+    name: Release Design System
+    runs-on: ubuntu-latest
+    needs: [validate, build, test-storybook, accessibility, performance]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Run design system automation
+        run: npm run design-system:automation
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.DESIGN_SYSTEM_VERSION }}
+          release_name: Design System v${{ env.DESIGN_SYSTEM_VERSION }}
+          body_path: CHANGELOG.md
+          draft: false
+          prerelease: false
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./storybook-static.zip
+          asset_name: storybook-static.zip
+          asset_content_type: application/zip
+
+  deploy-storybook:
+    name: Deploy Storybook
+    runs-on: ubuntu-latest
+    needs: [build, release]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          destination_dir: design-system
+
+  notify:
+    name: Notify Team
+    runs-on: ubuntu-latest
+    needs: [release, deploy-storybook]
+    if: always()
+    steps:
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#design-system'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-latest
+    needs: [release, deploy-storybook]
+    if: always()
+    steps:
+      - name: Delete artifacts
+        uses: geekyeggo/delete-artifact@v4
+        with:
+          name: |
+            test-results
+            build-artifacts
+            accessibility-results
+            performance-results

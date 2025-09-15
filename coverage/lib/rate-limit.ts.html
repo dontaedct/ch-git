@@ -894,7 +894,7 @@ export interface RateLimitResult {
 /**
  * Enhanced rate limit configurations with bot detection and burst protection
  */
-export const <span class="cstat-no" title="statement not covered" >RATE_LIMITS = <span class="cstat-no" title="statement not covered" >{</span></span>
+export const <span class="cstat-no" title="statement not covered" >RATE_LIMITS </span>= <span class="cstat-no" title="statement not covered" >{</span>
   // Guardian heartbeat: Restricted for security
   GUARDIAN_HEARTBEAT: {
     windowMs: 60 * 1000, // 1 minute
@@ -1107,14 +1107,14 @@ function <span class="fstat-no" title="function not covered" >calculateRiskLevel
 /**
  * Generate rate limit key with IP fallback
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >generateRateLimitKey(t</span></span>enantId: string, ip?: string): string {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >generateRateLimitKey(</span></span>tenantId: string, ip?: string): string {
 <span class="cstat-no" title="statement not covered" >  return ip ? `${tenantId}:${ip}` : tenantId;</span>
 }
 &nbsp;
 /**
  * Clear rate limit for a specific tenant (admin utility)
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >clearRateLimit(t</span></span>enantId: string): void {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >clearRateLimit(</span></span>tenantId: string): void {
   const keysToDelete: string[] = <span class="cstat-no" title="statement not covered" >[];</span>
   
 <span class="cstat-no" title="statement not covered" >  for (const key of rateLimitStore.keys()) {</span>
@@ -1129,7 +1129,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Get comprehensive rate limit statistics
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getRateLimitStats(): {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getRateLimitStats(</span></span>): {
   totalEntries: number;
   entries: Array&lt;{ 
     key: string; 
@@ -1170,7 +1170,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Clean up expired entries with smart retention for violators
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >cleanupExpiredEntries(): {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >cleanupExpiredEntries(</span></span>): {
   deleted: number;
   retained: number;
   violatorsRetained: number;
@@ -1207,7 +1207,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Get rate limit configuration for route
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getRateLimitConfigForRoute(r</span></span>oute: string): RateLimitConfig {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getRateLimitConfigForRoute(</span></span>route: string): RateLimitConfig {
 <span class="cstat-no" title="statement not covered" >  if (route.startsWith('/api/guardian/')) {</span>
 <span class="cstat-no" title="statement not covered" >    if (route.includes('heartbeat')) <span class="cstat-no" title="statement not covered" >return RATE_LIMITS.GUARDIAN_HEARTBEAT;</span></span>
 <span class="cstat-no" title="statement not covered" >    if (route.includes('backup-intent')) <span class="cstat-no" title="statement not covered" >return RATE_LIMITS.GUARDIAN_BACKUP_INTENT;</span></span>
@@ -1226,20 +1226,20 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  */
 const blockedIPs = <span class="cstat-no" title="statement not covered" >new Set&lt;string&gt;();</span>
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >blockIP(i</span></span>p: string, reason: string): void {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >blockIP(</span></span>ip: string, reason: string): void {
 <span class="cstat-no" title="statement not covered" >  blockedIPs.add(ip);</span>
 <span class="cstat-no" title="statement not covered" >  console.warn(`IP ${ip} blocked: ${reason}`);</span>
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >unblockIP(i</span></span>p: string): void {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >unblockIP(</span></span>ip: string): void {
 <span class="cstat-no" title="statement not covered" >  blockedIPs.delete(ip);</span>
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isIPBlocked(i</span></span>p: string): boolean {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isIPBlocked(</span></span>ip: string): boolean {
 <span class="cstat-no" title="statement not covered" >  return blockedIPs.has(ip);</span>
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getBlockedIPs(): string[] {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getBlockedIPs(</span></span>): string[] {
 <span class="cstat-no" title="statement not covered" >  return Array.from(blockedIPs);</span>
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -1249,7 +1249,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../prettify.js"></script>
         <script>

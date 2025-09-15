@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-import { DynamicEmailRenderer, EmailTemplateContext, processEmailTemplate } from './email-templates';
+import { DynamicEmailRenderer, EmailTemplateContext, EmailTemplate, processEmailTemplate } from './email-templates';
 import { BrandNameConfig } from './logo-manager';
 
 export interface MarketingEmailContext extends EmailTemplateContext {
@@ -32,8 +32,8 @@ export class MarketingEmailRenderer extends DynamicEmailRenderer {
   /**
    * Render newsletter email template
    */
-  renderNewsletter(context: Partial<MarketingEmailContext> = {}): EmailTemplate {
-    const fullContext = { brandNames: this.brandNames, ...context };
+  renderNewsletter(context: Partial<MarketingEmailContext> = {}): any {
+    const fullContext = { brandNames: (this as any).brandNames, ...context };
     
     const subject = processEmailTemplate('{brandName} Newsletter - {campaignName}', fullContext);
     const html = `
@@ -68,8 +68,8 @@ export class MarketingEmailRenderer extends DynamicEmailRenderer {
   /**
    * Render promotional email template
    */
-  renderPromotional(context: Partial<MarketingEmailContext> = {}): EmailTemplate {
-    const fullContext = { brandNames: this.brandNames, ...context };
+  renderPromotional(context: Partial<MarketingEmailContext> = {}): any {
+    const fullContext = { brandNames: (this as any).brandNames, ...context };
     
     const subject = processEmailTemplate('Special Offer from {brandName} - {offerCode}', fullContext);
     const html = `
@@ -121,7 +121,7 @@ export class MarketingEmailRenderer extends DynamicEmailRenderer {
    * Render product announcement email template
    */
   renderProductAnnouncement(context: Partial<MarketingEmailContext> = {}): EmailTemplate {
-    const fullContext = { brandNames: this.brandNames, ...context };
+    const fullContext = { brandNames: (this as any).brandNames, ...context };
     
     const subject = processEmailTemplate('New Product Launch: {campaignName} - {brandName}', fullContext);
     const html = `
@@ -175,7 +175,7 @@ export class MarketingEmailRenderer extends DynamicEmailRenderer {
    * Render event invitation email template
    */
   renderEventInvitation(context: Partial<MarketingEmailContext> = {}): EmailTemplate {
-    const fullContext = { brandNames: this.brandNames, ...context };
+    const fullContext = { brandNames: (this as any).brandNames, ...context };
     
     const subject = processEmailTemplate('You\'re Invited: {campaignName} - {brandName}', fullContext);
     const html = `

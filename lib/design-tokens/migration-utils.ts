@@ -57,7 +57,7 @@ export class ComponentMigrationUtils {
       '#ef4444': 'colors.light.destructive',
       '#22c55e': 'colors.light.success',
       '#f59e0b': 'colors.light.warning',
-      '#3b82f6': 'colors.light.info',
+      '#0ea5e9': 'colors.light.info',
       
       // Neutral colors
       '#fafafa': 'neutral.50',
@@ -346,10 +346,10 @@ export function useResponsiveTokens(breakpoint: 'sm' | 'md' | 'lg' | 'xl' = 'md'
   };
 
   const responsiveTypography = {
-    sm: tokens.typography.fontSize.sm,
-    md: tokens.typography.fontSize.base,
-    lg: tokens.typography.fontSize.lg,
-    xl: tokens.typography.fontSize.xl,
+    sm: tokens.typography.scale.sm,
+    md: tokens.typography.scale.base,
+    lg: tokens.typography.scale.lg,
+    xl: tokens.typography.scale.xl,
   };
 
   return {

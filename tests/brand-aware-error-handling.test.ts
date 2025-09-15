@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 import { ErrorCategory, ErrorSeverity } from '@/lib/errors/types';
 import { 
   BrandAwareErrorGenerator,
@@ -37,7 +37,7 @@ const mockTechBrandConfig: BrandNameConfig = {
 describe('Brand-Aware Error Handling', () => {
   beforeEach(() => {
     // Reset any global state
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('BrandAwareErrorGenerator', () => {

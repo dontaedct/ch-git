@@ -38,7 +38,7 @@ export {
   BrandCTAButton,
   BrandOutlineButton,
   BrandGhostButton
-} from './brand-aware-button';
+} from '../brand-aware-button';
 
 // Brand-aware badge components
 export {
@@ -51,7 +51,7 @@ export {
   BrandErrorBadge,
   BrandInfoBadge,
   BrandOutlineBadge
-} from './brand-aware-badge';
+} from '../brand-aware-badge';
 
 // Brand-aware input components
 export {
@@ -61,22 +61,21 @@ export {
   BrandAwareEmailInput,
   BrandAwarePasswordInput,
   BrandAwareNumberInput
-} from './brand-aware-input';
+} from '../brand-aware-input';
 
 // Brand-aware error notification components
 export {
   BrandAwareErrorNotification,
   brandAwareErrorVariants,
-  BrandInfoNotification,
-  BrandWarningNotification,
-  BrandErrorNotification,
-  BrandCriticalNotification,
-  ErrorSeverity,
-  ErrorCategory
-} from './brand-aware-error-notification';
+  BrandAwareInfoNotification,
+  BrandAwareWarningNotification
+} from '../brand-aware-error-notification';
+
+// Import error types from the correct location
+import { ErrorSeverity, ErrorCategory } from '@/lib/errors/types';
 
 // Re-export types for convenience
-export type { BrandAwareButtonProps } from './brand-aware-button';
-export type { BrandAwareBadgeProps } from './brand-aware-badge';
-export type { BrandAwareInputProps } from './brand-aware-input';
-export type { BrandAwareErrorNotificationProps } from './brand-aware-error-notification';
+export type { BrandAwareButtonProps } from '../brand-aware-button';
+export type { BrandAwareBadgeProps } from '../brand-aware-badge';
+export type { BrandAwareInputProps } from '../brand-aware-input';
+export type { BrandAwareErrorNotificationProps } from '../brand-aware-error-notification';

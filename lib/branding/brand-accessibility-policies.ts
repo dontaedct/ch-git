@@ -150,7 +150,7 @@ const accessibleColors = {
           condition: 'Logo has meaningful alt text that describes the brand',
           validator: (config) => {
             const logo = config.theme?.logo;
-            return logo && logo.alt && logo.alt.trim().length > 0 && logo.alt !== 'logo';
+            return Boolean(logo && logo.alt && logo.alt.trim().length > 0 && logo.alt !== 'logo');
           },
           errorMessage: 'Brand logo must have descriptive alt text (not just "logo")',
         },
@@ -161,7 +161,7 @@ const accessibleColors = {
           condition: 'Brand name is properly marked up for screen readers',
           validator: (config) => {
             const brandName = config.brand?.name;
-            return brandName && brandName.trim().length > 0;
+            return Boolean(brandName && brandName.trim().length > 0);
           },
           errorMessage: 'Brand name must be defined and accessible to screen readers',
         },

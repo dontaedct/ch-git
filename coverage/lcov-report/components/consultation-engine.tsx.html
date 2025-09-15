@@ -568,8 +568,7 @@
 <a name='L503'></a><a href='#L503'>503</a>
 <a name='L504'></a><a href='#L504'>504</a>
 <a name='L505'></a><a href='#L505'>505</a>
-<a name='L506'></a><a href='#L506'>506</a>
-<a name='L507'></a><a href='#L507'>507</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L506'></a><a href='#L506'>506</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1021,6 +1020,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1028,8 +1028,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1078,7 +1076,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use client'
 &nbsp;
 import React, { useState, useEffect, useMemo } from <span class="cstat-no" title="statement not covered" >'react'</span>
-import { Button } from <span class="cstat-no" title="statement not covered" >'@/components/ui/button'</span>
+import { Button, BookingCTAButton, DownloadCTAButton, EmailCTAButton } from <span class="cstat-no" title="statement not covered" >'@/components/ui/button'</span>
 import { Badge } from <span class="cstat-no" title="statement not covered" >'@/components/ui/badge'</span>
 import { TabsUnderline, TabsUnderlineContent, TabsUnderlineList, TabsUnderlineTrigger } from <span class="cstat-no" title="statement not covered" >'@/components/ui/tabs-underline'</span>
 import { Separator } from <span class="cstat-no" title="statement not covered" >'@/components/ui/separator'</span>
@@ -1522,9 +1520,10 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
         &lt;div className="max-w-2xl mx-auto"&gt;
           &lt;div className="flex flex-col gap-4"&gt;
             {/* Primary CTA */}
-            &lt;Button 
-              size="lg" 
-              className="w-full h-12 text-base font-semibold shadow-sm hover:shadow-md transition-all duration-200"
+            &lt;BookingCTAButton 
+              size="xl" 
+              fullWidth
+              className="h-12 text-base font-semibold"
               onClick={<span class="fstat-no" title="function not covered" >() =&gt; {</span>
                 // Emit booking request event
 <span class="cstat-no" title="statement not covered" >                n8nEvents.emitBookingRequest({</span>
@@ -1537,32 +1536,30 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
               }}
             &gt;
               {template.actions.bookCtaLabel}
-            &lt;/Button&gt;
+            &lt;/BookingCTAButton&gt;
             
             {/* Secondary CTAs */}
             &lt;div className="flex gap-3 justify-center"&gt;
               {<span class="branch-0 cbranch-no" title="branch not covered" >template.actions.downloadPdf </span>&amp;&amp; (
-                &lt;Button 
-                  variant="outline" 
+                &lt;DownloadCTAButton 
+                  variant="cta-outline"
                   size="lg"
-                  className="px-6 h-11 text-sm font-medium border-border/60 hover:border-border transition-all duration-200"
+                  icon={&lt;Download className="w-4 h-4" /&gt;}
                   onClick={handlePdfDownload}
                 &gt;
-                  &lt;Download className="w-4 h-4 mr-2" strokeWidth={1.5} /&gt;
                   Download PDF
-                &lt;/Button&gt;
+                &lt;/DownloadCTAButton&gt;
               )}
               
               {<span class="branch-0 cbranch-no" title="branch not covered" >template.actions.emailCopy </span>&amp;&amp; (
-                &lt;Button 
-                  variant="outline" 
+                &lt;EmailCTAButton 
+                  variant="cta-outline"
                   size="lg"
-                  className="px-6 h-11 text-sm font-medium border-border/60 hover:border-border transition-all duration-200"
+                  icon={&lt;Mail className="w-4 h-4" /&gt;}
                   onClick={handleEmailRequest}
                 &gt;
-                  &lt;Mail className="w-4 h-4 mr-2" strokeWidth={1.5} /&gt;
                   Email Copy
-                &lt;/Button&gt;
+                &lt;/EmailCTAButton&gt;
               )}
             &lt;/div&gt;
           &lt;/div&gt;
@@ -1588,7 +1585,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:50.860Z
+                at 2025-09-12T17:02:49.199Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -185,23 +185,23 @@ export function FormBuilder({
     
     // Handle conditional visibility
     if (field.conditional && field.visibility !== undefined) {
-      const conditionalField = fields.find(f => f.id === field.conditional.field);
+      const conditionalField = fields.find(f => f.id === field.conditional?.field);
       if (conditionalField) {
         const conditionalValue = form.watch(conditionalField.id);
         let shouldShow = false;
         
-        switch (field.conditional.operator) {
+        switch (field.conditional?.operator) {
           case 'equals':
-            shouldShow = conditionalValue === field.conditional.value;
+            shouldShow = conditionalValue === field.conditional?.value;
             break;
           case 'notEquals':
-            shouldShow = conditionalValue !== field.conditional.value;
+            shouldShow = conditionalValue !== field.conditional?.value;
             break;
           case 'contains':
-            shouldShow = String(conditionalValue).includes(String(field.conditional.value));
+            shouldShow = String(conditionalValue).includes(String(field.conditional?.value));
             break;
           case 'notContains':
-            shouldShow = !String(conditionalValue).includes(String(field.conditional.value));
+            shouldShow = !String(conditionalValue).includes(String(field.conditional?.value));
             break;
         }
         

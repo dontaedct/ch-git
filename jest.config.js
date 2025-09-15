@@ -26,6 +26,13 @@ const customJestConfig = {
     '<rootDir>/tests/ui/',
     '<rootDir>/tests/playwright/',
     '<rootDir>/tests/e2e/',
+    '<rootDir>/tests/hero-tasks/e2e/',
+    '<rootDir>/tests/hero-tasks/performance/',
+    '<rootDir>/tests/hero-tasks/uat/',
+    '<rootDir>/tests/visual/',
+    '<rootDir>/tests/security/',
+    '<rootDir>/tests/design-system/visual-regression.test.ts',
+    '<rootDir>/tests/audit/enhanced-audit-logging.test.ts',
     '<rootDir>/design/templates/',
     '<rootDir>/attic/',
     '<rootDir>/examples/'

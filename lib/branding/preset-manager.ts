@@ -568,7 +568,7 @@ export class BrandPresetManager {
         usageCount: 0,
         createdAt: new Date(),
         updatedAt: new Date(),
-        tags: [...(preset.metadata?.tags || []), 'custom']
+        tags: [...((preset as any).metadata?.tags || []), 'custom']
       }
     };
 

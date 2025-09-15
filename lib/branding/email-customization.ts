@@ -29,7 +29,7 @@ export interface EmailCustomizationPreset {
   brandNames: BrandNameConfig;
 }
 
-export interface EmailCustomizationManager {
+export interface IEmailCustomizationManager {
   templates: Map<string, EmailTemplateConfig>;
   presets: Map<string, EmailCustomizationPreset>;
   activePreset?: string;

@@ -84,9 +84,10 @@ export class BrandPolicyTestSuite {
         },
         theme: {
           colors: {
+            name: 'Test Brand Palette',
             primary: '#007AFF',
             secondary: '#34C759',
-            neutral: '#8E8E93',
+            neutral: '#8E8E93' as any,
             accent: '#FF9500',
             success: '#34C759',
             warning: '#FF9500',
@@ -96,7 +97,7 @@ export class BrandPolicyTestSuite {
           typography: {
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeights: [400, 500, 600, 700],
-            fontDisplay: 'swap',
+            fontDisplay: 'swap' as any,
             scale: {
               xs: '0.75rem',
               sm: '0.875rem',
@@ -150,9 +151,10 @@ export class BrandPolicyTestSuite {
         },
         theme: {
           colors: {
+            name: 'Invalid Color Test',
             primary: 'invalid-color', // Invalid: not a hex color
             secondary: '#34C759',
-            neutral: '#8E8E93',
+            neutral: '#8E8E93' as any,
             accent: '#FF9500',
             success: '#34C759',
             warning: '#FF9500',
@@ -216,13 +218,15 @@ export class BrandPolicyTestSuite {
         },
         theme: {
           colors: {
+            name: 'Test Brand Palette',
             primary: '#007AFF',
+            secondary: '#34C759',
             // Missing secondary, neutral, accent, and semantic colors
-          },
+          } as any,
           typography: {
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeights: [400, 500, 600, 700],
-            fontDisplay: 'swap',
+            fontDisplay: 'swap' as any,
             scale: {
               xs: '0.75rem',
               sm: '0.875rem',
@@ -276,6 +280,7 @@ export class BrandPolicyTestSuite {
         },
         theme: {
           colors: {
+            name: 'Low Contrast Test',
             primary: '#CCCCCC', // Low contrast color
             secondary: '#DDDDDD', // Low contrast color
             neutral: '#EEEEEE', // Low contrast color
@@ -342,9 +347,10 @@ export class BrandPolicyTestSuite {
         },
         theme: {
           colors: {
+            name: 'Test Brand Palette',
             primary: '#007AFF',
             secondary: '#34C759',
-            neutral: '#8E8E93',
+            neutral: '#8E8E93' as any,
             accent: '#FF9500',
             success: '#34C759',
             warning: '#FF9500',
@@ -354,7 +360,7 @@ export class BrandPolicyTestSuite {
           typography: {
             fontFamily: 'Inter, system-ui, sans-serif',
             fontWeights: [400, 500, 600, 700],
-            fontDisplay: 'swap',
+            fontDisplay: 'swap' as any,
             scale: {
               xs: '0.75rem',
               sm: '0.875rem',
@@ -408,9 +414,10 @@ export class BrandPolicyTestSuite {
         },
         theme: {
           colors: {
+            name: 'Test Brand Palette',
             primary: '#007AFF',
             secondary: '#34C759',
-            neutral: '#8E8E93',
+            neutral: '#8E8E93' as any,
             accent: '#FF9500',
             success: '#34C759',
             warning: '#FF9500',
@@ -518,7 +525,4 @@ export class BrandPolicyTestSuite {
   }
 }
 
-/**
- * Export the brand policy test suite
- */
-export { BrandPolicyTestSuite };
+// BrandPolicyTestSuite is already exported above as a class

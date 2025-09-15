@@ -27,7 +27,6 @@ import {
   Users,
   TrendingUp,
   Keyboard,
-  Sync,
   RefreshCw,
   Zap,
   Target,

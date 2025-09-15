@@ -1,0 +1,94 @@
+{
+  "id": "hero-demo",
+  "type": "hero",
+  "content": {
+    "headline": {
+      "text": "DCT Micro-Apps",
+      "level": "h1",
+      "className": ""
+    },
+    "subheading": {
+      "text": "Delivered in a Week",
+      "level": "h2",
+      "className": ""
+    },
+    "description": {
+      "text": "A fixed-scope micro-app delivered in ~a week, shaped around one painful admin/ops problem per business. One-time fee, optional lite support. Branded, mobile-friendly UI with a clean, high-tech aesthetic.",
+      "className": ""
+    },
+    "cta": {
+      "primary": {
+        "text": "Get Started",
+        "href": "/get-started",
+        "variant": "primary",
+        "size": "lg",
+        "className": "",
+        "external": false
+      },
+      "secondary": {
+        "text": "View Examples",
+        "href": "/examples",
+        "variant": "secondary",
+        "size": "lg",
+        "className": "",
+        "external": false
+      }
+    },
+    "badge": {
+      "text": "Now Available",
+      "variant": "default",
+      "className": ""
+    },
+    "visual": {
+      "type": "carousel",
+      "carousel": {
+        "slides": [
+          {
+            "id": "salon-booking",
+            "title": "Salon Booking System",
+            "description": "Waitlist & Fill-Gaps - Public form → prioritized waitlist; staff panel posts today's gaps; one-click \"notify 10\" email burst.",
+            "mockup": "salon-booking-mockup"
+          },
+          {
+            "id": "gym-tracker",
+            "title": "Gym Progress Tracker",
+            "description": "Session + Progress - Client log + coach notes; automatic weekly progress email; CSV export.",
+            "mockup": "gym-tracker-mockup"
+          },
+          {
+            "id": "realtor-hub",
+            "title": "Realtor Listing Hub",
+            "description": "U.S. MLS-friendly assets - Intake form → branded listing page + zip for MLS/social with time-boxed links.",
+            "mockup": "realtor-hub-mockup"
+          },
+          {
+            "id": "business-dashboard",
+            "title": "Business Dashboard",
+            "description": "Custom-built application designed specifically for your business needs with full integration capabilities.",
+            "mockup": "business-dashboard-mockup"
+          }
+        ],
+        "autoPlay": true,
+        "autoPlayInterval": 8000,
+        "showDots": true,
+        "showArrows": true
+      }
+    }
+  },
+  "layout": {
+    "alignment": "center",
+    "maxWidth": "6xl",
+    "padding": "lg",
+    "background": "gradient",
+    "className": ""
+  },
+  "accessibility": {
+    "ariaLabel": "Main hero section with product introduction",
+    "ariaDescribedBy": "hero-description"
+  },
+  "seo": {
+    "title": "DCT Micro-Apps - Delivered in a Week",
+    "description": "Fixed-scope micro-apps delivered in ~a week, shaped around one painful admin/ops problem per business. One-time fee, optional lite support.",
+    "keywords": ["micro-apps", "business solutions", "rapid development", "admin tools", "ops automation"]
+  }
+}

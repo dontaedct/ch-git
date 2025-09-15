@@ -118,3 +118,18 @@ export const confirmUploadSchema = z.object({
   mime_type: z.string().min(3),
   size_bytes: z.number().int().positive(),
 });
+
+// Performance & Quality Validation
+export { PerformanceQualityValidator } from './performance-quality-validator';
+export type {
+  ValidationResult,
+  ValidationConfig,
+  PerformanceMetrics,
+  QualityMetrics,
+  ClientSatisfactionMetrics,
+  ReliabilityMetrics,
+  DeliveryPipelineResult,
+  ValidationIssue,
+  AlertRule,
+  MonitoringConfig
+} from './performance-quality-validator';

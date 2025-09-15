@@ -159,8 +159,8 @@ const ChipGroup = React.forwardRef<HTMLDivElement, ChipGroupProps>(
             const chip = allOptions[focusedIndex]
             if (!chip.disabled) {
               toggleChip(chip.value)
-              const isSelected = isSelectedChip(chip.value)
-              announce(`${chip.label} ${isSelected ? 'selected' : 'deselected'}`)
+              const isChipSelected = isSelected(chip.value)
+              announce(`${chip.label} ${isChipSelected ? 'selected' : 'deselected'}`)
             }
           } else if (allowCustom && focusedIndex === allOptions.length) {
             setIsAddingCustom(true)

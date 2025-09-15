@@ -7,11 +7,11 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
-import { Button } from '@ui/button';
-import { Input } from '@ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@ui/select';
-import { Badge } from '@ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 import { Search, Filter, Plus, RefreshCw, GripVertical, CheckSquare, FileText, Download } from 'lucide-react';
 import { TaskCard } from './TaskCard';
 import { DraggableTaskCard } from './DraggableTaskCard';
@@ -363,7 +363,7 @@ export function TaskList({
           )}
           {enableExport && (
             <ExportControls
-              selectedTasks={Array.from(bulkOperations.selectedTasks)}
+              selectedTasks={Array.from(bulkOperations.selectedTasks as unknown as Set<string>)}
               currentFilters={{
                 search_text: searchQuery || undefined,
                 status: filters.status ? [filters.status as TaskStatus] : undefined,
@@ -371,7 +371,9 @@ export function TaskList({
                 type: filters.type ? [filters.type as TaskType] : undefined,
                 current_phase: filters.phase ? [filters.phase as WorkflowPhase] : undefined
               }}
-              onExport={exportHook.exportTasks}
+              onExport={async (exportRequest) => {
+                await exportHook.exportTasks(exportRequest);
+              }}
             />
           )}
         </div>
@@ -525,8 +527,8 @@ export function TaskList({
           </CardContent>
         </Card>
       ) : (
-        <div 
-          ref={dragAndDrop.dragConstraintsRef}
+        <div
+          ref={dragAndDrop.dragConstraintsRef as React.LegacyRef<HTMLDivElement>}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
         >
           {tasks.map((task, index) => {

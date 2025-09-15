@@ -90,7 +90,7 @@ export function processEmailTemplate(
     .replace(/\{ctaText\}/g, variables.ctaText || '')
     .replace(/\{ctaUrl\}/g, variables.ctaUrl || '#')
     .replace(/\{unsubscribeUrl\}/g, variables.unsubscribeUrl || '#')
-    .replace(/\{socialLinks\}/g, variables.socialLinks || '')
+    .replace(/\{socialLinks\}/g, (variables.socialLinks as any) || '')
     .replace(/\{time\}/g, variables.time || '')
     .replace(/\{location\}/g, variables.location || '')
     // Social links

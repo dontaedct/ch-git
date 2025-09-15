@@ -10,7 +10,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { createServerSupabase } from '@lib/supabase/server';
+import { createClient } from '@/lib/supabase/client';
 import { TaskPermissionChecker, TeamManager, TaskPermission, TaskAccessLevel } from '@lib/auth/task-permissions';
 
 interface TaskPermissionsManagerProps {
@@ -32,7 +32,7 @@ export function TaskPermissionsManager({
   actionId, 
   onPermissionsChange 
 }: TaskPermissionsManagerProps) {
-  const [supabase] = useState(() => createServerSupabase());
+  const [supabase] = useState(() => createClient());
   const [permissions, setPermissions] = useState<any>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [teams, setTeams] = useState<any[]>([]);
@@ -334,7 +334,7 @@ export function PermissionGuard({
   fallback = null 
 }: PermissionGuardProps) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [supabase] = useState(() => createServerSupabase());
+  const [supabase] = useState(() => createClient());
 
   useEffect(() => {
     const checker = new TaskPermissionChecker(supabase);
@@ -374,7 +374,7 @@ export function PermissionButton({
   ...props 
 }: PermissionButtonProps) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-  const [supabase] = useState(() => createServerSupabase());
+  const [supabase] = useState(() => createClient());
 
   useEffect(() => {
     const checker = new TaskPermissionChecker(supabase);

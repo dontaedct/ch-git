@@ -1,0 +1,159 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "name": "Salon Beauty Brand",
+  "description": "Elegant beauty aesthetic with rose gold accent and sophisticated typography",
+  "brand": {
+    "colors": {
+      "primary": {
+        "$type": "color",
+        "$value": "#d97706"
+      },
+      "primaryHover": {
+        "$type": "color",
+        "$value": "#b45309"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "#f59e0b"
+      },
+      "accentSubtle": {
+        "$type": "color",
+        "$value": "#fef3c7"
+      }
+    },
+    "typography": {
+      "headingFont": {
+        "$type": "fontFamily",
+        "$value": ["Inter", "SF Pro Display", "-apple-system", "sans-serif"]
+      },
+      "bodyFont": {
+        "$type": "fontFamily",
+        "$value": ["Inter", "SF Pro Text", "-apple-system", "sans-serif"]
+      }
+    },
+    "spacing": {
+      "sectionPadding": {
+        "$type": "dimension",
+        "$value": "6rem"
+      }
+    }
+  },
+  "semantic": {
+    "light": {
+      "background": {
+        "$type": "color",
+        "$value": "#fefdfb"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "#faf8f5"
+      },
+      "mutedForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.600}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "#fefdfb"
+      },
+      "cardForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "#f4f1eb"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "#f4f1eb"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{brand.colors.primary}"
+      },
+      "primaryForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.50}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "#faf8f5"
+      },
+      "secondaryForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.900}"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "{brand.colors.accentSubtle}"
+      },
+      "accentForeground": {
+        "$type": "color",
+        "$value": "{brand.colors.primary}"
+      }
+    },
+    "dark": {
+      "background": {
+        "$type": "color",
+        "$value": "#1a1714"
+      },
+      "foreground": {
+        "$type": "color",
+        "$value": "#faf8f5"
+      },
+      "muted": {
+        "$type": "color",
+        "$value": "#2d2520"
+      },
+      "mutedForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.400}"
+      },
+      "card": {
+        "$type": "color",
+        "$value": "#2d2520"
+      },
+      "cardForeground": {
+        "$type": "color",
+        "$value": "#faf8f5"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "#3d332b"
+      },
+      "input": {
+        "$type": "color",
+        "$value": "#3d332b"
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{brand.colors.primary}"
+      },
+      "primaryForeground": {
+        "$type": "color",
+        "$value": "{color.neutral.50}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "#3d332b"
+      },
+      "secondaryForeground": {
+        "$type": "color",
+        "$value": "#faf8f5"
+      },
+      "accent": {
+        "$type": "color",
+        "$value": "#3d332b"
+      },
+      "accentForeground": {
+        "$type": "color",
+        "$value": "{brand.colors.accent}"
+      }
+    }
+  }
+}

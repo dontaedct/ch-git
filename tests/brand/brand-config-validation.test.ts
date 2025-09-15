@@ -11,7 +11,7 @@
  * Risk Level: MEDIUM (branding system enhancement)
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { 
   BrandConfigValidationService, 
   BrandConfigValidationUtils,

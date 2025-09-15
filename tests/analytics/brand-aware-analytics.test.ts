@@ -5,26 +5,26 @@
  * @version 1.0.0
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { BrandAwareAnalytics, brandAnalytics } from '@/lib/analytics/brand-aware-analytics';
 import { logoManager, BRAND_PRESETS } from '@/lib/branding/logo-manager';
 
 // Mock the observability system
-vi.mock('@/lib/observability', () => ({
+jest.mock('@/lib/observability', () => ({
   Observing: {
-    trackRequest: vi.fn(),
-    recordMetric: vi.fn(),
-    recordSecurityEvent: vi.fn(),
-    recordBusinessMetric: vi.fn(),
+    trackRequest: jest.fn(),
+    recordMetric: jest.fn(),
+    recordSecurityEvent: jest.fn(),
+    recordBusinessMetric: jest.fn(),
   },
 }));
 
 // Mock sessionStorage
 const mockSessionStorage = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
 };
 
 Object.defineProperty(window, 'sessionStorage', {
@@ -63,7 +63,7 @@ describe('BrandAwareAnalytics', () => {
     });
 
     it('should include brand context in all events', () => {
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
       
       analytics.track('user_action', 'button_click', { button: 'submit' });
       
@@ -129,7 +129,7 @@ describe('BrandAwareAnalytics', () => {
     });
 
     it('should track brand switches', () => {
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
       
       // Load a different preset to trigger brand switch
       logoManager.loadPreset('tech');
@@ -150,7 +150,7 @@ describe('BrandAwareAnalytics', () => {
         sampleRate: 0.0, // 0% sample rate
       });
       
-      const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
       
       analyticsWithLowSampleRate.track('test_event', 'test', {});
       
@@ -232,7 +232,7 @@ describe('BrandAwareAnalytics', () => {
 
   describe('Error Handling', () => {
     it('should handle errors gracefully', () => {
-      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
       
       // Mock an error in the observability system
       const { Observing } = require('@/lib/observability');

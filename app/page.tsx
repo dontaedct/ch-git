@@ -1,1070 +1,1324 @@
+/**
+ * @fileoverview Test Home Page - Optimized Layout
+ * Perfect spacing, responsive design, and performance optimized
+ */
 "use client";
 
-import { Container } from "@/components/ui/container";
-import { Grid, Col } from "@/components/ui/grid";
-import { Surface, SurfaceCard, SurfaceElevated, SurfaceSubtle } from "@/components/ui/surface";
-import { Button, CTAButton, SecondaryCTAButton } from "@/components/ui/button";
-import { motion } from "framer-motion";
-import { useReducedMotion } from "@/hooks/use-motion-preference";
+import { motion, useScroll, useTransform, useMotionValue, useSpring, useAnimation } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { useTheme } from "next-themes";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { cn } from "@/lib/utils";
 
-export default function Home() {
-  const reducedMotion = useReducedMotion();
+// Enhanced Carousel Component with True Infinite Scrolling
+interface EnhancedCarouselProps {
+  isDark: boolean;
+  isMobile: boolean;
+}
 
-  // Animation variants for staggered hero text - Optimized for performance and reduced motion
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: reducedMotion ? 0 : 0.05, // No stagger in reduced motion
-        delayChildren: reducedMotion ? 0 : 0.1, // No delay in reduced motion
-        duration: reducedMotion ? 0.01 : 0.3, // Minimal duration in reduced motion
-      },
-    },
-  };
+// Testimonials Carousel Component
+interface TestimonialsCarouselProps {
+  isDark: boolean;
+  isMobile: boolean;
+}
 
-  const itemVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: reducedMotion ? 0 : 10, // No movement in reduced motion
-      scale: reducedMotion ? 1 : 0.98, // No scaling in reduced motion
+function EnhancedCarousel({ isDark, isMobile }: EnhancedCarouselProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const interactionTimeoutRef = useRef<NodeJS.Timeout>();
+  const animationRef = useRef<NodeJS.Timeout>();
+
+  const demos = [
+    { 
+      title: "Lead Capture System", 
+      icon: "🎯", 
+      status: "Live", 
+      description: "Intelligent lead capture system optimizing conversion rates",
+      tier: "Core",
+      preview: "Public landing page → Structured capture → Auto-qualification → CRM routing",
+      features: ["Smart Form Builder", "Auto Enrichment API", "Lead Scoring Engine", "Real-time Routing"]
     },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        duration: reducedMotion ? 0.01 : 0.2, // Minimal duration in reduced motion
-        ease: "easeOut" as const,
-      },
+    { 
+      title: "Document Generator", 
+      icon: "📄", 
+      status: "Live", 
+      description: "Template-based document automation with intelligent formatting",
+      tier: "Core",
+      preview: "Input data → Template processing → PDF/HTML output → Email delivery",
+      features: ["Dynamic Templates", "Multi-format Export", "Email Integration", "Version Control"]
     },
+    { 
+      title: "Automation Engine", 
+      icon: "⚡", 
+      status: "Live", 
+      description: "Multi-step workflow orchestration with intelligent triggers",
+      tier: "Core",
+      preview: "Trigger events → Workflow execution → Multi-step automation → Notifications",
+      features: ["Webhook System", "Flow Builder", "Alert Manager", "Audit Logger"]
+    },
+    { 
+      title: "CRM Pipeline", 
+      icon: "👥", 
+      status: "Live", 
+      description: "Customer relationship management with pipeline analytics",
+      tier: "Mid-tier",
+      preview: "Contact management → Opportunity pipeline → Activity tracking → Reporting",
+      features: ["Contact Manager", "Pipeline Tracker", "Activity Monitor", "Reports Dashboard"]
+    },
+    { 
+      title: "AI Extraction Suite", 
+      icon: "🧠", 
+      status: "Live", 
+      description: "Advanced AI-powered document and media processing system",
+      tier: "Premium",
+      preview: "Upload files → AI extraction → Structured data → Workflow integration",
+      features: ["Multimodal Parser", "Neural Networks", "Data Extraction", "API Gateway"]
+    },
+    { 
+      title: "Approval Workflows", 
+      icon: "✅", 
+      status: "Live", 
+      description: "Enterprise approval system with role-based routing",
+      tier: "Premium",
+      preview: "Submit request → Route to approvers → Track progress → Complete workflow",
+      features: ["Role Engine", "Approval Chain", "Audit System", "Notification Hub"]
+    },
+    { 
+      title: "System Admin", 
+      icon: "⚙️", 
+      status: "Live", 
+      description: "Comprehensive system monitoring and module management",
+      tier: "Core",
+      preview: "Module dashboard → Enable/disable features → View logs → Monitor health",
+      features: ["Module Manager", "Health Monitor", "Log Analyzer", "Metrics Dashboard"]
+    },
+    { 
+      title: "Payment Gateway", 
+      icon: "💳", 
+      status: "Live", 
+      description: "Secure payment processing with automated invoicing",
+      tier: "Mid-tier",
+      preview: "Create invoice → Process payment → Generate receipt → Link to records",
+      features: ["Payment Processor", "Invoice Generator", "Receipt System", "Record Linker"]
+    }
+  ];
+
+  const cardWidth = isMobile ? 280 : 384;
+  const gap = isMobile ? 20 : 32;
+  const scrollStep = cardWidth + gap;
+  const sidePreview = isMobile ? 40 : 0; // Show part of adjacent cards on mobile
+  const cardsToShow = 3; // Number of cards to show on desktop
+
+  // Create enough copies for smooth infinite scroll - start from middle set
+  const loopedDemos = [...demos, ...demos, ...demos];
+  
+  // Initialize position to start from the middle set to allow scrolling both ways
+  useEffect(() => {
+    x.set(-demos.length * scrollStep);
+  }, [demos.length, scrollStep, x]);
+
+  // Auto-scroll animation
+  useEffect(() => {
+    if (!isUserInteracting && !isHovering) {
+      const autoScroll = () => {
+        const currentX = x.get();
+        const newX = currentX - scrollStep;
+        
+        // Animate to new position
+        const startX = currentX;
+        const distance = newX - startX;
+        const duration = 400;
+        const startTime = Date.now();
+        
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          
+          x.set(startX + (distance * easeOut));
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // Check if we need to reposition for infinite scroll
+            const finalX = x.get();
+            const singleSetWidth = demos.length * scrollStep;
+            
+            // If we've gone too far right (past second set), jump to first set
+            if (finalX <= -singleSetWidth * 2) {
+              x.set(finalX + singleSetWidth);
+            }
+          }
+        };
+        
+        animate();
+      };
+
+      const interval = setInterval(autoScroll, 3000);
+      animationRef.current = interval;
+      return () => clearInterval(interval);
+    } else {
+      if (animationRef.current) {
+        clearInterval(animationRef.current);
+      }
+    }
+  }, [isUserInteracting, isHovering, x, scrollStep, demos.length]);
+
+  // Navigation function for arrow controls
+  const navigateCarousel = (direction: 'left' | 'right') => {
+    setIsUserInteracting(true);
+    
+    const currentX = x.get();
+    const newX = direction === 'right' ? currentX - scrollStep : currentX + scrollStep;
+    
+    // Animate to new position
+    const startX = currentX;
+    const distance = newX - startX;
+    const duration = 400;
+    const startTime = Date.now();
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      
+      x.set(startX + (distance * easeOut));
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // Check if we need to reposition for infinite scroll
+        const finalX = x.get();
+        const singleSetWidth = demos.length * scrollStep;
+        
+        // If we've gone too far right (past second set), jump to first set
+        if (finalX <= -singleSetWidth * 2) {
+          x.set(finalX + singleSetWidth);
+        }
+        // If we've gone too far left (before first set), jump to second set
+        else if (finalX >= 0) {
+          x.set(finalX - singleSetWidth);
+        }
+      }
+    };
+    
+    animate();
+    
+    // Resume auto-scroll after delay
+    if (interactionTimeoutRef.current) {
+      clearTimeout(interactionTimeoutRef.current);
+    }
+    interactionTimeoutRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 2000);
   };
 
   return (
-    <main role="main" aria-label="Homepage">
-      {/* HT-002.3.2: Skip links for keyboard navigation and screen readers */}
-      <a href="#hero-heading" className="skip-link">
-        Skip to main content
-      </a>
-      <a href="#features-heading" className="skip-link">
-        Skip to features
-      </a>
-      <a href="#cta-heading" className="skip-link">
-        Skip to call to action
-      </a>
-      {/* HT-002.1.4: Linear-specific spacing patterns test */}
-      <section className="py-section-sm bg-muted/30" aria-labelledby="spacing-test">
-        <Container variant="page">
-          <div className="text-center">
-            <h2 id="spacing-test" className="text-2xl font-semibold mb-4">Linear Spacing Patterns</h2>
-            <p className="text-muted-foreground mb-6">
-              Testing Linear-specific spacing tokens: section-sm (4rem/64px)
-            </p>
-            <div className="space-y-section-sm">
-              <div className="bg-primary/10 p-4 rounded-lg">
-                <p className="text-sm">This section uses py-section-sm for vertical spacing</p>
+    <div className="relative">
+      {/* Auto-Scrolling Carousel Container */}
+      <div 
+        ref={containerRef}
+        className="relative select-none overflow-hidden"
+        style={{
+          width: isMobile ? '100vw' : `${cardWidth * cardsToShow + gap * (cardsToShow - 1)}px`,
+          margin: '0 auto',
+          maxWidth: isMobile ? '100vw' : 'none'
+        }}
+      >
+        {/* Gradient overlays for edge fade effect */}
+        <div className={cn(
+          "absolute top-0 left-0 w-20 h-full z-10 pointer-events-none",
+          isDark 
+            ? "bg-gradient-to-r from-black via-black/80 to-transparent"
+            : "bg-gradient-to-r from-white via-white/80 to-transparent"
+        )} />
+        <div className={cn(
+          "absolute top-0 right-0 w-20 h-full z-10 pointer-events-none",
+          isDark 
+            ? "bg-gradient-to-l from-black via-black/80 to-transparent"
+            : "bg-gradient-to-l from-white via-white/80 to-transparent"
+        )} />
+        <motion.div
+          className="flex"
+          style={{ 
+            gap: isMobile ? '20px' : '32px',
+            width: `${(cardWidth + gap) * loopedDemos.length}px`,
+            x: x,
+            paddingLeft: isMobile ? `calc(50vw - ${cardWidth/2}px)` : '0px',
+            paddingRight: isMobile ? `calc(50vw - ${cardWidth/2}px)` : '0px'
+          }}
+        >
+          {loopedDemos.map((demo, i) => (
+            <motion.div
+              key={`${demo.title}-${i}`}
+              className={cn(
+                "flex-shrink-0 p-4 sm:p-8 rounded-none border-2 transition-all duration-300",
+                isMobile ? "w-72" : "w-96",
+                isDark 
+                  ? "bg-black/60 border-white/30 hover:border-white/50" 
+                  : "bg-white/80 border-black/30 hover:border-black/50"
+              )}
+              whileHover={!isMobile ? { scale: 1.02, y: -4 } : {}}
+              onHoverStart={() => setIsHovering(true)}
+              onHoverEnd={() => setIsHovering(false)}
+              style={{ 
+                width: `${cardWidth}px`
+              }}
+            >
+              {/* Status and Icon */}
+              <div className="flex items-center justify-between mb-6">
+                <div className={cn(
+                  "flex items-center gap-2 px-3 py-1 rounded-none border text-xs font-medium",
+                  isDark 
+                    ? "bg-white/10 border-white/30 text-white/90" 
+                    : "bg-black/10 border-black/30 text-black/90"
+                )}>
+                  <motion.div 
+                    className={cn(
+                      "w-2 h-2 rounded-full",
+                      isDark ? "bg-white" : "bg-black"
+                    )}
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      opacity: [0.7, 1, 0.7]
+                    }}
+                    transition={{ 
+                      duration: 2, 
+                      repeat: Infinity, 
+                      ease: "easeInOut",
+                      delay: i * 0.2
+                    }}
+                  />
+                  {demo.status}
+                </div>
+                <div className="text-3xl">{demo.icon}</div>
               </div>
-              <div className="bg-secondary/10 p-4 rounded-lg">
-                <p className="text-sm">Space between sections uses space-y-section-sm</p>
+
+              {/* Title */}
+              <h3 className={cn(
+                "text-lg font-bold mb-3 tracking-wide uppercase",
+                isDark ? "text-white" : "text-black"
+              )}>
+                {demo.title}
+              </h3>
+
+              {/* Description */}
+              <p className={cn(
+                "text-sm mb-6 leading-relaxed",
+                isDark ? "text-white/70" : "text-black/70"
+              )}>
+                {demo.description}
+              </p>
+              
+              {/* Tier Badge */}
+              <div className={cn(
+                "mb-4 inline-flex items-center px-3 py-1 rounded-none border text-xs font-bold tracking-wider uppercase",
+                demo.tier === 'Core' 
+                  ? (isDark ? "bg-green-500/20 border-green-500/40 text-green-400" : "bg-green-500/20 border-green-500/40 text-green-600")
+                  : demo.tier === 'Mid-tier'
+                  ? (isDark ? "bg-blue-500/20 border-blue-500/40 text-blue-400" : "bg-blue-500/20 border-blue-500/40 text-blue-600")
+                  : (isDark ? "bg-purple-500/20 border-purple-500/40 text-purple-400" : "bg-purple-500/20 border-purple-500/40 text-purple-600")
+              )}>
+                {demo.tier}
+              </div>
+
+              {/* Features List */}
+              <div className="mb-6 space-y-2">
+                {demo.features.map((feature, idx) => (
+                  <div key={idx} className={cn(
+                    "flex items-center gap-2 text-xs",
+                    isDark ? "text-white/80" : "text-black/80"
+                  )}>
+                    <div className={cn(
+                      "w-1 h-1 rounded-full flex-shrink-0",
+                      isDark ? "bg-white/60" : "bg-black/60"
+                    )} />
+                    <span>{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Preview Flow */}
+              <div className={cn(
+                "mb-6 p-3 rounded-none border text-xs leading-relaxed",
+                isDark 
+                  ? "bg-white/5 border-white/20 text-white/70" 
+                  : "bg-black/5 border-black/20 text-black/70"
+              )}>
+                <div className="font-medium mb-1 uppercase tracking-wide">WORKFLOW:</div>
+                <div className="font-mono text-xs">{demo.preview}</div>
+              </div>
+
+              {/* CTA Button */}
+              <button
+                className={cn(
+                  "w-full py-3 border transition-all duration-300 font-medium text-sm tracking-wide uppercase touch-manipulation rounded-lg",
+                  isDark
+                    ? "border-white/40 text-white hover:border-white hover:bg-white/5 active:scale-95" 
+                    : "border-black/40 text-black hover:border-black hover:bg-black/5 active:scale-95"
+                )}
+              >
+                LAUNCH DEMO
+              </button>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <div className="flex items-center justify-center gap-6 mt-8">
+        <button
+          onClick={() => navigateCarousel('left')}
+          className={cn(
+            "p-4 rounded-lg border-2 transition-all duration-300 touch-manipulation",
+            isDark
+              ? "bg-black/60 border-white/30 text-white hover:border-white/50 hover:bg-white/5 active:scale-95"
+              : "bg-white/80 border-black/30 text-black hover:border-black/50 hover:bg-black/5 active:scale-95"
+          )}
+          aria-label="Previous (Scroll Left)"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        
+        <button
+          onClick={() => navigateCarousel('right')}
+          className={cn(
+            "p-4 rounded-lg border-2 transition-all duration-300 touch-manipulation",
+            isDark
+              ? "bg-black/60 border-white/30 text-white hover:border-white/50 hover:bg-white/5 active:scale-95"
+              : "bg-white/80 border-black/30 text-black hover:border-black/50 hover:bg-black/5 active:scale-95"
+          )}
+          aria-label="Next (Scroll Right)"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  );
+}
+
+function TestimonialsCarousel({ isDark, isMobile }: TestimonialsCarouselProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const interactionTimeoutRef = useRef<NodeJS.Timeout>();
+  const animationRef = useRef<NodeJS.Timeout>();
+
+  const testimonials = [
+    {
+      name: "Sarah Chen",
+      role: "CTO, TechCorp",
+      company: "SC",
+      quote: "DCT Micro-Apps delivered exactly what we needed. The precision and attention to detail in their solutions is unmatched. Our team's productivity increased by 40% within the first month.",
+      rating: 5
+    },
+    {
+      name: "Michael Rodriguez",
+      role: "VP Operations, DataFlow Inc",
+      company: "MR",
+      quote: "The automation systems we implemented have revolutionized our workflow. What used to take hours now happens in minutes. The ROI was evident within weeks.",
+      rating: 5
+    },
+    {
+      name: "Emily Watson",
+      role: "Founder, StartupXYZ",
+      company: "EW",
+      quote: "Working with Automation DCT was a game-changer. They understood our vision and delivered beyond expectations. The micro-apps integrate seamlessly with our existing systems.",
+      rating: 5
+    },
+    {
+      name: "David Kim",
+      role: "IT Director, GlobalCorp",
+      company: "DK",
+      quote: "The level of technical expertise and attention to detail is exceptional. Our deployment was smooth, and the ongoing support has been outstanding.",
+      rating: 5
+    },
+    {
+      name: "Lisa Thompson",
+      role: "CEO, InnovateTech",
+      company: "LT",
+      quote: "We've seen a 60% reduction in manual processes since implementing their solutions. The automation has freed up our team to focus on strategic initiatives.",
+      rating: 5
+    },
+    {
+      name: "James Wilson",
+      role: "Operations Manager, ScaleUp",
+      company: "JW",
+      quote: "The custom micro-applications have streamlined our entire operation. The user interface is intuitive, and the performance is consistently excellent.",
+      rating: 5
+    }
+  ];
+
+  const cardWidth = isMobile ? 280 : 400;
+  const gap = isMobile ? 20 : 32;
+  const scrollStep = cardWidth + gap;
+  const sidePreview = isMobile ? 40 : 0; // Show part of adjacent cards on mobile
+  const cardsToShow = 3; // Number of cards to show on desktop
+
+  // Create enough copies for smooth infinite scroll - start from middle set
+  const loopedTestimonials = [...testimonials, ...testimonials, ...testimonials];
+  
+  // Initialize position to start from the middle set to allow scrolling both ways
+  useEffect(() => {
+    x.set(-testimonials.length * scrollStep);
+  }, [testimonials.length, scrollStep, x]);
+
+  // Auto-scroll animation
+  useEffect(() => {
+    if (!isUserInteracting && !isHovering) {
+      const autoScroll = () => {
+        const currentX = x.get();
+        const newX = currentX - scrollStep;
+        
+        // Animate to new position
+        const startX = currentX;
+        const distance = newX - startX;
+        const duration = 400;
+        const startTime = Date.now();
+        
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          const easeOut = 1 - Math.pow(1 - progress, 3);
+          
+          x.set(startX + (distance * easeOut));
+          
+          if (progress < 1) {
+            requestAnimationFrame(animate);
+          } else {
+            // Check if we need to reposition for infinite scroll
+            const finalX = x.get();
+            const singleSetWidth = testimonials.length * scrollStep;
+            
+            // If we've gone too far right (past second set), jump to first set
+            if (finalX <= -singleSetWidth * 2) {
+              x.set(finalX + singleSetWidth);
+            }
+          }
+        };
+        
+        animate();
+      };
+
+      const interval = setInterval(autoScroll, 3000);
+      animationRef.current = interval;
+      return () => clearInterval(interval);
+    } else {
+      if (animationRef.current) {
+        clearInterval(animationRef.current);
+      }
+    }
+  }, [isUserInteracting, isHovering, x, scrollStep, testimonials.length]);
+
+  // Navigation function for arrow controls
+  const navigateCarousel = (direction: 'left' | 'right') => {
+    setIsUserInteracting(true);
+    
+    const currentX = x.get();
+    const newX = direction === 'right' ? currentX - scrollStep : currentX + scrollStep;
+    
+    // Animate to new position
+    const startX = currentX;
+    const distance = newX - startX;
+    const duration = 400;
+    const startTime = Date.now();
+    
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      
+      x.set(startX + (distance * easeOut));
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        // Check if we need to reposition for infinite scroll
+        const finalX = x.get();
+        const singleSetWidth = testimonials.length * scrollStep;
+        
+        // If we've gone too far right (past second set), jump to first set
+        if (finalX <= -singleSetWidth * 2) {
+          x.set(finalX + singleSetWidth);
+        }
+        // If we've gone too far left (before first set), jump to second set
+        else if (finalX >= 0) {
+          x.set(finalX - singleSetWidth);
+        }
+      }
+    };
+    
+    animate();
+    
+    // Resume auto-scroll after delay
+    if (interactionTimeoutRef.current) {
+      clearTimeout(interactionTimeoutRef.current);
+    }
+    interactionTimeoutRef.current = setTimeout(() => {
+      setIsUserInteracting(false);
+    }, 2000);
+  };
+
+  return (
+    <div className="relative">
+      {/* Auto-Scrolling Testimonials Container */}
+      <div 
+        ref={containerRef}
+        className="relative select-none overflow-hidden"
+        style={{
+          width: isMobile ? '100vw' : `${cardWidth * cardsToShow + gap * (cardsToShow - 1)}px`,
+          margin: '0 auto',
+          maxWidth: isMobile ? '100vw' : 'none'
+        }}
+      >
+        {/* Gradient overlays for edge fade effect */}
+        <div className={cn(
+          "absolute top-0 left-0 w-20 h-full z-10 pointer-events-none",
+          isDark 
+            ? "bg-gradient-to-r from-black via-black/80 to-transparent"
+            : "bg-gradient-to-r from-white via-white/80 to-transparent"
+        )} />
+        <div className={cn(
+          "absolute top-0 right-0 w-20 h-full z-10 pointer-events-none",
+          isDark 
+            ? "bg-gradient-to-l from-black via-black/80 to-transparent"
+            : "bg-gradient-to-l from-white via-white/80 to-transparent"
+        )} />
+        <motion.div
+          className="flex"
+          style={{ 
+            gap: isMobile ? '20px' : '32px',
+            width: `${(cardWidth + gap) * loopedTestimonials.length}px`,
+            x: x,
+            paddingLeft: isMobile ? `calc(50vw - ${cardWidth/2}px)` : '0px',
+            paddingRight: isMobile ? `calc(50vw - ${cardWidth/2}px)` : '0px'
+          }}
+        >
+          {loopedTestimonials.map((testimonial, i) => (
+            <motion.div
+              key={`${testimonial.name}-${i}`}
+              className={cn(
+                "flex-shrink-0 p-4 sm:p-8 rounded-lg border-2 transition-all duration-300",
+                isMobile ? "w-72" : "w-96",
+                isDark 
+                  ? "bg-black/60 border-white/30 hover:border-white/50" 
+                  : "bg-white/80 border-black/30 hover:border-black/50"
+              )}
+              whileHover={!isMobile ? { scale: 1.02, y: -4 } : {}}
+              onHoverStart={() => setIsHovering(true)}
+              onHoverEnd={() => setIsHovering(false)}
+              style={{ 
+                width: `${cardWidth}px`
+              }}
+            >
+              {/* Company Logo */}
+              <div className="flex items-center justify-center mb-6">
+                <div className={cn(
+                  "w-16 h-16 rounded-lg border-2 flex items-center justify-center",
+                  isDark 
+                    ? "bg-white/10 border-white/30" 
+                    : "bg-black/10 border-black/30"
+                )}>
+                  <span className={cn(
+                    "font-bold text-xl",
+                    isDark ? "text-white" : "text-black"
+                  )}>{testimonial.company}</span>
+                </div>
+              </div>
+              
+              {/* Rating Stars */}
+              <div className="flex justify-center mb-6">
+                {[...Array(testimonial.rating)].map((_, idx) => (
+                  <svg key={idx} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+
+              {/* Quote */}
+              <blockquote className={cn(
+                "text-sm sm:text-base lg:text-lg font-normal mb-8 leading-relaxed text-center",
+                isDark ? "text-white/90" : "text-black/90"
+              )}>
+                "{testimonial.quote}"
+              </blockquote>
+              
+              {/* Author Info */}
+              <div className="text-center">
+                <div className={cn(
+                  "text-base font-bold tracking-wide uppercase mb-1",
+                  isDark ? "text-white" : "text-black"
+                )}>
+                  {testimonial.name}
+                </div>
+                <div className={cn(
+                  "text-sm",
+                  isDark ? "text-white/60" : "text-black/60"
+                )}>
+                  {testimonial.role}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <div className="flex items-center justify-center gap-6 mt-8">
+        <button
+          onClick={() => navigateCarousel('left')}
+          className={cn(
+            "p-4 rounded-lg border-2 transition-all duration-300 touch-manipulation",
+            isDark
+              ? "bg-black/60 border-white/30 text-white hover:border-white/50 hover:bg-white/5 active:scale-95"
+              : "bg-white/80 border-black/30 text-black hover:border-black/50 hover:bg-black/5 active:scale-95"
+          )}
+          aria-label="Previous Testimonial"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        
+        <button
+          onClick={() => navigateCarousel('right')}
+          className={cn(
+            "p-4 rounded-lg border-2 transition-all duration-300 touch-manipulation",
+            isDark
+              ? "bg-black/60 border-white/30 text-white hover:border-white/50 hover:bg-white/5 active:scale-95"
+              : "bg-white/80 border-black/30 text-black hover:border-black/50 hover:bg-black/5 active:scale-95"
+          )}
+          aria-label="Next Testimonial"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  );
+}
+
+export default function TestHomePage() {
+  console.log("🚀 TestHomePage is being rendered!");
+  const { scrollYProgress } = useScroll();
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mouse tracking (desktop only)
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 150, damping: 15 });
+  const springY = useSpring(mouseY, { stiffness: 150, damping: 15 });
+
+  useEffect(() => {
+    setMounted(true);
+    
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768 || 'ontouchstart' in window;
+      setIsMobile(mobile);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    if (!isMobile) {
+      const handleMouseMove = (e: MouseEvent) => {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('resize', checkMobile);
+      };
+    }
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, [mouseX, mouseY, isMobile]);
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-black border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  const isDark = resolvedTheme === "dark";
+
+  return (
+    <main className={cn(
+      "min-h-screen transition-all duration-500 ease-out relative",
+      isDark 
+        ? "bg-black text-white" 
+        : "bg-white text-black"
+    )}>
+      {/* Header */}
+      <header className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 backdrop-blur-xl border-b",
+        isDark 
+          ? "bg-black/70 border-white/20 shadow-white/5" 
+          : "bg-white/70 border-black/20 shadow-black/5"
+      )}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className={cn(
+                "w-8 h-8 sm:w-10 sm:h-10 rounded-none border-2 flex items-center justify-center transition-colors duration-500",
+                isDark 
+                  ? "bg-white/10 border-white/30" 
+                  : "bg-black/10 border-black/30"
+              )}>
+                <span className={cn(
+                  "font-bold text-sm sm:text-lg transition-colors duration-500",
+                  isDark ? "text-white" : "text-black"
+                )}>ADT</span>
+              </div>
+              <div className={cn(
+                "text-lg sm:text-xl font-bold transition-colors duration-500 tracking-wide",
+                isDark ? "text-white" : "text-black"
+              )}>
+                <span className="hidden sm:inline">Automation DCT</span>
+                <span className="sm:hidden">Auto DCT</span>
               </div>
             </div>
-          </div>
-        </Container>
-      </section>
 
-      {/* HT-001.4.1 - Hero Section Skeleton */}
-      <section className="section" aria-labelledby="hero-heading">
-        <Container variant="page" className="py-16">
-          <motion.div 
-            className="mx-auto max-w-4xl text-center"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            style={{ 
-              willChange: 'transform, opacity', // Performance hint
-              transform: 'translateZ(0)' // Force hardware acceleration
-            }}
-          >
-            {/* Badge - Linear-style subtle announcement */}
-            <motion.div className="mb-8" variants={itemVariants}>
-              <span 
-                className="inline-flex items-center rounded-full bg-primary/5 px-3 py-1 text-sm font-medium text-primary ring-1 ring-primary/10"
-                role="status"
-                aria-label="New feature announcement"
-              >
-                ✨ Now Available
-              </span>
-            </motion.div>
+            {/* Navigation */}
+            <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+              <a href="#solutions" className={cn(
+                "text-sm font-medium transition-colors duration-500 hover:opacity-70",
+                isDark ? "text-white/80" : "text-black/80"
+              )}>
+                Solutions
+              </a>
+              <a href="#about" className={cn(
+                "text-sm font-medium transition-colors duration-500 hover:opacity-70",
+                isDark ? "text-white/80" : "text-black/80"
+              )}>
+                About
+              </a>
+              <a href="#contact" className={cn(
+                "text-sm font-medium transition-colors duration-500 hover:opacity-70",
+                isDark ? "text-white/80" : "text-black/80"
+              )}>
+                Contact
+              </a>
+            </nav>
             
-            {/* Main Headline - Linear-style typography hierarchy */}
-            <motion.h1 
-              id="hero-heading"
-              className="mb-8 text-5xl font-semibold leading-[1.1] tracking-[-0.02em] text-foreground sm:text-6xl lg:text-7xl xl:text-8xl"
-              variants={itemVariants}
-            >
-              Build Better Products
-              <span className="block text-primary font-medium">Faster Than Ever</span>
-            </motion.h1>
-            
-            {/* Subcopy - Linear-style body text */}
-            <motion.p 
-              className="mx-auto mb-10 max-w-[42rem] text-xl leading-[1.6] text-muted-foreground sm:text-2xl"
-              variants={itemVariants}
-              aria-describedby="hero-heading"
-            >
-              Transform your ideas into production-ready applications with our comprehensive development platform. 
-              Ship features faster, maintain quality, and scale effortlessly.
-            </motion.p>
-            
-            {/* CTA Buttons - Linear-style spacing */}
-            <motion.div 
-              className="flex flex-col gap-3 sm:flex-row sm:justify-center sm:gap-4"
-              variants={itemVariants}
-              role="group"
-              aria-label="Primary actions"
-            >
-              <CTAButton 
-                size="lg" 
-                className="sm:w-auto"
-                aria-describedby="hero-description"
-                tabIndex={0}
-              >
-                Get Started Free
-              </CTAButton>
-              <SecondaryCTAButton 
-                size="lg" 
-                className="sm:w-auto"
-                aria-describedby="hero-description"
-                tabIndex={0}
-              >
-                View Documentation
-              </SecondaryCTAButton>
-            </motion.div>
-          </motion.div>
-        </Container>
-      </section>
-
-      {/* HT-001.4.2 - Hero art placeholder (no heavy assets) - Optimized for CLS */}
-      <section className="section" aria-labelledby="product-preview-heading">
-        <Container variant="page" className="py-8">
-          <div className="mx-auto max-w-6xl">
-            <SurfaceElevated 
-              className="relative overflow-hidden"
-              style={{ 
-                height: '420px',
-                minHeight: '420px', // Prevent CLS
-                aspectRatio: '16/9', // Maintain aspect ratio
-                contain: 'layout style paint' // Optimize rendering
-              }}
-              role="img"
-              aria-label="Product preview placeholder"
-            >
-              {/* Gradient background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5" aria-hidden="true" />
-              
-              {/* Grid pattern overlay */}
-              <div 
-                className="absolute inset-0 opacity-20"
-                style={{
-                  backgroundImage: `
-                    linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)
-                  `,
-                  backgroundSize: '20px 20px'
-                }}
-                aria-hidden="true"
+            {/* Mobile Navigation & Controls */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <ThemeToggle 
+                variant="outline" 
+                size="sm"
+                className={cn(
+                  "backdrop-blur-xl border transition-all duration-500",
+                  isDark 
+                    ? "bg-black/60 border-white/20 hover:border-white/40 hover:bg-white/5" 
+                    : "bg-white/60 border-black/20 hover:border-black/40 hover:bg-black/5"
+                )}
               />
               
-              {/* Content placeholder */}
-              <div className="relative z-10 flex h-full items-center justify-center">
-                <div className="text-center">
-                  {/* Product mockup placeholder - Optimized SVG */}
-                  <div className="mb-6 mx-auto w-32 h-32 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center shadow-lg" aria-hidden="true">
-                    <svg 
-                      className="w-16 h-16 text-primary/60" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      style={{ willChange: 'transform' }} // Optimize for animations
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={1.5} 
-                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" 
-                      />
-                    </svg>
-                  </div>
-                  
-                  {/* Placeholder text */}
-                  <h2 id="product-preview-heading" className="text-lg font-medium text-muted-foreground mb-2">
-                    Product Preview
-                  </h2>
-                  <p className="text-sm text-muted-foreground/80 max-w-md">
-                    Interactive demo and product screenshots will be displayed here
-                  </p>
+              <button className="md:hidden p-2 touch-manipulation" aria-label="Open menu">
+                <div className={cn(
+                  "w-6 h-6 flex flex-col justify-center gap-1",
+                  isDark ? "text-white" : "text-black"
+                )}>
+                  <div className={cn(
+                    "w-full h-0.5 transition-colors duration-500",
+                    isDark ? "bg-white" : "bg-black"
+                  )} />
+                  <div className={cn(
+                    "w-full h-0.5 transition-colors duration-500",
+                    isDark ? "bg-white" : "bg-black"
+                  )} />
+                  <div className={cn(
+                    "w-full h-0.5 transition-colors duration-500",
+                    isDark ? "bg-white" : "bg-black"
+                  )} />
                 </div>
-              </div>
-              
-              {/* Decorative elements */}
-              <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-primary/30" aria-hidden="true" />
-              <div className="absolute bottom-6 left-6 w-1 h-1 rounded-full bg-primary/40" aria-hidden="true" />
-              <div className="absolute top-1/3 left-4 w-1.5 h-1.5 rounded-full bg-primary/20" aria-hidden="true" />
-            </SurfaceElevated>
-          </div>
-        </Container>
-      </section>
-
-      {/* HT-001.4.3 - Features section (3-4 cards) */}
-      <section className="section" aria-labelledby="features-heading">
-        <Container variant="page" className="py-16">
-          <div className="mx-auto max-w-4xl text-center mb-12">
-            <h2 id="features-heading" className="text-3xl font-bold leading-tight tracking-[-0.01em] text-foreground mb-4">
-              Everything you need to build
-            </h2>
-            <p className="text-lg text-muted-foreground" aria-describedby="features-heading">
-              Powerful tools and components designed to accelerate your development workflow
-            </p>
-          </div>
-          
-          <Grid cols={12} gap="lg" role="list" aria-label="Feature list">
-            {/* Feature 1: Development Tools */}
-            <Col span={12} sm={6} lg={3}>
-              <SurfaceCard 
-                className="h-full text-center group hover:shadow-[var(--shadow-elevation-2)] transition-all duration-200 ease-out hover:-translate-y-0.5" 
-                role="listitem"
-                interactive
-                tabIndex={0}
-                aria-describedby="feature-1-description"
-                style={{ 
-                  minHeight: '200px', // Prevent CLS
-                  contain: 'layout style' // Optimize rendering
-                }}
-              >
-                <div className="mb-4">
-                  <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors duration-200" aria-hidden="true">
-                    <svg 
-                      className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-200" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      style={{ willChange: 'transform' }}
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" 
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
-                    Development Tools
-                  </h3>
-                  <p id="feature-1-description" className="text-muted-foreground text-sm leading-relaxed">
-                    Built-in TypeScript, ESLint, Prettier, and testing frameworks. 
-                    Start coding immediately with zero configuration.
-                  </p>
-                </div>
-              </SurfaceCard>
-            </Col>
-
-            {/* Feature 2: UI Components */}
-            <Col span={12} sm={6} lg={3}>
-              <SurfaceCard 
-                className="h-full text-center group hover:shadow-[var(--shadow-elevation-2)] transition-all duration-200 ease-out hover:-translate-y-0.5" 
-                role="listitem"
-                interactive
-                tabIndex={0}
-                aria-describedby="feature-2-description"
-                style={{ 
-                  minHeight: '200px', // Prevent CLS
-                  contain: 'layout style' // Optimize rendering
-                }}
-              >
-                <div className="mb-4">
-                  <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors duration-200" aria-hidden="true">
-                    <svg 
-                      className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-200" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      style={{ willChange: 'transform' }}
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" 
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
-                    UI Components
-                  </h3>
-                  <p id="feature-2-description" className="text-muted-foreground text-sm leading-relaxed">
-                    Beautiful, accessible components built with Radix UI and styled with Tailwind CSS. 
-                    Consistent design system out of the box.
-                  </p>
-                </div>
-              </SurfaceCard>
-            </Col>
-
-            {/* Feature 3: Database & Auth */}
-            <Col span={12} sm={6} lg={3}>
-              <SurfaceCard 
-                className="h-full text-center group hover:shadow-[var(--shadow-elevation-2)] transition-all duration-200 ease-out hover:-translate-y-0.5" 
-                role="listitem"
-                interactive
-                tabIndex={0}
-                aria-describedby="feature-3-description"
-                style={{ 
-                  minHeight: '200px', // Prevent CLS
-                  contain: 'layout style' // Optimize rendering
-                }}
-              >
-                <div className="mb-4">
-                  <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors duration-200" aria-hidden="true">
-                    <svg 
-                      className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-200" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      style={{ willChange: 'transform' }}
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" 
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
-                    Database & Auth
-                  </h3>
-                  <p id="feature-3-description" className="text-muted-foreground text-sm leading-relaxed">
-                    Integrated Supabase for database, authentication, and real-time features. 
-                    Row-level security and API generation included.
-                  </p>
-                </div>
-              </SurfaceCard>
-            </Col>
-
-            {/* Feature 4: Deployment */}
-            <Col span={12} sm={6} lg={3}>
-              <SurfaceCard 
-                className="h-full text-center group hover:shadow-[var(--shadow-elevation-2)] transition-all duration-200 ease-out hover:-translate-y-0.5" 
-                role="listitem"
-                interactive
-                tabIndex={0}
-                aria-describedby="feature-4-description"
-                style={{ 
-                  minHeight: '200px', // Prevent CLS
-                  contain: 'layout style' // Optimize rendering
-                }}
-              >
-                <div className="mb-4">
-                  <div className="mx-auto w-12 h-12 rounded-xl bg-primary/10 group-hover:bg-primary/15 flex items-center justify-center mb-4 transition-colors duration-200" aria-hidden="true">
-                    <svg 
-                      className="w-6 h-6 text-primary group-hover:scale-110 transition-transform duration-200" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      style={{ willChange: 'transform' }}
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" 
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
-                    One-Click Deploy
-                  </h3>
-                  <p id="feature-4-description" className="text-muted-foreground text-sm leading-relaxed">
-                    Deploy to Vercel with zero configuration. Automatic builds, 
-                    preview deployments, and global CDN for optimal performance.
-                  </p>
-                </div>
-              </SurfaceCard>
-            </Col>
-          </Grid>
-        </Container>
-      </section>
-
-      {/* HT-002.2.3 - Social proof section with Linear-style muted styling */}
-      <section className="section" aria-labelledby="social-proof-heading">
-        <Container variant="page" className="py-16">
-          <div className="mx-auto max-w-5xl text-center">
-            {/* Muted label with Linear-style typography */}
-            <h2 id="social-proof-heading" className="mb-12 text-sm font-medium text-muted-foreground tracking-wide uppercase">
-              Trusted by teams at
-            </h2>
-            
-            {/* Logo grid with Linear-style spacing and muted presentation */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 items-center justify-items-center" role="list" aria-label="Trusted companies">
-              {/* Logo 1: Vercel - Linear-style muted */}
-              <div className="flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity duration-300" role="listitem">
-                <svg 
-                  className="h-5 w-auto text-muted-foreground grayscale" 
-                  viewBox="0 0 115 20" 
-                  fill="currentColor"
-                  aria-label="Vercel logo"
-                  style={{ willChange: 'opacity' }}
-                >
-                  <path d="M0 20L5.5 0h9l5.5 20h-9l-1-4H9l-1 4H0zm7.5-8h5l-2.5-6-2.5 6z"/>
-                  <path d="M25 0h9v20h-9V0zm2 2v16h5V2h-5z"/>
-                  <path d="M40 0h9v20h-9V0zm2 2v16h5V2h-5z"/>
-                  <path d="M55 0h9v20h-9V0zm2 2v16h5V2h-5z"/>
-                  <path d="M70 0h9v20h-9V0zm2 2v16h5V2h-5z"/>
-                  <path d="M85 0h9v20h-9V0zm2 2v16h5V2h-5z"/>
-                  <path d="M100 0h9v20h-9V0zm2 2v16h5V2h-5z"/>
-                </svg>
-              </div>
-              
-              {/* Logo 2: Linear - Linear-style muted */}
-              <div className="flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity duration-300" role="listitem">
-                <svg 
-                  className="h-5 w-auto text-muted-foreground grayscale" 
-                  viewBox="0 0 100 20" 
-                  fill="currentColor"
-                  aria-label="Linear logo"
-                  style={{ willChange: 'opacity' }}
-                >
-                  <path d="M0 0h100v20H0V0zm5 5v10h90V5H5z"/>
-                  <path d="M10 8h80v4H10V8z"/>
-                </svg>
-              </div>
-              
-              {/* Logo 3: Supabase - Linear-style muted */}
-              <div className="flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity duration-300" role="listitem">
-                <svg 
-                  className="h-5 w-auto text-muted-foreground grayscale" 
-                  viewBox="0 0 120 20" 
-                  fill="currentColor"
-                  aria-label="Supabase logo"
-                  style={{ willChange: 'opacity' }}
-                >
-                  <path d="M0 0h120v20H0V0zm5 5v10h110V5H5z"/>
-                  <path d="M15 8h90v4H15V8z"/>
-                </svg>
-              </div>
-              
-              {/* Logo 4: Next.js - Linear-style muted */}
-              <div className="flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity duration-300" role="listitem">
-                <svg 
-                  className="h-5 w-auto text-muted-foreground grayscale" 
-                  viewBox="0 0 100 20" 
-                  fill="currentColor"
-                  aria-label="Next.js logo"
-                  style={{ willChange: 'opacity' }}
-                >
-                  <path d="M0 0h100v20H0V0zm5 5v10h90V5H5z"/>
-                  <path d="M10 8h80v4H10V8z"/>
-                </svg>
-              </div>
-              
-              {/* Logo 5: Tailwind - Linear-style muted */}
-              <div className="flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity duration-300" role="listitem">
-                <svg 
-                  className="h-5 w-auto text-muted-foreground grayscale" 
-                  viewBox="0 0 120 20" 
-                  fill="currentColor"
-                  aria-label="Tailwind CSS logo"
-                  style={{ willChange: 'opacity' }}
-                >
-                  <path d="M0 0h120v20H0V0zm5 5v10h110V5H5z"/>
-                  <path d="M15 8h90v4H15V8z"/>
-                </svg>
-              </div>
-              
-              {/* Logo 6: TypeScript - Linear-style muted */}
-              <div className="flex items-center justify-center opacity-40 hover:opacity-60 transition-opacity duration-300" role="listitem">
-                <svg 
-                  className="h-5 w-auto text-muted-foreground grayscale" 
-                  viewBox="0 0 100 20" 
-                  fill="currentColor"
-                  aria-label="TypeScript logo"
-                  style={{ willChange: 'opacity' }}
-                >
-                  <path d="M0 0h100v20H0V0zm5 5v10h90V5H5z"/>
-                  <path d="M10 8h80v4H10V8z"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* HT-002.2.4 - CTA section with Linear-style condensed layout and proper spacing */}
-      <section className="py-section bg-muted/20" aria-labelledby="cta-heading">
-        <Container variant="page">
-          <div className="mx-auto max-w-2xl text-center">
-            {/* Headline - Linear-style typography hierarchy */}
-            <h2 
-              id="cta-heading" 
-              className="mb-6 text-3xl font-semibold leading-[1.1] tracking-[-0.02em] text-foreground sm:text-4xl lg:text-5xl"
-            >
-              Ready to get started?
-            </h2>
-            
-            {/* One sentence - Linear-style body text with proper spacing */}
-            <p 
-              className="mb-10 text-lg leading-[1.6] text-muted-foreground sm:text-xl" 
-              aria-describedby="cta-heading"
-            >
-              Join thousands of developers building the future with our platform.
-            </p>
-            
-            {/* Primary button - Linear-style CTA with proper spacing */}
-            <CTAButton 
-              size="lg" 
-              className="sm:w-auto"
-              aria-describedby="cta-heading"
-              tabIndex={0}
-            >
-              Start Building Today
-            </CTAButton>
-          </div>
-        </Container>
-      </section>
-      
-      {/* HT-001.3.4 Verification: Surface component with Linear/Vercel-style appearance */}
-      <Container variant="page" className="py-16">
-        <div className="mt-12">
-          <h2 className="mb-6 text-center text-xl font-medium">Surface Component Test</h2>
-          
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Default Surface */}
-            <Surface>
-              <h3 className="mb-2 font-semibold">Default Surface</h3>
-              <p className="text-sm text-muted-foreground">
-                This is the default surface variant with subtle borders and background.
-              </p>
-            </Surface>
-            
-            {/* Elevated Surface */}
-            <SurfaceElevated>
-              <h3 className="mb-2 font-semibold">Elevated Surface</h3>
-              <p className="text-sm text-muted-foreground">
-                This surface has more elevation and stronger shadows for emphasis.
-              </p>
-            </SurfaceElevated>
-            
-            {/* Card Surface */}
-            <SurfaceCard>
-              <h3 className="mb-2 font-semibold">Card Surface</h3>
-              <p className="text-sm text-muted-foreground">
-                This surface mimics a traditional card with solid background.
-              </p>
-            </SurfaceCard>
-            
-            {/* Subtle Surface */}
-            <SurfaceSubtle>
-              <h3 className="mb-2 font-semibold">Subtle Surface</h3>
-              <p className="text-sm text-muted-foreground">
-                This surface has minimal styling for background content.
-              </p>
-            </SurfaceSubtle>
-            
-            {/* Ghost Surface */}
-            <Surface variant="ghost" interactive>
-              <h3 className="mb-2 font-semibold">Ghost Surface</h3>
-              <p className="text-sm text-muted-foreground">
-                This surface is nearly transparent with hover effects.
-              </p>
-            </Surface>
-            
-            {/* Interactive Surface */}
-            <Surface variant="default" interactive>
-              <h3 className="mb-2 font-semibold">Interactive Surface</h3>
-              <p className="text-sm text-muted-foreground">
-                This surface has interactive hover and scale effects.
-              </p>
-            </Surface>
-          </div>
-          
-          {/* Size variations */}
-          <div className="mt-8">
-            <h3 className="mb-4 text-center text-lg font-medium">Size Variations</h3>
-            <div className="grid gap-4 md:grid-cols-3">
-              <Surface size="sm">
-                <h4 className="mb-1 font-medium">Small</h4>
-                <p className="text-xs text-muted-foreground">Compact padding</p>
-              </Surface>
-              <Surface size="default">
-                <h4 className="mb-1 font-medium">Default</h4>
-                <p className="text-sm text-muted-foreground">Standard padding</p>
-              </Surface>
-              <Surface size="lg">
-                <h4 className="mb-1 font-medium">Large</h4>
-                <p className="text-sm text-muted-foreground">Generous padding</p>
-              </Surface>
-            </div>
-          </div>
-          
-          {/* Rounded variations */}
-          <div className="mt-8">
-            <h3 className="mb-4 text-center text-lg font-medium">Rounded Variations</h3>
-            <div className="grid gap-4 md:grid-cols-3">
-              <Surface rounded="sm">
-                <h4 className="mb-1 font-medium">Small Radius</h4>
-                <p className="text-sm text-muted-foreground">Subtle rounding</p>
-              </Surface>
-              <Surface rounded="default">
-                <h4 className="mb-1 font-medium">Default Radius</h4>
-                <p className="text-sm text-muted-foreground">Standard rounding</p>
-              </Surface>
-              <Surface rounded="xl">
-                <h4 className="mb-1 font-medium">Extra Large</h4>
-                <p className="text-sm text-muted-foreground">Pronounced rounding</p>
-              </Surface>
+              </button>
             </div>
           </div>
         </div>
-        
-        {/* HT-001.3.3 Verification: Two Col span={6} side-by-side */}
-        <div className="mt-8">
-          <h2 className="mb-4 text-center text-xl font-medium">Grid System Test</h2>
-          
-          {/* Basic 2-column layout */}
-          <div className="mb-6">
-            <h3 className="mb-2 text-sm font-medium text-muted-foreground">Basic 2-Column Layout</h3>
-            <Grid cols={12} gap="md">
-              <Col span={6}>
-                <div className="rounded-lg border border-border/50 bg-background/50 p-4 text-center">
-                  Left Column (span=6)
-                </div>
-              </Col>
-              <Col span={6}>
-                <div className="rounded-lg border border-border/50 bg-background/50 p-4 text-center">
-                  Right Column (span=6)
-                </div>
-              </Col>
-            </Grid>
-          </div>
+      </header>
 
-          {/* Responsive 3-column layout */}
-          <div className="mb-6">
-            <h3 className="mb-2 text-sm font-medium text-muted-foreground">Responsive 3-Column Layout</h3>
-            <Grid cols={12} gap="md">
-              <Col span={12} sm={6} md={4}>
-                <div className="rounded-lg border border-border/50 bg-background/50 p-4 text-center">
-                  Column 1 (12/6/4)
-                </div>
-              </Col>
-              <Col span={12} sm={6} md={4}>
-                <div className="rounded-lg border border-border/50 bg-background/50 p-4 text-center">
-                  Column 2 (12/6/4)
-                </div>
-              </Col>
-              <Col span={12} sm={12} md={4}>
-                <div className="rounded-lg border border-border/50 bg-background/50 p-4 text-center">
-                  Column 3 (12/12/4)
-                </div>
-              </Col>
-            </Grid>
-          </div>
+      {/* Optimized Automation Grid Background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        {/* Main Grid System */}
+        <div className="absolute inset-0">
+          <div 
+            className="h-full w-full transition-opacity duration-500"
+            style={{
+              backgroundImage: `
+                linear-gradient(${isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.08)'} 1px, transparent 1px),
+                linear-gradient(90deg, ${isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.08)'} 1px, transparent 1px),
+                linear-gradient(${isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.04)'} 1px, transparent 1px),
+                linear-gradient(90deg, ${isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.04)'} 1px, transparent 1px)
+              `,
+              backgroundSize: '40px 40px, 40px 40px, 120px 120px, 120px 120px',
+              backgroundPosition: '0 0, 0 0, 20px 20px, 20px 20px',
+              opacity: isDark ? 0.6 : 0.8
+            }}
+          />
+        </div>
 
-          {/* Offset example */}
-          <div className="mb-6">
-            <h3 className="mb-2 text-sm font-medium text-muted-foreground">Column with Offset</h3>
-            <Grid cols={12} gap="md">
-              <Col span={4} offset={2}>
-                <div className="rounded-lg border border-border/50 bg-background/50 p-4 text-center">
-                  Offset Column (span=4, offset=2)
-                </div>
-              </Col>
-            </Grid>
-          </div>
+        {/* Automation Nodes */}
+        <div className="absolute inset-0">
+          {[...Array(isMobile ? 6 : 12)].map((_, i) => {
+            const x = 15 + ((i * 13) % 70);
+            const y = 15 + ((i * 17) % 70);
+            return (
+              <motion.div
+                key={i}
+                className={cn(
+                  "absolute rounded-full transition-colors duration-500",
+                  isMobile ? "w-1.5 h-1.5" : "w-2 h-2",
+                  isDark ? "bg-white/20" : "bg-black/35"
+                )}
+                style={{
+                  top: `${y}%`,
+                  left: `${x}%`,
+                }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.6, 0.3]
+                }}
+                transition={{
+                  duration: 3 + (i * 0.2),
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.3
+                }}
+              />
+            );
+          })}
+        </div>
 
-          {/* Different grid configurations */}
-          <div className="mb-6">
-            <h3 className="mb-2 text-sm font-medium text-muted-foreground">Different Grid Configurations</h3>
-            
-            {/* 6-column grid */}
-            <div className="mb-4">
-              <h4 className="mb-2 text-xs font-medium text-muted-foreground">6-Column Grid</h4>
-              <Grid cols={6} gap="sm">
-                <Col span={2}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Col 1
-                  </div>
-                </Col>
-                <Col span={2}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Col 2
-                  </div>
-                </Col>
-                <Col span={2}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Col 3
-                  </div>
-                </Col>
-              </Grid>
+        {/* Flowing Data Streams */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(isMobile ? 3 : 5)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-full h-px"
+              style={{
+                top: `${20 + (i * (isMobile ? 20 : 15))}%`,
+                background: isDark 
+                  ? `linear-gradient(90deg, transparent, rgba(255,255,255,0.1), rgba(255,255,255,0.03), transparent)`
+                  : `linear-gradient(90deg, transparent, rgba(0,0,0,0.2), rgba(0,0,0,0.05), transparent)`
+              }}
+              animate={{
+                x: ["-10%", "110%"],
+                opacity: [0, 0.8, 0.2, 0]
+              }}
+              transition={{
+                duration: isMobile ? 5 + (i * 1) : 7 + (i * 1.5),
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: i * 1.5
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Interactive Mouse Effect (Desktop Only) */}
+        {!isMobile && (
+          <motion.div
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(circle 150px at ${springX}px ${springY}px, ${isDark ? 'rgba(255, 255, 255, 0.02)' : 'rgba(0, 0, 0, 0.04)'} 0%, transparent 60%)`,
+              transform: `translate(${springX.get() * 0.005}px, ${springY.get() * 0.005}px)`,
+            }}
+          />
+        )}
+      </div>
+
+      {/* Hero Section - Improved Layout */}
+      <section className="relative min-h-screen flex items-center justify-center z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
+          <div className="max-w-6xl mx-auto text-center space-y-6 sm:space-y-8 lg:space-y-10">
+
+            {/* Main Headline */}
+            <div className="space-y-4 sm:space-y-6">
+              <h1 className={cn(
+                "text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight uppercase leading-none",
+                isDark ? "text-white" : "text-black"
+              )}>
+                Custom Web Apps
+              </h1>
+              <div className={cn(
+                "w-24 sm:w-32 lg:w-40 h-1 mx-auto",
+                isDark ? "bg-white" : "bg-black"
+              )} />
             </div>
 
-            {/* 4-column grid */}
-            <div className="mb-4">
-              <h4 className="mb-2 text-xs font-medium text-muted-foreground">4-Column Grid</h4>
-              <Grid cols={4} gap="lg">
-                <Col span={1}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    1
-                  </div>
-                </Col>
-                <Col span={1}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    2
-                  </div>
-                </Col>
-                <Col span={1}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    3
-                  </div>
-                </Col>
-                <Col span={1}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    4
-                  </div>
-                </Col>
-              </Grid>
-            </div>
-          </div>
-
-          {/* Gap variations */}
-          <div className="mb-6">
-            <h3 className="mb-2 text-sm font-medium text-muted-foreground">Gap Variations</h3>
-            
-            <div className="mb-4">
-              <h4 className="mb-2 text-xs font-medium text-muted-foreground">Small Gap</h4>
-              <Grid cols={12} gap="sm">
-                <Col span={4}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Small Gap
-                  </div>
-                </Col>
-                <Col span={4}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Small Gap
-                  </div>
-                </Col>
-                <Col span={4}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Small Gap
-                  </div>
-                </Col>
-              </Grid>
+            {/* Tagline */}
+            <div>
+              <p className={cn(
+                "text-sm sm:text-base lg:text-lg font-bold tracking-widest uppercase",
+                isDark ? "text-white/90" : "text-black/90"
+              )}>
+                delivered in a week
+              </p>
             </div>
 
-            <div className="mb-4">
-              <h4 className="mb-2 text-xs font-medium text-muted-foreground">Large Gap</h4>
-              <Grid cols={12} gap="lg">
-                <Col span={4}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Large Gap
-                  </div>
-                </Col>
-                <Col span={4}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Large Gap
-                  </div>
-                </Col>
-                <Col span={4}>
-                  <div className="rounded border border-border/30 bg-background/30 p-2 text-center text-xs">
-                    Large Gap
-                  </div>
-                </Col>
-              </Grid>
+            {/* Description */}
+            <div className="max-w-4xl mx-auto">
+              <p className={cn(
+                "text-sm sm:text-base lg:text-lg font-light leading-relaxed px-4",
+                isDark ? "text-white/85" : "text-black/85"
+              )}>
+                Automated micro-applications that execute with precision. 
+                Self-optimizing systems deployed in 7 days, engineered for autonomous operations. 
+                Zero-maintenance architecture.
+              </p>
             </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 max-w-lg mx-auto">
+              <button
+                className={cn(
+                  "w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 font-bold text-sm sm:text-base rounded-lg border-2 transition-all duration-300 tracking-wide uppercase touch-manipulation",
+                  isDark
+                    ? "bg-black text-white border-white hover:bg-white hover:text-black active:scale-95" 
+                    : "bg-black text-white border-black hover:bg-white hover:text-black active:scale-95"
+                )}
+              >
+                <span className="hidden sm:inline">INITIATE AUTOMATION</span>
+                <span className="sm:hidden">START</span>
+              </button>
+              
+              <button
+                className={cn(
+                  "w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 font-bold text-sm sm:text-base rounded-lg border-2 transition-all duration-300 tracking-wide uppercase touch-manipulation",
+                  isDark
+                    ? "bg-transparent text-white border-white/60 hover:border-white hover:bg-white/5 active:scale-95" 
+                    : "bg-transparent text-black border-black/60 hover:border-black hover:bg-black/5 active:scale-95"
+                )}
+              >
+                <span className="hidden sm:inline">VIEW SYSTEMS</span>
+                <span className="sm:hidden">VIEW</span>
+              </button>
+            </div>
+
           </div>
         </div>
-      </Container>
+      </section>
 
-      {/* HT-002.2.6 - Enhanced footer with multi-column layout */}
-      <footer className="py-section-sm bg-muted/30 border-t border-border/50" role="contentinfo" aria-label="Site footer">
-        <Container variant="page">
-          <div className="mx-auto max-w-6xl">
-            {/* Main footer content */}
-            <div className="mb-8">
-              <Grid cols={12} gap="lg">
-                {/* Company/Brand column */}
-                <Col span={12} md={3}>
-                  <div className="mb-6 md:mb-0">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">
-                      Micro App Platform
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                      Build better products faster than ever with our comprehensive development platform.
-                    </p>
-                    {/* Social links placeholder */}
-                    <div className="flex gap-3" role="list" aria-label="Social media links">
-                      <a 
-                        href="#" 
-                        className="text-muted-foreground hover:text-foreground transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2"
-                        aria-label="Follow us on Twitter"
-                        tabIndex={0}
-                      >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                        </svg>
-                      </a>
-                      <a 
-                        href="#" 
-                        className="text-muted-foreground hover:text-foreground transition-colors duration-200"
-                        aria-label="Follow us on GitHub"
-                      >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                      </a>
-                      <a 
-                        href="#" 
-                        className="text-muted-foreground hover:text-foreground transition-colors duration-200"
-                        aria-label="Follow us on LinkedIn"
-                      >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                </Col>
+      {/* Carousel Demo Section */}
+      <section className="relative py-16 sm:py-20 lg:py-24 z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="text-center mb-12 sm:mb-16 lg:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className={cn(
+              "text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 transition-colors duration-500 tracking-wide uppercase",
+              isDark ? "text-white" : "text-black"
+            )}>
+              LIVE DEMOS
+            </h2>
+            <p className={cn(
+              "text-sm sm:text-base max-w-2xl mx-auto font-normal transition-colors duration-500",
+              isDark ? "text-white/80" : "text-black/80"
+            )}>
+              See our micro-applications in action
+            </p>
+          </motion.div>
+        </div>
 
-                {/* Product column */}
-                <Col span={6} md={2}>
-                  <div className="mb-6 md:mb-0">
-                    <h4 className="text-sm font-semibold text-foreground mb-4">Product</h4>
-                    <nav role="list" aria-label="Product links">
-                      <ul className="space-y-3">
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Features
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Pricing
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Documentation
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            API Reference
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Changelog
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </Col>
+        {/* Enhanced Auto-Scrolling Carousel - Full Width */}
+        <EnhancedCarousel isDark={isDark} isMobile={isMobile} />
+      </section>
 
-                {/* Resources column */}
-                <Col span={6} md={2}>
-                  <div className="mb-6 md:mb-0">
-                    <h4 className="text-sm font-semibold text-foreground mb-4">Resources</h4>
-                    <nav role="list" aria-label="Resources links">
-                      <ul className="space-y-3">
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Blog
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Guides
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Examples
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Community
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Support
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </Col>
+      {/* Solutions Section */}
+      <section className={cn(
+        "relative py-16 sm:py-20 lg:py-24 z-10 transition-colors duration-500",
+        isDark ? "bg-white/5" : "bg-black/5"
+      )}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            className="text-center mb-12 sm:mb-16 lg:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className={cn(
+              "text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 transition-colors duration-500 tracking-wide uppercase",
+              isDark ? "text-white" : "text-black"
+            )}>
+              SOLUTIONS
+            </h2>
+            <p className={cn(
+              "text-sm sm:text-base max-w-2xl mx-auto font-normal transition-colors duration-500",
+              isDark ? "text-white/80" : "text-black/80"
+            )}>
+              Comprehensive micro-applications engineered for modern business needs
+            </p>
+          </motion.div>
 
-                {/* Company column */}
-                <Col span={6} md={2}>
-                  <div className="mb-6 md:mb-0">
-                    <h4 className="text-sm font-semibold text-foreground mb-4">Company</h4>
-                    <nav role="list" aria-label="Company links">
-                      <ul className="space-y-3">
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            About
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Careers
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Contact
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Press
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Partners
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </Col>
+          <div className="grid sm:grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+            {[
+              { 
+                title: "Analytics Dashboard", 
+                description: "Real-time data visualization and business intelligence"
+              },
+              { 
+                title: "User Management", 
+                description: "Comprehensive user authentication and authorization"
+              },
+              { 
+                title: "Content Management", 
+                description: "Advanced CMS with workflow and publishing tools"
+              }
+            ].map((solution, i) => (
+              <motion.div
+                key={solution.title}
+                className={cn(
+                  "p-6 sm:p-8 rounded-none border-2 transition-all duration-500",
+                  isDark 
+                    ? "bg-black/40 border-white/20 hover:border-white/40" 
+                    : "bg-white/40 border-black/20 hover:border-black/40"
+                )}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: i * 0.1 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.02, y: -4 }}
+              >
+                <h3 className={cn(
+                  "text-lg sm:text-xl font-bold mb-4 tracking-wide uppercase",
+                  isDark ? "text-white" : "text-black"
+                )}>
+                  {solution.title}
+                </h3>
+                
+                <p className={cn(
+                  "text-sm sm:text-base font-normal leading-relaxed",
+                  isDark ? "text-white/80" : "text-black/80"
+                )}>
+                  {solution.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                {/* Legal column */}
-                <Col span={6} md={3}>
-                  <div className="mb-6 md:mb-0">
-                    <h4 className="text-sm font-semibold text-foreground mb-4">Legal</h4>
-                    <nav role="list" aria-label="Legal links">
-                      <ul className="space-y-3">
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Privacy Policy
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Terms of Service
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Cookie Policy
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Security
-                          </a>
-                        </li>
-                        <li>
-                          <a 
-                            href="#" 
-                            className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                          >
-                            Compliance
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </Col>
-              </Grid>
+      {/* Testimonials Section */}
+      <section className="relative py-16 sm:py-20 lg:py-24 z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            className="text-center mb-12 sm:mb-16 lg:mb-20"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className={cn(
+              "text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 transition-colors duration-500 tracking-wide uppercase",
+                  isDark ? "text-white" : "text-black"
+            )}>
+              CLIENT TESTIMONIALS
+            </h2>
+            <p className={cn(
+              "text-sm sm:text-base max-w-2xl mx-auto font-normal transition-colors duration-500",
+              isDark ? "text-white/80" : "text-black/80"
+            )}>
+              Hear from our satisfied clients about their success stories
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Scrollable Testimonials Carousel - Full Width */}
+        <TestimonialsCarousel isDark={isDark} isMobile={isMobile} />
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="relative py-16 sm:py-20 lg:py-24 z-10">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            className="max-w-4xl mx-auto space-y-6 sm:space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <h2 className={cn(
+              "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-wide uppercase",
+              isDark ? "text-white" : "text-black"
+            )}>
+              READY TO GET STARTED?
+            </h2>
+            
+            <p className={cn(
+              "text-sm sm:text-base font-normal max-w-2xl mx-auto",
+              isDark ? "text-white/80" : "text-black/80"
+            )}>
+              Let's discuss how our micro-applications can transform your business operations.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 max-w-lg mx-auto">
+              <motion.button
+                className={cn(
+                  "w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 font-bold text-sm sm:text-base rounded-lg transition-all duration-300 border-2 tracking-wide uppercase touch-manipulation",
+                  isDark
+                    ? "bg-black text-white border-white hover:bg-white hover:text-black active:scale-95" 
+                    : "bg-black text-white border-black hover:bg-white hover:text-black active:scale-95"
+                )}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="hidden sm:inline">SCHEDULE CONSULTATION</span>
+                <span className="sm:hidden">SCHEDULE</span>
+              </motion.button>
+              
+              <motion.button
+                className={cn(
+                  "w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 border-2 font-bold text-sm sm:text-base rounded-lg transition-all duration-300 tracking-wide uppercase touch-manipulation",
+                  isDark
+                    ? "border-white/60 text-white hover:border-white hover:bg-white/5 active:scale-95" 
+                    : "border-black/60 text-black hover:border-black hover:bg-black/5 active:scale-95"
+                )}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="hidden sm:inline">VIEW PORTFOLIO</span>
+                <span className="sm:hidden">PORTFOLIO</span>
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className={cn(
+        "relative py-12 sm:py-16 transition-colors duration-500 border-t z-10 backdrop-blur-xl",
+        isDark 
+          ? "bg-black/70 border-white/10" 
+          : "bg-white/70 border-black/10"
+      )}>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {/* Company Info */}
+            <div className="text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-3 mb-6">
+                <div className={cn(
+                  "w-10 h-10 rounded-none border-2 flex items-center justify-center",
+                  isDark 
+                    ? "bg-white/10 border-white/30" 
+                    : "bg-black/10 border-black/30"
+                )}>
+                  <span className={cn(
+                    "font-bold text-lg",
+                    isDark ? "text-white" : "text-black"
+                  )}>ADT</span>
+                </div>
+                <div className={cn(
+                  "text-xl font-bold tracking-wide",
+                  isDark ? "text-white" : "text-black"
+                )}>
+                  Automation DCT
+                </div>
+              </div>
+              <p className={cn(
+                "text-sm font-light leading-relaxed",
+                isDark ? "text-white/80" : "text-black/80"
+              )}>
+                Precision-engineered micro-applications for critical business operations.
+              </p>
             </div>
 
-            {/* Footer bottom */}
-            <div className="pt-6 border-t border-border/30">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="text-sm text-muted-foreground">
-                  © 2025 Micro App Platform. All rights reserved.
+            {/* Quick Links */}
+            <div className="text-center">
+              <h3 className={cn(
+                "text-sm font-bold mb-4 tracking-wide uppercase",
+                isDark ? "text-white" : "text-black"
+              )}>
+                QUICK LINKS
+              </h3>
+              <ul className="space-y-2">
+                {['Solutions', 'About', 'Contact'].map((item) => (
+                  <li key={item}>
+                    <a href="#" className={cn(
+                      "text-sm font-medium transition-colors duration-500 hover:opacity-70",
+                      isDark ? "text-white/80" : "text-black/80"
+                    )}>
+                      {item}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div className="text-center md:text-right">
+              <h3 className={cn(
+                "text-sm font-bold mb-4 tracking-wide uppercase",
+                isDark ? "text-white" : "text-black"
+              )}>
+                CONTACT
+              </h3>
+              <div className="space-y-2 text-sm">
+                <div className={cn(
+                  "transition-colors duration-500",
+                  isDark ? "text-white/80" : "text-black/80"
+                )}>
+                  hello@automationdct.com
                 </div>
-                <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                  <span>Made with ❤️ for developers</span>
-                  <div className="flex items-center gap-2">
-                    <span>Status:</span>
-                    <span className="inline-flex items-center gap-1">
-                      <span className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></span>
-                      <span>All systems operational</span>
-                    </span>
-                  </div>
+                <div className={cn(
+                  "transition-colors duration-500",
+                  isDark ? "text-white/80" : "text-black/80"
+                )}>
+                  San Francisco, CA
                 </div>
               </div>
             </div>
           </div>
-        </Container>
+
+          {/* Bottom Section */}
+          <div className={cn(
+            "pt-6 border-t text-center transition-colors duration-500",
+            isDark ? "border-white/10" : "border-black/10"
+          )}>
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className={cn(
+                "text-sm transition-colors duration-500",
+                isDark ? "text-white/60" : "text-black/60"
+              )}>
+                © 2024 Automation DCT. All rights reserved.
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <div className={cn(
+                  "w-2 h-2 rounded-full transition-colors duration-500",
+                  isDark ? "bg-white/40" : "bg-black/40"
+                )} />
+                <span className={cn(
+                  "transition-colors duration-500",
+                  isDark ? "text-white/60" : "text-black/60"
+                )}>
+                  All systems operational
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </footer>
     </main>
   );

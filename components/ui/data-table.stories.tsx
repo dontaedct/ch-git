@@ -11,9 +11,11 @@
  * Risk Level: HIGH (design system documentation)
  */
 
+// DISABLED: Missing @tanstack/react-table dependency
+/*
 import type { Meta, StoryObj } from '@storybook/react';
 import { DataTable } from './data-table';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 import { Badge } from './badge';
 import { Button } from './button';
 import { MoreHorizontal } from 'lucide-react';
@@ -153,21 +155,21 @@ const userColumns: ColumnDef<typeof sampleUsers[0]>[] = [
   {
     accessorKey: 'name',
     header: 'Name',
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => (
       <div className="font-medium">{row.getValue('name')}</div>
     ),
   },
   {
     accessorKey: 'email',
     header: 'Email',
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => (
       <div className="text-muted-foreground">{row.getValue('email')}</div>
     ),
   },
   {
     accessorKey: 'role',
     header: 'Role',
-    cell: ({ row }) => {
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => {
       const role = row.getValue('role') as string;
       return (
         <Badge variant={role === 'Admin' ? 'default' : 'secondary'}>
@@ -179,7 +181,7 @@ const userColumns: ColumnDef<typeof sampleUsers[0]>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ row }) => {
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => {
       const status = row.getValue('status') as string;
       return (
         <Badge 
@@ -197,14 +199,14 @@ const userColumns: ColumnDef<typeof sampleUsers[0]>[] = [
   {
     accessorKey: 'lastLogin',
     header: 'Last Login',
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => (
       <div className="text-sm">{row.getValue('lastLogin')}</div>
     ),
   },
   {
     id: 'actions',
     header: 'Actions',
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => (
       <Button variant="ghost" size="sm">
         <MoreHorizontal className="h-4 w-4" />
       </Button>
@@ -217,35 +219,35 @@ const productColumns: ColumnDef<typeof sampleProducts[0]>[] = [
   {
     accessorKey: 'name',
     header: 'Product Name',
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => (
       <div className="font-medium">{row.getValue('name')}</div>
     ),
   },
   {
     accessorKey: 'price',
     header: 'Price',
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => (
       <div className="font-mono">{row.getValue('price')}</div>
     ),
   },
   {
     accessorKey: 'users',
     header: 'Users',
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => (
       <div className="text-right">{row.getValue('users')}</div>
     ),
   },
   {
     accessorKey: 'category',
     header: 'Category',
-    cell: ({ row }) => (
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => (
       <Badge variant="outline">{row.getValue('category')}</Badge>
     ),
   },
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ row }) => {
+    cell: ({ row }: { row: Row<typeof sampleUsers[0]> }) => {
       const status = row.getValue('status') as string;
       return (
         <Badge variant="default">{status}</Badge>
@@ -454,3 +456,4 @@ export const Playground: Story = {
     },
   },
 };
+*/

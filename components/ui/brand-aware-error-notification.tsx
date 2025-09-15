@@ -52,6 +52,7 @@ const ERROR_ICONS: Record<ErrorCategory, React.ComponentType<any>> = {
   [ErrorCategory.SECURITY]: Shield,
   [ErrorCategory.SYSTEM]: Server,
   [ErrorCategory.CONFLICT]: AlertCircle,
+  [ErrorCategory.INTERNAL]: AlertTriangle,
 };
 
 // Severity color mapping
@@ -63,7 +64,7 @@ const SEVERITY_COLORS = {
 };
 
 // Brand-aware error notification variants
-const brandAwareErrorVariants = cva(
+export const brandAwareErrorVariants = cva(
   'relative flex w-full items-start gap-3 p-4 rounded-lg border transition-all duration-200',
   {
     variants: {
@@ -137,7 +138,7 @@ export function BrandAwareErrorNotification({
   const [isVisible, setIsVisible] = useState(true);
   const [copiedCorrelationId, setCopiedCorrelationId] = useState(false);
   const [brandConfig, setBrandConfig] = useState(logoManager.getCurrentConfig());
-  const { copyText } = useSecureClipboard();
+  const { copyToClipboard } = useSecureClipboard();
 
   // Subscribe to brand configuration changes
   useEffect(() => {
@@ -177,11 +178,9 @@ export function BrandAwareErrorNotification({
   const handleCopyCorrelationId = async () => {
     if (appError.correlationId) {
       try {
-        const success = await copyText(appError.correlationId);
-        if (success) {
-          setCopiedCorrelationId(true);
-          setTimeout(() => setCopiedCorrelationId(false), 2000);
-        }
+        await copyToClipboard(appError.correlationId);
+        setCopiedCorrelationId(true);
+        setTimeout(() => setCopiedCorrelationId(false), 2000);
       } catch (error) {
         console.warn('Failed to copy correlation ID:', error);
       }

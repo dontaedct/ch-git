@@ -7,7 +7,7 @@
  * HT-011.2.1: Comprehensive tests for enhanced configuration system with brand support
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { 
   BrandConfigService, 
   brandConfigService,
@@ -97,7 +97,7 @@ describe('BrandConfigService', () => {
   beforeEach(() => {
     service = BrandConfigService.getInstance();
     service.clearCache();
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   afterEach(() => {
@@ -435,7 +435,7 @@ describe('Brand Configuration Integration', () => {
 describe('Error Handling', () => {
   it('should handle configuration loading errors gracefully', async () => {
     // Mock console.error to avoid test output
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     
     // This should not throw even if there are issues
     const config = await brandConfigService.getEnhancedConfig('invalid-tenant');

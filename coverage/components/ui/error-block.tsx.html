@@ -736,7 +736,7 @@ const ERROR_CONFIG: Record&lt;ErrorType, {
   }
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ErrorBlock({</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ErrorBlock(</span></span>{
   type = <span class="branch-0 cbranch-no" title="branch not covered" >'generic',</span>
   title,
   message,
@@ -803,7 +803,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 }
 &nbsp;
 // Specialized error blocks for common scenarios
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >NetworkErrorBlock({</span></span> onRetry, ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >NetworkErrorBlock(</span></span>{ onRetry, ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
   return (
     &lt;ErrorBlock 
       type="network" 
@@ -813,7 +813,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   )
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ServerErrorBlock({</span></span> onRetry, ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ServerErrorBlock(</span></span>{ onRetry, ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
   return (
     &lt;ErrorBlock 
       type="server" 
@@ -824,7 +824,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   )
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >AuthErrorBlock({</span></span> ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >AuthErrorBlock(</span></span>{ ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
   return (
     &lt;ErrorBlock 
       type="auth" 
@@ -836,7 +836,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   )
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >NotFoundErrorBlock({</span></span> ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >NotFoundErrorBlock(</span></span>{ ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
   return (
     &lt;ErrorBlock 
       type="not-found" 
@@ -848,7 +848,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
   )
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ValidationErrorBlock({</span></span> onRetry, ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ValidationErrorBlock(</span></span>{ onRetry, ...props }: Omit&lt;ErrorBlockProps, 'type'&gt;) {
   return (
     &lt;ErrorBlock 
       type="validation" 
@@ -861,7 +861,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 }
 &nbsp;
 // Inline error for form fields and small contexts
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >InlineError({ </span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >InlineError(</span></span>{ 
   message, 
   className = <span class="branch-0 cbranch-no" title="branch not covered" >'' </span>
 }: { 
@@ -877,7 +877,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 }
 &nbsp;
 // Error boundary fallback component
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ErrorBoundaryFallback({ </span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ErrorBoundaryFallback(</span></span>{ 
   error, 
   onRetry 
 }: { 
@@ -901,7 +901,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 }
 &nbsp;
 // Loading error for async operations
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >LoadingErrorBlock({ </span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >LoadingErrorBlock(</span></span>{ 
   onRetry, 
   isRetrying = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
   ...props 
@@ -925,7 +925,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/28</span>
+                <span class='fraction'>0/30</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -175,7 +175,15 @@
 <a name='L110'></a><a href='#L110'>110</a>
 <a name='L111'></a><a href='#L111'>111</a>
 <a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a>
+<a name='L115'></a><a href='#L115'>115</a>
+<a name='L116'></a><a href='#L116'>116</a>
+<a name='L117'></a><a href='#L117'>117</a>
+<a name='L118'></a><a href='#L118'>118</a>
+<a name='L119'></a><a href='#L119'>119</a>
+<a name='L120'></a><a href='#L120'>120</a>
+<a name='L121'></a><a href='#L121'>121</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -287,16 +295,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { z } from <span class="cstat-no" title="statement not covered" >"zod";</span>
 &nbsp;
 // Re-export phone validation utilities
 export { <span class="cstat-no" title="statement not covered" >normalizePhone } from <span class="cstat-no" title="statement not covered" >"</span>./phone";</span>
 &nbsp;
 // Utility schemas
-export const <span class="cstat-no" title="statement not covered" >zUUID = <span class="cstat-no" title="statement not covered" >z</span>.string().uuid();</span>
+export const <span class="cstat-no" title="statement not covered" >zUUID </span>= <span class="cstat-no" title="statement not covered" >z.string().uuid();</span>
 &nbsp;
 // Pagination schemas
-export const <span class="cstat-no" title="statement not covered" >paginationSchema = <span class="cstat-no" title="statement not covered" >z</span>.object({</span>
+export const <span class="cstat-no" title="statement not covered" >paginationSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
   page: z.number().int().min(1).default(1),
   pageSize: z.number().int().min(1).max(100).default(20),
 });
@@ -309,7 +325,7 @@ export type PaginatedResponse&lt;T&gt; = {
 };
 &nbsp;
 // Intake schemas
-export const <span class="cstat-no" title="statement not covered" >intakeSchema = <span class="cstat-no" title="statement not covered" >z</span>.object({</span>
+export const <span class="cstat-no" title="statement not covered" >intakeSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
   full_name: z.string().min(1),
   name: z.string().min(1), // Add name field for backward compatibility
   email: z.string().email(),
@@ -318,10 +334,10 @@ export const <span class="cstat-no" title="statement not covered" >intakeSchema 
   consent: z.union([z.literal(true), z.string()]).transform(<span class="fstat-no" title="function not covered" >v =&gt; <span class="cstat-no" title="statement not covered" >v</span> === true || v === "on" || v === "true" || v === "1" || v === "1"),</span>
 });
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >intakeFormSchema = <span class="cstat-no" title="statement not covered" >i</span>ntakeSchema; /</span>/ Alias for backward compatibility
+export const <span class="cstat-no" title="statement not covered" >intakeFormSchema </span>= <span class="cstat-no" title="statement not covered" >intakeSchema; /</span>/ Alias for backward compatibility
 &nbsp;
 // Session schema
-export const <span class="cstat-no" title="statement not covered" >sessionSchema = <span class="cstat-no" title="statement not covered" >z</span>.object({</span>
+export const <span class="cstat-no" title="statement not covered" >sessionSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
   title: z.string().min(1),
   type: z.enum(["group","private"]),
   location: z.enum(["field","gym","track","other"]),
@@ -333,16 +349,16 @@ export const <span class="cstat-no" title="statement not covered" >sessionSchema
 });
 &nbsp;
 // Create session schema (for form submissions)
-export const <span class="cstat-no" title="statement not covered" >createSessionSchema = <span class="cstat-no" title="statement not covered" >s</span>essionSchema;</span>
+export const <span class="cstat-no" title="statement not covered" >createSessionSchema </span>= <span class="cstat-no" title="statement not covered" >sessionSchema;</span>
 &nbsp;
 // Toggle task schema
-export const <span class="cstat-no" title="statement not covered" >toggleTaskSchema = <span class="cstat-no" title="statement not covered" >z</span>.object({</span>
+export const <span class="cstat-no" title="statement not covered" >toggleTaskSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
   taskId: z.string().uuid(),
   completed: z.boolean(),
 });
 &nbsp;
 // Weekly plan schema (minimal shape)
-export const <span class="cstat-no" title="statement not covered" >weeklyPlanSchema = <span class="cstat-no" title="statement not covered" >z</span>.object({</span>
+export const <span class="cstat-no" title="statement not covered" >weeklyPlanSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
   client_id: z.string().uuid(),
   coach_id: z.string().uuid(),
   week_start_date: z.string().datetime(),
@@ -364,7 +380,7 @@ export const <span class="cstat-no" title="statement not covered" >weeklyPlanSch
 });
 &nbsp;
 // Check-in schema (minimal shape)
-export const <span class="cstat-no" title="statement not covered" >checkInSchema = <span class="cstat-no" title="statement not covered" >z</span>.object({</span>
+export const <span class="cstat-no" title="statement not covered" >checkInSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
   client_id: z.string().uuid(),
   coach_id: z.string().uuid(),
   week_start_date: z.string().datetime(), // Add missing required field
@@ -381,7 +397,7 @@ export const <span class="cstat-no" title="statement not covered" >checkInSchema
 });
 &nbsp;
 // Trainer profile schema
-export const <span class="cstat-no" title="statement not covered" >trainerProfileSchema = <span class="cstat-no" title="statement not covered" >z</span>.object({</span>
+export const <span class="cstat-no" title="statement not covered" >trainerProfileSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
   business_name: z.string().min(1),
   bio: z.string().min(1),
   specialties: z.array(z.string()),
@@ -393,12 +409,20 @@ export const <span class="cstat-no" title="statement not covered" >trainerProfil
 });
 &nbsp;
 // Media schemas
-export const <span class="cstat-no" title="statement not covered" >signedUploadSchema = <span class="cstat-no" title="statement not covered" >z</span>.object({</span>
+export const <span class="cstat-no" title="statement not covered" >signedUploadSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
   client_id: z.string().uuid(),
   original: z.string().min(1),
 });
 &nbsp;
-export const <span class="cstat-no" title="statement not covered" >mediaPathSchema = <span class="cstat-no" title="statement not covered" >z</span>.string().min(1);</span>
+export const <span class="cstat-no" title="statement not covered" >mediaPathSchema </span>= <span class="cstat-no" title="statement not covered" >z.string().min(1);</span>
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >confirmUploadSchema </span>= <span class="cstat-no" title="statement not covered" >z.object({</span>
+  client_id: z.string().uuid(),
+  path: z.string().min(1),
+  filename: z.string().min(1),
+  mime_type: z.string().min(3),
+  size_bytes: z.number().int().positive(),
+});
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -406,7 +430,7 @@ export const <span class="cstat-no" title="statement not covered" >mediaPathSche
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

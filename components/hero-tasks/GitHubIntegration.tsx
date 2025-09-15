@@ -6,13 +6,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import { Textarea } from '../../../components/ui/textarea';
-import { Badge } from '../../../components/ui/badge';
-import { Progress } from '../../../components/ui/progress';
-import { Alert, AlertDescription } from '../../../components/ui/alert';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
   Github, 
   GitPullRequest, 
@@ -34,7 +34,7 @@ import {
   Code,
   FileText
 } from 'lucide-react';
-import { TaskPriority, TaskType } from '../../../types/hero-tasks';
+import { TaskPriority, TaskType } from '@/types/hero-tasks';
 
 // ============================================================================
 // INTERFACES

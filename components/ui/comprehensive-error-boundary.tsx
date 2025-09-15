@@ -100,7 +100,7 @@ export class ComprehensiveErrorBoundary extends Component<ErrorBoundaryProps, Er
       error,
       errorInfo,
       timestamp: Date.now(),
-      componentStack: errorInfo.componentStack,
+      componentStack: errorInfo.componentStack || '',
       retryCount
     }
 

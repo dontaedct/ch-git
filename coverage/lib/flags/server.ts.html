@@ -32,7 +32,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/48</span>
+                <span class='fraction'>0/50</span>
             </div>
         
             
@@ -362,7 +362,8 @@
 <a name='L297'></a><a href='#L297'>297</a>
 <a name='L298'></a><a href='#L298'>298</a>
 <a name='L299'></a><a href='#L299'>299</a>
-<a name='L300'></a><a href='#L300'>300</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L300'></a><a href='#L300'>300</a>
+<a name='L301'></a><a href='#L301'>301</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -566,6 +567,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -862,20 +864,21 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 /**
  * Check if user is admin (for admin-only operations)
  */
-export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isAdmin(u</span></span>serId: string): Promise&lt;boolean&gt; {
+export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isAdmin(</span></span>userId: string): Promise&lt;boolean&gt; {
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const supabase = <span class="cstat-no" title="statement not covered" >await createServerClient();</span>
-    const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
-      .from('auth.users')
-      .select('raw_user_meta_data')
+    // Prefer canonical role from clients table
+    const { data: client, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
+      .from('clients')
+      .select('id, role')
       .eq('id', userId)
       .single();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (error || !data) {</span>
+<span class="cstat-no" title="statement not covered" >    if (error || !client) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return data.raw_user_meta_data?.role === 'admin';</span>
+<span class="cstat-no" title="statement not covered" >    return client.role === 'admin' || client.role === 'owner';</span>
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    console.error('Error checking admin status:', error);</span>
 <span class="cstat-no" title="statement not covered" >    return false;</span>
@@ -914,21 +917,21 @@ function <span class="fstat-no" title="function not covered" >updateCache(t</spa
 /**
  * Clear cache for a specific tenant
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >clearCache(t</span></span>enantId: string): void {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >clearCache(</span></span>tenantId: string): void {
 <span class="cstat-no" title="statement not covered" >  cache.delete(tenantId);</span>
 }
 &nbsp;
 /**
  * Clear all cache
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >clearAllCache(): void {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >clearAllCache(</span></span>): void {
 <span class="cstat-no" title="statement not covered" >  cache.clear();</span>
 }
 &nbsp;
 /**
  * Get cache statistics (for debugging)
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getCacheStats(): { size: number; entries: string[] } {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getCacheStats(</span></span>): { size: number; entries: string[] } {
 <span class="cstat-no" title="statement not covered" >  return {</span>
     size: cache.size,
     entries: Array.from(cache.keys())
@@ -939,7 +942,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
  * Edge-safe flag checker (for use in edge functions)
  * Uses direct database query without caching for edge compatibility
  */
-export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getFlagEdge(t</span></span>enantId: string, key: string): Promise&lt;boolean&gt; {
+export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getFlagEdge(</span></span>tenantId: string, key: string): Promise&lt;boolean&gt; {
 <span class="cstat-no" title="statement not covered" >  try {</span>
     const supabase = <span class="cstat-no" title="statement not covered" >await createServerClient();</span>
     const { data, error } = <span class="cstat-no" title="statement not covered" >await supabase</span>
@@ -967,7 +970,7 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

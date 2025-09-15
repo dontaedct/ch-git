@@ -104,7 +104,7 @@ const typographyVariants = cva("", {
 })
 
 export interface TypographyProps
-  extends React.HTMLAttributes<HTMLElement>,
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'color'>,
     VariantProps<typeof typographyVariants> {
   as?: React.ElementType
   children: React.ReactNode
@@ -454,7 +454,7 @@ CaptionSM.displayName = "CaptionSM"
  * Code Components
  */
 export const CodeLG = React.forwardRef<
-  HTMLCodeElement,
+  HTMLElement,
   Omit<TypographyProps, "variant">
 >(({ className, ...props }, ref) => (
   <Typography
@@ -468,7 +468,7 @@ export const CodeLG = React.forwardRef<
 CodeLG.displayName = "CodeLG"
 
 export const CodeMD = React.forwardRef<
-  HTMLCodeElement,
+  HTMLElement,
   Omit<TypographyProps, "variant">
 >(({ className, ...props }, ref) => (
   <Typography
@@ -482,7 +482,7 @@ export const CodeMD = React.forwardRef<
 CodeMD.displayName = "CodeMD"
 
 export const CodeSM = React.forwardRef<
-  HTMLCodeElement,
+  HTMLElement,
   Omit<TypographyProps, "variant">
 >(({ className, ...props }, ref) => (
   <Typography
@@ -536,7 +536,7 @@ Large.displayName = "Large"
  * Small Text Component - For fine print and metadata
  */
 export const Small = React.forwardRef<
-  HTMLSmallElement,
+  HTMLElement,
   Omit<TypographyProps, "variant" | "color">
 >(({ className, ...props }, ref) => (
   <Typography
@@ -619,7 +619,7 @@ ListItem.displayName = "ListItem"
  * Inline Code Component - For inline code snippets
  */
 export const InlineCode = React.forwardRef<
-  HTMLCodeElement,
+  HTMLElement,
   Omit<TypographyProps, "variant">
 >(({ className, ...props }, ref) => (
   <Typography

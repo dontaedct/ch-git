@@ -7,10 +7,10 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
-import { Button } from '@ui/button';
-import { Badge } from '@ui/badge';
-import { Checkbox } from '@ui/checkbox';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Calendar, Clock, User, Tag, Edit, Eye, MoreHorizontal } from 'lucide-react';
 import {
   DropdownMenu,
@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@ui/dropdown-menu';
+} from '@/components/ui/dropdown-menu';
 import { HeroTask, TaskStatus, TaskPriority, WorkflowPhase } from '@/types/hero-tasks';
 
 interface SelectableTaskCardProps {
@@ -109,7 +109,7 @@ export function SelectableTaskCard({
             {isSelectMode && (
               <Checkbox
                 checked={isSelected}
-                onChange={handleCheckboxChange}
+                onCheckedChange={handleCheckboxChange}
                 className="mt-1"
                 onClick={(e) => e.stopPropagation()}
               />

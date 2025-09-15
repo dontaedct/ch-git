@@ -18,6 +18,7 @@ import {
 import { cn } from '@/lib/utils'
 import { emitLeadStartedQuestionnaire, emitLeadCompletedQuestionnaire } from '@/lib/webhooks/emitter'
 import { OptimizedMotion, OptimizedAnimatePresence, OptimizedStagger } from '@/lib/performance/optimized-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'
 import { 
   useAccessibility, 
@@ -757,9 +758,9 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
           label: 'Questionnaire questions'
         })}
       >
-        <OptimizedAnimatePresence custom={direction}>
+        <AnimatePresence custom={direction}>
           {currentQuestions.map((question, index) => (
-            <OptimizedMotion
+            <motion.div
               key={`${currentViewIndex}-${question.id}`}
               custom={direction}
               variants={containerVariants}
@@ -769,14 +770,14 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
               transition={transition}
               className="space-y-6 md:space-y-8"
             >
-              <OptimizedMotion
+              <motion.div
                 key={question.id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ 
-                  opacity: 1, 
-                  y: 0,
-                  transition: { delay: index * 0.1, duration: 0.3 }
+                animate={{
+                  opacity: 1,
+                  y: 0
                 }}
+                transition={{ delay: index * 0.1, duration: 0.3 }}
                 className="bg-card/50 p-4 md:p-6 rounded-lg border border-border/50 backdrop-blur-sm"
                 {...createAriaProps({
                   role: 'group',
@@ -784,10 +785,10 @@ export function QuestionnaireEngine({ config, onComplete, onAnalyticsEvent }: Qu
                 })}
               >
                 {renderQuestion(question)}
-              </OptimizedMotion>
-            </OptimizedMotion>
+              </motion.div>
+            </motion.div>
           ))}
-        </OptimizedAnimatePresence>
+        </AnimatePresence>
       </section>
       
       {/* Navigation */}

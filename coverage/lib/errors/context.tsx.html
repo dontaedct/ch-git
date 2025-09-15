@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/128</span>
+                <span class='fraction'>0/129</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/128</span>
+                <span class='fraction'>0/129</span>
             </div>
         
             
@@ -1082,7 +1082,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1272,7 +1272,7 @@ interface ErrorProviderProps {
 /**
  * Error provider component
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ErrorProvider({</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >ErrorProvider(</span></span>{
   children,
   maxErrors = <span class="branch-0 cbranch-no" title="branch not covered" >10,</span>
   maxNotifications = <span class="branch-0 cbranch-no" title="branch not covered" >5,</span>
@@ -1510,7 +1510,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Hook to use error context
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useError(): ErrorContextType {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useError(</span></span>): ErrorContextType {
   const context = <span class="cstat-no" title="statement not covered" >useContext(ErrorContext);</span>
   
 <span class="cstat-no" title="statement not covered" >  if (!context) {</span>
@@ -1523,7 +1523,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Hook for handling async operations with error management
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useAsyncError() {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >useAsyncError(</span></span>) {
   const { addError, setLoading, showNotification } = <span class="cstat-no" title="statement not covered" >useError();</span>
 &nbsp;
   const executeAsync = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >async function&lt;T&gt;(</span></span>
@@ -1558,7 +1558,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * HOC for wrapping components with error boundary
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >withErrorBoundary&lt;P extends object&gt;(</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >withErrorBoundary&lt;</span></span>P extends object&gt;(
   Component: React.ComponentType&lt;P&gt;,
   fallback?: React.ComponentType&lt;{ error: AppError; reset: () =&gt; void }&gt;
 ) {
@@ -1579,7 +1579,7 @@ interface ErrorBoundaryState {
   error: Error | null;
 }
 &nbsp;
-export class <span class="cstat-no" title="statement not covered" >ErrorBoundary extends R</span>eact.Component&lt;
+export class <span class="cstat-no" title="statement not covered" >ErrorBoundary </span>extends React.Component&lt;
   React.PropsWithChildren&lt;{
     fallback?: React.ComponentType&lt;{ error: Error; reset: () =&gt; void }&gt;;
     onError?: (error: Error, errorInfo: React.ErrorInfo) =&gt; void;
@@ -1608,7 +1608,7 @@ export class <span class="cstat-no" title="statement not covered" >ErrorBoundary
     });
   }
 &nbsp;
-  reset = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  reset = <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    this.setState({ hasError: false, error: null });</span>
   };
 &nbsp;
@@ -1648,7 +1648,7 @@ export class <span class="cstat-no" title="statement not covered" >ErrorBoundary
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

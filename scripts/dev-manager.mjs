@@ -58,71 +58,99 @@ function getDevStatus() {
 }
 
 function killDevServer() {
-  if (!fs.existsSync(LOCK_FILE)) {
-    console.log('✅ No dev server running');
-    return;
-  }
-
+  console.log('🔄 Killing all Node.js processes...');
+  
   try {
-    const lockData = fs.readFileSync(LOCK_FILE, 'utf8');
-    const [pid] = lockData.split(':');
+    // Windows: Kill all node processes
+    if (os.platform() === 'win32') {
+      try {
+        execSync('taskkill /F /IM node.exe', { stdio: 'ignore' });
+        console.log('✅ All node processes killed');
+      } catch (error) {
+        console.log('ℹ️  No node processes found or already killed');
+      }
+    } else {
+      // Unix/Linux: Kill node processes
+      try {
+        execSync('pkill -f node', { stdio: 'ignore' });
+        console.log('✅ All node processes killed');
+      } catch (error) {
+        console.log('ℹ️  No node processes found or already killed');
+      }
+    }
     
-    console.log(`🔄 Killing dev server (PID: ${pid})...`);
-    
-    try {
-      // Try graceful shutdown first
-      process.kill(Number(pid), 'SIGTERM');
-      
-      // Wait a bit, then force kill if needed
-      setTimeout(() => {
+    // Also check for lock file based killing
+    if (fs.existsSync(LOCK_FILE)) {
+      try {
+        const lockData = fs.readFileSync(LOCK_FILE, 'utf8');
+        const [pid] = lockData.split(':');
+        
         try {
           process.kill(Number(pid), 'SIGKILL');
-          console.log('💀 Force killed dev server');
         } catch {
           // Process already dead
         }
-      }, 2000);
-      
-      console.log('✅ Dev server shutdown initiated');
-    } catch (error) {
-      console.log('⚠️  Process not found, cleaning up lock file');
+        
+        // Clean up lock file
+        fs.unlinkSync(LOCK_FILE);
+        console.log('🧹 Lock file cleaned up');
+      } catch (error) {
+        console.log('⚠️  Error with lock file, but processes should be killed');
+      }
     }
     
-    // Clean up lock file
-    fs.unlinkSync(LOCK_FILE);
-    console.log('🧹 Lock file cleaned up');
+    // Wait a moment for processes to die
+    console.log('⏳ Waiting for cleanup...');
     
   } catch (error) {
-    console.log('❌ Error killing dev server:', error.message);
+    console.log('❌ Error killing processes:', error.message);
   }
 }
 
 function cleanLockFiles() {
-  if (!fs.existsSync(LOCK_FILE)) {
-    console.log('✅ No lock files to clean');
-    return;
-  }
-
-  try {
-    const lockData = fs.readFileSync(LOCK_FILE, 'utf8');
-    const [pid, timestamp] = lockData.split(':');
-    const lockAge = Date.now() - Number(timestamp);
-    
-    console.log(`🧹 Found lock file (age: ${Math.round(lockAge/1000)}s)`);
-    
-    // Check if process is still alive
+  console.log('🧹 Cleaning up development files...');
+  
+  // Clean lock files
+  if (fs.existsSync(LOCK_FILE)) {
     try {
-      process.kill(Number(pid), 0);
-      console.log('⚠️  Process is still running, use "kill" command instead');
-      return;
-    } catch {
-      // Process is dead, safe to remove
       fs.unlinkSync(LOCK_FILE);
-      console.log('✅ Stale lock file removed');
+      console.log('✅ Lock file removed');
+    } catch (error) {
+      console.log('⚠️  Could not remove lock file:', error.message);
     }
-  } catch (error) {
-    console.log('❌ Error cleaning lock file:', error.message);
   }
+  
+  // Clean Next.js cache (be careful not to break things)
+  const nextCachePath = path.join(process.cwd(), '.next', 'cache');
+  if (fs.existsSync(nextCachePath)) {
+    try {
+      console.log('🗑️  Clearing Next.js cache...');
+      fs.rmSync(nextCachePath, { recursive: true, force: true });
+      console.log('✅ Next.js cache cleared');
+    } catch (error) {
+      console.log('⚠️  Could not clear Next.js cache:', error.message);
+    }
+  }
+  
+  // Clean temp build files
+  const tempPaths = [
+    path.join(os.tmpdir(), 'next-*'),
+    path.join(process.cwd(), '.next', 'trace'),
+    path.join(process.cwd(), '.next', 'server', 'pages-manifest.json')
+  ];
+  
+  tempPaths.forEach(tempPath => {
+    if (fs.existsSync(tempPath)) {
+      try {
+        fs.rmSync(tempPath, { recursive: true, force: true });
+        console.log(`✅ Cleaned ${path.basename(tempPath)}`);
+      } catch (error) {
+        // Ignore errors for temp files
+      }
+    }
+  });
+  
+  console.log('✅ Cleanup complete');
 }
 
 function showPorts() {

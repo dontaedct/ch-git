@@ -128,7 +128,7 @@ export interface BrandAwareButtonProps extends Omit<BaseButtonProps, 'variant' |
 function generateBrandCSSProperties(brandColors: BrandAwareButtonProps['brandColors']) {
   if (!brandColors) return {};
   
-  const cssProps: React.CSSProperties = {};
+  const cssProps: React.CSSProperties & Record<string, string> = {};
   
   if (brandColors.primary) {
     cssProps['--brand-primary'] = brandColors.primary;
@@ -179,7 +179,7 @@ function adjustColorBrightness(color: string, percent: number): string {
  * Generate brand-aware CSS classes based on variant and brand colors
  */
 function getBrandAwareClasses(variant: string, brandColors?: BrandAwareButtonProps['brandColors']) {
-  const baseClasses = brandAwareButtonVariants({ variant });
+  const baseClasses = brandAwareButtonVariants({ variant: variant as any });
   
   if (!brandColors) return baseClasses;
   
@@ -265,10 +265,10 @@ const BrandAwareButton = React.forwardRef<HTMLButtonElement, BrandAwareButtonPro
   
   // Get brand colors from configuration if not provided
   const effectiveBrandColors = brandColors || (useBrandColors ? {
-    primary: config.theme?.colors?.primary || '#007AFF',
-    secondary: config.theme?.colors?.secondary || '#6B7280',
-    accent: config.theme?.colors?.accent || '#10B981',
-    destructive: config.theme?.colors?.destructive || '#EF4444',
+    primary: (config as any).theme?.colors?.primary || '#007AFF',
+    secondary: (config as any).theme?.colors?.secondary || '#6B7280',
+    accent: (config as any).theme?.colors?.accent || '#10B981',
+    destructive: (config as any).theme?.colors?.destructive || '#EF4444',
   } : undefined);
   
   // Generate CSS custom properties for brand colors
@@ -306,6 +306,9 @@ const BrandAwareButton = React.forwardRef<HTMLButtonElement, BrandAwareButtonPro
 });
 
 BrandAwareButton.displayName = "BrandAwareButton";
+
+// Export the main component
+export { BrandAwareButton, brandAwareButtonVariants };
 
 // Specialized brand-aware button components
 export const BrandPrimaryButton = React.forwardRef<HTMLButtonElement, Omit<BrandAwareButtonProps, 'variant'>>(
@@ -353,12 +356,4 @@ export const BrandGhostButton = React.forwardRef<HTMLButtonElement, Omit<BrandAw
 );
 BrandGhostButton.displayName = "BrandGhostButton";
 
-export { 
-  BrandAwareButton,
-  brandAwareButtonVariants,
-  BrandPrimaryButton,
-  BrandSecondaryButton,
-  BrandCTAButton,
-  BrandOutlineButton,
-  BrandGhostButton
-};
+// All exports are already declared above individually

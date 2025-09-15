@@ -271,7 +271,10 @@
 <a name='L206'></a><a href='#L206'>206</a>
 <a name='L207'></a><a href='#L207'>207</a>
 <a name='L208'></a><a href='#L208'>208</a>
-<a name='L209'></a><a href='#L209'>209</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -311,6 +314,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -403,12 +407,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -507,21 +513,22 @@ const TabsUnderlineList = <span class="cstat-no" title="statement not covered" >
 &gt;(<span class="fstat-no" title="function not covered" >({</span> className, children, ...props }, ref) =&gt; {
   const [activeTabRect, setActiveTabRect] = <span class="cstat-no" title="statement not covered" >React.useState&lt;DOMRect | null&gt;(null)</span>
   const [listRect, setListRect] = <span class="cstat-no" title="statement not covered" >React.useState&lt;DOMRect | null&gt;(null)</span>
-  const listRef = <span class="cstat-no" title="statement not covered" >React.useRef&lt;HTMLDivElement&gt;(null)</span>
-  const activeTabRef = <span class="cstat-no" title="statement not covered" >React.useRef&lt;HTMLButtonElement&gt;(null)</span>
+  const [listElement, setListElement] = <span class="cstat-no" title="statement not covered" >React.useState&lt;HTMLDivElement | null&gt;(null)</span>
+  const activeTabRef = <span class="cstat-no" title="statement not covered" >React.useRef&lt;HTMLButtonElement | null&gt;(null)</span>
 &nbsp;
   const updateIndicator = <span class="cstat-no" title="statement not covered" >React.useCallback(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    if (!listRef.current) <span class="cstat-no" title="statement not covered" >return</span></span>
+<span class="cstat-no" title="statement not covered" >    if (!listElement) <span class="cstat-no" title="statement not covered" >return</span></span>
 &nbsp;
-    const activeTab = <span class="cstat-no" title="statement not covered" >listRef.current.querySelector('[data-state="active"]') as HTMLButtonElement</span>
+    const activeTab = <span class="cstat-no" title="statement not covered" >listElement.querySelector('[data-state="active"]') as HTMLButtonElement</span>
 <span class="cstat-no" title="statement not covered" >    if (activeTab) {</span>
       const tabRect = <span class="cstat-no" title="statement not covered" >activeTab.getBoundingClientRect()</span>
-      const listRect = <span class="cstat-no" title="statement not covered" >listRef.current.getBoundingClientRect()</span>
+      const listRect = <span class="cstat-no" title="statement not covered" >listElement.getBoundingClientRect()</span>
 <span class="cstat-no" title="statement not covered" >      setActiveTabRect(tabRect)</span>
 <span class="cstat-no" title="statement not covered" >      setListRect(listRect)</span>
+      // Store active tab reference for keyboard navigation
 <span class="cstat-no" title="statement not covered" >      activeTabRef.current = activeTab</span>
     }
-  }, [])
+  }, [listElement])
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  React.useEffect(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
 <span class="cstat-no" title="statement not covered" >    updateIndicator()</span>
@@ -530,8 +537,8 @@ const TabsUnderlineList = <span class="cstat-no" title="statement not covered" >
 <span class="cstat-no" title="statement not covered" >      requestAnimationFrame(updateIndicator)</span>
     })
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (listRef.current) {</span>
-<span class="cstat-no" title="statement not covered" >      observer.observe(listRef.current, {</span>
+<span class="cstat-no" title="statement not covered" >    if (listElement) {</span>
+<span class="cstat-no" title="statement not covered" >      observer.observe(listElement, {</span>
         attributes: true,
         attributeFilter: ['data-state'],
         subtree: true
@@ -545,12 +552,12 @@ const TabsUnderlineList = <span class="cstat-no" title="statement not covered" >
 <span class="cstat-no" title="statement not covered" >      observer.disconnect()</span>
 <span class="cstat-no" title="statement not covered" >      window.removeEventListener('resize', handleResize)</span>
     }
-  }, [updateIndicator])
+  }, [updateIndicator, listElement])
 &nbsp;
   const handleKeyDown = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(e</span>vent: React.KeyboardEvent) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!listRef.current) <span class="cstat-no" title="statement not covered" >return</span></span>
+<span class="cstat-no" title="statement not covered" >    if (!listElement) <span class="cstat-no" title="statement not covered" >return</span></span>
 &nbsp;
-    const triggers = <span class="cstat-no" title="statement not covered" >Array.from(listRef.current.querySelectorAll('[role="tab"]')) as HTMLButtonElement[]</span>
+    const triggers = <span class="cstat-no" title="statement not covered" >Array.from(listElement.querySelectorAll('[role="tab"]')) as HTMLButtonElement[]</span>
     const currentIndex = <span class="cstat-no" title="statement not covered" >triggers.findIndex(<span class="fstat-no" title="function not covered" >trigger =&gt; <span class="cstat-no" title="statement not covered" >t</span>rigger === event.target)</span></span>
     
 <span class="cstat-no" title="statement not covered" >    if (currentIndex === -1) <span class="cstat-no" title="statement not covered" >return</span></span>
@@ -611,12 +618,14 @@ const TabsUnderlineList = <span class="cstat-no" title="statement not covered" >
   return (
     &lt;TabsPrimitive.List
       ref={<span class="fstat-no" title="function not covered" >(n</span>ode) =&gt; {
-<span class="cstat-no" title="statement not covered" >        listRef.current = node</span>
+        // Forward the ref first
 <span class="cstat-no" title="statement not covered" >        if (typeof ref === 'function') {</span>
 <span class="cstat-no" title="statement not covered" >          ref(node)</span>
         } else <span class="cstat-no" title="statement not covered" >if (ref) {</span>
 <span class="cstat-no" title="statement not covered" >          ref.current = node</span>
         }
+        // Update our internal state
+<span class="cstat-no" title="statement not covered" >        setListElement(node)</span>
       }}
       className={cn(
         'relative inline-flex h-10 items-center justify-start',
@@ -694,7 +703,7 @@ export {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

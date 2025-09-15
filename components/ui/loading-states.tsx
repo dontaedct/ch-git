@@ -239,8 +239,8 @@ export function SkeletonCard() {
       </div>
       <div className="space-y-2">
         <Pulse size="sm" width="full" />
-        <Pulse size="sm" width="5/6" />
-        <Pulse size="sm" width="4/6" />
+        <Pulse size="sm" width="3/4" />
+        <Pulse size="sm" width="2/3" />
       </div>
       <div className="flex space-x-2">
         <Pulse size="sm" width="1/4" />
@@ -255,12 +255,12 @@ export function SkeletonList({ count = 3 }: { count?: number }) {
     <div className="space-y-4">
       {Array.from({ length: count }).map((_, i) => (
         <div key={i} className="flex items-center space-x-4 p-4 border border-border rounded-lg">
-          <Pulse size="md" width="1/6" shape="circle" />
+          <Pulse size="md" width="1/4" shape="circle" />
           <div className="space-y-2 flex-1">
             <Pulse size="sm" width="3/4" />
             <Pulse size="xs" width="1/2" />
           </div>
-          <Pulse size="sm" width="1/6" />
+          <Pulse size="sm" width="1/4" />
         </div>
       ))}
     </div>
@@ -503,7 +503,7 @@ export function InlineLoading({
 
   return (
     <div className={cn("flex items-center gap-2", className)}>
-      <Spinner size={size} variant={variant} />
+      <Spinner size={size} variant={variant === 'primary' ? 'default' : variant} />
       <span className={cn(textSizeClasses[size], variantClasses[variant])}>
         {text}
       </span>

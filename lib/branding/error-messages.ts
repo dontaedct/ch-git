@@ -71,7 +71,7 @@ export const DEFAULT_ERROR_TEMPLATES: Record<ErrorCategory, BrandAwareErrorTempl
     supportTemplate: 'Contact {brandName} support at support@example.com',
     titleTemplate: 'Service Unavailable - {brandName}',
     retryTemplate: 'Please try again in a few moments.',
-    helpText: 'If this issue persists, please contact {brandName} support.',
+    helpTemplate: 'If this issue persists, please contact {brandName} support.',
   },
   [ErrorCategory.NETWORK]: {
     messageTemplate: 'Network connection issue detected. Please check your internet connection and try again.',
@@ -121,6 +121,13 @@ export const DEFAULT_ERROR_TEMPLATES: Record<ErrorCategory, BrandAwareErrorTempl
     titleTemplate: 'Conflict Error - {brandName}',
     retryTemplate: 'Please contact {brandName} support to resolve this conflict.',
     helpTemplate: 'Need help resolving this conflict? Contact {brandName} support.',
+  },
+  [ErrorCategory.INTERNAL]: {
+    messageTemplate: 'An internal error occurred. Please try again or contact {brandName} support.',
+    supportTemplate: 'Contact {brandName} support at support@example.com',
+    titleTemplate: 'Internal Error - {brandName}',
+    retryTemplate: 'Please try again in a few moments.',
+    helpTemplate: 'Experiencing technical difficulties? Contact {brandName} support.',
   },
 };
 

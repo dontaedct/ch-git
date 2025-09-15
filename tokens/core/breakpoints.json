@@ -1,0 +1,67 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "breakpoint": {
+    "xs": {
+      "$type": "dimension",
+      "$value": "320px",
+      "$description": "Extra small devices (small phones)"
+    },
+    "sm": {
+      "$type": "dimension", 
+      "$value": "640px",
+      "$description": "Small devices (large phones)"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "768px",
+      "$description": "Medium devices (tablets)"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "1024px", 
+      "$description": "Large devices (laptops)"
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": "1280px",
+      "$description": "Extra large devices (desktops)"
+    },
+    "2xl": {
+      "$type": "dimension",
+      "$value": "1536px",
+      "$description": "2X large devices (large desktops)"
+    }
+  },
+  "containerMaxWidth": {
+    "xs": {
+      "$type": "dimension",
+      "$value": "100%",
+      "$description": "Full width on extra small screens"
+    },
+    "sm": {
+      "$type": "dimension",
+      "$value": "640px",
+      "$description": "Container max width for small screens"
+    },
+    "md": {
+      "$type": "dimension", 
+      "$value": "768px",
+      "$description": "Container max width for medium screens"
+    },
+    "lg": {
+      "$type": "dimension",
+      "$value": "1024px",
+      "$description": "Container max width for large screens"
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": "1280px", 
+      "$description": "Container max width for extra large screens"
+    },
+    "2xl": {
+      "$type": "dimension",
+      "$value": "1536px",
+      "$description": "Container max width for 2X large screens"
+    }
+  }
+}

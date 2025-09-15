@@ -372,9 +372,8 @@ export function useValidationStatus(validationReport: ValidationReport | null) {
   const status = useMemo(() => {
     if (!validationReport) return 'unknown';
 
-    const { criticalIssues, warnings } = BrandValidationUtils;
-    const critical = criticalIssues(validationReport);
-    const warning = warnings(validationReport);
+    const critical = BrandValidationUtils.getCriticalIssues(validationReport);
+    const warning = BrandValidationUtils.getWarnings(validationReport);
 
     if (critical.length > 0) return 'error';
     if (warning.length > 0) return 'warning';
@@ -405,9 +404,8 @@ export function useValidationStatus(validationReport: ValidationReport | null) {
   const statusMessage = useMemo(() => {
     if (!validationReport) return 'No validation performed';
 
-    const { criticalIssues, warnings } = BrandValidationUtils;
-    const critical = criticalIssues(validationReport);
-    const warning = warnings(validationReport);
+    const critical = BrandValidationUtils.getCriticalIssues(validationReport);
+    const warning = BrandValidationUtils.getWarnings(validationReport);
 
     if (critical.length > 0) {
       return `${critical.length} critical issue${critical.length > 1 ? 's' : ''} found`;

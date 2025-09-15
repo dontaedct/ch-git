@@ -203,13 +203,6 @@ export default function DesignSystemPage() {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="text-center">
-          <p className="text-caption text-gray-500">
-            This design system demonstrates the Apple-inspired aesthetic with modern web technologies.
-          </p>
-        </footer>
       </div>
     </div>
   );

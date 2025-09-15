@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -115,14 +115,22 @@
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -168,55 +176,59 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// System strings registry - All system names, brand references, and user-facing text
-export const <span class="cstat-no" title="statement not covered" >systemStrings = <span class="cstat-no" title="statement not covered" >{</span></span>
-  // Core application names
-  appName: 'Micro App Template',
-  organizationName: 'Your Organization',
-  fullBrand: 'Your Organization — Micro App',
+// Note: Brand-specific strings are now managed by the dynamic branding system
+// This file contains only non-brand-specific system strings
+&nbsp;
+import { generateDynamicSystemStrings, initializeSystemStrings } from <span class="cstat-no" title="statement not covered" >'@/lib/branding/system-strings';</span>
+import { DEFAULT_BRAND_CONFIG } from <span class="cstat-no" title="statement not covered" >'@/lib/branding/logo-manager';</span>
+&nbsp;
+// Initialize dynamic system strings
+const dynamicStrings = <span class="cstat-no" title="statement not covered" >generateDynamicSystemStrings(DEFAULT_BRAND_CONFIG.brandName);</span>
+<span class="cstat-no" title="statement not covered" >initializeSystemStrings(DEFAULT_BRAND_CONFIG.brandName);</span>
+&nbsp;
+export const <span class="cstat-no" title="statement not covered" >systemStrings </span>= <span class="cstat-no" title="statement not covered" >{</span>
+  // Core application names (non-brand-specific)
+  // Brand-specific names are now handled by DynamicBrandName component
   
-  // Email and communication
-  emailFrom: 'Micro App &lt;no-reply@example.com&gt;',
-  welcomeMessage: 'Welcome to Your Micro App',
-  transactionalFooter: 'This is a transactional message from Your Micro App.',
+  // Email and communication (now dynamic)
+  emailFrom: dynamicStrings.emailFrom,
+  welcomeMessage: dynamicStrings.welcomeMessage,
+  transactionalFooter: dynamicStrings.transactionalFooter,
   
-  // Page titles and metadata
-  pageTitle: 'Micro App Template',
-  pageDescription: 'A modern micro web application template',
-  
-  // Navigation and UI
-  navBrand: 'Micro App',
-  navFullBrand: 'Your Organization — Micro App',
+  // Page titles and metadata (now dynamic)
+  pageTitle: dynamicStrings.pageTitle,
+  pageDescription: dynamicStrings.pageDescription,
   
   // System names (for future rename capability)
-  aiSystem: 'OSS Hero',
-  guardianSystem: 'Guardian',
-  designSystem: 'Design Guardian',
+  aiSystem: dynamicStrings.aiSystem,
+  guardianSystem: dynamicStrings.guardianSystem,
+  designSystem: dynamicStrings.designSystem,
 } as const;
 &nbsp;
 export type SystemStringKey = keyof typeof systemStrings;
 export type SystemStringValue = typeof systemStrings[SystemStringKey];
 &nbsp;
 // Helper functions
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getSystemString(k</span></span>ey: SystemStringKey): SystemStringValue {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getSystemString(</span></span>key: SystemStringKey): SystemStringValue {
 <span class="cstat-no" title="statement not covered" >  return systemStrings[key];</span>
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isSystemString(v</span></span>alue: string): value is SystemStringValue {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isSystemString(</span></span>value: string): value is SystemStringValue {
 <span class="cstat-no" title="statement not covered" >  return Object.values(systemStrings).includes(value as SystemStringValue);</span>
 }
 &nbsp;
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getSystemStringKey(v</span></span>alue: string): SystemStringKey | null {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getSystemStringKey(</span></span>value: string): SystemStringKey | null {
   const entry = <span class="cstat-no" title="statement not covered" >Object.entries(systemStrings).find(<span class="fstat-no" title="function not covered" >([</span>_, stringValue]) =&gt; <span class="cstat-no" title="statement not covered" >stringValue === value);</span></span>
 <span class="cstat-no" title="statement not covered" >  return entry ? (entry[0] as SystemStringKey) : null;</span>
 }
 &nbsp;
 // Validation
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >validateSystemString(k</span></span>ey: string): key is SystemStringKey {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >validateSystemString(</span></span>key: string): key is SystemStringKey {
 <span class="cstat-no" title="statement not covered" >  return key in systemStrings;</span>
 }
 &nbsp;
 // Get all system strings for bulk operations
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getAllSystemStrings(): Record&lt;SystemStringKey, SystemStringValue&gt; {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getAllSystemStrings(</span></span>): Record&lt;SystemStringKey, SystemStringValue&gt; {
 <span class="cstat-no" title="statement not covered" >  return { ...systemStrings };</span>
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -226,7 +238,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

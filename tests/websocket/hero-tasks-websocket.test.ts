@@ -5,7 +5,7 @@
  * presence indicators, and WebSocket connection management.
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { WebSocket } from 'ws';
 
 // Mock WebSocket for testing
@@ -18,17 +18,17 @@ describe('Hero Tasks WebSocket Integration', () => {
   beforeEach(() => {
     // Mock WebSocket server
     mockServer = {
-      broadcastTaskUpdate: vi.fn(),
-      broadcastPresenceUpdate: vi.fn(),
-      getConnectedUsers: vi.fn(() => []),
-      getTaskRoomUsers: vi.fn(() => [])
+      broadcastTaskUpdate: jest.fn(),
+      broadcastPresenceUpdate: jest.fn(),
+      getConnectedUsers: jest.fn(() => []),
+      getTaskRoomUsers: jest.fn(() => [])
     };
 
     // Mock WebSocket client
     mockWebSocket = {
       readyState: WebSocket.OPEN,
-      send: vi.fn(),
-      close: vi.fn(),
+      send: jest.fn(),
+      close: jest.fn(),
       onopen: null,
       onmessage: null,
       onclose: null,
@@ -36,11 +36,11 @@ describe('Hero Tasks WebSocket Integration', () => {
     };
 
     // Mock WebSocket constructor
-    vi.spyOn(global, 'WebSocket').mockImplementation(() => mockWebSocket);
+    jest.spyOn(global, 'WebSocket').mockImplementation(() => mockWebSocket);
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    jest.restoreAllMocks();
   });
 
   describe('WebSocket Server', () => {

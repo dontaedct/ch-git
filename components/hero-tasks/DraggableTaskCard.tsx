@@ -8,9 +8,9 @@
 
 import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@ui/card';
-import { Badge } from '@ui/badge';
-import { Button } from '@ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { GripVertical, Edit, Eye, Calendar, Clock, User, Tag } from 'lucide-react';
 import { HeroTask, TaskStatus, TaskPriority, TaskType, WorkflowPhase } from '@/types/hero-tasks';
 import { useDragAndDrop } from '@/hooks/useDragAndDrop';
@@ -107,12 +107,25 @@ export function DraggableTaskCard({
     return `${Math.round(hours / 24)}d`;
   };
 
+  const dragProps = getDragProps(task.id);
+  const dropZoneProps = getDropZoneProps(task.id);
+
+  // Destructure to avoid animate property conflicts
+  const { animate: dragAnimate, ...restDragProps } = dragProps;
+  const { animate: dropAnimate } = dropZoneProps;
+
+  // Merge animate properties to avoid conflicts, ensuring proper motion values
+  const mergedAnimateProps = (dragAnimate || dropAnimate) ? {
+    ...(typeof dragAnimate === 'object' ? dragAnimate : {}),
+    ...(typeof dropAnimate === 'object' ? dropAnimate : {})
+  } as any : undefined;
+
   return (
     <motion.div
       ref={cardRef}
       className={`group ${className}`}
-      {...getDragProps(task.id)}
-      {...getDropZoneProps(task.id)}
+      {...(restDragProps as any)}
+      animate={mergedAnimateProps}
       layout
       transition={{
         duration: 0.2,

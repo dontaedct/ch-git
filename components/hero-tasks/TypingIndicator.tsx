@@ -8,8 +8,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@ui/avatar';
-import { Badge } from '@ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { TypingDots } from './TypingDots';
 
 export interface TypingUser {

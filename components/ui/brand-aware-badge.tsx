@@ -97,7 +97,7 @@ export interface BrandAwareBadgeProps extends VariantProps<typeof brandAwareBadg
 function generateBadgeBrandCSSProperties(brandColors: BrandAwareBadgeProps['brandColors']) {
   if (!brandColors) return {};
   
-  const cssProps: React.CSSProperties = {};
+  const cssProps: React.CSSProperties & Record<string, string> = {};
   
   if (brandColors.primary) {
     cssProps['--brand-primary'] = brandColors.primary;
@@ -158,7 +158,7 @@ function adjustColorBrightness(color: string, percent: number): string {
  * Generate brand-aware CSS classes for badge variant
  */
 function getBadgeVariantClasses(variant: string, brandColors?: BrandAwareBadgeProps['brandColors']) {
-  const baseClasses = brandAwareBadgeVariants({ variant });
+  const baseClasses = brandAwareBadgeVariants({ variant: variant as any });
   
   if (!brandColors) {
     // Fallback to default colors
@@ -268,20 +268,20 @@ const BrandAwareBadge = React.forwardRef<HTMLDivElement, BrandAwareBadgeProps>((
   
   // Get brand colors from configuration if not provided
   const effectiveBrandColors = brandColors || (useBrandColors ? {
-    primary: config.theme?.colors?.primary || '#007AFF',
-    secondary: config.theme?.colors?.secondary || '#6B7280',
-    success: config.theme?.colors?.success || '#10B981',
-    warning: config.theme?.colors?.warning || '#F59E0B',
-    error: config.theme?.colors?.error || '#EF4444',
-    info: config.theme?.colors?.info || '#3B82F6',
-    destructive: config.theme?.colors?.destructive || '#DC2626',
+    primary: (config as any).theme?.colors?.primary || '#007AFF',
+    secondary: (config as any).theme?.colors?.secondary || '#6B7280',
+    success: (config as any).theme?.colors?.success || '#10B981',
+    warning: (config as any).theme?.colors?.warning || '#F59E0B',
+    error: (config as any).theme?.colors?.error || '#EF4444',
+    info: (config as any).theme?.colors?.info || '#3B82F6',
+    destructive: (config as any).theme?.colors?.destructive || '#DC2626',
   } : undefined);
   
   // Generate CSS custom properties for brand colors
   const brandCSSProps = generateBadgeBrandCSSProperties(effectiveBrandColors);
   
   // Get brand-aware CSS classes
-  const variantClasses = getBadgeVariantClasses(variant, effectiveBrandColors);
+  const variantClasses = getBadgeVariantClasses(variant || 'primary', effectiveBrandColors);
   
   return (
     <div
@@ -298,6 +298,9 @@ const BrandAwareBadge = React.forwardRef<HTMLDivElement, BrandAwareBadgeProps>((
 });
 
 BrandAwareBadge.displayName = "BrandAwareBadge";
+
+// Export the main component
+export { BrandAwareBadge, brandAwareBadgeVariants };
 
 // Specialized brand-aware badge components
 export const BrandPrimaryBadge = React.forwardRef<HTMLDivElement, Omit<BrandAwareBadgeProps, 'variant'>>(
@@ -363,14 +366,4 @@ export const BrandOutlineBadge = React.forwardRef<HTMLDivElement, Omit<BrandAwar
 );
 BrandOutlineBadge.displayName = "BrandOutlineBadge";
 
-export { 
-  BrandAwareBadge,
-  brandAwareBadgeVariants,
-  BrandPrimaryBadge,
-  BrandSecondaryBadge,
-  BrandSuccessBadge,
-  BrandWarningBadge,
-  BrandErrorBadge,
-  BrandInfoBadge,
-  BrandOutlineBadge
-};
+// All exports are already declared above individually

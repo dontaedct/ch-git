@@ -12,14 +12,14 @@ import { useBrandManagement } from '@/hooks/use-brand-management';
 import { logoManager, BRAND_PRESETS } from '@/lib/branding/logo-manager';
 
 // Mock the logo manager
-vi.mock('@/lib/branding/logo-manager', () => ({
+jest.mock('@/lib/branding/logo-manager', () => ({
   logoManager: {
-    getCurrentConfig: vi.fn(),
-    updateConfig: vi.fn(),
-    loadPreset: vi.fn(),
-    subscribe: vi.fn(() => () => {}),
-    validateConfig: vi.fn(),
-    importConfig: vi.fn(),
+    getCurrentConfig: jest.fn(),
+    updateConfig: jest.fn(),
+    loadPreset: jest.fn(),
+    subscribe: jest.fn(() => () => {}),
+    validateConfig: jest.fn(),
+    importConfig: jest.fn(),
   },
   BRAND_PRESETS: {
     default: {
@@ -66,19 +66,19 @@ vi.mock('@/lib/branding/logo-manager', () => ({
 }));
 
 // Mock sonner toast
-vi.mock('sonner', () => ({
+jest.mock('sonner', () => ({
   toast: {
-    success: vi.fn(),
-    error: vi.fn(),
+    success: jest.fn(),
+    error: jest.fn(),
   },
 }));
 
 // Mock localStorage
 const localStorageMock = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
 };
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
@@ -107,9 +107,9 @@ describe('Brand Management Admin Interface', () => {
   };
 
   beforeEach(() => {
-    vi.clearAllMocks();
-    vi.mocked(logoManager.getCurrentConfig).mockReturnValue(mockConfig);
-    vi.mocked(logoManager.validateConfig).mockReturnValue({ isValid: true, errors: [] });
+    jest.clearAllMocks();
+    (logoManager.getCurrentConfig as jest.Mock).mockReturnValue(mockConfig);
+    (logoManager.validateConfig as jest.Mock).mockReturnValue({ isValid: true, errors: [] });
   });
 
   it('should render brand management interface', () => {
@@ -172,7 +172,7 @@ describe('Brand Management Admin Interface', () => {
   });
 
   it('should allow loading brand presets', async () => {
-    vi.mocked(logoManager.loadPreset).mockReturnValue(true);
+    (logoManager.loadPreset as jest.Mock).mockReturnValue(true);
     
     render(<BrandManagementInterface />);
     
@@ -189,7 +189,7 @@ describe('Brand Management Admin Interface', () => {
   });
 
   it('should validate configuration before saving', async () => {
-    vi.mocked(logoManager.validateConfig).mockReturnValue({
+    (logoManager.validateConfig as jest.Mock).mockReturnValue({
       isValid: false,
       errors: ['Organization name is required', 'App name is required']
     });
@@ -204,19 +204,19 @@ describe('Brand Management Admin Interface', () => {
 
   it('should export configuration', () => {
     // Mock URL.createObjectURL and URL.revokeObjectURL
-    const mockCreateObjectURL = vi.fn(() => 'blob:mock-url');
-    const mockRevokeObjectURL = vi.fn();
+    const mockCreateObjectURL = jest.fn(() => 'blob:mock-url');
+    const mockRevokeObjectURL = jest.fn();
     Object.defineProperty(window.URL, 'createObjectURL', { value: mockCreateObjectURL });
     Object.defineProperty(window.URL, 'revokeObjectURL', { value: mockRevokeObjectURL });
     
     // Mock document.createElement
-    const mockClick = vi.fn();
+    const mockClick = jest.fn();
     const mockAnchor = {
       href: '',
       download: '',
       click: mockClick,
     };
-    vi.spyOn(document, 'createElement').mockReturnValue(mockAnchor as any);
+    jest.spyOn(document, 'createElement').mockReturnValue(mockAnchor as any);
     
     render(<BrandManagementInterface />);
     
@@ -252,7 +252,7 @@ describe('Brand Management Admin Interface', () => {
       isCustom: true,
     };
     
-    vi.mocked(logoManager.importConfig).mockReturnValue(true);
+    (logoManager.importConfig as jest.Mock).mockReturnValue(true);
     
     render(<BrandManagementInterface />);
     
@@ -272,7 +272,7 @@ describe('Brand Management Admin Interface', () => {
   });
 
   it('should reset to default configuration', async () => {
-    vi.mocked(logoManager.loadPreset).mockReturnValue(true);
+    (logoManager.loadPreset as jest.Mock).mockReturnValue(true);
     
     render(<BrandManagementInterface />);
     
@@ -295,7 +295,7 @@ describe('Brand Management Admin Interface', () => {
   });
 
   it('should display validation errors', () => {
-    vi.mocked(logoManager.validateConfig).mockReturnValue({
+    (logoManager.validateConfig as jest.Mock).mockReturnValue({
       isValid: false,
       errors: ['Organization name is required']
     });

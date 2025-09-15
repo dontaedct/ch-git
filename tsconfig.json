@@ -57,9 +57,7 @@
     "tests",
     "**/*.backup.*",
     "docs/**/*",
-    "lib/accessibility/**/*",
-    "lib/architecture/**/*",
-    "lib/performance/**/*",
+    "lib/design-tokens/performance-monitor.ts",
     "hooks/use-form-validation.ts"
   ]
 }

@@ -503,7 +503,7 @@ describe('OpenAI Contract Tests', () => {
 
     it('should handle missing API key', () => {
       const noKeyEnv = { ...mockEnv, OPENAI_API_KEY: undefined };
-      jest.mocked(getEnv).mockReturnValue(noKeyEnv);
+      (getEnv as jest.Mock).mockReturnValue(noKeyEnv);
 
       expect(() => {
         new OpenAI({ apiKey: undefined });

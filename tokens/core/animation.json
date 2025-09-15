@@ -1,0 +1,59 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "animation": {
+    "duration": {
+      "instant": {
+        "$type": "duration",
+        "$value": "0ms",
+        "$description": "Instant transitions for immediate feedback"
+      },
+      "fast": {
+        "$type": "duration", 
+        "$value": "150ms",
+        "$description": "Fast transitions for hover states and simple animations"
+      },
+      "normal": {
+        "$type": "duration",
+        "$value": "250ms", 
+        "$description": "Standard transition duration for most interactions"
+      },
+      "slow": {
+        "$type": "duration",
+        "$value": "400ms",
+        "$description": "Slower transitions for complex state changes"
+      },
+      "slower": {
+        "$type": "duration",
+        "$value": "600ms",
+        "$description": "Deliberate transitions for important state changes"
+      }
+    },
+    "easing": {
+      "linear": {
+        "$type": "cubicBezier",
+        "$value": [0, 0, 1, 1],
+        "$description": "Linear timing function"
+      },
+      "easeIn": {
+        "$type": "cubicBezier",
+        "$value": [0.4, 0, 1, 1],
+        "$description": "Ease in timing function"
+      },
+      "easeOut": {
+        "$type": "cubicBezier", 
+        "$value": [0, 0, 0.2, 1],
+        "$description": "Ease out timing function"
+      },
+      "easeInOut": {
+        "$type": "cubicBezier",
+        "$value": [0.4, 0, 0.2, 1], 
+        "$description": "Ease in-out timing function"
+      },
+      "bounce": {
+        "$type": "cubicBezier",
+        "$value": [0.68, -0.55, 0.265, 1.55],
+        "$description": "Bounce timing function for playful interactions"
+      }
+    }
+  }
+}

@@ -6,8 +6,8 @@
  * @module HT-011.4.5: Implement Brand-Specific Design Policies
  */
 
-import { TenantBrandConfig, BrandTheme } from '../lib/branding/types';
-import { ComplianceRuleResult, ComplianceCategory, ComplianceSeverity } from '../lib/branding/brand-compliance-engine';
+import { TenantBrandConfig, BrandTheme } from './types';
+import { ComplianceRuleResult, ComplianceCategory, ComplianceSeverity } from './brand-compliance-engine';
 
 /**
  * Brand design policy types
@@ -334,8 +334,8 @@ export class BrandDesignPolicyManager {
           description: 'Primary brand color must be used consistently',
           condition: 'Primary color is defined and used in key components',
           validator: (config) => {
-            return config.theme?.colors?.primary && 
-                   config.theme.colors.primary.length > 0;
+            return Boolean(config.theme?.colors?.primary && 
+                   config.theme.colors.primary.length > 0);
           },
           errorMessage: 'Primary brand color is not defined or is empty',
         },
@@ -344,9 +344,9 @@ export class BrandDesignPolicyManager {
           name: 'Color Palette Completeness',
           description: 'Brand color palette must include all required colors',
           condition: 'Color palette includes primary, secondary, and neutral colors',
-          validator: (config) => {
+          validator: (config): boolean => {
             const colors = config.theme?.colors;
-            return colors?.primary && colors?.secondary && colors?.neutral;
+            return !!(colors?.primary && colors?.secondary && colors?.neutral);
           },
           errorMessage: 'Brand color palette is incomplete',
         },
@@ -668,15 +668,3 @@ export const brandDesignPolicyManager = new BrandDesignPolicyManager();
 /**
  * Export types and interfaces
  */
-export type {
-  BrandPolicyType,
-  BrandPolicySeverity,
-  BrandPolicyEnforcement,
-  BrandDesignPolicy,
-  BrandPolicyRule,
-  BrandPolicyResult,
-  BrandPolicyViolation,
-  BrandPolicyRecommendation,
-  BrandPolicyRemediation,
-  BrandPolicyDocumentation,
-};

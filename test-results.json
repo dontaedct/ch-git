@@ -1,0 +1,2799 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\Dontae-PC\\my-app\\playwright.config.ts",
+    "rootDir": "C:/Users/Dontae-PC/my-app/tests",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\global-setup.ts",
+    "globalTeardown": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 6
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results.json"
+        }
+      ],
+      [
+        "junit",
+        {
+          "outputFile": "test-results.xml"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "Mobile Chrome",
+        "name": "Mobile Chrome",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "Mobile Safari",
+        "name": "Mobile Safari",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/.*\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "e2e-enhanced",
+        "name": "e2e-enhanced",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/e2e\\/enhanced-.*\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "e2e-api",
+        "name": "e2e-api",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/e2e\\/api-integration\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "e2e-performance",
+        "name": "e2e-performance",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/e2e\\/performance\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "ui-tests",
+        "name": "ui-tests",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/ui\\/.*\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/Dontae-PC/my-app/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "visual-regression",
+        "name": "visual-regression",
+        "testDir": "C:/Users/Dontae-PC/my-app/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "/tests\\/visual\\/.*\\.spec\\.ts$/"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 6,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "ui\\accessibility-enhanced.spec.ts",
+      "file": "ui/accessibility-enhanced.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "HT-008.7.6: Enhanced Accessibility Testing Suite",
+          "file": "ui/accessibility-enhanced.spec.ts",
+          "line": 1066,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Comprehensive Accessibility Audit",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 747,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21",
+                        "location": {
+                          "file": "eval at evaluate (:291:30), <anonymous>",
+                          "column": 25,
+                          "line": 28406
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "eval at evaluate (:291:30), <anonymous>",
+                            "column": 25,
+                            "line": 28406
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Array.forEach (<anonymous>)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at new Promise (<anonymous>)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Running Comprehensive Accessibility Audit...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:50.822Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-chromium\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "eval at evaluate (:291:30), <anonymous>",
+                        "column": 25,
+                        "line": 28406
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-7b2b910d72ff86a1abf2",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1073,
+              "column": 3
+            },
+            {
+              "title": "Screen Reader Compatibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 849,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📢 Testing Screen Reader Compatibility...\n"
+                        },
+                        {
+                          "text": "\n📢 Screen Reader Compatibility Results:\n"
+                        },
+                        {
+                          "text": "Heading Structure: Valid\n"
+                        },
+                        {
+                          "text": "ARIA Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Image Alt Text: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:50.806Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-a2e861e8879e280e02fe",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1093,
+              "column": 3
+            },
+            {
+              "title": "Keyboard Navigation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 751,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 46,
+                          "line": 1114
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 46,
+                            "line": 1114
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "⌨️ Testing Keyboard Navigation...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:50.791Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-chromium\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 46,
+                        "line": 1114
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-aaba6226f532227e1dbe",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1109,
+              "column": 3
+            },
+            {
+              "title": "Color Contrast",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 720,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21",
+                        "location": {
+                          "file": "eval at evaluate (:291:30), <anonymous>",
+                          "column": 25,
+                          "line": 28406
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "eval at evaluate (:291:30), <anonymous>",
+                            "column": 25,
+                            "line": 28406
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Array.forEach (<anonymous>)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at new Promise (<anonymous>)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎨 Testing Color Contrast...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:50.809Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-chromium\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-chromium\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "eval at evaluate (:291:30), <anonymous>",
+                        "column": 25,
+                        "line": 28406
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-99824445494ecf02339e",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1122,
+              "column": 3
+            },
+            {
+              "title": "Reduced Motion Support",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 510,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎭 Testing Reduced Motion Support...\n"
+                        },
+                        {
+                          "text": "\n🎭 Reduced Motion Support Results:\n"
+                        },
+                        {
+                          "text": "Reduced Motion Supported: true\n"
+                        },
+                        {
+                          "text": "Animated Elements: 3\n"
+                        },
+                        {
+                          "text": "Transition Elements: 3\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:50.892Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-008122c2299f954260b2",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1139,
+              "column": 3
+            },
+            {
+              "title": "Form Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 552,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n📝 Form Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Error Associations: 0 missing\n"
+                        },
+                        {
+                          "text": "Required Field Indicators: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:50.853Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-4a24cc9ea223637fd770",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1151,
+              "column": 3
+            },
+            {
+              "title": "Component Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 249,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧩 Testing Component Accessibility...\n"
+                        },
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n🧩 Component Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Buttons: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Links: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Images: 0 missing alt text\n"
+                        },
+                        {
+                          "text": "Tables: 0 missing headers\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:51.683Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-7ff58ad031ca4e649251",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1165,
+              "column": 3
+            },
+            {
+              "title": "Comprehensive Accessibility Audit",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 2628,
+                      "error": {
+                        "message": "Error: frame.evaluate: unknown rule `[object Object]` in options.runOnly\nnormalizeOptions/<@debugger eval code line 291 > eval:28406:25\nnormalizeOptions@debugger eval code line 291 > eval:28404:27\nrun@debugger eval code line 291 > eval:28282:16\nrunPartial/<@debugger eval code line 291 > eval:28959:20\nrunPartial@debugger eval code line 291 > eval:28958:14\n@debugger eval code line 291 > eval:5:21\nevaluate@debugger eval code:293:16\n@debugger eval code:1:44\n",
+                        "stack": "Error: frame.evaluate: unknown rule `[object Object]` in options.runOnly\nnormalizeOptions/<@debugger eval code line 291 > eval:28406:25\nnormalizeOptions@debugger eval code line 291 > eval:28404:27\nrun@debugger eval code line 291 > eval:28282:16\nrunPartial/<@debugger eval code line 291 > eval:28959:20\nrunPartial@debugger eval code line 291 > eval:28958:14\n@debugger eval code line 291 > eval:5:21\nevaluate@debugger eval code:293:16\n@debugger eval code:1:44\n\n    at normalizeOptions/<@debugger eval code line 291 > eval:28406:25\n    at normalizeOptions@debugger eval code line 291 > eval:28404:27\n    at run@debugger eval code line 291 > eval:28282:16\n    at runPartial/<@debugger eval code line 291 > eval:28959:20\n    at runPartial@debugger eval code line 291 > eval:28958:14\n    at @debugger eval code line 291 > eval:5:21\n    at evaluate@debugger eval code:293:16\n    at @debugger eval code:1:44\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21",
+                        "location": {
+                          "file": "normalizeOptions/<@debugger eval code line 291 > eval",
+                          "column": 25,
+                          "line": 28406
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "normalizeOptions/<@debugger eval code line 291 > eval",
+                            "column": 25,
+                            "line": 28406
+                          },
+                          "message": "Error: frame.evaluate: unknown rule `[object Object]` in options.runOnly\nnormalizeOptions/<@debugger eval code line 291 > eval:28406:25\nnormalizeOptions@debugger eval code line 291 > eval:28404:27\nrun@debugger eval code line 291 > eval:28282:16\nrunPartial/<@debugger eval code line 291 > eval:28959:20\nrunPartial@debugger eval code line 291 > eval:28958:14\n@debugger eval code line 291 > eval:5:21\nevaluate@debugger eval code:293:16\n@debugger eval code:1:44\n\n\u001b[2m    at normalizeOptions/<@debugger eval code line 291 > eval:28406:25\u001b[22m\n\u001b[2m    at normalizeOptions@debugger eval code line 291 > eval:28404:27\u001b[22m\n\u001b[2m    at run@debugger eval code line 291 > eval:28282:16\u001b[22m\n\u001b[2m    at runPartial/<@debugger eval code line 291 > eval:28959:20\u001b[22m\n\u001b[2m    at runPartial@debugger eval code line 291 > eval:28958:14\u001b[22m\n\u001b[2m    at @debugger eval code line 291 > eval:5:21\u001b[22m\n\u001b[2m    at evaluate@debugger eval code:293:16\u001b[22m\n\u001b[2m    at @debugger eval code:1:44\u001b[22m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Running Comprehensive Accessibility Audit...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:53.160Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-firefox\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "normalizeOptions/<@debugger eval code line 291 > eval",
+                        "column": 25,
+                        "line": 28406
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-3898c44486408430c7c1",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1073,
+              "column": 3
+            },
+            {
+              "title": "Screen Reader Compatibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1945,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📢 Testing Screen Reader Compatibility...\n"
+                        },
+                        {
+                          "text": "\n📢 Screen Reader Compatibility Results:\n"
+                        },
+                        {
+                          "text": "Heading Structure: Valid\n"
+                        },
+                        {
+                          "text": "ARIA Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Image Alt Text: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:53.155Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-02e7d3b67435c288dc90",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1093,
+              "column": 3
+            },
+            {
+              "title": "Keyboard Navigation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 2605,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 46,
+                          "line": 1114
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 46,
+                            "line": 1114
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "⌨️ Testing Keyboard Navigation...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:53.060Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-firefox\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 46,
+                        "line": 1114
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-10f15511f90f2fd8b12b",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1109,
+              "column": 3
+            },
+            {
+              "title": "Color Contrast",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 2351,
+                      "error": {
+                        "message": "Error: frame.evaluate: unknown rule `[object Object]` in options.runOnly\nnormalizeOptions/<@debugger eval code line 291 > eval:28406:25\nnormalizeOptions@debugger eval code line 291 > eval:28404:27\nrun@debugger eval code line 291 > eval:28282:16\nrunPartial/<@debugger eval code line 291 > eval:28959:20\nrunPartial@debugger eval code line 291 > eval:28958:14\n@debugger eval code line 291 > eval:5:21\nevaluate@debugger eval code:293:16\n@debugger eval code:1:44\n",
+                        "stack": "Error: frame.evaluate: unknown rule `[object Object]` in options.runOnly\nnormalizeOptions/<@debugger eval code line 291 > eval:28406:25\nnormalizeOptions@debugger eval code line 291 > eval:28404:27\nrun@debugger eval code line 291 > eval:28282:16\nrunPartial/<@debugger eval code line 291 > eval:28959:20\nrunPartial@debugger eval code line 291 > eval:28958:14\n@debugger eval code line 291 > eval:5:21\nevaluate@debugger eval code:293:16\n@debugger eval code:1:44\n\n    at normalizeOptions/<@debugger eval code line 291 > eval:28406:25\n    at normalizeOptions@debugger eval code line 291 > eval:28404:27\n    at run@debugger eval code line 291 > eval:28282:16\n    at runPartial/<@debugger eval code line 291 > eval:28959:20\n    at runPartial@debugger eval code line 291 > eval:28958:14\n    at @debugger eval code line 291 > eval:5:21\n    at evaluate@debugger eval code:293:16\n    at @debugger eval code:1:44\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21",
+                        "location": {
+                          "file": "normalizeOptions/<@debugger eval code line 291 > eval",
+                          "column": 25,
+                          "line": 28406
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "normalizeOptions/<@debugger eval code line 291 > eval",
+                            "column": 25,
+                            "line": 28406
+                          },
+                          "message": "Error: frame.evaluate: unknown rule `[object Object]` in options.runOnly\nnormalizeOptions/<@debugger eval code line 291 > eval:28406:25\nnormalizeOptions@debugger eval code line 291 > eval:28404:27\nrun@debugger eval code line 291 > eval:28282:16\nrunPartial/<@debugger eval code line 291 > eval:28959:20\nrunPartial@debugger eval code line 291 > eval:28958:14\n@debugger eval code line 291 > eval:5:21\nevaluate@debugger eval code:293:16\n@debugger eval code:1:44\n\n\u001b[2m    at normalizeOptions/<@debugger eval code line 291 > eval:28406:25\u001b[22m\n\u001b[2m    at normalizeOptions@debugger eval code line 291 > eval:28404:27\u001b[22m\n\u001b[2m    at run@debugger eval code line 291 > eval:28282:16\u001b[22m\n\u001b[2m    at runPartial/<@debugger eval code line 291 > eval:28959:20\u001b[22m\n\u001b[2m    at runPartial@debugger eval code line 291 > eval:28958:14\u001b[22m\n\u001b[2m    at @debugger eval code line 291 > eval:5:21\u001b[22m\n\u001b[2m    at evaluate@debugger eval code:293:16\u001b[22m\n\u001b[2m    at @debugger eval code:1:44\u001b[22m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎨 Testing Color Contrast...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:53.079Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-firefox\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-firefox\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "normalizeOptions/<@debugger eval code line 291 > eval",
+                        "column": 25,
+                        "line": 28406
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-019246acdc374d007915",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1122,
+              "column": 3
+            },
+            {
+              "title": "Reduced Motion Support",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2168,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎭 Testing Reduced Motion Support...\n"
+                        },
+                        {
+                          "text": "\n🎭 Reduced Motion Support Results:\n"
+                        },
+                        {
+                          "text": "Reduced Motion Supported: true\n"
+                        },
+                        {
+                          "text": "Animated Elements: 3\n"
+                        },
+                        {
+                          "text": "Transition Elements: 3\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:53.132Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-b8761dcd7b45f504c353",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1139,
+              "column": 3
+            },
+            {
+              "title": "Form Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 2176,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n📝 Form Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Error Associations: 0 missing\n"
+                        },
+                        {
+                          "text": "Required Field Indicators: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:53.246Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-94f75fd9715ab7e3d177",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1151,
+              "column": 3
+            },
+            {
+              "title": "Component Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 709,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧩 Testing Component Accessibility...\n"
+                        },
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n🧩 Component Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Buttons: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Links: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Images: 0 missing alt text\n"
+                        },
+                        {
+                          "text": "Tables: 0 missing headers\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:39:56.420Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-b1029b3636e9403a734b",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1165,
+              "column": 3
+            },
+            {
+              "title": "Comprehensive Accessibility Audit",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 13,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 1149,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 21,
+                          "line": 47
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 45 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🔍 Running Comprehensive Accessibility Audit...'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 46 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page\u001b[33m:\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage })\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m       \u001b[33m.\u001b[39mwithTags([\u001b[32m'wcag2a'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag2aa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21a'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21aa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag2aaa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21aaa'\u001b[39m])\n \u001b[90m 49 |\u001b[39m       \u001b[33m.\u001b[39mwithRules({\n \u001b[90m 50 |\u001b[39m         \u001b[90m// Critical WCAG 2.1 AAA rules\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 21,
+                            "line": 47
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\n\u001b[0m \u001b[90m 45 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🔍 Running Comprehensive Accessibility Audit...'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 46 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page\u001b[33m:\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage })\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m       \u001b[33m.\u001b[39mwithTags([\u001b[32m'wcag2a'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag2aa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21a'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21aa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag2aaa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21aaa'\u001b[39m])\n \u001b[90m 49 |\u001b[39m       \u001b[33m.\u001b[39mwithRules({\n \u001b[90m 50 |\u001b[39m         \u001b[90m// Critical WCAG 2.1 AAA rules\u001b[39m\u001b[0m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Running Comprehensive Accessibility Audit...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:00.945Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-webkit\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-webkit\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 21,
+                        "line": 47
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-ba6f6b52c33d84a9b6eb",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1073,
+              "column": 3
+            },
+            {
+              "title": "Screen Reader Compatibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 944,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📢 Testing Screen Reader Compatibility...\n"
+                        },
+                        {
+                          "text": "\n📢 Screen Reader Compatibility Results:\n"
+                        },
+                        {
+                          "text": "Heading Structure: Valid\n"
+                        },
+                        {
+                          "text": "ARIA Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Image Alt Text: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:00.710Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-0991d5b72d92516faacd",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1093,
+              "column": 3
+            },
+            {
+              "title": "Keyboard Navigation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 14,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 995,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 46,
+                          "line": 1114
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 46,
+                            "line": 1114
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "⌨️ Testing Keyboard Navigation...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:01.552Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-webkit\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-webkit\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 46,
+                        "line": 1114
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-a11fd9d3428a5a2976b8",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1109,
+              "column": 3
+            },
+            {
+              "title": "Color Contrast",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 15,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 756,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 21,
+                          "line": 204
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 202 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🎨 Testing Color Contrast...'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 203 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 204 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page\u001b[33m:\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage })\n \u001b[90m     |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 205 |\u001b[39m       \u001b[33m.\u001b[39mwithRules({\n \u001b[90m 206 |\u001b[39m         \u001b[32m'color-contrast'\u001b[39m\u001b[33m:\u001b[39m { enabled\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }\u001b[33m,\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[32m'color-contrast-enhanced'\u001b[39m\u001b[33m:\u001b[39m { enabled\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 21,
+                            "line": 204
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\n\u001b[0m \u001b[90m 202 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🎨 Testing Color Contrast...'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 203 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 204 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page\u001b[33m:\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage })\n \u001b[90m     |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 205 |\u001b[39m       \u001b[33m.\u001b[39mwithRules({\n \u001b[90m 206 |\u001b[39m         \u001b[32m'color-contrast'\u001b[39m\u001b[33m:\u001b[39m { enabled\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }\u001b[33m,\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[32m'color-contrast-enhanced'\u001b[39m\u001b[33m:\u001b[39m { enabled\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }\u001b[0m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎨 Testing Color Contrast...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:02.951Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-webkit\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-webkit\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 21,
+                        "line": 204
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-5aa98a7a3c423b081548",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1122,
+              "column": 3
+            },
+            {
+              "title": "Reduced Motion Support",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 17,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 486,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎭 Testing Reduced Motion Support...\n"
+                        },
+                        {
+                          "text": "\n🎭 Reduced Motion Support Results:\n"
+                        },
+                        {
+                          "text": "Reduced Motion Supported: true\n"
+                        },
+                        {
+                          "text": "Animated Elements: 3\n"
+                        },
+                        {
+                          "text": "Transition Elements: 3\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:03.981Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-52d5c7a664f251ca4e40",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1139,
+              "column": 3
+            },
+            {
+              "title": "Form Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 16,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 516,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n📝 Form Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Error Associations: 0 missing\n"
+                        },
+                        {
+                          "text": "Required Field Indicators: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:03.311Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-435986e9021c40ce4071",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1151,
+              "column": 3
+            },
+            {
+              "title": "Component Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 12,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 574,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧩 Testing Component Accessibility...\n"
+                        },
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n🧩 Component Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Buttons: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Links: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Images: 0 missing alt text\n"
+                        },
+                        {
+                          "text": "Tables: 0 missing headers\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:02.689Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-afc2f2103d0f416df141",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1165,
+              "column": 3
+            },
+            {
+              "title": "Comprehensive Accessibility Audit",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 18,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 633,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21",
+                        "location": {
+                          "file": "eval at evaluate (:291:30), <anonymous>",
+                          "column": 25,
+                          "line": 28406
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "eval at evaluate (:291:30), <anonymous>",
+                            "column": 25,
+                            "line": 28406
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Array.forEach (<anonymous>)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at new Promise (<anonymous>)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Running Comprehensive Accessibility Audit...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:04.276Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Chrome\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Chrome\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "eval at evaluate (:291:30), <anonymous>",
+                        "column": 25,
+                        "line": 28406
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-85695633bea8ec221ef2",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1073,
+              "column": 3
+            },
+            {
+              "title": "Screen Reader Compatibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 430,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📢 Testing Screen Reader Compatibility...\n"
+                        },
+                        {
+                          "text": "\n📢 Screen Reader Compatibility Results:\n"
+                        },
+                        {
+                          "text": "Heading Structure: Valid\n"
+                        },
+                        {
+                          "text": "ARIA Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Image Alt Text: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:04.448Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-d4f3e4f43f1c0708edf5",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1093,
+              "column": 3
+            },
+            {
+              "title": "Keyboard Navigation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 20,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 468,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 46,
+                          "line": 1114
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 46,
+                            "line": 1114
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "⌨️ Testing Keyboard Navigation...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:04.640Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Chrome\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Chrome\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 46,
+                        "line": 1114
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-ad7426191e36f9b34f5d",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1109,
+              "column": 3
+            },
+            {
+              "title": "Color Contrast",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 21,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 583,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21",
+                        "location": {
+                          "file": "eval at evaluate (:291:30), <anonymous>",
+                          "column": 25,
+                          "line": 28406
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "eval at evaluate (:291:30), <anonymous>",
+                            "column": 25,
+                            "line": 28406
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Array.forEach (<anonymous>)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at new Promise (<anonymous>)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎨 Testing Color Contrast...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:05.473Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Chrome\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Chrome\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "eval at evaluate (:291:30), <anonymous>",
+                        "column": 25,
+                        "line": 28406
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-02528ac1b7890e5d3101",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1122,
+              "column": 3
+            },
+            {
+              "title": "Reduced Motion Support",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 22,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 418,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎭 Testing Reduced Motion Support...\n"
+                        },
+                        {
+                          "text": "\n🎭 Reduced Motion Support Results:\n"
+                        },
+                        {
+                          "text": "Reduced Motion Supported: true\n"
+                        },
+                        {
+                          "text": "Animated Elements: 3\n"
+                        },
+                        {
+                          "text": "Transition Elements: 3\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:05.587Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-0f10a207ee19f3ba031b",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1139,
+              "column": 3
+            },
+            {
+              "title": "Form Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 23,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 415,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n📝 Form Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Error Associations: 0 missing\n"
+                        },
+                        {
+                          "text": "Required Field Indicators: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:06.276Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-b21c5ba0eda02357d1a5",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1151,
+              "column": 3
+            },
+            {
+              "title": "Component Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Chrome",
+                  "projectName": "Mobile Chrome",
+                  "results": [
+                    {
+                      "workerIndex": 19,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 322,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧩 Testing Component Accessibility...\n"
+                        },
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n🧩 Component Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Buttons: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Links: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Images: 0 missing alt text\n"
+                        },
+                        {
+                          "text": "Tables: 0 missing headers\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:05.134Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-60f494bed224aa176dfa",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1165,
+              "column": 3
+            },
+            {
+              "title": "Comprehensive Accessibility Audit",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 24,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 669,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 21,
+                          "line": 47
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 45 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🔍 Running Comprehensive Accessibility Audit...'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 46 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page\u001b[33m:\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage })\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m       \u001b[33m.\u001b[39mwithTags([\u001b[32m'wcag2a'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag2aa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21a'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21aa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag2aaa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21aaa'\u001b[39m])\n \u001b[90m 49 |\u001b[39m       \u001b[33m.\u001b[39mwithRules({\n \u001b[90m 50 |\u001b[39m         \u001b[90m// Critical WCAG 2.1 AAA rules\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 21,
+                            "line": 47
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\n\u001b[0m \u001b[90m 45 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🔍 Running Comprehensive Accessibility Audit...'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 46 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 47 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page\u001b[33m:\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage })\n \u001b[90m    |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 48 |\u001b[39m       \u001b[33m.\u001b[39mwithTags([\u001b[32m'wcag2a'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag2aa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21a'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21aa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag2aaa'\u001b[39m\u001b[33m,\u001b[39m \u001b[32m'wcag21aaa'\u001b[39m])\n \u001b[90m 49 |\u001b[39m       \u001b[33m.\u001b[39mwithRules({\n \u001b[90m 50 |\u001b[39m         \u001b[90m// Critical WCAG 2.1 AAA rules\u001b[39m\u001b[0m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Running Comprehensive Accessibility Audit...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:06.678Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Safari\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-Mobile-Safari\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 21,
+                        "line": 47
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-c1db038039bcfa2cf41d",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1073,
+              "column": 3
+            },
+            {
+              "title": "Screen Reader Compatibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 25,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 545,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📢 Testing Screen Reader Compatibility...\n"
+                        },
+                        {
+                          "text": "\n📢 Screen Reader Compatibility Results:\n"
+                        },
+                        {
+                          "text": "Heading Structure: Valid\n"
+                        },
+                        {
+                          "text": "ARIA Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Image Alt Text: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:07.011Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-fcd865c781a3c9a12c40",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1093,
+              "column": 3
+            },
+            {
+              "title": "Keyboard Navigation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 26,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 570,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 46,
+                          "line": 1114
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 46,
+                            "line": 1114
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "⌨️ Testing Keyboard Navigation...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:07.381Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Safari\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-Mobile-Safari\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 46,
+                        "line": 1114
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-c1354f7699fc79a550fb",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1109,
+              "column": 3
+            },
+            {
+              "title": "Color Contrast",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 28,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 642,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 21,
+                          "line": 204
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 202 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🎨 Testing Color Contrast...'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 203 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 204 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page\u001b[33m:\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage })\n \u001b[90m     |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 205 |\u001b[39m       \u001b[33m.\u001b[39mwithRules({\n \u001b[90m 206 |\u001b[39m         \u001b[32m'color-contrast'\u001b[39m\u001b[33m:\u001b[39m { enabled\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }\u001b[33m,\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[32m'color-contrast-enhanced'\u001b[39m\u001b[33m:\u001b[39m { enabled\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 21,
+                            "line": 204
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\n\u001b[0m \u001b[90m 202 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'🎨 Testing Color Contrast...'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 203 |\u001b[39m     \n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 204 |\u001b[39m     \u001b[36mconst\u001b[39m results \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mAxeBuilder\u001b[39m({ page\u001b[33m:\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mpage })\n \u001b[90m     |\u001b[39m                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 205 |\u001b[39m       \u001b[33m.\u001b[39mwithRules({\n \u001b[90m 206 |\u001b[39m         \u001b[32m'color-contrast'\u001b[39m\u001b[33m:\u001b[39m { enabled\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }\u001b[33m,\u001b[39m\n \u001b[90m 207 |\u001b[39m         \u001b[32m'color-contrast-enhanced'\u001b[39m\u001b[33m:\u001b[39m { enabled\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m }\u001b[0m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎨 Testing Color Contrast...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:08.048Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Safari\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-Mobile-Safari\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 21,
+                        "line": 204
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-d86a63241e861bf46ba8",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1122,
+              "column": 3
+            },
+            {
+              "title": "Reduced Motion Support",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 27,
+                      "parallelIndex": 4,
+                      "status": "passed",
+                      "duration": 541,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎭 Testing Reduced Motion Support...\n"
+                        },
+                        {
+                          "text": "\n🎭 Reduced Motion Support Results:\n"
+                        },
+                        {
+                          "text": "Reduced Motion Supported: true\n"
+                        },
+                        {
+                          "text": "Animated Elements: 3\n"
+                        },
+                        {
+                          "text": "Transition Elements: 3\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:07.812Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-1196778d6b150c6d1953",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1139,
+              "column": 3
+            },
+            {
+              "title": "Form Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 29,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 485,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n📝 Form Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Error Associations: 0 missing\n"
+                        },
+                        {
+                          "text": "Required Field Indicators: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:08.570Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-4f1366d659b3886a80b3",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1151,
+              "column": 3
+            },
+            {
+              "title": "Component Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "Mobile Safari",
+                  "projectName": "Mobile Safari",
+                  "results": [
+                    {
+                      "workerIndex": 30,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 574,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧩 Testing Component Accessibility...\n"
+                        },
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n🧩 Component Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Buttons: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Links: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Images: 0 missing alt text\n"
+                        },
+                        {
+                          "text": "Tables: 0 missing headers\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:09.030Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-b54f0c18620601ecfe40",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1165,
+              "column": 3
+            },
+            {
+              "title": "Comprehensive Accessibility Audit",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui-tests",
+                  "projectName": "ui-tests",
+                  "results": [
+                    {
+                      "workerIndex": 31,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 496,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21",
+                        "location": {
+                          "file": "eval at evaluate (:291:30), <anonymous>",
+                          "column": 25,
+                          "line": 28406
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "eval at evaluate (:291:30), <anonymous>",
+                            "column": 25,
+                            "line": 28406
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Array.forEach (<anonymous>)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at new Promise (<anonymous>)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.runComprehensiveAudit (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:47:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1074:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🔍 Running Comprehensive Accessibility Audit...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:09.124Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-ui-tests\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--5206b-hensive-Accessibility-Audit-ui-tests\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "eval at evaluate (:291:30), <anonymous>",
+                        "column": 25,
+                        "line": 28406
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-a99ac2452289e06bf199",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1073,
+              "column": 3
+            },
+            {
+              "title": "Screen Reader Compatibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui-tests",
+                  "projectName": "ui-tests",
+                  "results": [
+                    {
+                      "workerIndex": 32,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 783,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📢 Testing Screen Reader Compatibility...\n"
+                        },
+                        {
+                          "text": "\n📢 Screen Reader Compatibility Results:\n"
+                        },
+                        {
+                          "text": "Heading Structure: Valid\n"
+                        },
+                        {
+                          "text": "ARIA Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Image Alt Text: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:09.749Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-8d792bf875fcc4283038",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1093,
+              "column": 3
+            },
+            {
+              "title": "Keyboard Navigation",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui-tests",
+                  "projectName": "ui-tests",
+                  "results": [
+                    {
+                      "workerIndex": 33,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 803,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46",
+                        "location": {
+                          "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                          "column": 46,
+                          "line": 1114
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                            "column": 46,
+                            "line": 1114
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m\n\n\u001b[0m \u001b[90m 1112 |\u001b[39m     \u001b[90m// Assert keyboard navigation\u001b[39m\n \u001b[90m 1113 |\u001b[39m     expect(results\u001b[33m.\u001b[39mfocusIndicators\u001b[33m.\u001b[39melementsWithoutFocusIndicators)\u001b[33m.\u001b[39mtoBeLessThanOrEqual(\u001b[35m2\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 1114 |\u001b[39m     expect(results\u001b[33m.\u001b[39mskipLinks\u001b[33m.\u001b[39mtotalSkipLinks)\u001b[33m.\u001b[39mtoBeGreaterThanOrEqual(\u001b[35m1\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m      |\u001b[39m                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 1115 |\u001b[39m     \n \u001b[90m 1116 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n⌨️ Keyboard Navigation Results:`\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 1117 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m`Focus Indicators: ${results.focusIndicators.elementsWithoutFocusIndicators} missing`\u001b[39m)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1114:46\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "⌨️ Testing Keyboard Navigation...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:09.912Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-ui-tests\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--da41e-g-Suite-Keyboard-Navigation-ui-tests\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts",
+                        "column": 46,
+                        "line": 1114
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-05c65982d368c90a1510",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1109,
+              "column": 3
+            },
+            {
+              "title": "Color Contrast",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui-tests",
+                  "projectName": "ui-tests",
+                  "results": [
+                    {
+                      "workerIndex": 34,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 481,
+                      "error": {
+                        "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+                        "stack": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Array.forEach (<anonymous>)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at new Promise (<anonymous>)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\n    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\n    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\n    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\n    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\n    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\n    at UtilityScript.evaluate (<anonymous>:293:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\n    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\n    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\n    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21",
+                        "location": {
+                          "file": "eval at evaluate (:291:30), <anonymous>",
+                          "column": 25,
+                          "line": 28406
+                        }
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "eval at evaluate (:291:30), <anonymous>",
+                            "column": 25,
+                            "line": 28406
+                          },
+                          "message": "Error: frame.evaluate: Error: unknown rule `[object Object]` in options.runOnly\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Array.forEach (<anonymous>)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at new Promise (<anonymous>)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28406:25)\u001b[22m\n\u001b[2m    at Audit.normalizeOptions (eval at evaluate (:291:30), <anonymous>:28404:27)\u001b[22m\n\u001b[2m    at Audit.run (eval at evaluate (:291:30), <anonymous>:28282:16)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:28959:20)\u001b[22m\n\u001b[2m    at Object.runPartial (eval at evaluate (:291:30), <anonymous>:28958:14)\u001b[22m\n\u001b[2m    at eval (eval at evaluate (:291:30), <anonymous>:5:21)\u001b[22m\n\u001b[2m    at UtilityScript.evaluate (<anonymous>:293:16)\u001b[22m\n\u001b[2m    at UtilityScript.<anonymous> (<anonymous>:1:44)\u001b[22m\n\u001b[2m    at AxeBuilder.runPartialRecursive (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:283:34)\u001b[22m\n\u001b[2m    at AxeBuilder.analyze (C:\\Users\\Dontae-PC\\my-app\\node_modules\\@axe-core\\playwright\\dist\\index.mjs:210:28)\u001b[22m\n\u001b[2m    at EnhancedAccessibilityTesting.testColorContrast (C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:204:21)\u001b[22m\n\u001b[2m    at C:\\Users\\Dontae-PC\\my-app\\tests\\ui\\accessibility-enhanced.spec.ts:1123:21\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "🎨 Testing Color Contrast...\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:10.920Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-ui-tests\\test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "C:\\Users\\Dontae-PC\\my-app\\test-results\\ui-accessibility-enhanced--6c14c-esting-Suite-Color-Contrast-ui-tests\\video.webm"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "eval at evaluate (:291:30), <anonymous>",
+                        "column": 25,
+                        "line": 28406
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-7e8b64d8a8c160fef2cd",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1122,
+              "column": 3
+            },
+            {
+              "title": "Reduced Motion Support",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui-tests",
+                  "projectName": "ui-tests",
+                  "results": [
+                    {
+                      "workerIndex": 35,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 294,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🎭 Testing Reduced Motion Support...\n"
+                        },
+                        {
+                          "text": "\n🎭 Reduced Motion Support Results:\n"
+                        },
+                        {
+                          "text": "Reduced Motion Supported: true\n"
+                        },
+                        {
+                          "text": "Animated Elements: 3\n"
+                        },
+                        {
+                          "text": "Transition Elements: 3\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:11.283Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-565918e0551015e59d54",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1139,
+              "column": 3
+            },
+            {
+              "title": "Form Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui-tests",
+                  "projectName": "ui-tests",
+                  "results": [
+                    {
+                      "workerIndex": 36,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 297,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n📝 Form Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Form Labels: 0 missing\n"
+                        },
+                        {
+                          "text": "Error Associations: 0 missing\n"
+                        },
+                        {
+                          "text": "Required Field Indicators: 0 missing\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:11.540Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-60539388a64b3c6d957b",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1151,
+              "column": 3
+            },
+            {
+              "title": "Component Accessibility",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ui-tests",
+                  "projectName": "ui-tests",
+                  "results": [
+                    {
+                      "workerIndex": 37,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 254,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "🧩 Testing Component Accessibility...\n"
+                        },
+                        {
+                          "text": "📝 Testing Form Accessibility...\n"
+                        },
+                        {
+                          "text": "\n🧩 Component Accessibility Results:\n"
+                        },
+                        {
+                          "text": "Buttons: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Links: 0 missing descriptions\n"
+                        },
+                        {
+                          "text": "Images: 0 missing alt text\n"
+                        },
+                        {
+                          "text": "Tables: 0 missing headers\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-09-14T00:40:11.820Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d4f3bc77f15aca9db653-a3188de51237bec098ed",
+              "file": "ui/accessibility-enhanced.spec.ts",
+              "line": 1165,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-09-14T00:39:47.423Z",
+    "duration": 24903.516,
+    "expected": 24,
+    "skipped": 0,
+    "unexpected": 18,
+    "flaky": 0
+  }
+}

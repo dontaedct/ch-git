@@ -74,8 +74,16 @@ export interface LayoutTokens {
     'section-lg': string;
     'section-xl': string;
   };
-  grid: string;
+  gridSystem: string;
   full: string;
+}
+
+export interface SemanticColors {
+  [key: string]: string | { [key: string]: string };
+}
+
+export interface ComponentTokens {
+  [key: string]: any;
 }
 
 export interface DesignTokens {
@@ -1143,7 +1151,7 @@ export function generateDesignTokens(
         'section-lg': '6rem',
         'section-xl': '8rem',
       },
-      grid: 'repeat(12, 1fr)',
+      gridSystem: 'repeat(12, 1fr)',
       full: '100%',
     },
     

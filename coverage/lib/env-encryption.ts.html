@@ -818,7 +818,7 @@ function <span class="fstat-no" title="function not covered" >generateIV(): Buff
 /**
  * Encrypt a value with a master password
  */
-export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >encryptValue(v</span></span>alue: string, masterPassword: string): Promise&lt;string&gt; {
+export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >encryptValue(</span></span>value: string, masterPassword: string): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    if (!value || !masterPassword) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Value and master password are required');</span>
@@ -852,7 +852,7 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 /**
  * Decrypt a value with a master password
  */
-export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >decryptValue(e</span></span>ncryptedValue: string, masterPassword: string): Promise&lt;string&gt; {
+export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >decryptValue(</span></span>encryptedValue: string, masterPassword: string): Promise&lt;string&gt; {
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    if (!encryptedValue || !masterPassword) {</span>
 <span class="cstat-no" title="statement not covered" >      throw new Error('Encrypted value and master password are required');</span>
@@ -938,14 +938,14 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 /**
  * Check if a value is encrypted
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isEncrypted(v</span></span>alue: string): boolean {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >isEncrypted(</span></span>value: string): boolean {
 <span class="cstat-no" title="statement not covered" >  return typeof value === 'string' &amp;&amp; value.startsWith('ENC:');</span>
 }
 &nbsp;
 /**
  * Validate encrypted value format
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >validateEncryptedValue(v</span></span>alue: string): boolean {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >validateEncryptedValue(</span></span>value: string): boolean {
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    if (!isEncrypted(value)) {</span>
 <span class="cstat-no" title="statement not covered" >      return false;</span>
@@ -965,7 +965,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Generate a strong master password
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >generateMasterPassword(l</span></span>ength: number = <span class="branch-0 cbranch-no" title="branch not covered" >32)</span>: string {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >generateMasterPassword(</span></span>length: number = <span class="branch-0 cbranch-no" title="branch not covered" >32)</span>: string {
   const charset = <span class="cstat-no" title="statement not covered" >'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&amp;*';</span>
   let password = <span class="cstat-no" title="statement not covered" >'';</span>
   
@@ -979,7 +979,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Validate master password strength
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >validateMasterPassword(p</span></span>assword: string): { valid: boolean; errors: string[] } {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >validateMasterPassword(</span></span>password: string): { valid: boolean; errors: string[] } {
   const errors: string[] = <span class="cstat-no" title="statement not covered" >[];</span>
   
 <span class="cstat-no" title="statement not covered" >  if (password.length &lt; 16) {</span>
@@ -1011,7 +1011,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Hash master password for storage (one-way)
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >hashMasterPassword(p</span></span>assword: string): string {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >hashMasterPassword(</span></span>password: string): string {
 <span class="cstat-no" title="statement not covered" >  return createHash('sha256').update(password).digest('hex');</span>
 }
 &nbsp;
@@ -1041,7 +1041,7 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 /**
  * Get master password from environment or prompt
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getMasterPassword(): string {</span></span>
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >getMasterPassword(</span></span>): string {
   const envPassword = <span class="cstat-no" title="statement not covered" >process.env.ENV_MASTER_PASSWORD;</span>
   
 <span class="cstat-no" title="statement not covered" >  if (envPassword) {</span>
@@ -1060,7 +1060,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
 /**
  * Decrypt environment variables at runtime if needed
  */
-export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >processEnvironmentDecryption(e</span></span>nv: Record&lt;string, string | undefined&gt;): Promise&lt;Record&lt;string, string | undefined&gt;&gt; {
+export async function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >processEnvironmentDecryption(</span></span>env: Record&lt;string, string | undefined&gt;): Promise&lt;Record&lt;string, string | undefined&gt;&gt; {
   const masterPassword = <span class="cstat-no" title="statement not covered" >getMasterPassword();</span>
   const processed: Record&lt;string, string | undefined&gt; = <span class="cstat-no" title="statement not covered" >{ ...env };</span>
   
@@ -1107,7 +1107,7 @@ export async function <span class="cstat-no" title="statement not covered" ><spa
 /**
  * Format environment variables for .env file
  */
-export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >formatEnvFile(e</span></span>nv: Record&lt;string, string&gt;): string {
+export function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >formatEnvFile(</span></span>env: Record&lt;string, string&gt;): string {
 <span class="cstat-no" title="statement not covered" >  return Object.entries(env)</span>
     .map(<span class="fstat-no" title="function not covered" >([</span>key, value]) =&gt; {
       // Wrap values with spaces or special characters in quotes
@@ -1123,7 +1123,7 @@ export function <span class="cstat-no" title="statement not covered" ><span clas
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-30T15:13:51.591Z
+                at 2025-09-12T17:02:51.335Z
             </div>
         <script src="../prettify.js"></script>
         <script>

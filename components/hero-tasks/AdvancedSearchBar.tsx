@@ -8,10 +8,10 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Input } from '@ui/input';
-import { Button } from '@ui/button';
-import { Badge } from '@ui/badge';
-import { Card, CardContent } from '@ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { 
   Search, 
   X, 

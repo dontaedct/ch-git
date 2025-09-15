@@ -124,12 +124,9 @@ export { PerformanceQualityValidator } from './performance-quality-validator';
 export type {
   ValidationResult,
   ValidationConfig,
-  PerformanceMetrics,
+  PerformanceTargets,
   QualityMetrics,
   ClientSatisfactionMetrics,
-  ReliabilityMetrics,
-  DeliveryPipelineResult,
-  ValidationIssue,
-  AlertRule,
-  MonitoringConfig
+  SystemReliabilityMetrics,
+  ValidationIssue
 } from './performance-quality-validator';

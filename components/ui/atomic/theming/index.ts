@@ -36,8 +36,7 @@ export {
   useSimpleTheme,
   AGENCY_THEMES,
   validateSimpleTheme,
-  createSimpleTheme,
-  type SimpleClientTheme
+  createSimpleTheme
 } from './simple-theme-provider';
 
 // UI Components
@@ -55,6 +54,8 @@ export {
 } from './theme-validator';
 
 // Helper utilities
+import { SimpleClientTheme } from '@/lib/foundation';
+
 export function getThemeCSS(theme: SimpleClientTheme): string {
   return `
     :root[data-agency-theme="${theme.id}"] {

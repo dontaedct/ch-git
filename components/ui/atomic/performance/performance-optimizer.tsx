@@ -21,7 +21,7 @@ export function optimizeComponent<P extends object>(
     monitoring?: boolean;
     lazyLoad?: boolean;
   } = {}
-) {
+): React.ComponentType<P> {
   const {
     displayName,
     memoize = true,
@@ -29,11 +29,11 @@ export function optimizeComponent<P extends object>(
     lazyLoad = false
   } = options;
 
-  let OptimizedComponent = Component;
+  let OptimizedComponent: React.ComponentType<P> = Component;
 
   // Apply memoization
   if (memoize) {
-    OptimizedComponent = memo(OptimizedComponent);
+    OptimizedComponent = memo(OptimizedComponent) as unknown as React.ComponentType<P>;
   }
 
   // Apply performance monitoring
@@ -44,11 +44,11 @@ export function optimizeComponent<P extends object>(
   // Apply lazy loading
   if (lazyLoad) {
     const LazyComponent = lazy(() => Promise.resolve({ default: OptimizedComponent }));
-    OptimizedComponent = (props: P) => (
+    OptimizedComponent = ((props: P) => (
       <Suspense fallback={<div className="animate-pulse bg-muted h-8 w-full rounded" />}>
-        <LazyComponent {...props} />
+        <LazyComponent {...(props as any)} />
       </Suspense>
-    );
+    )) as React.ComponentType<P>;
   }
 
   if (displayName) {

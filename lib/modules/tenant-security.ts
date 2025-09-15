@@ -144,7 +144,7 @@ class TenantSecurityManager {
 
     // Basic tenant isolation check
     if (context.tenantId !== targetTenantId && !policy.allowCrossTenantAccess) {
-      this.logAuditEvent(context, operation, resourceType, '', 'read', {}, false, 'Cross-tenant access denied')
+      this.logAuditEvent(context, operation, resourceType as 'data' | 'theme' | 'config' | 'module', '', 'read', {}, false, 'Cross-tenant access denied')
       return {
         allowed: false,
         tenantId: context.tenantId,
@@ -158,7 +158,7 @@ class TenantSecurityManager {
     // Check specific operation permissions
     const operationAllowed = this.checkOperationPermission(policy, operation, resourceType)
     if (!operationAllowed.allowed) {
-      this.logAuditEvent(context, operation, resourceType, '', 'read', {}, false, operationAllowed.reason)
+      this.logAuditEvent(context, operation, resourceType as 'data' | 'theme' | 'config' | 'module', '', 'read', {}, false, operationAllowed.reason)
       return {
         allowed: false,
         tenantId: context.tenantId,
@@ -177,7 +177,7 @@ class TenantSecurityManager {
     // Log successful access if required
     const auditRequired = policy.auditSettings.enableAuditLog && this.shouldAuditOperation(policy, operation, resourceType)
     if (auditRequired) {
-      this.logAuditEvent(context, operation, resourceType, '', 'read', {}, true)
+      this.logAuditEvent(context, operation, resourceType as 'data' | 'theme' | 'config' | 'module', '', 'read', {}, true)
     }
 
     return {

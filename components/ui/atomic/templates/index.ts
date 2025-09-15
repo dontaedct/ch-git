@@ -8,29 +8,32 @@
  * Essential template components for agency micro-app development
  */
 
-// Layout Templates
-export { Container } from '../container';
-export { Grid } from '../grid';
-export { Surface } from '../surface';
-export { Spacing } from '../spacing';
+// Layout Templates - TODO: Implement these components
+// export { Container } from '../container';
+// export { Grid } from '../grid';
+// export { Surface } from '../surface';
+// export { Spacing } from '../spacing';
 
-// Dashboard Templates
-export { Dashboard, type DashboardMetric, type DashboardWidget } from '../dashboard';
+// Dashboard Templates - TODO: Implement these components
+// export { Dashboard, type DashboardMetric, type DashboardWidget } from '../dashboard';
 
-// Specialized Layout Components
-export { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../resizable';
-export { ScrollArea, ScrollBar } from '../scroll-area';
-export { AspectRatio } from '../aspect-ratio';
+// Specialized Layout Components - TODO: Implement these components
+// export { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../resizable';
+// export { ScrollArea, ScrollBar } from '../scroll-area';
+// export { AspectRatio } from '../aspect-ratio';
 
-// Advanced Templates
-export { PDFPreview } from '../pdf-preview';
-export { Stepper } from '../stepper';
+// Advanced Templates - TODO: Implement these components
+// export { PDFPreview } from '../pdf-preview';
+// export { Stepper } from '../stepper';
 
-// Theme & State Templates
-export { ThemeToggle } from '../theme-toggle';
-export { Toast, ToastAction, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '../toast';
-export { Toaster } from '../toaster';
-export { ToastAuto } from '../toast-auto';
+// Theme & State Templates - TODO: Implement these components
+// export { ThemeToggle } from '../theme-toggle';
+// export { Toast, ToastAction, ToastClose, ToastDescription, ToastProvider, ToastTitle, ToastViewport } from '../toast';
+// export { Toaster } from '../toaster';
+// export { ToastAuto } from '../toast-auto';
 
-// UX Pattern Templates
-export * from '../ux-patterns';
+// UX Pattern Templates - TODO: Implement these components
+// export * from '../ux-patterns';
+
+// Placeholder export to make this a valid module
+export const TEMPLATES_PLACEHOLDER = 'Templates module - components to be implemented';

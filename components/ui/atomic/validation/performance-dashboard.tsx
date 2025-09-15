@@ -355,7 +355,7 @@ export function PerformanceDashboard({ className }: PerformanceDashboardProps) {
                                  key.includes('Size') ? `${Math.round(value / 1024)}KB` :
                                  key.includes('Memory') ? `${value}MB` :
                                  value.toString()) :
-                                value.toString()}
+                                String(value)}
                             </Badge>
                           </div>
                           <div className="w-full bg-muted rounded-full h-2">

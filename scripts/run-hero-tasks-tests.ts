@@ -3,7 +3,7 @@
  * Created: 2025-09-08T18:45:00.000Z
  */
 
-#!/usr/bin/env node
+// Hero Tasks Test Runner Script
 
 import { execSync } from 'child_process';
 import { existsSync, mkdirSync } from 'fs';

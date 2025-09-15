@@ -1,13 +1,13 @@
 /**
- * @fileoverview HT-007 Elements Page - Mono-Theme Enhancement
+ * @fileoverview HT-021 Elements Page - Agency Toolkit Foundation
  * @module app/sandbox/elements/page
  * @author OSS Hero System
  * @version 2.0.0
  * 
- * UNIVERSAL HEADER: HT-007 Phase 5 - Elements Page Transformation
- * Purpose: Sophisticated component showcase with HT-007 mono-theme system
+ * UNIVERSAL HEADER: HT-021 Phase 1 - Agency Toolkit Foundation
+ * Purpose: Sophisticated component showcase with HT-021 agency toolkit system
  * Safety: Sandbox-isolated, no production impact
- * Status: HT-007 Phase 5 implementation - Interactive component demonstrations
+ * Status: HT-021 Phase 1 implementation - Interactive component demonstrations
  */
 
 'use client'
@@ -96,10 +96,10 @@ export default function ElementsPage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <h1 className="text-4xl font-bold text-gray-100 dark:text-gray-100">
-                HT-007 Elements Showcase
+                HT-021 Elements Showcase
               </h1>
               <p className="text-lg text-gray-300 dark:text-gray-300 mt-2">
-                Sophisticated component demonstrations with HT-007 mono-theme system, 
+                Sophisticated component demonstrations with HT-021 agency toolkit system, 
                 interactive variant testing, and comprehensive accessibility features
               </p>
             </motion.div>

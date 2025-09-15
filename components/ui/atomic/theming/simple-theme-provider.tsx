@@ -17,30 +17,10 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useLocalStorage } from '@/hooks/use-local-storage';
+import { SimpleClientTheme } from '@/lib/foundation';
 
-// Simple Client Theme Types
-export interface SimpleClientTheme {
-  id: string;
-  name: string;
-  colors: {
-    primary: string;
-    secondary: string;
-    accent: string;
-    background: string;
-    foreground: string;
-  };
-  logo: {
-    src?: string;
-    alt: string;
-    initials: string;
-  };
-  typography: {
-    fontFamily: string;
-    headingFamily?: string;
-  };
-  createdAt?: Date;
-  isCustom?: boolean;
-}
+// Re-export SimpleClientTheme for components that import from this file
+export type { SimpleClientTheme };
 
 // Predefined Agency Themes
 export const AGENCY_THEMES: SimpleClientTheme[] = [

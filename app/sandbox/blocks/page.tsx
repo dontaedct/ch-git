@@ -1,13 +1,13 @@
 /**
- * @fileoverview HT-007 Blocks Page - Mono-Theme Enhancement
+ * @fileoverview HT-022 Blocks Page - Component System & UI Library
  * @module app/sandbox/blocks/page
  * @author OSS Hero System
  * @version 2.0.0
  * 
- * UNIVERSAL HEADER: HT-007 Phase 6 - Blocks Page Redesign
- * Purpose: Sophisticated block showcase with HT-007 mono-theme system
+ * UNIVERSAL HEADER: HT-022 Phase 1 - Component System & UI Library
+ * Purpose: Sophisticated block showcase with HT-022 component system
  * Safety: Sandbox-isolated block demonstration environment
- * Status: HT-007 Phase 6 implementation - Interactive block demonstrations
+ * Status: HT-022 Phase 1 implementation - Interactive block demonstrations
  */
 
 'use client'
@@ -254,7 +254,7 @@ export default function BlocksPage() {
                 transition={{ delay: 0.1 }}
               >
                 <Sparkles className="w-8 h-8 text-primary" />
-                HT-007 Blocks Showcase
+                HT-022 Blocks Showcase
               </motion.h1>
               <motion.p 
                 className="mono-text-lg mono-text-secondary mt-2"
@@ -262,7 +262,7 @@ export default function BlocksPage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                Sophisticated block demonstrations with HT-007 mono-theme system, 
+                Sophisticated block demonstrations with HT-022 component system, 
                 interactive previews, and advanced configuration tools
               </motion.p>
             </div>

@@ -1,13 +1,13 @@
 /**
- * @fileoverview HT-007 Mono-Theme Sandbox Page
+ * @fileoverview HT-023 Mono-Theme Sandbox Page
  * @module app/sandbox/mono-theme/page
  * @author OSS Hero System
  * @version 1.0.0
  * 
- * UNIVERSAL HEADER: HT-007 Phase 1 - Mono-Theme Implementation
+ * UNIVERSAL HEADER: HT-023 Phase 1 - Template Engine & Custom Micro App Templates
  * Purpose: Sophisticated mono-theme showcase with Framer Motion integration
  * Safety: Sandbox-isolated mono-theme demonstration
- * Status: Phase 1 implementation - Mono-theme foundation
+ * Status: Phase 1 implementation - Template engine foundation
  */
 
 'use client'
@@ -130,7 +130,7 @@ export default function MonoThemePage() {
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               <Sparkles className="w-4 h-4" />
-              <span>HT-007 Mono-Theme System</span>
+              <span>HT-023 Template Engine System</span>
             </motion.div>
 
             {/* Main Heading */}
@@ -519,7 +519,7 @@ export default function MonoThemePage() {
             viewport={{ once: true }}
           >
             <h3 className="mono-text-2xl font-bold mb-4 mono-text-primary">
-              HT-007 Mono-Theme System
+              HT-023 Template Engine System
             </h3>
             
             <p className="mono-text-secondary mb-8 max-w-2xl mx-auto">

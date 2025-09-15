@@ -54,6 +54,20 @@ export {
   DEFAULT_SECURITY_CONFIGS,
 } from './client-security';
 
+// Client Theme Management
+export {
+  type ClientThemeConfig as ClientThemeManagerConfig,
+  type ThemeGenerationOptions,
+  ClientThemeManager,
+} from './client-theme-manager';
+
+// Component Customization Management
+export {
+  type CustomizationRequest,
+  type CustomizationResult,
+  ComponentCustomizationManager,
+} from './component-customization-manager';
+
 /**
  * Agency Toolkit Foundation Summary
  *
@@ -208,18 +222,21 @@ export class AgencyToolkitManager {
       clientName,
       allowedDomains: [], // To be configured per client
     };
-    const securityBoundary = await clientSecurityManager.createSecurityBoundary(securityConfig);
+    const { clientSecurityManager } = await import('./client-security');
+    const securityBoundary = await clientSecurityManager.createSecurityBoundary(securityConfig as any);
 
     // Create template
     const templateConfig = DEFAULT_TEMPLATES[template];
+    const { templateSystem } = await import('./template-system');
     const clientTemplate = await templateSystem.createTemplate({
       ...templateConfig,
       client: { id: clientId, name: clientName },
       theme: { ...DEFAULT_THEME, ...theme },
       components: {},
-    });
+    } as any);
 
     // Register hooks
+    const { integrationManager } = await import('./integration-hooks');
     const registeredHooks = await Promise.all(
       hooks.map(hook =>
         integrationManager.registerHook({
@@ -243,6 +260,7 @@ export class AgencyToolkitManager {
     templateId: string,
     environment: 'preview' | 'staging' | 'production' = 'preview'
   ) {
+    const { templateSystem } = await import('./template-system');
     const deployment = await templateSystem.deployTemplate(
       templateId,
       environment,
@@ -269,6 +287,10 @@ export class AgencyToolkitManager {
    * Get client overview
    */
   async getClientOverview(clientId: string) {
+    const { clientSecurityManager } = await import('./client-security');
+    const { templateSystem } = await import('./template-system');
+    const { integrationManager } = await import('./integration-hooks');
+    
     const securityBoundary = clientSecurityManager.getSecurityBoundary(clientId);
     const templates = templateSystem.getClientTemplates(clientId);
     const hooks = integrationManager.getClientHooks(clientId);
@@ -282,7 +304,7 @@ export class AgencyToolkitManager {
         templateCount: templates.length,
         hookCount: hooks.length,
         lastUpdated: Math.max(
-          ...templates.map(t => t.updatedAt.getTime()),
+          ...templates.map((t: any) => t.updatedAt.getTime()),
           securityBoundary?.updatedAt.getTime() || 0
         ),
       },

@@ -8,7 +8,7 @@
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { requirePermission } from '@/lib/auth/guard';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { BrandManagementInterface } from './brand-management-interface';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AdminLayout } from '@/components/admin/AdminLayout';
@@ -26,7 +26,7 @@ export default async function BrandManagementPage() {
             <div className="mb-8">
               <h1 className="text-3xl font-bold">Brand Management</h1>
               <p className="text-muted-foreground mt-2">
-                Manage your organization's branding, including logos, colors, typography, and brand names. 
+                Manage your organization&apos;s branding, including logos, colors, typography, and brand names. 
                 Changes apply immediately across the entire application.
               </p>
             </div>

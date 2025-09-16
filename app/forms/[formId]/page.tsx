@@ -182,7 +182,7 @@ export default function FormDetailPage() {
           </div>
           <div className="p-6 rounded-lg border-2 border-purple-300 bg-purple-50">
             <div className="text-2xl font-bold text-purple-600">{form.submissions.today}</div>
-            <div className="text-sm text-purple-600">Today's Submissions</div>
+            <div className="text-sm text-purple-600">Today&apos;s Submissions</div>
             <div className="mt-2 text-xs text-purple-600">{form.submissions.thisWeek} this week</div>
           </div>
         </motion.div>

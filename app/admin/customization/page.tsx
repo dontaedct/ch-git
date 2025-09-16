@@ -231,7 +231,7 @@ export default function CustomizationAdminPage() {
                   </div>
 
                   <BrandExportManager
-                    theme={currentTheme || undefined}
+                    theme={currentTheme ?? undefined}
                   />
                 </div>
               </TabsContent>

@@ -168,7 +168,7 @@ export function PWARegistration() {
               <WifiOff className="h-5 w-5 text-orange-600" />
               <div className="flex-1">
                 <p className="text-sm font-medium text-orange-800 dark:text-orange-200">
-                  You're offline
+                  You&apos;re offline
                 </p>
                 <p className="text-xs text-orange-600 dark:text-orange-300">
                   Some features may be limited

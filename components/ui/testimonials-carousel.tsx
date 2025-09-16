@@ -127,7 +127,7 @@ export function TestimonialsCarousel({
         </div>
       </div>
       <blockquote className="text-gray-700 dark:text-gray-300 leading-relaxed text-xs sm:text-sm md:text-base mb-3 sm:mb-4">
-        "{testimonial.quote}"
+        &ldquo;{testimonial.quote}&rdquo;
       </blockquote>
       <div className="flex text-yellow-400">
         {renderStars(testimonial.rating)}
@@ -145,6 +145,7 @@ export function TestimonialsCarousel({
       <div className="relative overflow-hidden rounded-2xl mx-2 sm:mx-4 md:mx-0">
         <div
           className="flex transition-transform duration-500 ease-out"
+          // eslint-disable-next-line brand-aware/brand-enforce-components
           style={{
             transform: `translateX(-${currentIndex * (isMobile ? 100 : 50)}%)`,
           }}

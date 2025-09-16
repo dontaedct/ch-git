@@ -351,7 +351,7 @@ describe('Environment Validation System', () => {
       const requirements = {
         NODE_ENV: 'production',
         NEXT_PUBLIC_SUPABASE_URL: 'https://project.supabase.co',
-        STRIPE_SECRET_KEY: 'sk_test_123456789012345678901234567890'
+        STRIPE_SECRET_KEY: 'sk_test_FAKE_KEY_FOR_TESTING_ONLY'
       };
 
       const result = validateEnvironmentRequirements(requirements);
@@ -373,7 +373,7 @@ describe('Environment Validation System', () => {
       const requirements = {
         NODE_ENV: 'development',
         NEXT_PUBLIC_SUPABASE_URL: 'http://localhost:54321',
-        STRIPE_SECRET_KEY: 'sk_test_123456789012345678901234567890'
+        STRIPE_SECRET_KEY: 'sk_test_FAKE_KEY_FOR_TESTING_ONLY'
       };
 
       const result = validateEnvironmentRequirements(requirements);
@@ -386,7 +386,7 @@ describe('Environment Validation System', () => {
     it('should detect when rotation is needed', () => {
       const env = {
         NODE_ENV: 'production',
-        STRIPE_SECRET_KEY: 'sk_test_123456789012345678901234567890'
+        STRIPE_SECRET_KEY: 'sk_test_FAKE_KEY_FOR_TESTING_ONLY'
       };
 
       const result = detectRotationNeeds(env);
@@ -396,7 +396,7 @@ describe('Environment Validation System', () => {
     it('should not detect rotation for same keys', () => {
       const env = {
         NODE_ENV: 'production',
-        STRIPE_SECRET_KEY: 'sk_live_123456789012345678901234567890123456789012345678901234567890'
+        STRIPE_SECRET_KEY: 'sk_live_FAKE_KEY_FOR_TESTING_PURPOSES_ONLY'
       };
 
       const result = detectRotationNeeds(env);

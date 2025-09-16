@@ -15,9 +15,14 @@ build/
 
 # Test results and reports
 test-results/
+test-results.json
+test-results.xml
 playwright-report/
 reports/
 
 # Temporary files
 temp-backup/
 nul
+
+# TypeScript build cache
+tsconfig.tsbuildinfo

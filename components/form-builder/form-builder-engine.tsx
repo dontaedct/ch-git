@@ -117,7 +117,7 @@ export function FormBuilderEngine({ onSave, onPreview, initialTemplate }: FormBu
   }, [append, generateFieldId])
 
   const updateField = useMemo(() => {
-    if (performanceOptimizer.current?.config.enableDebouncing) {
+    if (performanceOptimizer.current?.getConfig().enableDebouncing) {
       return performanceOptimizer.current.createDebouncedHandler(
         (index: number, updates: Partial<FormField>) => {
           const currentField = fields[index]
@@ -169,7 +169,7 @@ export function FormBuilderEngine({ onSave, onPreview, initialTemplate }: FormBu
   }, [form, onPreview, initialTemplate])
 
   const generateFormCode = useMemo(() => {
-    if (performanceOptimizer.current?.config.enableMemoization) {
+    if (performanceOptimizer.current?.getConfig().enableMemoization) {
       return performanceOptimizer.current.createMemoizedRenderer(
         (data: any) => JSON.stringify(data, null, 2),
         (data) => `form-code-${JSON.stringify(data).slice(0, 100)}`

@@ -73,6 +73,10 @@ export class PerformanceOptimizer {
     this.initializePerformanceMonitoring()
   }
 
+  public getConfig(): PerformanceConfig {
+    return { ...this.config }
+  }
+
   private initializePerformanceMonitoring(): void {
     if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
       this.performanceObserver = new PerformanceObserver((list) => {
@@ -224,7 +228,9 @@ export class PerformanceOptimizer {
       // Implement LRU cache behavior
       if (this.renderCache.size >= this.config.memoizationCacheSize) {
         const firstKey = this.renderCache.keys().next().value
-        this.renderCache.delete(firstKey)
+        if (firstKey !== undefined) {
+          this.renderCache.delete(firstKey)
+        }
       }
 
       this.renderCache.set(key, result)

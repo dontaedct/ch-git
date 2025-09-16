@@ -205,11 +205,7 @@ export class CoreStateManager {
       const processingTime = performance.now() - startTime
       this.trackStateOperation(update.stateId, 'update_failed', processingTime)
       update.status = 'failed'
-      update.validation.errors.push({
-        field: 'update',
-        message: error instanceof Error ? error.message : 'Unknown error',
-        severity: 'error'
-      })
+      update.validation.errors.push(error instanceof Error ? error.message : 'Unknown error')
       throw error
     }
   }
@@ -593,7 +589,12 @@ export class CoreStateManager {
 
     // Validate updated state
     const validation = await this.validateStateData(stateDefinition, currentState)
-    update.validation = validation
+    update.validation = {
+      validated: validation.isValid,
+      errors: validation.errors.map(e => typeof e === 'string' ? e : e.message),
+      warnings: validation.warnings.map(w => typeof w === 'string' ? w : w.message),
+      schemaVersion: stateDefinition.schema.version
+    }
 
     if (validation.isValid) {
       update.status = 'applied'

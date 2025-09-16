@@ -560,13 +560,19 @@ export class PerformanceVerificationSystem {
       // Calculate statistics
       const results = this.calculateTestResults(samples, test)
 
-      test.results = results
-      test.status = results.targetMet ? 'passed' : 'failed'
-      test.endTime = new Date()
-      test.duration = test.endTime.getTime() - test.startTime.getTime()
+      if (results) {
+        test.results = results
+        test.status = results.targetMet ? 'passed' : 'failed'
+        test.endTime = new Date()
+        test.duration = test.endTime.getTime() - test.startTime.getTime()
 
-      if (this.config.debugMode) {
-        console.log(`[PerformanceVerificationSystem] Test ${test.testName}: ${test.status} (${results.average.toFixed(2)} vs ${test.targetValue})`)
+        if (this.config.debugMode) {
+          console.log(`[PerformanceVerificationSystem] Test ${test.testName}: ${test.status} (${results.average.toFixed(2)} vs ${test.targetValue})`)
+        }
+      } else {
+        test.status = 'error'
+        test.endTime = new Date()
+        test.duration = test.endTime.getTime() - test.startTime.getTime()
       }
 
     } catch (error) {

@@ -409,8 +409,7 @@ export class DataIntegrityChecker {
       checkName: 'Client Isolation Validation',
       success: issues.length === 0,
       details: {
-        checkedData: `${clientData.size} data entries`,
-        isolationValid: issues.filter(i => i.issueType === 'isolation_breach').length === 0
+        checkedData: `${clientData.size} data entries`
       },
       issues,
       executionTime: performance.now() - startTime,
@@ -463,7 +462,7 @@ export class DataIntegrityChecker {
       issues.push({
         issueId: `timestamp_skew_${Date.now()}`,
         severity: 'medium',
-        issueType: 'consistency',
+        issueType: 'data_corruption',
         description: 'Timestamp skew between state and cache exceeds tolerance',
         affectedData: 'timestamp',
         expectedValue: new Date(stateTimestamp),
@@ -500,10 +499,7 @@ export class DataIntegrityChecker {
       checkName: 'State Consistency Validation',
       success: issues.length === 0,
       details: {
-        checkedData: 'state, cache, and sync data',
-        consistencyValid: issues.length === 0,
-        timestampSkew: Math.abs(stateTimestamp - cacheTimestamp),
-        versionMatch: stateData.version === cacheData.version
+        checkedData: 'state, cache, and sync data'
       },
       issues,
       executionTime: performance.now() - startTime,
@@ -750,9 +746,7 @@ export class DataIntegrityChecker {
       success: issues.length === 0,
       details: {
         checkedData: mockData.size,
-        checksumMatch: verification.mismatches.length === 0,
-        mismatches: verification.mismatches.length,
-        missing: verification.missing.length
+        checksumMatch: verification.mismatches.length === 0
       },
       issues,
       executionTime: performance.now() - startTime,

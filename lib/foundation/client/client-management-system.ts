@@ -413,7 +413,7 @@ export class ClientManagementService {
       const switchTimeMs = performance.now() - startTime
 
       // Update failure statistics
-      const profile = this.switchingProfiles.get(currentSession?.clientId || 'default')
+      const profile = this.switchingProfiles.get(currentSessionId || 'default')
       if (profile) {
         profile.statistics.failedSwitches++
         profile.updatedAt = new Date()
@@ -432,7 +432,7 @@ export class ClientManagementService {
     securityContext: ClientSecurityContext
   ): Promise<{ allowed: boolean; reason?: string }> {
     // Check if cross-client access is allowed
-    const fromPolicy = await clientIsolationSecurityManager.policies?.get(fromClientId)
+    const fromPolicy = (clientIsolationSecurityManager as any).getPolicy?.(fromClientId)
     if (fromPolicy && !fromPolicy.accessControl.dataAccess.allowCrossClientRead) {
       return { allowed: false, reason: 'Cross-client access not permitted' }
     }

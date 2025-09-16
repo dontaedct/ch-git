@@ -387,7 +387,8 @@ export class MultiTierCache {
   ): Promise<boolean> {
     const fullKey = this.buildKey(key, options?.clientId)
     const ttl = options?.ttlMs || this.globalConfig.defaultTtlMs
-    const tier = options?.tier || this.selectOptimalTier(value, options?.priority || 5)
+    const requestedTier = options?.tier || 'auto'
+    const tier = requestedTier === 'auto' ? this.selectOptimalTier(value, options?.priority || 5) : requestedTier
 
     try {
       const entry: CacheEntry = {
@@ -416,7 +417,7 @@ export class MultiTierCache {
       }
 
       // Place in appropriate tier
-      const success = await this.placeInTier(tier, fullKey, entry)
+      const success = await this.placeInTier(tier as 'hot' | 'warm' | 'cold', fullKey, entry)
 
       if (this.globalConfig.debugMode) {
         console.log(`[MultiTierCache] Set key ${fullKey} in ${tier} cache (${entry.metadata.sizeBytesEstimate} bytes)`)

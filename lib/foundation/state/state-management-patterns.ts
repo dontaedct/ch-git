@@ -754,24 +754,24 @@ export class StateManagementFactory {
       persistence: {
         strategy: pattern.configuration.persistence.strategy as StateDefinition['persistence']['strategy'],
         autoSave: pattern.configuration.persistence.autoSave,
-        saveDebounceMs: pattern.configuration.persistence.saveDebounceMs || 1000,
-        syncToServer: pattern.configuration.persistence.syncToServer,
-        compressionEnabled: pattern.configuration.persistence.compressionEnabled || false,
-        encryptionRequired: pattern.configuration.persistence.encryptionRequired || false
+        saveDebounceMs: 'saveDebounceMs' in pattern.configuration.persistence ? pattern.configuration.persistence.saveDebounceMs : 1000,
+        syncToServer: 'syncToServer' in pattern.configuration.persistence ? pattern.configuration.persistence.syncToServer : false,
+        compressionEnabled: 'compressionEnabled' in pattern.configuration.persistence ? pattern.configuration.persistence.compressionEnabled : false,
+        encryptionRequired: 'encryptionRequired' in pattern.configuration.persistence ? pattern.configuration.persistence.encryptionRequired : false
       },
       synchronization: {
         enabled: pattern.configuration.synchronization.enabled,
         strategy: pattern.configuration.synchronization.strategy as StateDefinition['synchronization']['strategy'],
-        conflictResolution: pattern.configuration.synchronization.conflictResolution as StateDefinition['synchronization']['conflictResolution'],
+        conflictResolution: 'conflictResolution' in pattern.configuration.synchronization ? pattern.configuration.synchronization.conflictResolution as StateDefinition['synchronization']['conflictResolution'] : 'client_wins',
         subscriptions: []
       },
       performance: {
         memoizationEnabled: pattern.configuration.performance.memoizationEnabled,
         lazyLoading: pattern.configuration.performance.lazyLoading,
-        virtualization: pattern.configuration.performance.virtualization || false,
+        virtualization: 'virtualization' in pattern.configuration.performance ? pattern.configuration.performance.virtualization : false,
         maxHistorySize: pattern.configuration.performance.maxHistorySize,
-        gcIntervalMs: pattern.configuration.performance.gcIntervalMs || 300000,
-        preloadStrategy: pattern.configuration.performance.preloadStrategy as StateDefinition['performance']['preloadStrategy'] || 'none'
+        gcIntervalMs: 'gcIntervalMs' in pattern.configuration.performance ? pattern.configuration.performance.gcIntervalMs : 300000,
+        preloadStrategy: 'preloadStrategy' in pattern.configuration.performance ? pattern.configuration.performance.preloadStrategy as StateDefinition['performance']['preloadStrategy'] : 'none'
       },
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -804,17 +804,17 @@ export class StateManagementFactory {
           async: template.config.async || false,
           debounceMs: 0,
           throttleMs: 0,
-          bufferSize: template.config.bufferSize || 1,
+          bufferSize: 'bufferSize' in template.config ? template.config.bufferSize : 1,
           errorHandling: 'retry',
           retryAttempts: 3
         },
         optimization: {
-          memoized: template.config.memoized || false,
-          cached: template.config.cached || false,
-          cacheTtlMs: template.config.cacheTtlMs || 60000,
-          batchProcessing: template.config.batchProcessing || false,
-          maxBatchSize: template.config.maxBatchSize || 10,
-          priority: template.config.priority || 5
+          memoized: 'memoized' in template.config ? template.config.memoized : false,
+          cached: 'cached' in template.config ? template.config.cached : false,
+          cacheTtlMs: 'cacheTtlMs' in template.config ? template.config.cacheTtlMs : 60000,
+          batchProcessing: 'batchProcessing' in template.config ? template.config.batchProcessing : false,
+          maxBatchSize: 'maxBatchSize' in template.config ? template.config.maxBatchSize : 10,
+          priority: 'priority' in template.config ? template.config.priority : 5
         },
         isActive: true,
         createdAt: new Date()

@@ -26,7 +26,7 @@ export function PerformanceMonitor({
   useEffect(() => {
     // Update real-time metrics
     const updateMetrics = () => {
-      if (typeof window !== 'undefined' && performance.memory) {
+      if (typeof window !== 'undefined' && (performance as any).memory) {
         const memory = (performance as any).memory
         setRealTimeMetrics({
           memoryUsed: Math.round(memory.usedJSHeapSize / 1024 / 1024),

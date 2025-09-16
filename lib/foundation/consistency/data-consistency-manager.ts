@@ -328,10 +328,10 @@ export class DataConsistencyManager {
     // Check for version mismatches
     try {
       const currentState = await this.stateManager.getState(incomingUpdate.stateId, this.config.clientId)
-      const currentVersion = currentState?.version || 0
-      const updateVersion = incomingUpdate.data.version || 0
+      const currentTimestamp = currentState?.updatedAt?.getTime() || 0
+      const updateTimestamp = incomingUpdate.data.timestamp.getTime()
 
-      if (updateVersion > 0 && currentVersion > 0 && updateVersion <= currentVersion) {
+      if (updateTimestamp > 0 && currentTimestamp > 0 && updateTimestamp <= currentTimestamp) {
         const conflictId = `conflict_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         const conflict: ConflictRecord = {
           conflictId,
@@ -347,7 +347,7 @@ export class DataConsistencyManager {
         this.conflicts.set(conflictId, conflict)
 
         if (this.config.debugMode) {
-          console.log(`[DataConsistencyManager] Detected version mismatch: current=${currentVersion}, incoming=${updateVersion}`)
+          console.log(`[DataConsistencyManager] Detected timestamp mismatch: current=${currentTimestamp}, incoming=${updateTimestamp}`)
         }
       }
     } catch (error) {
@@ -440,8 +440,7 @@ export class DataConsistencyManager {
         updateType: 'merge',
         data: {
           ...incomingUpdate.data,
-          value: this.mergeDataValues(currentState, incomingUpdate.data.value),
-          version: (currentState?.version || 0) + 1
+          value: this.mergeDataValues(currentState, incomingUpdate.data.value)
         },
         appliedAt: new Date()
       }

@@ -71,26 +71,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-sm border border-gray-200/80 mb-6">
-            <Mail className="w-7 h-7 text-gray-700" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-black rounded-lg border-2 border-black mb-6">
+            <Mail className="w-7 h-7 text-white" />
           </div>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-3 tracking-tight">
+          <h1 className="text-2xl font-bold tracking-wide uppercase text-black mb-3">
             Sign in to your account
           </h1>
-          <p className="text-gray-600 text-sm leading-relaxed mb-6">
+          <p className="text-black/60 text-sm leading-relaxed mb-6">
             Enter your email and we&apos;ll send you a secure link to sign in
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-2xl border border-gray-200/80 shadow-xl shadow-gray-900/5 p-8">
+        <div className="bg-white rounded-lg border-2 border-black/30 p-8">
           <form className="space-y-6" onSubmit={handleMagicLink} onKeyDown={handleKeyDown}>
             <div className="space-y-3">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-900">
+              <label htmlFor="email" className="block text-sm font-medium text-black">
                 Email Address
               </label>
               <div className="relative">
@@ -103,10 +103,10 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
-                  className={`w-full px-4 py-3.5 border rounded-xl bg-white transition-all duration-200 outline-none text-gray-900 placeholder-gray-400 ${
-                    emailFocused || email 
-                      ? 'border-gray-900 ring-4 ring-gray-900/5' 
-                      : 'border-gray-300 hover:border-gray-400'
+                  className={`w-full px-4 py-3 border-2 rounded-lg bg-white transition-all duration-300 outline-none text-black placeholder-black/40 ${
+                    emailFocused || email
+                      ? 'border-black'
+                      : 'border-black/30 hover:border-black/50'
                   }`}
                   required
                   autoFocus
@@ -147,7 +147,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading || !email.trim()}
-              className="w-full bg-gray-900 text-white py-3.5 px-6 rounded-xl font-medium hover:bg-gray-800 active:bg-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-gray-900/20"
+              className="w-full bg-black text-white py-3 px-6 rounded-lg border-2 border-black font-bold hover:bg-white hover:text-black disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
               aria-describedby="submit-help"
             >
               {loading ? (
@@ -168,9 +168,9 @@ export default function LoginPage() {
 
         {/* Back to Home */}
         <div className="text-center mt-8">
-          <Link 
-            href="/" 
-            className="inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:ring-offset-2 rounded-lg px-3 py-2"
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-black/60 hover:text-black transition-colors duration-300 font-medium px-3 py-2"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Home</span>

@@ -26,86 +26,77 @@ export default async function DashboardPage() {
   const hasOverrides = hasActiveOverrides();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-gray-50">
-
-      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+    <div className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Section */}
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3 tracking-tight">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold tracking-wide uppercase text-black mb-4">
             Welcome{client?.email ? ` back` : ' to your dashboard'}
           </h1>
-          <p className="text-gray-600 text-lg leading-relaxed">
+          <p className="text-black/60 text-lg leading-relaxed">
             Manage your consultations and account settings from here.
           </p>
           {isSafeMode && (
-            <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-300 mt-3">
-              <AlertCircle className="w-3 h-3 mr-1" />
+            <div className="mt-4 px-4 py-2 bg-orange-50 text-orange-600 border-2 border-orange-200 rounded-lg inline-flex items-center gap-2">
+              <AlertCircle className="w-4 h-4" />
               Safe Mode Active
-            </Badge>
+            </div>
           )}
         </div>
 
         {/* Key Metrics */}
-        <div>
+        <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-gray-900">Key Metrics</h3>
-            <Badge variant="outline" className="text-xs">
-              <Activity className="w-3 h-3 mr-1" />
+            <h2 className="text-2xl font-bold tracking-wide uppercase text-black">Key Metrics</h2>
+            <div className="px-3 py-1 bg-black/5 text-black/70 border-2 border-black/30 rounded-lg text-xs font-medium flex items-center gap-2">
+              <Activity className="w-3 h-3" />
               Real-time
-            </Badge>
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80 hover:bg-white/80 hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                <CardTitle className="text-sm font-medium text-gray-700">Consultations Today</CardTitle>
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <BarChart3 className="h-4 w-4 text-blue-600" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="p-6 rounded-lg border-2 border-black/30 bg-white hover:border-black/50 transition-all duration-300 hover:shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-sm font-medium text-black/60">Consultations Today</div>
+                <div className="p-2 bg-black/5 rounded-lg">
+                  <BarChart3 className="h-4 w-4 text-black" />
                 </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="text-3xl font-bold text-gray-900 mb-1">{dashboardStats.consultationsToday}</div>
-                <p className="text-sm text-gray-600">requests processed</p>
-              </CardContent>
-            </Card>
+              </div>
+              <div className="text-3xl font-bold text-black mb-1">{dashboardStats.consultationsToday}</div>
+              <p className="text-sm text-black/60">requests processed</p>
+            </div>
 
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80 hover:bg-white/80 hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                <CardTitle className="text-sm font-medium text-gray-700">Configuration Status</CardTitle>
-                <div className="p-2 bg-orange-100 rounded-lg">
-                  <Settings className="h-4 w-4 text-orange-600" />
+            <div className="p-6 rounded-lg border-2 border-black/30 bg-white hover:border-black/50 transition-all duration-300 hover:shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-sm font-medium text-black/60">Configuration Status</div>
+                <div className="p-2 bg-black/5 rounded-lg">
+                  <Settings className="h-4 w-4 text-black" />
                 </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="text-3xl font-bold text-gray-900 mb-1">{hasOverrides ? activeOverrides.length : '0'}</div>
-                <p className="text-sm text-gray-600">active overrides</p>
-              </CardContent>
-            </Card>
+              </div>
+              <div className="text-3xl font-bold text-black mb-1">{hasOverrides ? activeOverrides.length : '0'}</div>
+              <p className="text-sm text-black/60">active overrides</p>
+            </div>
 
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80 hover:bg-white/80 hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                <CardTitle className="text-sm font-medium text-gray-700">Active Modules</CardTitle>
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Package className="h-4 w-4 text-purple-600" />
+            <div className="p-6 rounded-lg border-2 border-black/30 bg-white hover:border-black/50 transition-all duration-300 hover:shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-sm font-medium text-black/60">Active Modules</div>
+                <div className="p-2 bg-black/5 rounded-lg">
+                  <Package className="h-4 w-4 text-black" />
                 </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="text-3xl font-bold text-gray-900 mb-1">5</div>
-                <p className="text-sm text-gray-600">modules running</p>
-              </CardContent>
-            </Card>
+              </div>
+              <div className="text-3xl font-bold text-black mb-1">5</div>
+              <p className="text-sm text-black/60">modules running</p>
+            </div>
 
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80 hover:bg-white/80 hover:shadow-lg transition-all duration-200 hover:-translate-y-1">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-                <CardTitle className="text-sm font-medium text-gray-700">Plan Catalog</CardTitle>
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <FileText className="h-4 w-4 text-green-600" />
+            <div className="p-6 rounded-lg border-2 border-black/30 bg-white hover:border-black/50 transition-all duration-300 hover:shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-sm font-medium text-black/60">Plan Catalog</div>
+                <div className="p-2 bg-black/5 rounded-lg">
+                  <FileText className="h-4 w-4 text-black" />
                 </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="text-lg font-semibold text-gray-900 mb-1">{dashboardStats.catalogInUse}</div>
-                <p className="text-sm text-gray-600">catalog active</p>
-              </CardContent>
-            </Card>
+              </div>
+              <div className="text-lg font-semibold text-black mb-1">{dashboardStats.catalogInUse}</div>
+              <p className="text-sm text-black/60">catalog active</p>
+            </div>
           </div>
         </div>
 

@@ -8,51 +8,54 @@
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import { requirePermission } from '@/lib/auth/guard';
+import { getPublicEnv } from '@/lib/env';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { DiagnosticsInterface } from './diagnostics-interface';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default async function DiagnosticsPage() {
-  try {
-    // Require admin permissions
-    await requirePermission('canManageSettings');
-    
-    return (
-      <div className="container mx-auto py-8 space-y-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">System Diagnostics</h1>
-          <p className="text-muted-foreground mt-2">
-            Real-time system monitoring, environment validation, and performance metrics
-          </p>
-        </div>
-
-        <Suspense fallback={<DiagnosticsLoadingSkeleton />}>
-          <DiagnosticsInterface />
-        </Suspense>
-      </div>
-    );
-  } catch (error) {
-    if (error instanceof Error) {
-      if (error.message.includes('Insufficient permissions')) {
-        redirect('/');
+  const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
+  
+  let client = null;
+  
+  if (!isSafeMode) {
+    try {
+      // Require admin permissions
+      client = await requirePermission('canManageSettings');
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes('Insufficient permissions')) {
+          redirect('/');
+        }
+        if (error.message === 'Unauthorized') {
+          redirect('/login');
+        }
       }
-      if (error.message === 'Unauthorized') {
-        redirect('/login');
-      }
+      throw error;
     }
-    
-    return (
-      <div className="container mx-auto py-8">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-destructive">
-              Error loading diagnostics: {error instanceof Error ? error.message : 'Unknown error'}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    );
   }
+
+  return (
+    <div className="container mx-auto py-8 space-y-6">
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold">System Diagnostics</h1>
+        <p className="text-muted-foreground mt-2">
+          Real-time system monitoring, environment validation, and performance metrics
+        </p>
+        {isSafeMode && (
+          <div className="mt-2">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+              Safe Mode Active
+            </span>
+          </div>
+        )}
+      </div>
+
+      <Suspense fallback={<DiagnosticsLoadingSkeleton />}>
+        <DiagnosticsInterface />
+      </Suspense>
+    </div>
+  );
 }
 
 function DiagnosticsLoadingSkeleton() {

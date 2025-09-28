@@ -1,0 +1,741 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://automationdct.com/schemas/template-manifest.schema.json",
+  "title": "Template Manifest Schema",
+  "description": "JSON Schema for DCT Micro-App Template Manifests - Configuration-first approach",
+  "type": "object",
+  "required": ["id", "name", "slug", "components", "meta"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^tpl_[a-z0-9_]+$",
+      "description": "Unique template identifier with tpl_ prefix"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Human-readable template name"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "URL-safe slug for the template"
+    },
+    "industry": {
+      "type": "string",
+      "enum": ["fitness", "retail", "saas", "consulting", "healthcare", "education", "finance", "real-estate", "restaurant", "legal", "agency", "non-profit", "automotive", "beauty", "general"],
+      "description": "Industry category for template classification"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Template description and use case"
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "useSiteDefaults": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to use site-wide design tokens"
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "palette": {
+              "type": "object",
+              "properties": {
+                "primary": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$",
+                  "description": "Primary color override"
+                },
+                "secondary": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$",
+                  "description": "Secondary color override"
+                },
+                "accent": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$",
+                  "description": "Accent color override"
+                }
+              }
+            },
+            "typography": {
+              "type": "object",
+              "properties": {
+                "fontFamily": {
+                  "type": "string",
+                  "description": "Custom font family"
+                },
+                "headingWeight": {
+                  "type": "string",
+                  "enum": ["normal", "medium", "semibold", "bold"],
+                  "description": "Heading font weight"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "$ref": "#/$defs/component"
+      },
+      "description": "Ordered list of components that make up the template"
+    },
+    "meta": {
+      "type": "object",
+      "required": ["version", "createdAt"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version of the manifest"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Creator or team identifier"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Creation date in YYYY-MM-DD format"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Last update date in YYYY-MM-DD format"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Template tags for categorization"
+        },
+        "previewUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to preview this template"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "required": ["id", "type", "version", "props"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^c_[a-z_]+_\\d+$",
+          "description": "Unique component instance identifier"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["header", "hero", "feature_grid", "text", "cta", "form", "card", "image", "video", "spacer", "divider", "testimonial", "pricing", "contact", "footer"],
+          "description": "Component type from the canonical component library"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Component contract version"
+        },
+        "props": {
+          "type": "object",
+          "description": "Component-specific properties (varies by component type)"
+        },
+        "conditional": {
+          "$ref": "#/$defs/conditional",
+          "description": "Conditional rendering rules"
+        },
+        "analytics": {
+          "type": "object",
+          "properties": {
+            "trackClicks": {
+              "type": "boolean",
+              "default": false
+            },
+            "trackViews": {
+              "type": "boolean",
+              "default": false
+            },
+            "customEvents": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "header"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "$ref": "#/$defs/headerProps"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "hero"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "$ref": "#/$defs/heroProps"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "feature_grid"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "$ref": "#/$defs/featureGridProps"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "text"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "$ref": "#/$defs/textProps"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "cta"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "$ref": "#/$defs/ctaProps"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "form"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "props": {
+                "$ref": "#/$defs/formProps"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "conditional": {
+      "type": "object",
+      "required": ["field", "operator", "value"],
+      "properties": {
+        "field": {
+          "type": "string",
+          "description": "Field or component ID to evaluate"
+        },
+        "operator": {
+          "type": "string",
+          "enum": ["equals", "notEquals", "contains", "notContains", "greaterThan", "lessThan"],
+          "description": "Comparison operator"
+        },
+        "value": {
+          "description": "Value to compare against"
+        }
+      }
+    },
+    "ctaAction": {
+      "type": "object",
+      "required": ["type", "target"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["navigate", "open_form", "download", "external", "scroll_to"],
+          "description": "Type of action to perform"
+        },
+        "target": {
+          "type": "string",
+          "description": "Target of the action (URL, form ID, section ID, etc.)"
+        }
+      }
+    },
+    "headerProps": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "logo": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["text", "image", "icon"]
+            },
+            "content": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string",
+              "enum": ["sm", "md", "lg"]
+            }
+          }
+        },
+        "navigation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "href": {
+                "type": "string"
+              },
+              "active": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "showThemeToggle": {
+          "type": "boolean",
+          "default": true
+        },
+        "sticky": {
+          "type": "boolean",
+          "default": true
+        },
+        "background": {
+          "type": "string",
+          "enum": ["transparent", "glass", "solid"],
+          "default": "glass"
+        }
+      }
+    },
+    "heroProps": {
+      "type": "object",
+      "required": ["title"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "Hero headline"
+        },
+        "subtitle": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Hero subtitle"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Hero description text"
+        },
+        "media": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["image", "video", "none"]
+            },
+            "assetId": {
+              "type": "string",
+              "description": "Reference to media asset"
+            },
+            "alt": {
+              "type": "string",
+              "description": "Alt text for accessibility"
+            }
+          }
+        },
+        "cta": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "type": "string",
+              "maxLength": 50
+            },
+            "action": {
+              "$ref": "#/$defs/ctaAction"
+            },
+            "style": {
+              "type": "string",
+              "enum": ["primary", "secondary", "outline", "ghost"],
+              "default": "primary"
+            },
+            "size": {
+              "type": "string",
+              "enum": ["sm", "md", "lg"],
+              "default": "md"
+            }
+          }
+        },
+        "background": {
+          "type": "string",
+          "enum": ["gradient", "mesh", "solid", "image"],
+          "default": "gradient"
+        },
+        "layout": {
+          "type": "string",
+          "enum": ["centered", "left", "right", "split"],
+          "default": "centered"
+        },
+        "animation": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "featureGridProps": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "features": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 12,
+          "items": {
+            "type": "object",
+            "required": ["title", "description"],
+            "properties": {
+              "icon": {
+                "type": "string",
+                "description": "Lucide icon name"
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 50
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "badge": {
+                "type": "string",
+                "maxLength": 20
+              }
+            }
+          }
+        },
+        "columns": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "default": 3
+        },
+        "layout": {
+          "type": "string",
+          "enum": ["cards", "icons", "text"],
+          "default": "cards"
+        },
+        "spacing": {
+          "type": "string",
+          "enum": ["tight", "normal", "relaxed"],
+          "default": "normal"
+        }
+      }
+    },
+    "textProps": {
+      "type": "object",
+      "required": ["content"],
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "type": "string",
+          "enum": ["markdown", "html", "text"],
+          "default": "text"
+        },
+        "alignment": {
+          "type": "string",
+          "enum": ["left", "center", "right"],
+          "default": "left"
+        },
+        "size": {
+          "type": "string",
+          "enum": ["sm", "md", "lg"],
+          "default": "md"
+        }
+      }
+    },
+    "ctaProps": {
+      "type": "object",
+      "required": ["buttons"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "buttons": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["label", "action"],
+            "properties": {
+              "label": {
+                "type": "string",
+                "maxLength": 50
+              },
+              "action": {
+                "$ref": "#/$defs/ctaAction"
+              },
+              "style": {
+                "type": "string",
+                "enum": ["primary", "secondary", "outline", "ghost"],
+                "default": "primary"
+              },
+              "size": {
+                "type": "string",
+                "enum": ["sm", "md", "lg"],
+                "default": "md"
+              }
+            }
+          }
+        },
+        "background": {
+          "type": "string",
+          "enum": ["gradient", "solid", "transparent"],
+          "default": "transparent"
+        },
+        "alignment": {
+          "type": "string",
+          "enum": ["left", "center", "right"],
+          "default": "center"
+        },
+        "spacing": {
+          "type": "string",
+          "enum": ["sm", "md", "lg"],
+          "default": "md"
+        }
+      }
+    },
+    "formProps": {
+      "type": "object",
+      "required": ["fields"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "items": {
+            "$ref": "#/$defs/formField"
+          }
+        },
+        "submission": {
+          "type": "object",
+          "required": ["type", "target"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["webhook", "email", "database"]
+            },
+            "target": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string",
+              "enum": ["POST", "PUT"],
+              "default": "POST"
+            }
+          }
+        },
+        "validation": {
+          "type": "boolean",
+          "default": true
+        },
+        "layout": {
+          "type": "string",
+          "enum": ["vertical", "horizontal", "grid"],
+          "default": "vertical"
+        },
+        "options": {
+          "type": "object",
+          "properties": {
+            "spamProtection": {
+              "type": "boolean",
+              "default": true
+            },
+            "requireConsent": {
+              "type": "boolean",
+              "default": false
+            },
+            "autoSave": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        }
+      }
+    },
+    "formField": {
+      "type": "object",
+      "required": ["id", "name", "type", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^f\\d+$",
+          "description": "Field ID with f prefix"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$",
+          "description": "Field name for form submission"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["text", "email", "password", "number", "tel", "url", "textarea", "select", "multiselect", "checkbox", "radio", "switch", "date", "time", "datetime", "file", "range", "color"]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "placeholder": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "required": {
+          "type": "boolean",
+          "default": false
+        },
+        "defaultValue": {},
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "validation": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "minLength": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxLength": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "pattern": {
+              "type": "string",
+              "description": "Regular expression pattern"
+            },
+            "custom": {
+              "type": "string",
+              "description": "Custom validation function reference"
+            }
+          }
+        },
+        "conditional": {
+          "$ref": "#/$defs/conditional"
+        },
+        "visibility": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  }
+}

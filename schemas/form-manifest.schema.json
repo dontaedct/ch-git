@@ -1,0 +1,755 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://automationdct.com/schemas/form-manifest.schema.json",
+  "title": "Form Manifest Schema",
+  "description": "JSON Schema for standalone form manifests - Advanced form builder configuration",
+  "type": "object",
+  "required": ["id", "name", "slug", "fields", "submission", "meta"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^form_[a-z0-9_]+$",
+      "description": "Unique form identifier with form_ prefix"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Human-readable form name"
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "URL-safe slug for the form"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Form description and purpose"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["lead-capture", "contact", "survey", "registration", "application", "feedback", "order", "booking", "support", "newsletter", "quote", "general"],
+      "description": "Form category for classification"
+    },
+    "settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Display title for the form"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Display description for the form"
+        },
+        "submitButtonText": {
+          "type": "string",
+          "maxLength": 30,
+          "default": "Submit",
+          "description": "Text for the submit button"
+        },
+        "resetButtonText": {
+          "type": "string",
+          "maxLength": 30,
+          "default": "Reset",
+          "description": "Text for the reset button"
+        },
+        "showReset": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether to show reset button"
+        },
+        "layout": {
+          "type": "string",
+          "enum": ["vertical", "horizontal", "grid", "wizard"],
+          "default": "vertical",
+          "description": "Form layout style"
+        },
+        "columns": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4,
+          "default": 1,
+          "description": "Number of columns for grid layout"
+        },
+        "progressBar": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show progress bar for wizard layout"
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "useSiteDefaults": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to use site-wide design tokens"
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "palette": {
+              "type": "object",
+              "properties": {
+                "primary": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                },
+                "secondary": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                },
+                "accent": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                },
+                "error": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                },
+                "success": {
+                  "type": "string",
+                  "pattern": "^#[0-9A-Fa-f]{6}$"
+                }
+              }
+            },
+            "spacing": {
+              "type": "object",
+              "properties": {
+                "fieldSpacing": {
+                  "type": "string",
+                  "enum": ["tight", "normal", "relaxed"]
+                },
+                "sectionSpacing": {
+                  "type": "string",
+                  "enum": ["sm", "md", "lg"]
+                }
+              }
+            },
+            "typography": {
+              "type": "object",
+              "properties": {
+                "labelSize": {
+                  "type": "string",
+                  "enum": ["sm", "md", "lg"]
+                },
+                "inputSize": {
+                  "type": "string",
+                  "enum": ["sm", "md", "lg"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "fields": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": {
+        "$ref": "#/$defs/formField"
+      },
+      "description": "Ordered list of form fields"
+    },
+    "fieldGroups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "fields"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^group_[a-z0-9_]+$"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Field IDs that belong to this group"
+            }
+          },
+          "collapsible": {
+            "type": "boolean",
+            "default": false
+          },
+          "collapsed": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "description": "Field grouping for organization"
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable client-side validation"
+        },
+        "realtime": {
+          "type": "boolean",
+          "default": true,
+          "description": "Validate fields in real-time"
+        },
+        "showErrorSummary": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show error summary at top of form"
+        },
+        "customRules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "function", "message"],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "function": {
+                "type": "string",
+                "description": "Custom validation function reference"
+              },
+              "message": {
+                "type": "string",
+                "description": "Error message for failed validation"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Fields this rule applies to"
+              }
+            }
+          }
+        }
+      }
+    },
+    "submission": {
+      "type": "object",
+      "required": ["type", "target"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["webhook", "email", "database", "api", "zapier", "integromat"],
+          "description": "Submission handler type"
+        },
+        "target": {
+          "type": "string",
+          "description": "Target endpoint, email, or database connection"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["POST", "PUT", "PATCH"],
+          "default": "POST",
+          "description": "HTTP method for API submissions"
+        },
+        "headers": {
+          "type": "object",
+          "description": "Custom headers for API submissions"
+        },
+        "transform": {
+          "type": "object",
+          "properties": {
+            "function": {
+              "type": "string",
+              "description": "Data transformation function reference"
+            },
+            "mapping": {
+              "type": "object",
+              "description": "Field name mapping for target system"
+            }
+          }
+        },
+        "successAction": {
+          "type": "object",
+          "required": ["type"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["message", "redirect", "download", "reset"]
+            },
+            "message": {
+              "type": "string",
+              "description": "Success message to display"
+            },
+            "redirectUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "URL to redirect to on success"
+            },
+            "downloadUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "File to download on success"
+            }
+          }
+        },
+        "errorAction": {
+          "type": "object",
+          "properties": {
+            "message": {
+              "type": "string",
+              "description": "Error message to display"
+            },
+            "retryButton": {
+              "type": "boolean",
+              "default": true,
+              "description": "Show retry button on error"
+            }
+          }
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admin": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "template": {
+              "type": "string",
+              "description": "Email template ID"
+            }
+          }
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "emailField": {
+              "type": "string",
+              "description": "Field ID that contains user email"
+            },
+            "template": {
+              "type": "string",
+              "description": "Email template ID"
+            }
+          }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "honeypot": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable honeypot spam protection"
+        },
+        "captcha": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "provider": {
+              "type": "string",
+              "enum": ["recaptcha", "hcaptcha", "turnstile"]
+            },
+            "siteKey": {
+              "type": "string"
+            }
+          }
+        },
+        "rateLimit": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            },
+            "maxSubmissions": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 5
+            },
+            "windowMinutes": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 60
+            }
+          }
+        },
+        "dataRetention": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "retentionDays": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Days to retain form submission data"
+            },
+            "anonymizeAfterDays": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Days after which to anonymize PII"
+            }
+          }
+        },
+        "requireConsent": {
+          "type": "boolean",
+          "default": false,
+          "description": "Require explicit consent for data processing"
+        },
+        "consentText": {
+          "type": "string",
+          "description": "Consent checkbox text"
+        }
+      }
+    },
+    "analytics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "default": false
+        },
+        "trackViews": {
+          "type": "boolean",
+          "default": true
+        },
+        "trackStarted": {
+          "type": "boolean",
+          "default": true
+        },
+        "trackCompleted": {
+          "type": "boolean",
+          "default": true
+        },
+        "trackFieldInteractions": {
+          "type": "boolean",
+          "default": false
+        },
+        "trackErrors": {
+          "type": "boolean",
+          "default": true
+        },
+        "customEvents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "trigger"],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "trigger": {
+                "type": "string",
+                "enum": ["field_focus", "field_blur", "field_change", "section_complete", "validation_error"]
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "required": ["version", "createdAt"],
+      "additionalProperties": false,
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version of the manifest"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Creator or team identifier"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Creation date in YYYY-MM-DD format"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "Last update date in YYYY-MM-DD format"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Form tags for categorization"
+        },
+        "previewUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to preview this form"
+        },
+        "schemaVersion": {
+          "type": "string",
+          "default": "1.0.0",
+          "description": "Schema version for backward compatibility"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "formField": {
+      "type": "object",
+      "required": ["id", "name", "type", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^f\\d+$",
+          "description": "Field ID with f prefix"
+        },
+        "name": {
+          "type": "string",
+          "pattern": "^[a-zA-Z][a-zA-Z0-9_]*$",
+          "description": "Field name for form submission"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "text", "email", "password", "number", "tel", "url",
+            "textarea", "select", "multiselect", "checkbox", "radio",
+            "switch", "date", "time", "datetime", "file", "range",
+            "color", "rating", "slider", "heading", "paragraph",
+            "divider", "address", "signature", "payment"
+          ],
+          "description": "Field input type"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Field label text"
+        },
+        "placeholder": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Placeholder text"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "Help text for the field"
+        },
+        "required": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether field is required"
+        },
+        "defaultValue": {
+          "description": "Default value for the field"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label", "value"],
+            "properties": {
+              "label": {
+                "type": "string",
+                "description": "Display label for option"
+              },
+              "value": {
+                "type": "string",
+                "description": "Value for option"
+              },
+              "disabled": {
+                "type": "boolean",
+                "default": false
+              },
+              "selected": {
+                "type": "boolean",
+                "default": false
+              }
+            }
+          },
+          "description": "Options for select, radio, and checkbox fields"
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "min": {
+              "type": "number",
+              "description": "Minimum value for number/range fields"
+            },
+            "max": {
+              "type": "number",
+              "description": "Maximum value for number/range fields"
+            },
+            "step": {
+              "type": "number",
+              "description": "Step value for number/range fields"
+            },
+            "minLength": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Minimum character length"
+            },
+            "maxLength": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum character length"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "Regular expression pattern"
+            },
+            "patternMessage": {
+              "type": "string",
+              "description": "Custom message for pattern validation"
+            },
+            "custom": {
+              "type": "string",
+              "description": "Custom validation function reference"
+            },
+            "customMessage": {
+              "type": "string",
+              "description": "Custom message for custom validation"
+            },
+            "accept": {
+              "type": "string",
+              "description": "Accepted file types for file fields"
+            },
+            "maxFileSize": {
+              "type": "integer",
+              "description": "Maximum file size in bytes"
+            },
+            "maxFiles": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of files for file fields"
+            }
+          }
+        },
+        "conditional": {
+          "type": "object",
+          "required": ["field", "operator", "value"],
+          "properties": {
+            "field": {
+              "type": "string",
+              "description": "Field ID to evaluate for conditional logic"
+            },
+            "operator": {
+              "type": "string",
+              "enum": ["equals", "notEquals", "contains", "notContains", "greaterThan", "lessThan", "isEmpty", "isNotEmpty"],
+              "description": "Comparison operator"
+            },
+            "value": {
+              "description": "Value to compare against"
+            },
+            "action": {
+              "type": "string",
+              "enum": ["show", "hide", "require", "optional", "enable", "disable"],
+              "default": "show",
+              "description": "Action to take when condition is met"
+            }
+          }
+        },
+        "styling": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "width": {
+              "type": "string",
+              "enum": ["full", "half", "third", "quarter"],
+              "default": "full",
+              "description": "Field width in grid layout"
+            },
+            "className": {
+              "type": "string",
+              "description": "Additional CSS classes"
+            },
+            "inline": {
+              "type": "boolean",
+              "default": false,
+              "description": "Display field inline with others"
+            }
+          }
+        },
+        "accessibility": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ariaLabel": {
+              "type": "string",
+              "description": "ARIA label for screen readers"
+            },
+            "ariaDescribedBy": {
+              "type": "string",
+              "description": "ID of element that describes this field"
+            },
+            "tabIndex": {
+              "type": "integer",
+              "description": "Tab order index"
+            }
+          }
+        },
+        "fieldGroup": {
+          "type": "string",
+          "description": "ID of field group this field belongs to"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Display order within form or group"
+        },
+        "readonly": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether field is read-only"
+        },
+        "hidden": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether field is hidden from view"
+        }
+      }
+    }
+  }
+}

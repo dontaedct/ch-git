@@ -1,0 +1,542 @@
+{
+  "id": "universal-consultation-preset",
+  "name": "Universal Consultation Template (HT-030)",
+  "version": "1.0.0",
+  "description": "Complete universal consultation micro-app with AI-powered generation, white-labeling, and multi-industry support",
+  "tier": "advanced",
+  "preset": "universal-consultation",
+  "features": {
+    "database": true,
+    "email": true,
+    "payments": false,
+    "webhooks": true,
+    "automation": true,
+    "notifications": true,
+    "error_tracking": true,
+    "admin_operations": true,
+    "ai_features": true,
+    "debug_mode": false,
+    "safe_mode": true,
+    "performance_monitoring": true,
+    "health_checks": true,
+    "white_labeling": true,
+    "multi_tenant": true,
+    "service_packages": true,
+    "pdf_generation": true,
+    "questionnaire_engine": true,
+    "consultation_engine": true
+  },
+  "theme": {
+    "colors": {
+      "primary": "#6366F1",
+      "secondary": "#8B5CF6",
+      "accent": "#06B6D4",
+      "neutral": {
+        "50": "#F8FAFC",
+        "100": "#F1F5F9",
+        "200": "#E2E8F0",
+        "300": "#CBD5E1",
+        "400": "#94A3B8",
+        "500": "#64748B",
+        "600": "#475569",
+        "700": "#334155",
+        "800": "#1E293B",
+        "900": "#0F172A"
+      },
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444",
+      "info": "#3B82F6"
+    },
+    "typography": {
+      "fontFamily": {
+        "sans": ["Inter", "system-ui", "sans-serif"],
+        "serif": ["Merriweather", "serif"],
+        "mono": ["JetBrains Mono", "monospace"]
+      },
+      "fontSize": {
+        "xs": "0.75rem",
+        "sm": "0.875rem",
+        "base": "1rem",
+        "lg": "1.125rem",
+        "xl": "1.25rem",
+        "2xl": "1.5rem",
+        "3xl": "1.875rem",
+        "4xl": "2.25rem",
+        "5xl": "3rem"
+      }
+    },
+    "motion": {
+      "duration": {
+        "fast": "150ms",
+        "normal": "300ms",
+        "slow": "500ms"
+      },
+      "easing": {
+        "ease": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "easeIn": "cubic-bezier(0.4, 0, 1, 1)",
+        "easeOut": "cubic-bezier(0, 0, 0.2, 1)"
+      }
+    },
+    "shadows": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1)"
+    }
+  },
+  "questionnaire": {
+    "id": "universal-consultation-intake",
+    "title": "Universal Business Analysis",
+    "description": "AI-powered questionnaire that adapts to your industry and business needs",
+    "steps": [
+      {
+        "id": "business-basics",
+        "title": "Business Profile",
+        "questions": [
+          {
+            "id": "company-name",
+            "text": "What's your company name?",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "Your Company Name"
+          },
+          {
+            "id": "industry",
+            "text": "What industry are you in?",
+            "type": "chips",
+            "required": true,
+            "options": [
+              { "value": "technology", "label": "Technology/Software" },
+              { "value": "healthcare", "label": "Healthcare" },
+              { "value": "finance", "label": "Financial Services" },
+              { "value": "retail", "label": "Retail/E-commerce" },
+              { "value": "manufacturing", "label": "Manufacturing" },
+              { "value": "consulting", "label": "Consulting" },
+              { "value": "education", "label": "Education" },
+              { "value": "nonprofit", "label": "Non-profit" },
+              { "value": "other", "label": "Other" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "company-size",
+            "text": "How many employees do you have?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "solo", "label": "Just me (solo)" },
+              { "value": "small", "label": "2-10 employees" },
+              { "value": "medium", "label": "11-50 employees" },
+              { "value": "large", "label": "51-200 employees" },
+              { "value": "enterprise", "label": "200+ employees" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "challenges",
+        "title": "Current Challenges",
+        "questions": [
+          {
+            "id": "primary-challenges",
+            "text": "What are your biggest business challenges right now?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "growth", "label": "Scaling/Growth" },
+              { "value": "efficiency", "label": "Operational Efficiency" },
+              { "value": "technology", "label": "Technology/Digital Transformation" },
+              { "value": "team", "label": "Team Management" },
+              { "value": "marketing", "label": "Marketing/Customer Acquisition" },
+              { "value": "finance", "label": "Financial Management" },
+              { "value": "competition", "label": "Competitive Pressure" },
+              { "value": "compliance", "label": "Compliance/Regulatory" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "urgency",
+            "text": "How urgent is solving these challenges?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "immediate", "label": "Immediate (within 30 days)" },
+              { "value": "short-term", "label": "Short-term (1-3 months)" },
+              { "value": "medium-term", "label": "Medium-term (3-6 months)" },
+              { "value": "long-term", "label": "Long-term (6+ months)" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "goals",
+        "title": "Goals & Objectives",
+        "questions": [
+          {
+            "id": "primary-goals",
+            "text": "What are your primary business goals?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "revenue-growth", "label": "Revenue Growth" },
+              { "value": "cost-reduction", "label": "Cost Reduction" },
+              { "value": "market-expansion", "label": "Market Expansion" },
+              { "value": "product-development", "label": "Product Development" },
+              { "value": "team-building", "label": "Team Building" },
+              { "value": "automation", "label": "Process Automation" },
+              { "value": "customer-satisfaction", "label": "Customer Satisfaction" },
+              { "value": "digital-transformation", "label": "Digital Transformation" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "success-metrics",
+            "text": "How do you measure success?",
+            "type": "long-text",
+            "required": false,
+            "placeholder": "Describe your key performance indicators and success metrics..."
+          }
+        ]
+      },
+      {
+        "id": "investment",
+        "title": "Investment & Timeline",
+        "questions": [
+          {
+            "id": "budget-range",
+            "text": "What's your budget range for consultation services?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "under-5k", "label": "Under $5,000" },
+              { "value": "5k-15k", "label": "$5,000 - $15,000" },
+              { "value": "15k-50k", "label": "$15,000 - $50,000" },
+              { "value": "50k-plus", "label": "$50,000+" }
+            ]
+          },
+          {
+            "id": "timeline",
+            "text": "When would you like to start?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "immediately", "label": "Immediately" },
+              { "value": "within-month", "label": "Within 1 month" },
+              { "value": "within-quarter", "label": "Within 3 months" },
+              { "value": "planning", "label": "Just planning for now" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "consultation": {
+    "id": "universal-consultation-template",
+    "title": "Universal Business Consultation Report",
+    "description": "AI-generated consultation report with industry-specific recommendations",
+    "planDeck": {
+      "showIntro": true,
+      "showPrimaryPlan": true,
+      "showAlternates": true,
+      "alternatesCount": 2,
+      "showComparison": true,
+      "showNextSteps": true
+    },
+    "sections": {
+      "executiveSummary": {
+        "enabled": true,
+        "title": "Executive Summary",
+        "description": "Key findings and strategic recommendations"
+      },
+      "businessAnalysis": {
+        "enabled": true,
+        "title": "Business Analysis", 
+        "description": "Current state assessment and opportunity identification"
+      },
+      "strategicRecommendations": {
+        "enabled": true,
+        "title": "Strategic Recommendations",
+        "description": "Actionable recommendations based on your goals and challenges"
+      },
+      "servicePackages": {
+        "enabled": true,
+        "title": "Recommended Service Packages",
+        "description": "Tailored service offerings to address your specific needs"
+      },
+      "implementationRoadmap": {
+        "enabled": true,
+        "title": "Implementation Roadmap",
+        "description": "Timeline and milestones for successful execution"
+      },
+      "nextSteps": {
+        "enabled": true,
+        "title": "Next Steps",
+        "description": "Immediate actions to begin your transformation"
+      }
+    },
+    "ai": {
+      "prompt": "Generate a comprehensive business consultation report based on the client's responses. Focus on industry-specific insights, actionable recommendations, and clear next steps. Include analysis of challenges, strategic recommendations, and suitable service packages.",
+      "model": "gpt-4",
+      "temperature": 0.7,
+      "maxTokens": 3000
+    }
+  },
+  "catalog": {
+    "title": "Universal Consultation Services",
+    "description": "Comprehensive consultation packages tailored to your industry and business size",
+    "defaults": {
+      "fallbackPlan": "strategy-assessment",
+      "preferHigherTier": true
+    },
+    "plans": [
+      {
+        "id": "strategy-assessment",
+        "name": "Strategic Assessment",
+        "tier": "foundation",
+        "description": "Comprehensive business analysis with strategic recommendations",
+        "price": "$2,500",
+        "duration": "2-3 weeks",
+        "eligibleIf": {
+          "company-size": ["solo", "small", "medium"]
+        },
+        "sections": {
+          "whatYouGet": {
+            "title": "What You Get",
+            "items": [
+              "Comprehensive business analysis report",
+              "Strategic recommendations document",
+              "Implementation roadmap with priorities",
+              "30-day follow-up consultation"
+            ]
+          },
+          "whyThisFits": {
+            "title": "Why This Fits",
+            "content": "Perfect for businesses looking to establish a clear strategic direction and identify key growth opportunities."
+          },
+          "timeline": {
+            "title": "Timeline",
+            "phases": [
+              { "phase": "Discovery", "duration": "3-5 days", "description": "Business assessment and data gathering" },
+              { "phase": "Analysis", "duration": "1 week", "description": "Strategic analysis and recommendation development" },
+              { "phase": "Delivery", "duration": "2-3 days", "description": "Report finalization and presentation" }
+            ]
+          },
+          "nextSteps": {
+            "title": "Next Steps",
+            "items": [
+              "Schedule discovery call",
+              "Complete business assessment questionnaire",
+              "Begin strategic analysis process"
+            ]
+          }
+        }
+      },
+      {
+        "id": "digital-transformation",
+        "name": "Digital Transformation Package",
+        "tier": "growth",
+        "description": "Technology modernization and digital strategy development",
+        "price": "$5,000",
+        "duration": "4-6 weeks",
+        "eligibleIf": {
+          "company-size": ["medium", "large", "enterprise"],
+          "primary-challenges": ["technology"]
+        },
+        "sections": {
+          "whatYouGet": {
+            "title": "What You Get",
+            "items": [
+              "Complete technology audit and assessment",
+              "Digital transformation roadmap",
+              "Technology stack recommendations",
+              "Implementation guidance and support",
+              "Change management strategy"
+            ]
+          },
+          "whyThisFits": {
+            "title": "Why This Fits",
+            "content": "Ideal for businesses ready to modernize their technology infrastructure and embrace digital transformation."
+          },
+          "timeline": {
+            "title": "Timeline",
+            "phases": [
+              { "phase": "Technology Audit", "duration": "1 week", "description": "Current state technology assessment" },
+              { "phase": "Strategy Development", "duration": "2 weeks", "description": "Digital transformation planning" },
+              { "phase": "Roadmap Creation", "duration": "1-2 weeks", "description": "Implementation roadmap and guidance" }
+            ]
+          },
+          "nextSteps": {
+            "title": "Next Steps",
+            "items": [
+              "Schedule technology assessment",
+              "Prepare current system documentation",
+              "Define digital transformation goals"
+            ]
+          }
+        }
+      },
+      {
+        "id": "growth-accelerator",
+        "name": "Growth Accelerator",
+        "tier": "enterprise",
+        "description": "Comprehensive growth strategy with implementation support",
+        "price": "$7,500",
+        "duration": "6-8 weeks",
+        "eligibleIf": {
+          "company-size": ["medium", "large", "enterprise"],
+          "primary-goals": ["revenue-growth", "market-expansion"]
+        },
+        "sections": {
+          "whatYouGet": {
+            "title": "What You Get",
+            "items": [
+              "Comprehensive growth strategy document",
+              "Market analysis and opportunity assessment",
+              "Sales and marketing optimization plan",
+              "Operational scaling recommendations",
+              "3-month implementation support"
+            ]
+          },
+          "whyThisFits": {
+            "title": "Why This Fits",
+            "content": "Perfect for established businesses ready to accelerate growth and scale operations effectively."
+          },
+          "timeline": {
+            "title": "Timeline",
+            "phases": [
+              { "phase": "Growth Assessment", "duration": "1 week", "description": "Current growth analysis and bottleneck identification" },
+              { "phase": "Strategy Development", "duration": "2-3 weeks", "description": "Comprehensive growth strategy creation" },
+              { "phase": "Implementation Planning", "duration": "1-2 weeks", "description": "Detailed implementation roadmap" },
+              { "phase": "Support & Monitoring", "duration": "3 months", "description": "Ongoing implementation support" }
+            ]
+          },
+          "nextSteps": {
+            "title": "Next Steps",
+            "items": [
+              "Schedule growth assessment session",
+              "Prepare financial and operational data",
+              "Define growth targets and objectives"
+            ]
+          }
+        }
+      },
+      {
+        "id": "enterprise-transformation",
+        "name": "Enterprise Transformation",
+        "tier": "enterprise",
+        "description": "Complete organizational transformation with dedicated support",
+        "price": "$15,000",
+        "duration": "3-6 months",
+        "eligibleIf": {
+          "company-size": ["large", "enterprise"],
+          "budget-range": ["50k-plus"]
+        },
+        "sections": {
+          "whatYouGet": {
+            "title": "What You Get",
+            "items": [
+              "Complete organizational assessment",
+              "Multi-phase transformation strategy",
+              "Dedicated transformation consultant",
+              "Change management program",
+              "Custom solution development",
+              "Ongoing performance monitoring"
+            ]
+          },
+          "whyThisFits": {
+            "title": "Why This Fits",
+            "content": "Designed for large organizations requiring comprehensive transformation across multiple business areas."
+          },
+          "timeline": {
+            "title": "Timeline",
+            "phases": [
+              { "phase": "Assessment & Planning", "duration": "2-4 weeks", "description": "Comprehensive organizational assessment" },
+              { "phase": "Strategy Development", "duration": "4-6 weeks", "description": "Multi-phase transformation strategy" },
+              { "phase": "Implementation Phase 1", "duration": "6-8 weeks", "description": "Initial transformation initiatives" },
+              { "phase": "Implementation Phase 2", "duration": "6-8 weeks", "description": "Advanced transformation elements" },
+              { "phase": "Optimization & Monitoring", "duration": "Ongoing", "description": "Performance optimization and monitoring" }
+            ]
+          },
+          "nextSteps": {
+            "title": "Next Steps",
+            "items": [
+              "Schedule executive leadership meeting",
+              "Conduct preliminary organizational assessment",
+              "Define transformation scope and objectives"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "modules": {
+    "modules": [
+      {
+        "id": "ai-consultation-generation",
+        "label": "AI Consultation Generation",
+        "description": "Advanced AI system for generating personalized consultation reports",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "white-label-branding",
+        "label": "White-Label Branding",
+        "description": "Complete customization with client branding and styling",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "multi-industry-templates",
+        "label": "Multi-Industry Templates",
+        "description": "Pre-configured templates for different industry verticals",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "service-package-management",
+        "label": "Service Package Management",
+        "description": "Dynamic service package recommendations and management",
+        "tiers": ["growth", "enterprise"]
+      },
+      {
+        "id": "advanced-analytics",
+        "label": "Advanced Analytics Dashboard",
+        "description": "Comprehensive analytics and performance tracking",
+        "tiers": ["enterprise"]
+      },
+      {
+        "id": "multi-tenant-support",
+        "label": "Multi-Tenant Support",
+        "description": "Deploy multiple client instances with isolated data",
+        "tiers": ["enterprise"]
+      },
+      {
+        "id": "api-integrations",
+        "label": "API Integrations",
+        "description": "Custom integrations with external systems and tools",
+        "tiers": ["enterprise"]
+      },
+      {
+        "id": "priority-support",
+        "label": "Priority Support",
+        "description": "24/7 priority support with dedicated account manager",
+        "tiers": ["enterprise"]
+      }
+    ]
+  },
+  "integrations": {
+    "n8n": {
+      "webhookUrl": "https://webhook.example.com/universal-consultation",
+      "enabledEvents": [
+        "lead_started_questionnaire",
+        "lead_completed_questionnaire",
+        "consultation_generated",
+        "pdf_downloaded",
+        "email_copy_requested",
+        "service_package_selected"
+      ]
+    },
+    "email": {
+      "fromAddress": "consultations@universalconsult.com",
+      "subjectTemplate": "Your Universal Business Consultation Report is Ready"
+    }
+  }
+}

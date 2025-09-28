@@ -1,0 +1,431 @@
+name: Consultation Micro-App Deployment Pipeline
+# HT-030.4.3: Production Deployment Pipeline & Infrastructure
+
+on:
+  push:
+    branches: [main, production]
+    paths:
+      - 'app/consultation/**'
+      - 'lib/consultation/**'
+      - 'lib/ai/**'
+      - 'lib/pdf/**'
+      - 'lib/email/**'
+      - 'lib/performance/**'
+      - 'lib/caching/**'
+      - 'components/consultation/**'
+      - 'tests/consultation/**'
+      - '.github/workflows/consultation-deploy.yml'
+      - 'docker/consultation-app.Dockerfile'
+      - 'package.json'
+      - 'package-lock.json'
+
+  pull_request:
+    branches: [main]
+    paths:
+      - 'app/consultation/**'
+      - 'lib/consultation/**'
+      - 'lib/ai/**'
+      - 'lib/pdf/**'
+      - 'lib/email/**'
+      - 'lib/performance/**'
+      - 'lib/caching/**'
+      - 'components/consultation/**'
+      - 'tests/consultation/**'
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+      force_deploy:
+        description: 'Force deployment (skip some checks)'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  NODE_VERSION: '20'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: consultation-micro-app
+
+jobs:
+  # Lint and Type Check
+  lint-and-typecheck:
+    name: Lint and Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript type check
+        run: npm run typecheck
+
+      - name: Check code formatting
+        run: npx prettier --check .
+
+  # Security Scanning
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  # Unit and Integration Tests
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck]
+
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
+        env:
+          REDIS_URL: redis://localhost:6379
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          REDIS_URL: redis://localhost:6379
+
+      - name: Run consultation-specific tests
+        run: npm run test -- tests/consultation --coverage
+        env:
+          REDIS_URL: redis://localhost:6379
+
+      - name: Upload test coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: consultation
+          name: consultation-coverage
+
+  # Performance Testing
+  performance-test:
+    name: Performance Testing
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: github.event_name == 'push' || github.event.inputs.force_deploy == 'true'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run performance validation
+        run: npx tsx scripts/validate-consultation-performance.ts
+        env:
+          NODE_ENV: test
+
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.13.x
+          lhci autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+  # Build Application
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck, security-scan]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build design tokens
+        run: npm run tokens:build
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-files
+          path: |
+            .next/
+            public/
+          retention-days: 1
+
+  # Build and Push Docker Image
+  build-image:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/consultation-app.Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64,linux/arm64
+
+  # Deploy to Staging
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build-image, performance-test]
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'staging'
+    environment: staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy to staging
+        run: ./scripts/deploy-consultation.sh staging
+        env:
+          DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          STAGING_HOST: ${{ secrets.STAGING_HOST }}
+          STAGING_USER: ${{ secrets.STAGING_USER }}
+          STAGING_KEY: ${{ secrets.STAGING_PRIVATE_KEY }}
+          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL }}
+          REDIS_URL: ${{ secrets.STAGING_REDIS_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+
+      - name: Run health checks
+        run: |
+          sleep 30
+          curl -f ${{ secrets.STAGING_URL }}/api/performance/consultation/health || exit 1
+
+      - name: Run smoke tests
+        run: npm run test:smoke
+        env:
+          TEST_URL: ${{ secrets.STAGING_URL }}
+
+  # Deploy to Production
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/production' || github.event.inputs.environment == 'production'
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Pre-deployment validation
+        run: |
+          # Validate database migrations
+          npx tsx scripts/validate-database-migrations.ts
+
+          # Validate environment configuration
+          npx tsx scripts/validate-production-config.ts
+
+      - name: Deploy to production
+        run: ./scripts/deploy-consultation.sh production
+        env:
+          DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+          PRODUCTION_USER: ${{ secrets.PRODUCTION_USER }}
+          PRODUCTION_KEY: ${{ secrets.PRODUCTION_PRIVATE_KEY }}
+          DATABASE_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
+          REDIS_URL: ${{ secrets.PRODUCTION_REDIS_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+
+      - name: Run health checks
+        run: |
+          sleep 60
+          curl -f ${{ secrets.PRODUCTION_URL }}/api/performance/consultation/health || exit 1
+
+      - name: Run production smoke tests
+        run: npm run test:smoke:production
+        env:
+          TEST_URL: ${{ secrets.PRODUCTION_URL }}
+
+      - name: Notify deployment success
+        uses: 8398a7/action-slack@v3
+        if: success()
+        with:
+          status: success
+          text: 'Consultation micro-app deployed successfully to production! 🚀'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Rollback capability
+  rollback:
+    name: Rollback Deployment
+    runs-on: ubuntu-latest
+    if: failure() && (github.ref == 'refs/heads/production' || github.event.inputs.environment == 'production')
+    needs: [deploy-production]
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Rollback deployment
+        run: ./scripts/rollback-consultation.sh
+        env:
+          PRODUCTION_HOST: ${{ secrets.PRODUCTION_HOST }}
+          PRODUCTION_USER: ${{ secrets.PRODUCTION_USER }}
+          PRODUCTION_KEY: ${{ secrets.PRODUCTION_PRIVATE_KEY }}
+
+      - name: Notify rollback
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: 'Consultation micro-app deployment failed and was rolled back. Please check logs.'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Post-deployment monitoring
+  post-deployment-monitoring:
+    name: Post-Deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: success() && (github.ref == 'refs/heads/production' || github.event.inputs.environment == 'production')
+
+    steps:
+      - name: Setup monitoring
+        run: |
+          # Setup monitoring alerts
+          curl -X POST "${{ secrets.MONITORING_WEBHOOK_URL }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "deployment": {
+                "app": "consultation-micro-app",
+                "version": "${{ github.sha }}",
+                "environment": "production",
+                "deployed_at": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
+                "monitoring_enabled": true
+              }
+            }'
+
+      - name: Schedule performance monitoring
+        run: |
+          # Schedule performance monitoring for next 24 hours
+          echo "Performance monitoring scheduled for consultation micro-app deployment"

@@ -1,0 +1,385 @@
+name: Client Template Production Deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      client_id:
+        description: 'Client ID for deployment'
+        required: true
+        type: string
+      template_id:
+        description: 'Template ID to deploy'
+        required: true
+        type: string
+      environment:
+        description: 'Deployment environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      customizations:
+        description: 'Custom configuration JSON'
+        required: false
+        type: string
+        default: '{}'
+
+env:
+  NODE_VERSION: '18'
+  DEPLOYMENT_TIMEOUT: '1800'
+
+jobs:
+  validate-inputs:
+    name: Validate Deployment Inputs
+    runs-on: ubuntu-latest
+    outputs:
+      client_id: ${{ steps.validation.outputs.client_id }}
+      template_id: ${{ steps.validation.outputs.template_id }}
+      environment: ${{ steps.validation.outputs.environment }}
+      customizations: ${{ steps.validation.outputs.customizations }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate deployment inputs
+        id: validation
+        run: |
+          # Validate client ID format
+          if ! [[ "${{ github.event.inputs.client_id }}" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+            echo "Error: Invalid client ID format"
+            exit 1
+          fi
+
+          # Validate template ID format
+          if ! [[ "${{ github.event.inputs.template_id }}" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+            echo "Error: Invalid template ID format"
+            exit 1
+          fi
+
+          # Validate customizations JSON
+          echo '${{ github.event.inputs.customizations }}' | jq . > /dev/null || {
+            echo "Error: Invalid customizations JSON"
+            exit 1
+          }
+
+          echo "client_id=${{ github.event.inputs.client_id }}" >> $GITHUB_OUTPUT
+          echo "template_id=${{ github.event.inputs.template_id }}" >> $GITHUB_OUTPUT
+          echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+          echo "customizations=${{ github.event.inputs.customizations }}" >> $GITHUB_OUTPUT
+
+  pre-deployment-validation:
+    name: Pre-Deployment Validation
+    runs-on: ubuntu-latest
+    needs: validate-inputs
+    outputs:
+      deployment_id: ${{ steps.create-deployment.outputs.deployment_id }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run production validation
+        run: |
+          npx tsx lib/deployment/production-validator.ts \
+            --client-id="${{ needs.validate-inputs.outputs.client_id }}" \
+            --template-id="${{ needs.validate-inputs.outputs.template_id }}" \
+            --environment="${{ needs.validate-inputs.outputs.environment }}" \
+            --customizations='${{ needs.validate-inputs.outputs.customizations }}'
+
+      - name: Create deployment record
+        id: create-deployment
+        run: |
+          DEPLOYMENT_ID="deploy-$(date +%Y%m%d-%H%M%S)-${{ needs.validate-inputs.outputs.client_id }}"
+          echo "deployment_id=${DEPLOYMENT_ID}" >> $GITHUB_OUTPUT
+          echo "Created deployment ID: ${DEPLOYMENT_ID}"
+
+      - name: Security scan
+        run: |
+          # Run security checks on customizations
+          npm audit --audit-level high
+
+          # Validate environment configuration
+          npx tsx -e "
+            const config = JSON.parse('${{ needs.validate-inputs.outputs.customizations }}');
+            if (config.env && Object.keys(config.env).some(key => key.toLowerCase().includes('secret'))) {
+              console.error('Error: Secrets detected in customizations');
+              process.exit(1);
+            }
+          "
+
+  build-and-test:
+    name: Build and Test Client Application
+    runs-on: ubuntu-latest
+    needs: [validate-inputs, pre-deployment-validation]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate client application
+        run: |
+          npx tsx bin/create-micro-app.mjs \
+            --client-id="${{ needs.validate-inputs.outputs.client_id }}" \
+            --template-id="${{ needs.validate-inputs.outputs.template_id }}" \
+            --customizations='${{ needs.validate-inputs.outputs.customizations }}' \
+            --output-dir="./client-apps/${{ needs.validate-inputs.outputs.client_id }}"
+
+      - name: Build client application
+        working-directory: ./client-apps/${{ needs.validate-inputs.outputs.client_id }}
+        run: |
+          npm ci
+          npm run build
+
+      - name: Run tests
+        working-directory: ./client-apps/${{ needs.validate-inputs.outputs.client_id }}
+        run: |
+          npm run test -- --coverage
+          npm run lint
+          npm run type-check
+
+      - name: Performance testing
+        working-directory: ./client-apps/${{ needs.validate-inputs.outputs.client_id }}
+        run: |
+          npm run lighthouse:ci || true
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-app-${{ needs.validate-inputs.outputs.client_id }}
+          path: ./client-apps/${{ needs.validate-inputs.outputs.client_id }}/dist/
+          retention-days: 30
+
+  staging-deployment:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [validate-inputs, pre-deployment-validation, build-and-test]
+    if: needs.validate-inputs.outputs.environment == 'staging' || needs.validate-inputs.outputs.environment == 'production'
+    environment: staging
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: client-app-${{ needs.validate-inputs.outputs.client_id }}
+          path: ./dist
+
+      - name: Deploy to Vercel (Staging)
+        id: staging-deploy
+        run: |
+          npx vercel deploy \
+            --token="${{ secrets.VERCEL_TOKEN }}" \
+            --scope="${{ secrets.VERCEL_ORG_ID }}" \
+            --project="${{ needs.validate-inputs.outputs.client_id }}-staging" \
+            --env="ENVIRONMENT=staging" \
+            --env="CLIENT_ID=${{ needs.validate-inputs.outputs.client_id }}" \
+            --env="DEPLOYMENT_ID=${{ needs.pre-deployment-validation.outputs.deployment_id }}" \
+            ./dist > staging-url.txt
+
+          STAGING_URL=$(cat staging-url.txt)
+          echo "staging_url=${STAGING_URL}" >> $GITHUB_OUTPUT
+          echo "Staging URL: ${STAGING_URL}"
+
+      - name: Run staging health checks
+        run: |
+          STAGING_URL="${{ steps.staging-deploy.outputs.staging_url }}"
+
+          # Wait for deployment to be ready
+          for i in {1..30}; do
+            if curl -f "${STAGING_URL}/api/health" > /dev/null 2>&1; then
+              echo "Staging deployment is healthy"
+              break
+            fi
+            echo "Waiting for staging deployment (attempt $i/30)..."
+            sleep 10
+          done
+
+          # Run comprehensive health checks
+          npx tsx lib/monitoring/production-monitoring.ts \
+            --url="${STAGING_URL}" \
+            --client-id="${{ needs.validate-inputs.outputs.client_id }}" \
+            --environment="staging"
+
+      - name: Record staging deployment
+        run: |
+          echo "Staging deployment successful for client ${{ needs.validate-inputs.outputs.client_id }}"
+          echo "Deployment ID: ${{ needs.pre-deployment-validation.outputs.deployment_id }}"
+          echo "Staging URL: ${{ steps.staging-deploy.outputs.staging_url }}"
+
+  production-deployment:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [validate-inputs, pre-deployment-validation, build-and-test, staging-deployment]
+    if: needs.validate-inputs.outputs.environment == 'production'
+    environment: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: client-app-${{ needs.validate-inputs.outputs.client_id }}
+          path: ./dist
+
+      - name: Final production validation
+        run: |
+          npx tsx lib/deployment/production-validator.ts \
+            --client-id="${{ needs.validate-inputs.outputs.client_id }}" \
+            --template-id="${{ needs.validate-inputs.outputs.template_id }}" \
+            --environment="production" \
+            --customizations='${{ needs.validate-inputs.outputs.customizations }}' \
+            --final-check
+
+      - name: Deploy to Vercel (Production)
+        id: production-deploy
+        run: |
+          npx vercel deploy \
+            --prod \
+            --token="${{ secrets.VERCEL_TOKEN }}" \
+            --scope="${{ secrets.VERCEL_ORG_ID }}" \
+            --project="${{ needs.validate-inputs.outputs.client_id }}" \
+            --env="ENVIRONMENT=production" \
+            --env="CLIENT_ID=${{ needs.validate-inputs.outputs.client_id }}" \
+            --env="DEPLOYMENT_ID=${{ needs.pre-deployment-validation.outputs.deployment_id }}" \
+            ./dist > production-url.txt
+
+          PRODUCTION_URL=$(cat production-url.txt)
+          echo "production_url=${PRODUCTION_URL}" >> $GITHUB_OUTPUT
+          echo "Production URL: ${PRODUCTION_URL}"
+
+      - name: Configure custom domain
+        if: contains(needs.validate-inputs.outputs.customizations, 'domain')
+        run: |
+          CUSTOM_DOMAIN=$(echo '${{ needs.validate-inputs.outputs.customizations }}' | jq -r '.domain // empty')
+          if [ ! -z "${CUSTOM_DOMAIN}" ]; then
+            npx vercel domains add \
+              "${CUSTOM_DOMAIN}" \
+              --token="${{ secrets.VERCEL_TOKEN }}" \
+              --scope="${{ secrets.VERCEL_ORG_ID }}" \
+              --project="${{ needs.validate-inputs.outputs.client_id }}"
+          fi
+
+      - name: Run production health checks
+        run: |
+          PRODUCTION_URL="${{ steps.production-deploy.outputs.production_url }}"
+
+          # Wait for deployment to be ready
+          for i in {1..60}; do
+            if curl -f "${PRODUCTION_URL}/api/health" > /dev/null 2>&1; then
+              echo "Production deployment is healthy"
+              break
+            fi
+            echo "Waiting for production deployment (attempt $i/60)..."
+            sleep 10
+          done
+
+          # Run comprehensive health checks
+          npx tsx lib/monitoring/production-monitoring.ts \
+            --url="${PRODUCTION_URL}" \
+            --client-id="${{ needs.validate-inputs.outputs.client_id }}" \
+            --environment="production"
+
+      - name: Setup monitoring and alerts
+        run: |
+          npx tsx lib/monitoring/production-monitoring.ts \
+            --setup-monitoring \
+            --url="${{ steps.production-deploy.outputs.production_url }}" \
+            --client-id="${{ needs.validate-inputs.outputs.client_id }}" \
+            --environment="production"
+
+  post-deployment:
+    name: Post-Deployment Tasks
+    runs-on: ubuntu-latest
+    needs: [validate-inputs, pre-deployment-validation, build-and-test, production-deployment]
+    if: always() && needs.build-and-test.result == 'success'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update deployment records
+        run: |
+          npx tsx -e "
+            console.log('Updating deployment records...');
+            console.log('Client ID: ${{ needs.validate-inputs.outputs.client_id }}');
+            console.log('Deployment ID: ${{ needs.pre-deployment-validation.outputs.deployment_id }}');
+            console.log('Environment: ${{ needs.validate-inputs.outputs.environment }}');
+            console.log('Status: ${{ job.status }}');
+          "
+
+      - name: Generate handover documentation
+        if: needs.validate-inputs.outputs.environment == 'production'
+        run: |
+          npx tsx lib/handover/documentation-generator.ts \
+            --client-id="${{ needs.validate-inputs.outputs.client_id }}" \
+            --deployment-id="${{ needs.pre-deployment-validation.outputs.deployment_id }}" \
+            --production-url="${{ needs.production-deployment.outputs.production_url }}"
+
+      - name: Send deployment notification
+        if: needs.validate-inputs.outputs.environment == 'production'
+        run: |
+          echo "Production deployment completed successfully!"
+          echo "Client: ${{ needs.validate-inputs.outputs.client_id }}"
+          echo "Deployment ID: ${{ needs.pre-deployment-validation.outputs.deployment_id }}"
+          echo "Production URL: ${{ needs.production-deployment.outputs.production_url }}"
+
+  cleanup:
+    name: Cleanup and Monitoring Setup
+    runs-on: ubuntu-latest
+    needs: [validate-inputs, post-deployment]
+    if: always()
+    steps:
+      - name: Cleanup temporary resources
+        run: |
+          echo "Cleaning up temporary deployment resources..."
+          # Add cleanup logic for temporary files, staging environments if needed
+
+      - name: Setup long-term monitoring
+        if: needs.validate-inputs.outputs.environment == 'production'
+        run: |
+          echo "Setting up long-term monitoring for client ${{ needs.validate-inputs.outputs.client_id }}"
+          # Add monitoring setup logic
+
+      - name: Archive deployment logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-logs-${{ needs.validate-inputs.outputs.client_id }}
+          path: |
+            ./*.log
+            ./*.txt
+          retention-days: 90

@@ -1,0 +1,456 @@
+name: Modular Admin Interface Deployment
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'app/admin/**'
+      - 'components/admin/**'
+      - 'lib/admin/**'
+      - 'lib/ai/**'
+      - 'lib/marketplace/**'
+      - 'lib/templates/**'
+      - 'lib/platform/**'
+      - 'lib/performance/**'
+      - 'lib/caching/**'
+      - 'lib/scalability/**'
+      - 'lib/optimization/**'
+      - 'docs/admin/**'
+      - '.github/workflows/modular-admin-deploy.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/admin/**'
+      - 'components/admin/**'
+      - 'lib/admin/**'
+      - 'lib/ai/**'
+      - 'lib/marketplace/**'
+      - 'lib/templates/**'
+      - 'lib/platform/**'
+      - 'lib/performance/**'
+      - 'lib/caching/**'
+      - 'lib/scalability/**'
+      - 'lib/optimization/**'
+      - 'docs/admin/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+
+env:
+  NODE_VERSION: '18.x'
+  PNPM_VERSION: '8'
+
+jobs:
+  # Pre-deployment validation
+  validate:
+    name: Pre-deployment Validation
+    runs-on: ubuntu-latest
+    outputs:
+      should-deploy: ${{ steps.decision.outputs.should-deploy }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run type checking
+        run: pnpm run type-check
+
+      - name: Run linting
+        run: pnpm run lint
+
+      - name: Run admin interface tests
+        run: pnpm run test:admin
+
+      - name: Run modular admin interface tests
+        run: pnpm run test:modular-admin
+
+      - name: Validate admin interface components
+        run: pnpm run validate:admin-interface
+
+      - name: Check admin interface security
+        run: pnpm run security:admin-interface
+
+      - name: Performance baseline check
+        run: pnpm run perf:baseline-admin
+
+      - name: Deployment decision
+        id: decision
+        run: |
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should-deploy=true" >> $GITHUB_OUTPUT
+          else
+            echo "should-deploy=false" >> $GITHUB_OUTPUT
+          fi
+
+  # Build and test
+  build-and-test:
+    name: Build and Test Modular Admin Interface
+    runs-on: ubuntu-latest
+    needs: validate
+    if: needs.validate.outputs.should-deploy == 'true'
+    
+    strategy:
+      matrix:
+        node-version: ['18.x', '20.x']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build modular admin interface
+        run: |
+          pnpm run build:admin-interface
+          pnpm run build:modular-components
+
+      - name: Run comprehensive tests
+        run: |
+          pnpm run test:admin:comprehensive
+          pnpm run test:modular-admin:integration
+          pnpm run test:ai-integration
+
+      - name: Run admin interface E2E tests
+        run: pnpm run test:e2e:admin
+
+      - name: Generate test coverage
+        run: pnpm run test:coverage:admin
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/admin/lcov.info
+          flags: admin-interface
+          name: admin-interface-coverage
+
+      - name: Build artifacts
+        run: |
+          mkdir -p dist/admin-interface
+          cp -r .next/static/admin dist/admin-interface/
+          cp -r .next/server/app/admin dist/admin-interface/server/
+          tar -czf admin-interface-build.tar.gz dist/admin-interface/
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: admin-interface-build-${{ matrix.node-version }}
+          path: admin-interface-build.tar.gz
+          retention-days: 7
+
+  # Security scanning
+  security-scan:
+    name: Security Scan Modular Admin Interface
+    runs-on: ubuntu-latest
+    needs: validate
+    if: needs.validate.outputs.should-deploy == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run security audit
+        run: pnpm audit --audit-level moderate
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --file=package.json
+
+      - name: Scan admin interface for vulnerabilities
+        run: pnpm run security:scan:admin
+
+      - name: Check for hardcoded secrets
+        run: pnpm run security:secrets:scan
+
+  # Performance testing
+  performance-test:
+    name: Performance Test Modular Admin Interface
+    runs-on: ubuntu-latest
+    needs: validate
+    if: needs.validate.outputs.should-deploy == 'true'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm run build
+
+      - name: Start application
+        run: |
+          pnpm run start &
+          sleep 30
+
+      - name: Run Lighthouse CI
+        run: pnpm run lighthouse:ci:admin
+
+      - name: Run performance benchmarks
+        run: pnpm run perf:benchmark:admin
+
+      - name: Load test admin interface
+        run: pnpm run load-test:admin
+
+      - name: Generate performance report
+        run: pnpm run perf:report:admin
+
+      - name: Upload performance artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance-report-admin
+          path: |
+            .lighthouseci/
+            performance-reports/
+          retention-days: 30
+
+  # Deploy to staging
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [build-and-test, security-scan, performance-test]
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
+    environment:
+      name: staging
+      url: https://staging-admin.agency-toolkit.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: admin-interface-build-18.x
+          path: dist/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy to Vercel (Staging)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--target staging'
+          working-directory: ./
+
+      - name: Run staging health checks
+        run: |
+          pnpm run health-check:staging
+          pnpm run admin-interface:health-check:staging
+
+      - name: Run staging smoke tests
+        run: pnpm run smoke-test:staging:admin
+
+      - name: Notify staging deployment
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          text: 'Modular Admin Interface deployed to staging'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Deploy to production
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')
+    environment:
+      name: production
+      url: https://admin.agency-toolkit.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: admin-interface-build-18.x
+          path: dist/
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Create production deployment
+        id: deploy
+        run: |
+          echo "Creating production deployment..."
+          echo "deployment_id=$(date +%s)" >> $GITHUB_OUTPUT
+
+      - name: Deploy to Vercel (Production)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+
+      - name: Run production health checks
+        run: |
+          pnpm run health-check:production
+          pnpm run admin-interface:health-check:production
+
+      - name: Run production smoke tests
+        run: pnpm run smoke-test:production:admin
+
+      - name: Verify admin interface functionality
+        run: pnpm run verify:admin-interface:production
+
+      - name: Run post-deployment tests
+        run: pnpm run post-deploy:test:admin
+
+      - name: Update deployment status
+        run: |
+          echo "Production deployment completed successfully"
+          echo "Deployment ID: ${{ steps.deploy.outputs.deployment_id }}"
+          echo "Timestamp: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      - name: Notify production deployment
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          text: 'Modular Admin Interface deployed to production 🚀'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # Post-deployment monitoring
+  post-deployment-monitor:
+    name: Post-deployment Monitoring
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: always() && needs.deploy-production.result == 'success'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Start monitoring
+        run: |
+          echo "Starting post-deployment monitoring..."
+          pnpm run monitor:admin-interface:production
+
+      - name: Check error rates
+        run: pnpm run check:error-rates:admin
+
+      - name: Check performance metrics
+        run: pnpm run check:performance:admin
+
+      - name: Generate deployment report
+        run: pnpm run generate:deployment-report:admin
+
+      - name: Update deployment documentation
+        run: |
+          echo "Updating deployment documentation..."
+          pnpm run update:deployment-docs:admin

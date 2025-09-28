@@ -725,4 +725,7 @@ export function useWebVitals() {
   return webVitals;
 }
 
+// Export singleton instance for easy access
+export const performanceMonitor = PerformanceMonitor.getInstance();
+
 export default PerformanceMonitor;

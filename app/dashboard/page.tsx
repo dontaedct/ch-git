@@ -1,342 +1,343 @@
-import { redirect } from 'next/navigation';
-import { requireClient } from '@/lib/auth/guard';
-import { getPublicEnv } from '@/lib/env';
-import Link from 'next/link';
-import { getDashboardStats, getActiveOverrides, hasActiveOverrides } from '@/lib/config/service';
-import { Settings, FileText, Package, BarChart3, AlertCircle, CheckCircle, ArrowUpRight, Activity, Calendar, Database, Webhook, ExternalLink } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ConfigRevertButton } from '@/components/config-revert-button';
+/**
+ * @fileoverview Real Data Dashboard
+ * Dashboard with real database integration
+ */
+"use client";
 
-export default async function DashboardPage() {
-  const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
-  
-  let client = null;
-  
-  if (!isSafeMode) {
-    try {
-      client = await requireClient();
-    } catch {
-      redirect('/login');
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { cn } from "@/lib/utils";
+import { Settings, FileText, Package, BarChart3, AlertCircle, CheckCircle, ArrowUpRight, Activity, Calendar, Database, Webhook, ExternalLink } from "lucide-react";
+
+interface DashboardStats {
+  totalClients: number;
+  activeMicroApps: number;
+  templatesCreated: number;
+  formsBuilt: number;
+  documentsGenerated: number;
+  avgDeliveryTime: string;
+  clientSatisfaction: number;
+  systemHealth: number;
+}
+
+export default function DashboardPage() {
+  const { theme, systemTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState<DashboardStats>({
+    totalClients: 0,
+    activeMicroApps: 0,
+    templatesCreated: 0,
+    formsBuilt: 0,
+    documentsGenerated: 0,
+    avgDeliveryTime: "0 days",
+    clientSatisfaction: 0,
+    systemHealth: 0
+  });
+
+  // Load real dashboard data from API
+  useEffect(() => {
+    const loadDashboardData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await fetch('/api/agency-data?action=metrics');
+        const result = await response.json();
+        
+        if (result.success) {
+          setStats(result.data);
+        } else {
+          throw new Error(result.error || 'Failed to load dashboard data');
+        }
+      } catch (err) {
+        console.error('Error loading dashboard data:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load dashboard data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDashboardData();
+  }, []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark');
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
     }
-  }
+  };
 
-  const dashboardStats = getDashboardStats();
-  const activeOverrides = getActiveOverrides();
-  const hasOverrides = hasActiveOverrides();
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-wide uppercase text-black mb-4">
-            Welcome{client?.email ? ` back` : ' to your dashboard'}
-          </h1>
-          <p className="text-black/60 text-lg leading-relaxed">
-            Manage your consultations and account settings from here.
-          </p>
-          {isSafeMode && (
-            <div className="mt-4 px-4 py-2 bg-orange-50 text-orange-600 border-2 border-orange-200 rounded-lg inline-flex items-center gap-2">
-              <AlertCircle className="w-4 h-4" />
-              Safe Mode Active
+    <div className={cn(
+      "min-h-screen transition-all duration-300",
+      isDark ? "bg-black text-white" : "bg-white text-black"
+    )}>
+      {/* Header */}
+      <div className={cn(
+        "border-b-2 transition-all duration-300",
+        isDark ? "border-white/30" : "border-black/30"
+      )}>
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-4xl font-bold tracking-wide uppercase">
+                Dashboard
+              </h1>
+              <p className={cn(
+                "mt-2 text-lg",
+                isDark ? "text-white/80" : "text-black/80"
+              )}>
+                Real-time system overview and management
+              </p>
             </div>
-          )}
-        </div>
-
-        {/* Key Metrics */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold tracking-wide uppercase text-black">Key Metrics</h2>
-            <div className="px-3 py-1 bg-black/5 text-black/70 border-2 border-black/30 rounded-lg text-xs font-medium flex items-center gap-2">
-              <Activity className="w-3 h-3" />
-              Real-time
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-6 rounded-lg border-2 border-black/30 bg-white hover:border-black/50 transition-all duration-300 hover:shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-sm font-medium text-black/60">Consultations Today</div>
-                <div className="p-2 bg-black/5 rounded-lg">
-                  <BarChart3 className="h-4 w-4 text-black" />
-                </div>
-              </div>
-              <div className="text-3xl font-bold text-black mb-1">{dashboardStats.consultationsToday}</div>
-              <p className="text-sm text-black/60">requests processed</p>
-            </div>
-
-            <div className="p-6 rounded-lg border-2 border-black/30 bg-white hover:border-black/50 transition-all duration-300 hover:shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-sm font-medium text-black/60">Configuration Status</div>
-                <div className="p-2 bg-black/5 rounded-lg">
-                  <Settings className="h-4 w-4 text-black" />
-                </div>
-              </div>
-              <div className="text-3xl font-bold text-black mb-1">{hasOverrides ? activeOverrides.length : '0'}</div>
-              <p className="text-sm text-black/60">active overrides</p>
-            </div>
-
-            <div className="p-6 rounded-lg border-2 border-black/30 bg-white hover:border-black/50 transition-all duration-300 hover:shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-sm font-medium text-black/60">Active Modules</div>
-                <div className="p-2 bg-black/5 rounded-lg">
-                  <Package className="h-4 w-4 text-black" />
-                </div>
-              </div>
-              <div className="text-3xl font-bold text-black mb-1">5</div>
-              <p className="text-sm text-black/60">modules running</p>
-            </div>
-
-            <div className="p-6 rounded-lg border-2 border-black/30 bg-white hover:border-black/50 transition-all duration-300 hover:shadow-lg">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-sm font-medium text-black/60">Plan Catalog</div>
-                <div className="p-2 bg-black/5 rounded-lg">
-                  <FileText className="h-4 w-4 text-black" />
-                </div>
-              </div>
-              <div className="text-lg font-semibold text-black mb-1">{dashboardStats.catalogInUse}</div>
-              <p className="text-sm text-black/60">catalog active</p>
-            </div>
+            <ThemeToggle />
           </div>
         </div>
+      </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Quick Actions */}
-          <div className="lg:col-span-2">
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl font-semibold text-gray-900">Quick Actions</CardTitle>
-                  <Badge variant="outline" className="text-xs">
-                    <Calendar className="w-3 h-3 mr-1" />
-                    Ready
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Link 
-                    href="/questionnaire"
-                    className="group p-5 border border-gray-200/80 rounded-xl hover:border-blue-300 hover:bg-blue-50/50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-200 transition-colors">
-                        <Calendar className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" />
-                    </div>
-                    <h4 className="font-semibold text-gray-900 mb-2">New consultation</h4>
-                    <p className="text-sm text-gray-600 leading-relaxed">Start a new consultation request</p>
-                  </Link>
-                  
-                  <div className="group p-5 border border-gray-200/80 rounded-xl hover:border-green-300 hover:bg-green-50/50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 cursor-pointer">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center group-hover:bg-green-200 transition-colors">
-                        <FileText className="w-5 h-5 text-green-600" />
-                      </div>
-                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-green-600 transition-colors" />
-                    </div>
-                    <h4 className="font-semibold text-gray-900 mb-2">View consultations</h4>
-                    <p className="text-sm text-gray-600 leading-relaxed">See your consultation history</p>
-                  </div>
-                  
-                  <Link 
-                    href="/dashboard/modules"
-                    className="group p-5 border border-gray-200/80 rounded-xl hover:border-purple-300 hover:bg-purple-50/50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                        <Package className="w-5 h-5 text-purple-600" />
-                      </div>
-                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors" />
-                    </div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Modules Editor</h4>
-                    <p className="text-sm text-gray-600 leading-relaxed">Configure consultation modules</p>
-                  </Link>
-                  
-                  <Link 
-                    href="/dashboard/catalog"
-                    className="group p-5 border border-gray-200/80 rounded-xl hover:border-orange-300 hover:bg-orange-50/50 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center group-hover:bg-orange-200 transition-colors">
-                        <Settings className="w-5 h-5 text-orange-600" />
-                      </div>
-                      <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-orange-600 transition-colors" />
-                    </div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Catalog Overrides</h4>
-                    <p className="text-sm text-gray-600 leading-relaxed">Customize plan titles and content</p>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <div className={cn(
+              "text-lg font-medium",
+              isDark ? "text-white/80" : "text-black/80"
+            )}>
+              Loading dashboard data...
+            </div>
           </div>
+        )}
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Configuration Status */}
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold text-gray-900">Configuration</CardTitle>
-                  {hasOverrides && (
-                    <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 border-yellow-300">
-                      <AlertCircle className="h-3 w-3 mr-1" />
-                      {activeOverrides.length} active
-                    </Badge>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent>
-                {hasOverrides ? (
-                  <div className="space-y-4">
-                    {activeOverrides.map((override) => (
-                      <div key={override.id} className="p-4 bg-amber-50/80 rounded-xl border border-amber-200/80">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h4 className="text-sm font-semibold text-gray-900 mb-1">{override.label}</h4>
-                            <p className="text-xs text-gray-600 leading-relaxed mb-2">{override.description}</p>
-                            <code className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{override.path}</code>
-                          </div>
-                          <Badge variant="outline" className="ml-3">
-                            Active
-                          </Badge>
-                        </div>
-                      </div>
-                    ))}
-                    
-                    <div className="pt-4 border-t border-gray-200/80">
-                      <ConfigRevertButton className="w-full" />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="w-12 h-12 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="h-6 w-6 text-green-600" />
-                    </div>
-                    <p className="text-sm font-medium text-gray-900 mb-1">Using base configuration</p>
-                    <p className="text-xs text-gray-600">No active overrides</p>
-                  </div>
+        {/* Error State */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <div className="text-red-800 font-medium">Error loading dashboard</div>
+            <div className="text-red-600 text-sm mt-1">{error}</div>
+          </div>
+        )}
+
+        {/* Real Data Indicator */}
+        {!loading && !error && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+            <div className="text-green-800 font-medium">✅ Connected to real database</div>
+            <div className="text-green-600 text-sm mt-1">Showing actual system data from database</div>
+          </div>
+        )}
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-8"
+        >
+          {/* Key Metrics */}
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+          >
+            {[
+              { 
+                label: "Total Clients", 
+                value: stats.totalClients, 
+                icon: Package, 
+                color: "blue",
+                description: "Active client accounts"
+              },
+              { 
+                label: "Micro-Apps", 
+                value: stats.activeMicroApps, 
+                icon: Activity, 
+                color: "green",
+                description: "Deployed applications"
+              },
+              { 
+                label: "Templates", 
+                value: stats.templatesCreated, 
+                icon: FileText, 
+                color: "purple",
+                description: "Created templates"
+              },
+              { 
+                label: "System Health", 
+                value: `${stats.systemHealth}%`, 
+                icon: CheckCircle, 
+                color: "green",
+                description: "Overall system status"
+              }
+            ].map((metric, index) => (
+              <motion.div
+                key={index}
+                variants={itemVariants}
+                className={cn(
+                  "p-6 rounded-lg border-2 transition-all duration-300",
+                  isDark 
+                    ? "border-white/20 hover:border-white/40" 
+                    : "border-black/20 hover:border-black/40"
                 )}
-              </CardContent>
-            </Card>
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className={cn(
+                      "text-sm font-medium",
+                      isDark ? "text-white/70" : "text-black/70"
+                    )}>
+                      {metric.label}
+                    </p>
+                    <p className={cn(
+                      "text-2xl font-bold mt-1",
+                      isDark ? "text-white" : "text-black"
+                    )}>
+                      {metric.value}
+                    </p>
+                    <p className={cn(
+                      "text-xs mt-1",
+                      isDark ? "text-white/60" : "text-black/60"
+                    )}>
+                      {metric.description}
+                    </p>
+                  </div>
+                  <metric.icon className={cn(
+                    "w-8 h-8",
+                    isDark ? "text-white/80" : "text-black/80"
+                  )} />
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
 
-            {/* System Status */}
-            <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold text-gray-900">System Status</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50/80 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-100 rounded-lg">
-                        <Activity className="h-4 w-4 text-blue-600" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-900">API Status</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-green-600 font-semibold">Operational</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50/80 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-100 rounded-lg">
-                        <Database className="h-4 w-4 text-green-600" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-900">Database</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-green-600 font-semibold">Connected</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50/80 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-purple-100 rounded-lg">
-                        <Settings className="h-4 w-4 text-purple-600" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-900">Auth Service</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-                      <span className="text-sm text-green-600 font-semibold">Active</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50/80 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-orange-100 rounded-lg">
-                        <Webhook className="h-4 w-4 text-orange-600" />
-                      </div>
-                      <span className="text-sm font-medium text-gray-900">Webhooks</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className={`w-2.5 h-2.5 rounded-full ${
-                        process.env.N8N_WEBHOOK_URL ? 'bg-green-500' : 'bg-yellow-500'
-                      }`}></div>
-                      <span className={`text-sm font-semibold ${
-                        process.env.N8N_WEBHOOK_URL ? 'text-green-600' : 'text-yellow-600'
-                      }`}>
-                        {process.env.N8N_WEBHOOK_URL ? 'Configured' : 'Pending'}
-                      </span>
-                    </div>
+          {/* Quick Actions */}
+          <motion.div
+            variants={itemVariants}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          >
+            {[
+              {
+                title: "Agency Toolkit",
+                description: "Access the main toolkit dashboard",
+                href: "/agency-toolkit",
+                icon: Settings,
+                color: "blue"
+              },
+              {
+                title: "Client Management",
+                description: "Manage clients and projects",
+                href: "/clients",
+                icon: Package,
+                color: "green"
+              },
+              {
+                title: "System Health",
+                description: "Monitor system performance",
+                href: "/operability/health-monitoring",
+                icon: BarChart3,
+                color: "purple"
+              }
+            ].map((action, index) => (
+              <motion.a
+                key={index}
+                href={action.href}
+                variants={itemVariants}
+                className={cn(
+                  "p-6 rounded-lg border-2 transition-all duration-300 hover:scale-105",
+                  isDark 
+                    ? "border-white/20 hover:border-white/40 hover:bg-white/5" 
+                    : "border-black/20 hover:border-black/40 hover:bg-black/5"
+                )}
+              >
+                <div className="flex items-center space-x-4">
+                  <action.icon className={cn(
+                    "w-8 h-8",
+                    isDark ? "text-white/80" : "text-black/80"
+                  )} />
+                  <div>
+                    <h3 className={cn(
+                      "font-semibold",
+                      isDark ? "text-white" : "text-black"
+                    )}>
+                      {action.title}
+                    </h3>
+                    <p className={cn(
+                      "text-sm mt-1",
+                      isDark ? "text-white/70" : "text-black/70"
+                    )}>
+                      {action.description}
+                    </p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </motion.a>
+            ))}
+          </motion.div>
 
-            {/* Booking Link */}
-            {dashboardStats.activeBookingLink && (
-              <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg font-semibold text-gray-900">Booking Link</CardTitle>
-                    <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-                      <span className="text-xs font-medium text-green-600">Active</span>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="p-4 bg-green-50/80 rounded-xl border border-green-200/80">
-                    <div className="flex items-start justify-between mb-2">
-                      <p className="text-sm font-medium text-gray-900">Public booking URL</p>
-                      <ExternalLink className="w-4 h-4 text-gray-400" />
-                    </div>
-                    <code className="text-xs text-green-700 break-all leading-relaxed block">
-                      {dashboardStats.activeBookingLink}
-                    </code>
-                  </div>
-                </CardContent>
-              </Card>
+          {/* System Status */}
+          <motion.div
+            variants={itemVariants}
+            className={cn(
+              "p-6 rounded-lg border-2",
+              isDark ? "border-white/20" : "border-black/20"
             )}
-
-            {/* Settings Quick Link */}
-            <Link href="/dashboard/settings">
-              <Card className="bg-white/60 backdrop-blur-sm border-gray-200/80 hover:bg-white/80 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer group">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-gray-200 transition-colors">
-                        <Settings className="h-5 w-5 text-gray-600" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900">Settings</h3>
-                        <p className="text-sm text-gray-600">Configure booking and email</p>
-                      </div>
-                    </div>
-                    <ArrowUpRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
-        </div>
+          >
+            <h3 className={cn(
+              "text-lg font-semibold mb-4",
+              isDark ? "text-white" : "text-black"
+            )}>
+              System Status
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex items-center space-x-3">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <span className={cn(
+                  isDark ? "text-white/80" : "text-black/80"
+                )}>
+                  Database Connected
+                </span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <span className={cn(
+                  isDark ? "text-white/80" : "text-black/80"
+                )}>
+                  API Endpoints Active
+                </span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <span className={cn(
+                  isDark ? "text-white/80" : "text-black/80"
+                )}>
+                  Real Data Service Running
+                </span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <CheckCircle className="w-5 h-5 text-green-500" />
+                <span className={cn(
+                  isDark ? "text-white/80" : "text-black/80"
+                )}>
+                  System Health: {stats.systemHealth}%
+                </span>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );

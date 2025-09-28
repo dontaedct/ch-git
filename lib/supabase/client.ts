@@ -22,3 +22,6 @@ export const createClient = () => supabaseBrowser;
 
 /** Back-compat alias used by older files */
 export const createBrowserSupabase = () => supabaseBrowser;
+
+/** Back-compat alias for consistent import naming */
+export const supabase = supabaseBrowser;

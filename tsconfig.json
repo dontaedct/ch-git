@@ -29,9 +29,11 @@
       "@/components-sandbox/*": ["components-sandbox/*"],
       "@registry/*": ["src/registry/*", "registry/*"],
       "@compat/*": ["src/compat/*", "compat/*"],
-      "@components/*": ["components/*", "src/components/*"]
+      "@components/*": ["components/*", "src/components/*"],
+      "@dct/*": ["packages/*"]
     },
     "typeRoots": ["types", "node_modules/@types"],
+    "types": ["node"],
     "allowJs": false,
     "incremental": true,
     "plugins": [
@@ -46,6 +48,7 @@
     "env.d.ts",
     "next-env.d.ts",
     "types/**/*.d.ts",
+    "types/**/*.ts",
     ".next/types/**/*.ts"
   ],
   "exclude": [

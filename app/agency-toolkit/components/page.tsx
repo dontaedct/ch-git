@@ -7,6 +7,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 
@@ -286,7 +287,7 @@ export default function ComponentLibraryPage() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <a
+              <Link
                 href="/agency-toolkit"
                 className={cn(
                   "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
@@ -296,7 +297,7 @@ export default function ComponentLibraryPage() {
                 )}
               >
                 ← Back to Toolkit
-              </a>
+              </Link>
               <ThemeToggle />
             </div>
           </div>
@@ -316,10 +317,10 @@ export default function ComponentLibraryPage() {
             className="grid grid-cols-1 md:grid-cols-4 gap-4"
           >
             {[
-              { label: "Total Components", value: 88, color: "blue" },
-              { label: "Atoms", value: 32, color: "green" },
-              { label: "Molecules", value: 28, color: "yellow" },
-              { label: "Organisms", value: 28, color: "purple" }
+              { label: "Total Components", value: 8, color: "blue" },
+              { label: "Atoms", value: 3, color: "green" },
+              { label: "Molecules", value: 3, color: "yellow" },
+              { label: "Organisms", value: 2, color: "purple" }
             ].map((stat) => (
               <div
                 key={stat.label}

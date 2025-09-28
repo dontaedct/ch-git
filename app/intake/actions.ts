@@ -5,7 +5,11 @@ import { sendConfirmationEmail } from "@/lib/email";
 import { normalizePhone } from "@/lib/validation";
 import { splitName } from "@/lib/utils/splitName";
 import { logAuditEvent, recordConsent } from "@/lib/audit";
-import type { CreateClientIntakeParams } from "@/lib/supabase/rpc-types";
+// Removed CreateClientIntakeParams import - no longer using RPC function
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
 
 type Result = Promise<{ ok: true } | { ok: false; error: string }>;
 
@@ -31,19 +35,53 @@ export async function createClientIntake(formData: FormData): Result {
       }
     }
 
-    // Execute all database operations atomically
-    const params: CreateClientIntakeParams = {
-      p_coach_id: "system-intake", // Default coach ID for system intake
-      p_email: parsed.email,
-      p_first_name: splitName(parsed.full_name).first_name,
-      p_last_name: splitName(parsed.full_name).last_name ?? "",
-      p_phone: normalizedPhone
-    };
-    
-    const { error: transactionError } = await supabase.rpc('create_client_intake', params);
+    // Create client directly in clients_enhanced table
+    const { data: clientData, error: insertError } = await supabase
+      .from('clients_enhanced')
+      .insert([{
+        name: parsed.full_name,
+        email: parsed.email,
+        phone: normalizedPhone,
+        company_name: parsed.company_name || null,
+        industry: parsed.industry || null,
+        business_size: parsed.company_size || null,
+        budget_range: parsed.budget_range || null,
+        timeline_requirements: parsed.timeline || null,
+        status: 'active',
+        tier: 'basic',
+        acquisition_source: 'intake_form',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }])
+      .select()
+      .single();
 
-    if (transactionError) {
-      throw transactionError;
+    if (insertError) {
+      console.error('Error creating client:', insertError);
+      throw new Error(`Failed to create client: ${insertError.message}`);
+    }
+
+    console.log('✅ Client created successfully:', clientData);
+
+    // Automatically execute DCT CLI with the collected data (only if all fields are present)
+    if (parsed.company_name && parsed.industry && parsed.company_size && parsed.primary_challenges && parsed.primary_goals && parsed.budget_range && parsed.timeline) {
+      try {
+        const cliCommand = `node bin/dct.js --ci --name "${parsed.company_name}" --industry ${parsed.industry} --size ${parsed.company_size} --challenges ${parsed.primary_challenges} --goals ${parsed.primary_goals} --budget ${parsed.budget_range} --timeline ${parsed.timeline}`;
+        
+        console.log('🚀 Executing DCT CLI with command:', cliCommand);
+        const { stdout, stderr } = await execAsync(cliCommand);
+        
+        if (stderr) {
+          console.warn('DCT CLI stderr:', stderr);
+        }
+        
+        console.log('✅ DCT CLI executed successfully:', stdout);
+      } catch (cliError) {
+        console.error('❌ DCT CLI execution failed:', cliError);
+        // Don't fail the entire operation if CLI fails, just log it
+      }
+    } else {
+      console.log('ℹ️ Skipping DCT CLI execution - not all fields present');
     }
 
     // Log audit event for intake creation

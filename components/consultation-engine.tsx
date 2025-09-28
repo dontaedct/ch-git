@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator'
 import { Clock, CheckCircle, ArrowRight, Download, Mail, Calendar, User } from 'lucide-react'
 import { usePdfExport } from '@/hooks/use-pdf-export'
 import { useN8nEvents } from '@/lib/n8n-events'
-import { emitConsultationGenerated, emitPdfDownloaded, emitEmailCopyRequested } from '@/lib/webhooks/emitter'
+import { emitConsultationGenerated, emitPdfDownloaded, emitEmailCopyRequested } from '@/lib/webhooks/emitter-client'
 import { EmailModal } from '@/components/email-modal'
 
 // Types based on the config structure

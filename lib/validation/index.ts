@@ -25,6 +25,13 @@ export const intakeSchema = z.object({
   name: z.string().min(1), // Add name field for backward compatibility
   email: z.string().email(),
   phone: z.string().optional(),
+  company_name: z.string().optional(), // Company name field - optional for now
+  industry: z.string().optional(), // Industry field - optional for now
+  company_size: z.string().optional(), // Company size field - optional for now
+  primary_challenges: z.string().optional(), // Primary challenges field - optional for now
+  primary_goals: z.string().optional(), // Primary goals field - optional for now
+  budget_range: z.string().optional(), // Budget range field - optional for now
+  timeline: z.string().optional(), // Timeline field - optional for now
   coach_id: z.string().uuid().optional(), // Add coach_id field
   consent: z.union([z.literal(true), z.string()]).transform(v => v === true || v === "on" || v === "true" || v === "1" || v === "1"),
 });

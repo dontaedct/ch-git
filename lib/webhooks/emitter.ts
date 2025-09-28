@@ -12,6 +12,7 @@ import {
 } from '@/lib/config/webhooks';
 import { generateHmacSignature } from './hmac-signer';
 import { withBackoff } from '@/lib/n8n/reliability-client';
+import { logWebhookDelivery, type WebhookDelivery } from './delivery-tracker';
 
 export interface WebhookEvent {
   /** Event type/name */
@@ -239,7 +240,7 @@ export class WebhookEmitter {
         // Get response body (might be useful for debugging)
         const responseText = await response.text();
 
-        return {
+        const deliveryResult = {
           endpoint: endpointName,
           success: true,
           statusCode: response.status,
@@ -248,16 +249,45 @@ export class WebhookEmitter {
           duration: Date.now() - startTime
         };
 
+        // Log successful delivery
+        await logWebhookDelivery({
+          eventId: `${eventPayload.type}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+          eventType: eventPayload.type,
+          endpoint: endpointConfig.url,
+          success: true,
+          statusCode: response.status,
+          responseTime: deliveryResult.duration,
+          retryCount: attempts - 1,
+          responseHeaders: Object.fromEntries(response.headers.entries()),
+          responseBody: responseText
+        });
+
+        return deliveryResult;
+
       } catch (error: unknown) {
         // If this is the last attempt, return failure
         if (attempts >= maxRetries) {
-          return {
+          const failureResult = {
             endpoint: endpointName,
             success: false,
             error: (error as Error).message ?? 'Unknown error',
             attempts,
             duration: Date.now() - startTime
           };
+
+          // Log failed delivery
+          await logWebhookDelivery({
+            eventId: `${eventPayload.type}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+            eventType: eventPayload.type,
+            endpoint: endpointConfig.url,
+            success: false,
+            responseTime: failureResult.duration,
+            retryCount: attempts - 1,
+            errorMessage: failureResult.error,
+            errorCode: 'DELIVERY_FAILED'
+          });
+
+          return failureResult;
         }
         
         // Otherwise, throw to trigger retry
@@ -274,13 +304,27 @@ export class WebhookEmitter {
         jitterFactor: 0.1
       });
     } catch (error: unknown) {
-      return {
+      const finalFailureResult = {
         endpoint: endpointName,
         success: false,
         error: (error as Error).message ?? 'Unknown error',
         attempts,
         duration: Date.now() - startTime
       };
+
+      // Log final failure
+      await logWebhookDelivery({
+        eventId: `${eventPayload.type}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+        eventType: eventPayload.type,
+        endpoint: endpointConfig.url,
+        success: false,
+        responseTime: finalFailureResult.duration,
+        retryCount: attempts - 1,
+        errorMessage: finalFailureResult.error,
+        errorCode: 'FINAL_DELIVERY_FAILED'
+      });
+
+      return finalFailureResult;
     }
   }
 }

@@ -18,10 +18,10 @@ import {
   TrendingDownIcon,
   ClockIcon,
   GitBranchIcon,
-  BuildIcon,
-  TestTubeIcon,
-  ShieldCheckIcon,
-  QualityIcon,
+  Wrench,
+  TestTube,
+  ShieldCheck,
+  CheckCircle,
   BarChart3Icon,
   FilterIcon,
   WorkflowIcon
@@ -40,7 +40,7 @@ interface PipelineStage {
 
 interface QualityGate {
   name: string;
-  status: 'passed' | 'failed' | 'warning';
+  status: 'passed' | 'failed';
   threshold: number;
   current: number;
   unit: string;
@@ -93,7 +93,7 @@ export default function QAPipelinePage() {
     },
     {
       name: 'Security Scan',
-      status: 'warning',
+      status: 'failed',
       duration: 300,
       tests: 30,
       passed: 27,
@@ -171,7 +171,7 @@ export default function QAPipelinePage() {
     },
     {
       name: 'Lint Errors',
-      status: 'warning',
+      status: 'failed',
       threshold: 0,
       current: 1,
       unit: 'errors',
@@ -203,7 +203,7 @@ export default function QAPipelinePage() {
   const [isRunning, setIsRunning] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
-  const getStatusIcon = (status: 'pending' | 'running' | 'passed' | 'failed' | 'skipped' | 'warning') => {
+  const getStatusIcon = (status: 'pending' | 'running' | 'passed' | 'failed' | 'skipped') => {
     switch (status) {
       case 'running':
         return <RefreshCwIcon className="h-4 w-4 animate-spin text-blue-500" />;
@@ -220,12 +220,11 @@ export default function QAPipelinePage() {
     }
   };
 
-  const getStatusBadge = (status: 'pending' | 'running' | 'passed' | 'failed' | 'skipped' | 'warning') => {
+  const getStatusBadge = (status: 'pending' | 'running' | 'passed' | 'failed' | 'skipped') => {
     const variants = {
       running: 'secondary',
       passed: 'default',
       failed: 'destructive',
-      warning: 'secondary',
       skipped: 'outline',
       pending: 'outline'
     } as const;
@@ -236,11 +235,11 @@ export default function QAPipelinePage() {
   const getCategoryIcon = (category: 'code' | 'testing' | 'security' | 'performance') => {
     switch (category) {
       case 'code':
-        return <BuildIcon className="h-4 w-4" />;
+        return <Wrench className="h-4 w-4" />;
       case 'testing':
-        return <TestTubeIcon className="h-4 w-4" />;
+        return <TestTube className="h-4 w-4" />;
       case 'security':
-        return <ShieldCheckIcon className="h-4 w-4" />;
+        return <ShieldCheck className="h-4 w-4" />;
       case 'performance':
         return <TrendingUpIcon className="h-4 w-4" />;
     }
@@ -253,7 +252,7 @@ export default function QAPipelinePage() {
     setTimeout(() => {
       setPipelineStages(prev => prev.map(stage => ({
         ...stage,
-        status: Math.random() > 0.15 ? 'passed' as const : (Math.random() > 0.5 ? 'failed' as const : 'warning' as const),
+        status: Math.random() > 0.15 ? 'passed' as const : 'failed' as const,
         lastRun: 'Just now'
       })));
       setIsRunning(false);
@@ -420,7 +419,7 @@ export default function QAPipelinePage() {
                       </p>
                     </div>
                   )}
-                  {stage.status === 'warning' && (
+                  {stage.status === 'failed' && (
                     <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded">
                       <p className="text-sm text-yellow-700">
                         Stage completed with warnings - Review recommended
@@ -481,7 +480,7 @@ export default function QAPipelinePage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <ShieldCheckIcon className="h-5 w-5" />
+                <ShieldCheck className="h-5 w-5" />
                 Quality Gates
               </CardTitle>
             </CardHeader>

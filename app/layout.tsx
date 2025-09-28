@@ -14,66 +14,66 @@ export const fetchCache = 'default-no-store';
 
 export const metadata = {
   title: {
-    default: "Build Better Products Faster Than Ever | Micro App Platform",
-    template: "%s | Micro App Platform"
+    default: "Custom Micro-Apps in 7 Days | Automation DCT",
+    template: "%s | Automation DCT"
   },
-  description: "Transform your ideas into production-ready applications with our comprehensive development platform. Ship features faster, maintain quality, and scale effortlessly with built-in tools, UI components, database & auth, and one-click deployment.",
+  description: "Get a custom micro-app that streamlines operations, automates workflows, and scales your business—delivered in 7 days or less for $2k-5k. AI-powered development for SMBs.",
   keywords: [
-    "web development",
-    "application platform",
-    "development tools",
-    "UI components",
-    "database",
-    "authentication",
-    "deployment",
-    "TypeScript",
-    "Next.js",
-    "React",
-    "Supabase",
-    "Vercel"
+    "micro-app development",
+    "business automation",
+    "custom software",
+    "lead capture",
+    "document generation",
+    "workflow automation",
+    "SMB software",
+    "business process automation",
+    "custom web applications",
+    "rapid development",
+    "AI-powered development",
+    "business tools"
   ],
-  authors: [{ name: "Micro App Platform" }],
-  creator: "Micro App Platform",
-  publisher: "Micro App Platform",
+  authors: [{ name: "Automation DCT" }],
+  creator: "Automation DCT",
+  publisher: "Automation DCT",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://microapp.example.com'),
+  metadataBase: new URL('https://automationdct.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://microapp.example.com',
-    title: 'Build Better Products Faster Than Ever | Micro App Platform',
-    description: 'Transform your ideas into production-ready applications with our comprehensive development platform. Ship features faster, maintain quality, and scale effortlessly.',
-    siteName: 'Micro App Platform',
+    url: 'https://automationdct.com',
+    title: 'Custom Micro-Apps in 7 Days | Automation DCT',
+    description: 'Get a custom micro-app that streamlines operations, automates workflows, and scales your business—delivered in 7 days or less for $2k-5k.',
+    siteName: 'Automation DCT',
     images: [
       {
         url: '/og-image.svg',
         width: 1200,
         height: 630,
-        alt: 'Micro App Platform - Build Better Products Faster Than Ever',
+        alt: 'Automation DCT - Custom Micro-Apps in 7 Days',
         type: 'image/svg+xml',
       },
       {
         url: '/og-image-square.svg',
         width: 1200,
         height: 1200,
-        alt: 'Micro App Platform Logo',
+        alt: 'Automation DCT Logo',
         type: 'image/svg+xml',
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Build Better Products Faster Than Ever | Micro App Platform',
-    description: 'Transform your ideas into production-ready applications with our comprehensive development platform. Ship features faster, maintain quality, and scale effortlessly.',
-    creator: '@microapp',
-    site: '@microapp',
+    title: 'Custom Micro-Apps in 7 Days | Automation DCT',
+    description: 'Get a custom micro-app that streamlines operations, automates workflows, and scales your business—delivered in 7 days or less for $2k-5k.',
+    creator: '@automationdct',
+    site: '@automationdct',
     images: ['/og-image.svg'],
   },
   robots: {
@@ -102,11 +102,21 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Use system fonts instead of Google Fonts to avoid CSP issues */}
+        {/* Font Preloading for Performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link 
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" 
+          rel="stylesheet"
+        />
         
         {/* Performance hints */}
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="format-detection" content="telephone=no" />
+        
+        {/* DNS Prefetch for external resources */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         
         {/* PWA Meta Tags */}
         <link rel="manifest" href="/manifest.json" />
@@ -115,8 +125,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Hero Tasks" />
-        <meta name="application-name" content="Hero Tasks" />
+        <meta name="apple-mobile-web-app-title" content="Automation DCT" />
+        <meta name="application-name" content="Automation DCT" />
         <meta name="msapplication-TileImage" content="/icons/icon-144x144.png" />
         
         {/* PWA Icons */}
@@ -135,11 +145,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* Additional Open Graph tags */}
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Micro App Platform - Build Better Products Faster Than Ever" />
+        <meta property="og:image:alt" content="Automation DCT - Custom Micro-Apps in 7 Days" />
         <meta property="og:updated_time" content={new Date().toISOString()} />
         
         {/* Twitter Card additional tags */}
-        <meta name="twitter:image:alt" content="Micro App Platform - Build Better Products Faster Than Ever" />
+        <meta name="twitter:image:alt" content="Automation DCT - Custom Micro-Apps in 7 Days" />
         
         {/* Additional meta tags for better SEO */}
         <meta name="language" content="en" />
@@ -155,25 +165,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              "name": "Micro App Platform",
-              "description": "Transform your ideas into production-ready applications with our comprehensive development platform. Ship features faster, maintain quality, and scale effortlessly.",
-              "url": "https://microapp.example.com",
-              "applicationCategory": "DeveloperApplication",
+              "name": "Automation DCT",
+              "description": "Get a custom micro-app that streamlines operations, automates workflows, and scales your business—delivered in 7 days or less for $2k-5k.",
+              "url": "https://automationdct.com",
+              "applicationCategory": "BusinessApplication",
               "operatingSystem": "Web",
               "offers": {
                 "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
+                "price": "2000",
+                "priceCurrency": "USD",
+                "priceRange": "$2000-$5000"
               },
               "author": {
                 "@type": "Organization",
-                "name": "Micro App Platform"
+                "name": "Automation DCT"
               },
               "featureList": [
-                "Development Tools",
-                "UI Components", 
-                "Database & Auth",
-                "One-Click Deploy"
+                "Lead Capture Systems",
+                "Document Generation", 
+                "Workflow Automation",
+                "CRM Integration"
               ]
             })
           }}

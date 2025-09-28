@@ -147,6 +147,7 @@ export const AVAILABLE_PRESETS = [
   'salon-waitlist',
   'realtor-listing-hub', 
   'consultation-engine',
+  'universal-consultation',
 ] as const;
 
 export type PresetName = typeof AVAILABLE_PRESETS[number];

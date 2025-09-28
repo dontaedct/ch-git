@@ -21,7 +21,7 @@ const rootDir = join(__dirname, '..');
 // =============================================================================
 
 const AVAILABLE_TIERS = ['starter', 'pro', 'advanced'];
-const AVAILABLE_PRESETS = ['salon-waitlist', 'realtor-listing-hub', 'consultation-engine'];
+const AVAILABLE_PRESETS = ['universal-consultation'];
 
 // =============================================================================
 // CLI CONFIGURATION
@@ -31,8 +31,8 @@ const CLI_CONFIG = {
   name: 'dct',
   version: '1.0.0',
   description: 'DCT Micro-Apps Template Initializer',
-  defaultPreset: 'salon-waitlist',
-  defaultTier: 'starter',
+  defaultPreset: 'universal-consultation',
+  defaultTier: 'advanced',
 };
 
 // =============================================================================
@@ -202,12 +202,7 @@ function validateInputs(config) {
   const errors = [];
   const warnings = [];
 
-  // Validate tier
-  if (!AVAILABLE_TIERS.includes(config.tier)) {
-    errors.push(`Invalid tier: ${config.tier}. Must be one of: ${AVAILABLE_TIERS.join(', ')}`);
-  }
-
-  // Validate preset
+  // Validate preset (should always be universal-consultation)
   if (!AVAILABLE_PRESETS.includes(config.preset)) {
     errors.push(`Invalid preset: ${config.preset}. Must be one of: ${AVAILABLE_PRESETS.join(', ')}`);
   }
@@ -221,10 +216,40 @@ function validateInputs(config) {
     warnings.push('Client name is quite long, consider shortening for better display');
   }
 
-  // Cross-validation: Check if preset supports selected tier
-  const preset = loadPresetConfig(config.preset);
-  if (preset && preset.tier && preset.tier !== config.tier) {
-    warnings.push(`Preset "${config.preset}" is designed for tier "${preset.tier}" but you selected "${config.tier}"`);
+  // Validate industry
+  const validIndustries = ['technology', 'healthcare', 'finance', 'retail', 'manufacturing', 'consulting', 'education', 'nonprofit', 'other'];
+  if (config.industry && !validIndustries.includes(config.industry)) {
+    errors.push(`Invalid industry: ${config.industry}. Must be one of: ${validIndustries.join(', ')}`);
+  }
+
+  // Validate company size
+  const validSizes = ['solo', 'small', 'medium', 'large', 'enterprise'];
+  if (config.companySize && !validSizes.includes(config.companySize)) {
+    errors.push(`Invalid company size: ${config.companySize}. Must be one of: ${validSizes.join(', ')}`);
+  }
+
+  // Validate challenges
+  const validChallenges = ['growth', 'efficiency', 'technology', 'team', 'marketing', 'finance', 'competition', 'compliance'];
+  if (config.primaryChallenges && !validChallenges.includes(config.primaryChallenges)) {
+    errors.push(`Invalid challenges: ${config.primaryChallenges}. Must be one of: ${validChallenges.join(', ')}`);
+  }
+
+  // Validate goals
+  const validGoals = ['revenue-growth', 'cost-reduction', 'market-expansion', 'product-development', 'team-building', 'automation', 'customer-satisfaction', 'digital-transformation'];
+  if (config.primaryGoals && !validGoals.includes(config.primaryGoals)) {
+    errors.push(`Invalid goals: ${config.primaryGoals}. Must be one of: ${validGoals.join(', ')}`);
+  }
+
+  // Validate budget range
+  const validBudgets = ['under-5k', '5k-15k', '15k-50k', '50k-plus'];
+  if (config.budgetRange && !validBudgets.includes(config.budgetRange)) {
+    errors.push(`Invalid budget range: ${config.budgetRange}. Must be one of: ${validBudgets.join(', ')}`);
+  }
+
+  // Validate timeline
+  const validTimelines = ['immediately', 'within-month', 'within-quarter', 'planning'];
+  if (config.timeline && !validTimelines.includes(config.timeline)) {
+    errors.push(`Invalid timeline: ${config.timeline}. Must be one of: ${validTimelines.join(', ')}`);
   }
 
   return { errors, warnings };
@@ -589,40 +614,90 @@ async function runInteractiveMode() {
     // Step 1: Client Name
     const clientName = await prompt('What is your client\'s business name?', 'My Business');
     
-    // Step 2: Tier Selection
-    const tierDescriptions = [
-      'starter - Basic features, perfect for simple websites',
-      'pro - Advanced features with payments and automation',
-      'advanced - All features including AI and enterprise tools'
+    // Step 2: Industry Selection
+    const industryDescriptions = [
+      'technology - Technology/Software',
+      'healthcare - Healthcare',
+      'finance - Financial Services', 
+      'retail - Retail/E-commerce',
+      'manufacturing - Manufacturing',
+      'consulting - Consulting',
+      'education - Education',
+      'nonprofit - Non-profit',
+      'other - Other'
     ];
-    const tier = await selectPrompt('Select your tier:', tierDescriptions, 0);
-    const selectedTier = tier.split(' ')[0]; // Extract tier name
+    const industry = await selectPrompt('What industry is your client in?', industryDescriptions, 0);
+    const selectedIndustry = industry.split(' - ')[0]; // Extract industry value
     
-    // Step 3: Preset Selection (with recommendations)
-    const recommendedPresets = getPresetRecommendations(selectedTier);
-    const presetDescriptions = AVAILABLE_PRESETS.map(preset => {
-      const config = loadPresetConfig(preset);
-      const isRecommended = recommendedPresets.includes(preset);
-      const mark = isRecommended ? '⭐' : '  ';
-      return `${mark} ${preset} - ${config?.name || preset}`;
-    });
+    // Step 3: Company Size
+    const sizeDescriptions = [
+      'solo - Just me (solo)',
+      'small - 2-10 employees', 
+      'medium - 11-50 employees',
+      'large - 51-200 employees',
+      'enterprise - 200+ employees'
+    ];
+    const companySize = await selectPrompt('What size is the company?', sizeDescriptions, 0);
+    const selectedSize = companySize.split(' - ')[0]; // Extract size value
     
-    const presetSelection = await selectPrompt('Select your preset:', presetDescriptions, 0);
-    const preset = presetSelection.replace(/^[⭐\s]*/, '').split(' ')[0]; // Extract preset name
+    // Step 4: Primary Challenges
+    const challengeDescriptions = [
+      'growth - Scaling/Growth',
+      'efficiency - Operational Efficiency',
+      'technology - Technology/Digital Transformation',
+      'team - Team Management',
+      'marketing - Marketing/Customer Acquisition',
+      'finance - Financial Management',
+      'competition - Competitive Pressure',
+      'compliance - Compliance/Regulatory'
+    ];
+    const challenges = await selectPrompt('What are the primary business challenges?', challengeDescriptions, 0);
+    const selectedChallenges = challenges.split(' - ')[0]; // Extract challenge value
     
-    // Get intelligent defaults based on preset
-    const defaults = getPresetDefaults(preset);
+    // Step 5: Primary Goals
+    const goalDescriptions = [
+      'revenue-growth - Revenue Growth',
+      'cost-reduction - Cost Reduction',
+      'market-expansion - Market Expansion',
+      'product-development - Product Development',
+      'team-building - Team Building',
+      'automation - Process Automation',
+      'customer-satisfaction - Customer Satisfaction',
+      'digital-transformation - Digital Transformation'
+    ];
+    const goals = await selectPrompt('What are the primary business goals?', goalDescriptions, 0);
+    const selectedGoals = goals.split(' - ')[0]; // Extract goal value
     
-    // Step 4: Feature toggles
-    const enableStripe = await confirmPrompt('Enable Stripe payments?', defaults.enableStripe);
-    const enableScheduler = await confirmPrompt('Enable scheduling/calendar features?', defaults.enableScheduler);
+    // Step 6: Budget Range
+    const budgetDescriptions = [
+      'under-5k - Under $5,000',
+      '5k-15k - $5,000 - $15,000',
+      '15k-50k - $15,000 - $50,000',
+      '50k-plus - $50,000+'
+    ];
+    const budget = await selectPrompt('What is the budget range?', budgetDescriptions, 0);
+    const selectedBudget = budget.split(' - ')[0]; // Extract budget value
+    
+    // Step 7: Timeline
+    const timelineDescriptions = [
+      'immediately - Immediately',
+      'within-month - Within 1 month',
+      'within-quarter - Within 3 months',
+      'planning - Just planning for now'
+    ];
+    const timeline = await selectPrompt('When would you like to start?', timelineDescriptions, 0);
+    const selectedTimeline = timeline.split(' - ')[0]; // Extract timeline value
     
     const config = {
       clientName,
-      tier: selectedTier,
-      preset,
-      enableStripe,
-      enableScheduler,
+      industry: selectedIndustry,
+      companySize: selectedSize,
+      primaryChallenges: selectedChallenges,
+      primaryGoals: selectedGoals,
+      budgetRange: selectedBudget,
+      timeline: selectedTimeline,
+      preset: 'universal-consultation',
+      tier: 'advanced', // Universal consultation template is advanced tier
       mode: 'interactive'
     };
     
@@ -672,10 +747,14 @@ function parseArgs(args) {
     help: false,
     version: false,
     clientName: '',
-    tier: CLI_CONFIG.defaultTier,
+    industry: '',
+    companySize: '',
+    primaryChallenges: '',
+    primaryGoals: '',
+    budgetRange: '',
+    timeline: '',
     preset: CLI_CONFIG.defaultPreset,
-    enableStripe: false,
-    enableScheduler: false,
+    tier: 'advanced', // Universal consultation is always advanced
     ci: false,
     verbose: false
   };
@@ -700,25 +779,39 @@ function parseArgs(args) {
         config.mode = 'ci';
         break;
         
-      case '--tier':
+      case '--industry':
+      case '-i':
+        config.industry = args[++i] || '';
+        config.mode = 'ci';
+        break;
+        
+      case '--size':
+      case '-s':
+        config.companySize = args[++i] || '';
+        config.mode = 'ci';
+        break;
+        
+      case '--challenges':
+      case '-c':
+        config.primaryChallenges = args[++i] || '';
+        config.mode = 'ci';
+        break;
+        
+      case '--goals':
+      case '-g':
+        config.primaryGoals = args[++i] || '';
+        config.mode = 'ci';
+        break;
+        
+      case '--budget':
+      case '-b':
+        config.budgetRange = args[++i] || '';
+        config.mode = 'ci';
+        break;
+        
+      case '--timeline':
       case '-t':
-        config.tier = args[++i] || CLI_CONFIG.defaultTier;
-        config.mode = 'ci';
-        break;
-        
-      case '--preset':
-      case '-p':
-        config.preset = args[++i] || CLI_CONFIG.defaultPreset;
-        config.mode = 'ci';
-        break;
-        
-      case '--stripe':
-        config.enableStripe = true;
-        config.mode = 'ci';
-        break;
-        
-      case '--scheduler':
-        config.enableScheduler = true;
+        config.timeline = args[++i] || '';
         config.mode = 'ci';
         break;
         
@@ -753,19 +846,21 @@ function showHelp() {
   log('');
   log('Options:', colors.bright);
   log('  -n, --name <name>       Client business name');
-  log('  -t, --tier <tier>       Tier: starter, pro, advanced');
-  log('  -p, --preset <preset>   Preset: salon-waitlist, realtor-listing-hub, consultation-engine');
-  log('      --stripe            Enable Stripe payments');
-  log('      --scheduler         Enable scheduling features');
+  log('  -i, --industry <industry> Industry: technology, healthcare, finance, retail, manufacturing, consulting, education, nonprofit, other');
+  log('  -s, --size <size>       Company size: solo, small, medium, large, enterprise');
+  log('  -c, --challenges <challenges> Primary challenges: growth, efficiency, technology, team, marketing, finance, competition, compliance');
+  log('  -g, --goals <goals>     Primary goals: revenue-growth, cost-reduction, market-expansion, product-development, team-building, automation, customer-satisfaction, digital-transformation');
+  log('  -b, --budget <budget>   Budget range: under-5k, 5k-15k, 15k-50k, 50k-plus');
+  log('  -t, --timeline <timeline> Timeline: immediately, within-month, within-quarter, planning');
   log('      --ci                Non-interactive CI mode');
   log('      --verbose           Verbose output');
   log('  -h, --help              Show help');
   log('  -v, --version           Show version');
   log('');
   log('Examples:', colors.bright);
-  log('  npx dct init --name "Bella Salon" --preset salon-waitlist --tier starter');
-  log('  npx dct init --name "Premier Realty" --preset realtor-listing-hub --tier pro --stripe');
-  log('  npx dct init --ci --name "Wellness Center" --preset consultation-engine --tier advanced');
+  log('  npx dct init --name "TechCorp" --industry technology --size medium --challenges growth --goals revenue-growth --budget 15k-50k --timeline within-month');
+  log('  npx dct init --name "HealthPlus" --industry healthcare --size large --challenges efficiency --goals automation --budget 50k-plus --timeline immediately');
+  log('  npx dct init --ci --name "Consulting Firm" --industry consulting --size small --challenges team --goals team-building --budget 5k-15k --timeline planning');
   log('');
   log('Generated Files:', colors.bright);
   log('  app.config.ts     # Application configuration');

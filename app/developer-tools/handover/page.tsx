@@ -1,683 +1,356 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+/**
+ * @fileoverview Client Handover - Step 12 of Client App Creation Guide
+ * PRD-compliant handover interface for rapid micro-app delivery
+ * Focus: Essential handover tools, professional appearance, minimal complexity
+ */
+import { redirect } from 'next/navigation';
+import { requireClient } from '@/lib/auth/guard';
+import { getPublicEnv } from '@/lib/env';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Package,
-  FileText,
-  Key,
-  Download,
-  Send,
-  CheckCircle,
-  Clock,
-  User,
-  Mail,
-  Server,
-  Shield,
-  Database,
-  Globe,
-  Settings,
-  BookOpen,
-  Zap,
-  AlertTriangle
-} from 'lucide-react';
+import { ArrowLeft, Package, FileText, Send, Key, CheckCircle, Clock } from 'lucide-react';
 
-interface HandoverPackage {
+// Simple interfaces for essential handover only
+interface SimpleHandoverPackage {
   id: string;
   clientName: string;
   projectName: string;
-  status: 'preparing' | 'ready' | 'delivered' | 'completed';
-  createdAt: Date;
-  deliveredAt?: Date;
-  components: {
-    documentation: boolean;
-    credentials: boolean;
-    codebase: boolean;
-    deployment: boolean;
-    training: boolean;
-  };
-  deliveryMethod: 'email' | 'secure-link' | 'portal';
-  progress: number;
+  status: 'preparing' | 'ready' | 'delivered';
+  deliveryImpact: string;
+  complexity: 'low' | 'medium';
 }
 
-interface ClientCredential {
+interface HandoverOption {
   id: string;
-  type: 'database' | 'api' | 'hosting' | 'domain' | 'email' | 'analytics';
   name: string;
   description: string;
-  secured: boolean;
-  expiresAt?: Date;
+  icon: React.ComponentType<any>;
+  deliveryImpact: string;
+  complexity: 'low' | 'medium';
 }
 
-interface DocumentationTemplate {
-  id: string;
-  name: string;
-  type: 'setup' | 'user-guide' | 'technical' | 'maintenance';
-  status: 'draft' | 'ready' | 'generated';
-  lastUpdated: Date;
-}
+export default async function ClientHandoverPage() {
+  const isSafeMode = getPublicEnv().NEXT_PUBLIC_SAFE_MODE === '1';
 
-export default function ClientHandoverAutomationPage() {
-  const [handoverPackages, setHandoverPackages] = useState<HandoverPackage[]>([
+  let client = null;
+
+  if (!isSafeMode) {
+    try {
+      client = await requireClient();
+    } catch {
+      redirect('/login');
+    }
+  }
+
+  // Essential handover options (5 only per PRD)
+  const handoverOptions: HandoverOption[] = [
     {
-      id: '1',
-      clientName: 'Acme Corporation',
-      projectName: 'E-commerce Platform',
-      status: 'ready',
-      createdAt: new Date(Date.now() - 86400000),
-      components: {
-        documentation: true,
-        credentials: true,
-        codebase: true,
-        deployment: true,
-        training: false
-      },
-      deliveryMethod: 'secure-link',
-      progress: 85
+      id: 'documentation',
+      name: 'Documentation Package',
+      description: 'Complete user guide and setup instructions',
+      icon: FileText,
+      deliveryImpact: 'Day 1 - Client can manage app',
+      complexity: 'low'
     },
     {
-      id: '2',
-      clientName: 'TechStart Inc',
-      projectName: 'Dashboard Analytics',
+      id: 'credentials',
+      name: 'Access Credentials',
+      description: 'Secure delivery of login and admin access',
+      icon: Key,
+      deliveryImpact: 'Day 1 - Client has full access',
+      complexity: 'medium'
+    },
+    {
+      id: 'delivery',
+      name: 'Project Delivery',
+      description: 'Complete project package with all files',
+      icon: Package,
+      deliveryImpact: 'Day 7 - Project fully delivered',
+      complexity: 'medium'
+    },
+    {
+      id: 'training',
+      name: 'Client Training',
+      description: 'Video walkthrough and support materials',
+      icon: CheckCircle,
+      deliveryImpact: 'Day 7 - Client fully trained',
+      complexity: 'medium'
+    },
+    {
+      id: 'communication',
+      name: 'Handover Communication',
+      description: 'Professional client communication templates',
+      icon: Send,
+      deliveryImpact: 'Day 1 - Professional handover',
+      complexity: 'low'
+    }
+  ];
+
+  // Simple handover packages (3 essential ones)
+  const packages: SimpleHandoverPackage[] = [
+    {
+      id: 'ready-package',
+      clientName: 'Acme Corp',
+      projectName: 'Business Website',
+      status: 'ready',
+      deliveryImpact: 'Day 7 - Ready for delivery',
+      complexity: 'low'
+    },
+    {
+      id: 'preparing-package',
+      clientName: 'TechStart',
+      projectName: 'Landing Page',
       status: 'preparing',
-      createdAt: new Date(Date.now() - 3600000),
-      components: {
-        documentation: true,
-        credentials: false,
-        codebase: true,
-        deployment: false,
-        training: false
-      },
-      deliveryMethod: 'portal',
-      progress: 45
-    }
-  ]);
-
-  const [credentials, setCredentials] = useState<ClientCredential[]>([
-    {
-      id: '1',
-      type: 'database',
-      name: 'Production Database',
-      description: 'PostgreSQL production instance credentials',
-      secured: true,
-      expiresAt: new Date(Date.now() + 2592000000) // 30 days
+      deliveryImpact: 'Day 5 - Documentation in progress',
+      complexity: 'low'
     },
     {
-      id: '2',
-      type: 'hosting',
-      name: 'AWS Account Access',
-      description: 'IAM user for deployment and management',
-      secured: true,
-      expiresAt: new Date(Date.now() + 7776000000) // 90 days
-    },
-    {
-      id: '3',
-      type: 'domain',
-      name: 'Domain Management',
-      description: 'DNS and domain registrar access',
-      secured: false
-    },
-    {
-      id: '4',
-      type: 'api',
-      name: 'Third-party APIs',
-      description: 'Payment gateway and analytics API keys',
-      secured: true
+      id: 'delivered-package',
+      clientName: 'Green Solutions',
+      projectName: 'Service Portal',
+      status: 'delivered',
+      deliveryImpact: 'Completed - Client onboarded',
+      complexity: 'medium'
     }
-  ]);
-
-  const [documentationTemplates, setDocumentationTemplates] = useState<DocumentationTemplate[]>([
-    {
-      id: '1',
-      name: 'Setup & Installation Guide',
-      type: 'setup',
-      status: 'ready',
-      lastUpdated: new Date(Date.now() - 3600000)
-    },
-    {
-      id: '2',
-      name: 'User Manual',
-      type: 'user-guide',
-      status: 'ready',
-      lastUpdated: new Date(Date.now() - 7200000)
-    },
-    {
-      id: '3',
-      name: 'Technical Documentation',
-      type: 'technical',
-      status: 'generated',
-      lastUpdated: new Date(Date.now() - 1800000)
-    },
-    {
-      id: '4',
-      name: 'Maintenance Guide',
-      type: 'maintenance',
-      status: 'draft',
-      lastUpdated: new Date(Date.now() - 10800000)
-    }
-  ]);
-
-  const [handoverMetrics, setHandoverMetrics] = useState({
-    totalHandovers: 23,
-    averagePreparationTime: 4.2,
-    clientSatisfactionScore: 4.7,
-    documentationAccuracy: 96.5
-  });
-
-  const [newHandover, setNewHandover] = useState({
-    clientName: '',
-    projectName: '',
-    clientEmail: '',
-    deliveryMethod: 'secure-link' as const,
-    includeTraining: false
-  });
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'bg-green-500';
-      case 'ready':
-        return 'bg-blue-500';
-      case 'preparing':
-        return 'bg-yellow-500';
-      case 'delivered':
-        return 'bg-purple-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'ready':
-        return <Package className="h-4 w-4 text-blue-500" />;
-      case 'preparing':
-        return <Clock className="h-4 w-4 text-yellow-500" />;
-      case 'delivered':
-        return <Send className="h-4 w-4 text-purple-500" />;
-      default:
-        return <Clock className="h-4 w-4 text-gray-500" />;
-    }
-  };
-
-  const getCredentialIcon = (type: string) => {
-    switch (type) {
-      case 'database':
-        return <Database className="h-4 w-4" />;
-      case 'hosting':
-        return <Server className="h-4 w-4" />;
-      case 'domain':
-        return <Globe className="h-4 w-4" />;
-      case 'api':
-        return <Key className="h-4 w-4" />;
-      case 'email':
-        return <Mail className="h-4 w-4" />;
-      case 'analytics':
-        return <Zap className="h-4 w-4" />;
-      default:
-        return <Shield className="h-4 w-4" />;
-    }
-  };
-
-  const getDocumentationIcon = (type: string) => {
-    switch (type) {
-      case 'setup':
-        return <Settings className="h-4 w-4" />;
-      case 'user-guide':
-        return <User className="h-4 w-4" />;
-      case 'technical':
-        return <FileText className="h-4 w-4" />;
-      case 'maintenance':
-        return <AlertTriangle className="h-4 w-4" />;
-      default:
-        return <BookOpen className="h-4 w-4" />;
-    }
-  };
-
-  const createHandoverPackage = () => {
-    if (!newHandover.clientName || !newHandover.projectName) return;
-
-    const handoverPackage: HandoverPackage = {
-      id: Date.now().toString(),
-      clientName: newHandover.clientName,
-      projectName: newHandover.projectName,
-      status: 'preparing',
-      createdAt: new Date(),
-      components: {
-        documentation: false,
-        credentials: false,
-        codebase: false,
-        deployment: false,
-        training: newHandover.includeTraining
-      },
-      deliveryMethod: newHandover.deliveryMethod,
-      progress: 0
-    };
-
-    setHandoverPackages(prev => [handoverPackage, ...prev]);
-
-    // Simulate package preparation
-    const preparePackage = () => {
-      setHandoverPackages(prev =>
-        prev.map(pkg => {
-          if (pkg.id === handoverPackage.id && pkg.status === 'preparing') {
-            const updatedComponents = { ...pkg.components };
-            const currentProgress = pkg.progress;
-
-            if (currentProgress < 25) {
-              updatedComponents.documentation = true;
-            } else if (currentProgress < 50) {
-              updatedComponents.codebase = true;
-            } else if (currentProgress < 75) {
-              updatedComponents.credentials = true;
-            } else if (currentProgress < 90) {
-              updatedComponents.deployment = true;
-            }
-
-            const newProgress = Math.min(currentProgress + Math.random() * 15 + 5, 100);
-            const isReady = newProgress >= 95;
-
-            return {
-              ...pkg,
-              components: updatedComponents,
-              progress: newProgress,
-              status: isReady ? 'ready' : 'preparing'
-            };
-          }
-          return pkg;
-        })
-      );
-    };
-
-    const interval = setInterval(() => {
-      preparePackage();
-    }, 2000);
-
-    setTimeout(() => clearInterval(interval), 20000);
-
-    setNewHandover({
-      clientName: '',
-      projectName: '',
-      clientEmail: '',
-      deliveryMethod: 'secure-link',
-      includeTraining: false
-    });
-  };
-
-  const deliverPackage = (packageId: string) => {
-    setHandoverPackages(prev =>
-      prev.map(pkg =>
-        pkg.id === packageId
-          ? { ...pkg, status: 'delivered', deliveredAt: new Date() }
-          : pkg
-      )
-    );
-  };
-
-  const generateDocumentation = (templateId: string) => {
-    setDocumentationTemplates(prev =>
-      prev.map(template =>
-        template.id === templateId
-          ? { ...template, status: 'generated', lastUpdated: new Date() }
-          : template
-      )
-    );
-  };
-
-  const secureCredential = (credentialId: string) => {
-    setCredentials(prev =>
-      prev.map(cred =>
-        cred.id === credentialId
-          ? { ...cred, secured: true }
-          : cred
-      )
-    );
-  };
+  ];
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Package className="h-8 w-8" />
-            Client Handover Automation
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Automate client handover with documentation generation, credential management, and delivery packages
-          </p>
+    <div className="min-h-screen bg-background">
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        {/* Navigation */}
+        <div className="mb-8">
+          <Button variant="ghost" className="mb-4" onClick={() => window.location.href = '/agency-toolkit'}>
+            <ArrowLeft className="w-4 h-4" />
+            Back to Agency Toolkit
+          </Button>
         </div>
-      </div>
 
-      {/* Handover Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center">
-              <Package className="h-8 w-8 text-blue-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total Handovers</p>
-                <p className="text-2xl font-bold">{handoverMetrics.totalHandovers}</p>
-              </div>
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-3 rounded-lg bg-primary/10">
+              <Package className="w-6 h-6 text-primary" />
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center">
-              <Clock className="h-8 w-8 text-purple-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Avg Prep Time</p>
-                <p className="text-2xl font-bold">{handoverMetrics.averagePreparationTime}h</p>
-              </div>
+            <div>
+              <h1 className="text-3xl font-bold">Client Handover</h1>
+              <p className="text-muted-foreground">
+                Essential handover tools for rapid micro-app delivery
+              </p>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center">
-              <User className="h-8 w-8 text-green-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Client Satisfaction</p>
-                <p className="text-2xl font-bold">{handoverMetrics.clientSatisfactionScore}/5</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center">
-              <FileText className="h-8 w-8 text-orange-600" />
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Doc Accuracy</p>
-                <p className="text-2xl font-bold">{handoverMetrics.documentationAccuracy}%</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="packages" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="packages">Handover Packages</TabsTrigger>
-          <TabsTrigger value="credentials">Credentials</TabsTrigger>
-          <TabsTrigger value="documentation">Documentation</TabsTrigger>
-          <TabsTrigger value="create">Create New</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="packages" className="space-y-4">
-          <div className="space-y-4">
-            {handoverPackages.map((pkg) => (
-              <Card key={pkg.id}>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      {getStatusIcon(pkg.status)}
-                      <div>
-                        <CardTitle className="text-lg">{pkg.projectName}</CardTitle>
-                        <CardDescription>{pkg.clientName}</CardDescription>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge className={getStatusColor(pkg.status)}>
-                        {pkg.status}
-                      </Badge>
-                      {pkg.status === 'ready' && (
-                        <Button
-                          size="sm"
-                          onClick={() => deliverPackage(pkg.id)}
-                        >
-                          <Send className="h-4 w-4 mr-2" />
-                          Deliver
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm text-gray-600 mb-2">
-                        <span>Package Preparation</span>
-                        <span>{Math.round(pkg.progress)}%</span>
-                      </div>
-                      <Progress value={pkg.progress} className="w-full" />
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                      <div className={`flex items-center gap-2 p-2 rounded ${pkg.components.documentation ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-                        <FileText className="h-4 w-4" />
-                        <span className="text-sm">Docs</span>
-                        {pkg.components.documentation && <CheckCircle className="h-3 w-3" />}
-                      </div>
-                      <div className={`flex items-center gap-2 p-2 rounded ${pkg.components.credentials ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-                        <Key className="h-4 w-4" />
-                        <span className="text-sm">Creds</span>
-                        {pkg.components.credentials && <CheckCircle className="h-3 w-3" />}
-                      </div>
-                      <div className={`flex items-center gap-2 p-2 rounded ${pkg.components.codebase ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-                        <Package className="h-4 w-4" />
-                        <span className="text-sm">Code</span>
-                        {pkg.components.codebase && <CheckCircle className="h-3 w-3" />}
-                      </div>
-                      <div className={`flex items-center gap-2 p-2 rounded ${pkg.components.deployment ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-                        <Server className="h-4 w-4" />
-                        <span className="text-sm">Deploy</span>
-                        {pkg.components.deployment && <CheckCircle className="h-3 w-3" />}
-                      </div>
-                      <div className={`flex items-center gap-2 p-2 rounded ${pkg.components.training ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
-                        <BookOpen className="h-4 w-4" />
-                        <span className="text-sm">Training</span>
-                        {pkg.components.training && <CheckCircle className="h-3 w-3" />}
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <p className="text-gray-600">Created</p>
-                        <p className="font-medium">{pkg.createdAt.toLocaleString()}</p>
-                      </div>
-                      <div>
-                        <p className="text-gray-600">Delivery Method</p>
-                        <p className="font-medium capitalize">{pkg.deliveryMethod.replace('-', ' ')}</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
           </div>
-        </TabsContent>
 
-        <TabsContent value="credentials" className="space-y-4">
-          <div className="grid gap-4">
-            {credentials.map((credential) => (
-              <Card key={credential.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      {getCredentialIcon(credential.type)}
-                      <div>
-                        <h4 className="font-medium">{credential.name}</h4>
-                        <p className="text-sm text-gray-600">{credential.description}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge
-                        variant={credential.secured ? 'default' : 'secondary'}
-                        className={credential.secured ? 'bg-green-500' : 'bg-yellow-500'}
-                      >
-                        {credential.secured ? 'Secured' : 'Pending'}
-                      </Badge>
-                      {!credential.secured && (
-                        <Button
-                          size="sm"
-                          onClick={() => secureCredential(credential.id)}
-                        >
-                          <Shield className="h-4 w-4 mr-2" />
-                          Secure
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                  {credential.expiresAt && (
-                    <div className="mt-2 text-sm text-gray-600">
-                      Expires: {credential.expiresAt.toLocaleDateString()}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+          {/* PRD Compliance Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div className="p-4 border rounded-lg bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-5 h-5 text-blue-600" />
+                <span className="font-medium">≤7 Day Delivery</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Rapid handover for quick client onboarding
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Package className="w-5 h-5 text-green-600" />
+                <span className="font-medium">Essential Only</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                5 core handover tools for minimal complexity
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="w-5 h-5 text-purple-600" />
+                <span className="font-medium">Professional</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Complete handover package for $2k-5k projects
+              </p>
+            </div>
           </div>
-        </TabsContent>
+        </div>
 
-        <TabsContent value="documentation" className="space-y-4">
-          <div className="grid gap-4">
-            {documentationTemplates.map((template) => (
-              <Card key={template.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      {getDocumentationIcon(template.type)}
-                      <div>
-                        <h4 className="font-medium">{template.name}</h4>
-                        <p className="text-sm text-gray-600 capitalize">{template.type.replace('-', ' ')} documentation</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge
-                        variant={template.status === 'generated' ? 'default' : 'secondary'}
-                        className={
-                          template.status === 'generated' ? 'bg-green-500' :
-                          template.status === 'ready' ? 'bg-blue-500' : 'bg-gray-500'
-                        }
-                      >
-                        {template.status}
-                      </Badge>
-                      {template.status === 'ready' && (
-                        <Button
-                          size="sm"
-                          onClick={() => generateDocumentation(template.id)}
-                        >
-                          <FileText className="h-4 w-4 mr-2" />
-                          Generate
-                        </Button>
-                      )}
-                      {template.status === 'generated' && (
-                        <Button size="sm" variant="outline">
-                          <Download className="h-4 w-4 mr-2" />
-                          Download
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                  <div className="mt-2 text-sm text-gray-600">
-                    Last updated: {template.lastUpdated.toLocaleString()}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="create" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Create New Handover Package</CardTitle>
-              <CardDescription>
-                Generate automated handover package with documentation, credentials, and delivery components
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="clientName">Client Name</Label>
-                  <Input
-                    id="clientName"
-                    value={newHandover.clientName}
-                    onChange={(e) => setNewHandover(prev => ({ ...prev, clientName: e.target.value }))}
-                    placeholder="Enter client name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="projectName">Project Name</Label>
-                  <Input
-                    id="projectName"
-                    value={newHandover.projectName}
-                    onChange={(e) => setNewHandover(prev => ({ ...prev, projectName: e.target.value }))}
-                    placeholder="Enter project name"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="clientEmail">Client Email</Label>
-                <Input
-                  id="clientEmail"
-                  type="email"
-                  value={newHandover.clientEmail}
-                  onChange={(e) => setNewHandover(prev => ({ ...prev, clientEmail: e.target.value }))}
-                  placeholder="client@example.com"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="deliveryMethod">Delivery Method</Label>
-                <select
-                  id="deliveryMethod"
-                  value={newHandover.deliveryMethod}
-                  onChange={(e) => setNewHandover(prev => ({ ...prev, deliveryMethod: e.target.value as any }))}
-                  className="w-full p-2 border rounded-md"
-                >
-                  <option value="secure-link">Secure Link</option>
-                  <option value="email">Email</option>
-                  <option value="portal">Client Portal</option>
-                </select>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="includeTraining"
-                  checked={newHandover.includeTraining}
-                  onChange={(e) => setNewHandover(prev => ({ ...prev, includeTraining: e.target.checked }))}
-                />
-                <Label htmlFor="includeTraining">Include training materials</Label>
-              </div>
-
-              <Alert>
-                <Package className="h-4 w-4" />
-                <AlertTitle>Automated Package Components</AlertTitle>
-                <AlertDescription>
-                  The handover package will automatically include documentation generation, credential management,
-                  codebase delivery, and deployment instructions. Process streamlined for efficient client handover.
-                </AlertDescription>
-              </Alert>
-
-              <Button
-                onClick={createHandoverPackage}
-                disabled={!newHandover.clientName || !newHandover.projectName}
-                className="w-full"
+        {/* Essential Handover Options */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+          {handoverOptions.map((option) => {
+            const IconComponent = option.icon;
+            return (
+              <div
+                key={option.id}
+                className="p-6 border rounded-lg hover:shadow-md transition-shadow cursor-pointer group"
               >
-                <Package className="h-4 w-4 mr-2" />
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                    <IconComponent className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">{option.name}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        option.complexity === 'low'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-yellow-100 text-yellow-700'
+                      }`}>
+                        {option.complexity} complexity
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {option.description}
+                </p>
+                <div className="text-xs text-primary font-medium">
+                  {option.deliveryImpact}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Simple Handover Management */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Active Handover Packages */}
+          <div className="space-y-6">
+            <div className="p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-4">Active Handover Packages</h3>
+
+              <div className="space-y-4">
+                {packages.map((pkg) => (
+                  <div
+                    key={pkg.id}
+                    className="p-4 border rounded-lg hover:shadow-md transition-shadow cursor-pointer group"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <h4 className="font-semibold">{pkg.projectName}</h4>
+                        <p className="text-sm text-muted-foreground">{pkg.clientName}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className={`w-2 h-2 rounded-full ${
+                          pkg.status === 'delivered' ? 'bg-green-500' :
+                          pkg.status === 'ready' ? 'bg-blue-500' :
+                          'bg-yellow-500'
+                        }`}></div>
+                        <span className={`text-xs px-2 py-1 rounded-full ${
+                          pkg.complexity === 'low'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-yellow-100 text-yellow-700'
+                        }`}>
+                          {pkg.complexity}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-primary font-medium">
+                        {pkg.deliveryImpact}
+                      </span>
+                      <Button size="sm">
+                        {pkg.status === 'delivered' ? 'Completed' :
+                         pkg.status === 'ready' ? 'Deliver' : 'Preparing...'}
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Handover Actions */}
+            <div className="space-y-3">
+              <Button className="w-full" size="lg">
+                <Package className="w-4 h-4 mr-2" />
                 Create Handover Package
               </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+              <Button variant="outline" className="w-full" size="lg">
+                Generate Documentation
+              </Button>
+            </div>
+          </div>
+
+          {/* Handover Status & Timeline */}
+          <div className="space-y-6">
+            <div className="p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-4">Handover Status</h3>
+
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Active Packages</span>
+                  <span className="font-semibold">3</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Ready for Delivery</span>
+                  <span className="font-semibold text-blue-600">1</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Delivered This Week</span>
+                  <span className="font-semibold text-green-600">2</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm">Client Satisfaction</span>
+                  <span className="font-semibold text-purple-600">98%</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Handover Progress */}
+            <div className="p-6 border rounded-lg bg-blue-50">
+              <h3 className="text-lg font-semibold mb-3 text-blue-800">
+                Current Handover
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-blue-700">TechStart - Landing Page</span>
+                  <span className="text-sm font-semibold text-blue-700">75%</span>
+                </div>
+                <div className="w-full bg-blue-200 rounded-full h-2">
+                  <div className="bg-blue-600 h-2 rounded-full" style={{ width: '75%' }}></div>
+                </div>
+                <div className="text-xs text-blue-600">
+                  Documentation complete, preparing delivery package
+                </div>
+              </div>
+            </div>
+
+            {/* Delivery Timeline */}
+            <div className="p-6 border rounded-lg bg-green-50">
+              <h3 className="text-lg font-semibold mb-3 text-green-800">
+                Handover Timeline
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  <span className="text-sm text-green-700">Day 1: Documentation & credentials</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span className="text-sm text-green-700">Day 3: Client training materials</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-300 rounded-full"></div>
+                  <span className="text-sm text-green-700">Day 7: Complete project delivery</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+                  <span className="text-sm text-green-700">Post-delivery: Support & maintenance</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 border rounded-lg text-center">
+                <div className="text-2xl font-bold text-primary">3</div>
+                <div className="text-sm text-muted-foreground">Active Packages</div>
+              </div>
+              <div className="p-4 border rounded-lg text-center">
+                <div className="text-2xl font-bold text-green-600">5</div>
+                <div className="text-sm text-muted-foreground">Handover Tools</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

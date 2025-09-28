@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useBrandStyling } from '@/lib/branding/use-brand-styling';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -54,6 +55,7 @@ interface BusinessProcess {
 }
 
 export default function BusinessAutomationPage() {
+  const { getBrandClasses } = useBrandStyling();
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedTemplate, setSelectedTemplate] = useState<string>('');
 

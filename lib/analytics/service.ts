@@ -3,6 +3,10 @@
  * @module lib/analytics/service
  * @author OSS Hero System
  * @version 1.0.0
+ *
+ * @deprecated This service has been consolidated into analytics-service.ts as part of HT-034.8.1
+ * Analytics System Coordination & Deduplication. Please use AnalyticsService from
+ * '@/lib/analytics/analytics-service' instead.
  */
 
 import { createServiceRoleClient } from '@/lib/supabase/server';

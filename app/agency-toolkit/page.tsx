@@ -1,6 +1,7 @@
 /**
- * @fileoverview Main Agency Toolkit Dashboard
- * Central dashboard for agency toolkit operations and rapid micro-app development
+ * @fileoverview Agency Toolkit Dashboard - Step 1 of Client App Creation Guide
+ * Main control center for rapid micro-app development (≤7 days delivery)
+ * PRD-compliant: Minimal complexity, professional appearance, clear CTAs
  */
 "use client";
 
@@ -9,411 +10,557 @@ import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { OrchestrationModuleCard } from "@/components/agency-toolkit/OrchestrationModuleCard";
+import { ModulesModuleCard } from "@/components/agency-toolkit/ModulesModuleCard";
+import { MarketplaceModuleCard } from "@/components/agency-toolkit/MarketplaceModuleCard";
+import { HandoverModuleCard } from "@/components/agency-toolkit/HandoverModuleCard";
+import {
+  TrendingUp,
+  Users,
+  Zap,
+  Timer,
+  DollarSign,
+  CheckCircle,
+  ArrowRight,
+  Activity,
+  BarChart3,
+  Settings,
+  Monitor,
+  Rocket
+} from "lucide-react";
 
-// Agency Metrics Interface
+// PRD-aligned interfaces for agency toolkit optimization
 interface AgencyMetrics {
   totalClients: number;
   activeMicroApps: number;
-  templatesCreated: number;
-  formsBuilt: number;
-  documentsGenerated: number;
+  monthlyRevenue: number;
   avgDeliveryTime: string;
+  avgProjectValue: number;
   clientSatisfaction: number;
   systemHealth: number;
+  aiProductivity: number; // AI-assisted development efficiency
 }
 
-// Quick Stats
-interface QuickStat {
-  label: string;
-  value: string | number;
-  change: string;
-  trend: 'up' | 'down' | 'stable';
-}
-
-// Toolkit Module
-interface ToolkitModule {
+interface EssentialTool {
   id: string;
   name: string;
   description: string;
-  icon: string;
+  icon: React.ComponentType<any>;
   href: string;
-  status: 'active' | 'maintenance' | 'new';
-  usage: number;
-  lastUsed: string;
+  tier: 'core' | 'professional' | 'business';
+  deliveryImpact: string;
+  lastUsed?: string;
+}
+
+interface ProjectMetric {
+  label: string;
+  value: string | number;
+  icon: React.ComponentType<any>;
+  trend?: 'up' | 'down' | 'stable';
+  color: string;
 }
 
 export default function AgencyToolkitPage() {
   const { theme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // PRD-aligned metrics for agency business
   const [metrics, setMetrics] = useState<AgencyMetrics>({
-    totalClients: 24,
-    activeMicroApps: 47,
-    templatesCreated: 12,
-    formsBuilt: 28,
-    documentsGenerated: 156,
+    totalClients: 0,
+    activeMicroApps: 0,
+    monthlyRevenue: 0,
     avgDeliveryTime: '4.2 days',
+    avgProjectValue: 3500,
     clientSatisfaction: 94.5,
-    systemHealth: 98.7
+    systemHealth: 98.7,
+    aiProductivity: 85 // AI-assisted development efficiency
   });
 
-  const [quickStats, setQuickStats] = useState<QuickStat[]>([
-    { label: 'New Clients', value: 3, change: '+2 this week', trend: 'up' },
-    { label: 'Templates Used', value: 45, change: '+12 this week', trend: 'up' },
-    { label: 'Forms Submitted', value: 287, change: '+34 today', trend: 'up' },
-    { label: 'Documents Generated', value: 89, change: '+15 today', trend: 'up' }
-  ]);
+  // Organized by workflow stages for better UX
+  const workflowStages = {
+    'Project Setup': [
+      {
+        id: 'clients',
+        name: 'Client Management',
+        description: 'Select & manage client workspaces for development',
+        icon: Users,
+        href: '/clients',
+        tier: 'core',
+        deliveryImpact: 'Step 1 - Client selection & workspace access'
+      },
+      {
+        id: 'intake',
+        name: 'Client Intake',
+        description: 'Rapid client onboarding & requirements capture',
+        icon: Users,
+        href: '/intake',
+        tier: 'core',
+        deliveryImpact: 'Day 0 - Project initiation'
+      }
+    ],
+    'Development Tools': [
+      {
+        id: 'templates',
+        name: 'Template Library',
+        description: 'Pre-built micro-app templates for <7 day delivery',
+        icon: Zap,
+        href: '/agency-toolkit/templates',
+        tier: 'core',
+        deliveryImpact: 'Days 1-2 - Foundation setup'
+      },
+      {
+        id: 'forms',
+        name: 'Form Builder',
+        description: 'Advanced forms with validation & automation',
+        icon: CheckCircle,
+        href: '/agency-toolkit/forms',
+        tier: 'professional',
+        deliveryImpact: 'Days 2-3 - Core functionality'
+      },
+      {
+        id: 'theming',
+        name: 'Brand Customizer',
+        description: 'White-label theming & client branding',
+        icon: BarChart3,
+        href: '/agency-toolkit/theming',
+        tier: 'professional',
+        deliveryImpact: 'Days 3-4 - Brand integration'
+      },
+      {
+        id: 'documents',
+        name: 'Document Generator',
+        description: 'PDF/HTML generation with client branding',
+        icon: Activity,
+        href: '/agency-toolkit/documents',
+        tier: 'business',
+        deliveryImpact: 'Days 4-5 - Output systems'
+      }
+    ],
+    'Operations & Management': [
+      {
+        id: 'deployment',
+        name: 'Production Deploy',
+        description: 'Deploy completed apps to production',
+        icon: Rocket,
+        href: '/production/dashboards',
+        tier: 'business',
+        deliveryImpact: 'Days 6-7 - Production deployment'
+      },
+      {
+        id: 'admin',
+        name: 'Admin Dashboard',
+        description: 'Agency-level management & system oversight',
+        icon: Settings,
+        href: '/admin',
+        tier: 'business',
+        deliveryImpact: 'Management - Agency oversight'
+      },
+      {
+        id: 'monitoring',
+        name: 'System Health',
+        description: 'Monitor system performance & health metrics',
+        icon: Monitor,
+        href: '/operability/health-monitoring',
+        tier: 'business',
+        deliveryImpact: 'Operations - System monitoring'
+      }
+    ]
+  };
 
-  const [toolkitModules] = useState<ToolkitModule[]>([
+  // Key project metrics for agency dashboard
+  const projectMetrics: ProjectMetric[] = [
     {
-      id: '1',
-      name: 'Component Library',
-      description: 'Atomic design components with live examples and customization',
-      icon: '🧩',
-      href: '/agency-toolkit/components',
-      status: 'active',
-      usage: 95,
-      lastUsed: '2 hours ago'
+      label: 'Monthly Revenue',
+      value: `$${metrics.monthlyRevenue.toLocaleString()}`,
+      icon: DollarSign,
+      color: 'text-green-500',
+      trend: 'up'
     },
     {
-      id: '2',
-      name: 'Template Engine',
-      description: '5+ custom micro-app templates with rapid deployment',
-      icon: '📋',
-      href: '/agency-toolkit/templates',
-      status: 'active',
-      usage: 87,
-      lastUsed: '30 min ago'
+      label: 'Avg Project Value',
+      value: `$${metrics.avgProjectValue.toLocaleString()}`,
+      icon: TrendingUp,
+      color: 'text-blue-500',
+      trend: 'up'
     },
     {
-      id: '3',
-      name: 'Form Builder',
-      description: 'Advanced form builder with 21 field types and validation',
-      icon: '📝',
-      href: '/agency-toolkit/forms',
-      status: 'active',
-      usage: 78,
-      lastUsed: '1 hour ago'
+      label: 'Delivery Time',
+      value: metrics.avgDeliveryTime,
+      icon: Timer,
+      color: 'text-purple-500',
+      trend: 'down' // Lower is better for delivery time
     },
     {
-      id: '4',
-      name: 'Document Generator',
-      description: 'Multi-format document generation with client branding',
-      icon: '📄',
-      href: '/agency-toolkit/documents',
-      status: 'active',
-      usage: 72,
-      lastUsed: '45 min ago'
-    },
-    {
-      id: '5',
-      name: 'Client Theming',
-      description: 'Brand-aware theming system with customization tools',
-      icon: '🎨',
-      href: '/agency-toolkit/theming',
-      status: 'active',
-      usage: 84,
-      lastUsed: '15 min ago'
-    },
-    {
-      id: '6',
-      name: 'Performance Monitor',
-      description: 'Real-time performance monitoring and optimization',
-      icon: '⚡',
-      href: '/state-management/performance',
-      status: 'active',
-      usage: 91,
-      lastUsed: '5 min ago'
+      label: 'AI Productivity',
+      value: `${metrics.aiProductivity}%`,
+      icon: Zap,
+      color: 'text-yellow-500',
+      trend: 'up'
     }
-  ]);
+  ];
 
+  // Load agency metrics from database
+  useEffect(() => {
+    const loadAgencyData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch agency metrics
+        const response = await fetch('/api/agency-data?action=metrics');
+        const result = await response.json();
+
+        console.log('Agency data API response:', result);
+
+        if (result.success && result.data) {
+          // Map database data to PRD-aligned metrics
+          const updatedMetrics: AgencyMetrics = {
+            totalClients: result.data.totalClients || 0,
+            activeMicroApps: result.data.activeMicroApps || 0,
+            monthlyRevenue: result.data.totalClients * 3500 || 0, // Avg $3.5k per client
+            avgDeliveryTime: result.data.avgDeliveryTime || '4.2 days',
+            avgProjectValue: 3500, // PRD target pricing
+            clientSatisfaction: result.data.clientSatisfaction || 94.5,
+            systemHealth: result.data.systemHealth || 98.7,
+            aiProductivity: 85 // AI-assisted development efficiency
+          };
+
+          setMetrics(updatedMetrics);
+        } else {
+          // Use demo data for fresh installations
+          setMetrics({
+            totalClients: 5,
+            activeMicroApps: 8,
+            monthlyRevenue: 17500,
+            avgDeliveryTime: '4.2 days',
+            avgProjectValue: 3500,
+            clientSatisfaction: 94.5,
+            systemHealth: 98.7,
+            aiProductivity: 85
+          });
+        }
+
+      } catch (err) {
+        console.error('Error loading agency data:', err);
+        setError('Unable to load dashboard data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAgencyData();
+  }, []);
+
+  // Mount effect for theme handling
   useEffect(() => {
     setMounted(true);
-
-    // Simulate real-time updates
-    const interval = setInterval(() => {
-      setMetrics(prev => ({
-        ...prev,
-        systemHealth: 95 + Math.random() * 5,
-        clientSatisfaction: 90 + Math.random() * 10
-      }));
-    }, 5000);
-
-    return () => clearInterval(interval);
   }, []);
 
   if (!mounted) return null;
 
   const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark');
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading agency dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="text-destructive text-6xl mb-4">⚠️</div>
+          <h2 className="text-2xl font-bold mb-2">Unable to Load Dashboard</h2>
+          <p className="text-muted-foreground mb-4">{error}</p>
+          <Button onClick={() => window.location.reload()}>Retry</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={cn(
-      "min-h-screen transition-all duration-300",
-      isDark ? "bg-black text-white" : "bg-white text-black"
-    )}>
-      {/* Header */}
-      <div className={cn(
-        "border-b-2 transition-all duration-300",
-        isDark ? "border-white/30" : "border-black/30"
-      )}>
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-4xl font-bold tracking-wide uppercase">
-                Agency Toolkit Dashboard
-              </h1>
-              <p className={cn(
-                "mt-2 text-lg",
-                isDark ? "text-white/80" : "text-black/80"
-              )}>
-                Rapid micro-app development and client delivery platform
-              </p>
+    <div className="min-h-screen bg-background">
+      {/* Enhanced Header Section */}
+      <div className="border-b bg-card/50 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto px-6 py-10">
+          <div className="flex justify-between items-start">
+            <div className="space-y-8">
+              {/* Refined Title Section */}
+              <div className="space-y-3">
+                <h1 className="text-5xl font-bold text-high-emphasis tracking-tight">
+                  Agency Toolkit
+                </h1>
+                <p className="text-xl text-medium-emphasis max-w-2xl leading-relaxed">
+                  Rapid micro-app development platform with ≤7 day delivery guarantee
+                </p>
+              </div>
+
+              {/* Enhanced Action Buttons */}
+              <div className="flex flex-wrap items-center gap-4">
+                <Button
+                  size="lg"
+                  className="font-semibold shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3"
+                  onClick={() => window.location.href = '/clients'}
+                >
+                  <Users className="w-5 h-5 mr-2" />
+                  Manage Clients
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="font-medium border-2 hover:border-primary/50 px-6 py-3"
+                  onClick={() => window.location.href = '/intake'}
+                >
+                  Start New Project
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="font-medium border-2 hover:border-primary/50 px-6 py-3"
+                  onClick={() => window.location.href = '/production/dashboards'}
+                >
+                  <Rocket className="w-4 h-4 mr-2" />
+                  Deploy Apps
+                </Button>
+              </div>
+
+              {/* Polished Stats Bar */}
+              <div className="flex items-center gap-8 pt-2">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-green-500 rounded-full shadow-sm ring-2 ring-green-500/20"></div>
+                  <span className="text-sm font-medium text-high-emphasis">{metrics.totalClients} Active Clients</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-blue-500 rounded-full shadow-sm ring-2 ring-blue-500/20"></div>
+                  <span className="text-sm font-medium text-high-emphasis">{metrics.avgDeliveryTime} Avg Delivery</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-purple-500 rounded-full shadow-sm ring-2 ring-purple-500/20"></div>
+                  <span className="text-sm font-medium text-high-emphasis">{metrics.systemHealth.toFixed(1)}% System Health</span>
+                </div>
+              </div>
             </div>
-            <ThemeToggle />
+            <div className="mt-2">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-8"
-        >
-          {/* Key Metrics */}
-          <motion.div
-            variants={itemVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
-          >
-            {[
-              { label: "Total Clients", value: metrics.totalClients, unit: "", color: "blue" },
-              { label: "Active Micro-Apps", value: metrics.activeMicroApps, unit: "", color: "green" },
-              { label: "Avg Delivery", value: metrics.avgDeliveryTime, unit: "", color: "yellow" },
-              { label: "Satisfaction", value: metrics.clientSatisfaction, unit: "%", color: "purple" }
-            ].map((metric) => (
-              <div
-                key={metric.label}
-                className={cn(
-                  "p-6 rounded-lg border-2 transition-all duration-300",
-                  isDark
-                    ? "bg-black/5 border-white/30 hover:border-white/50"
-                    : "bg-white/5 border-black/30 hover:border-black/50"
-                )}
-              >
-                <div className="text-sm font-medium uppercase tracking-wide opacity-70">
-                  {metric.label}
-                </div>
-                <div className="text-2xl font-bold mt-2">
-                  {typeof metric.value === 'number' && metric.value % 1 !== 0
-                    ? metric.value.toFixed(1)
-                    : metric.value}
-                  {metric.unit && <span className="text-sm ml-1">{metric.unit}</span>}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Quick Stats */}
-          <motion.div
-            variants={itemVariants}
-            className={cn(
-              "p-6 rounded-lg border-2 transition-all duration-300",
-              isDark
-                ? "bg-black/5 border-white/30"
-                : "bg-white/5 border-black/30"
-            )}
-          >
-            <h2 className="text-xl font-bold tracking-wide uppercase mb-6">
-              Quick Stats
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {quickStats.map((stat, index) => (
-                <div
+      <div className="max-w-7xl mx-auto px-6 py-8 space-y-8">
+        {/* Enhanced Performance Metrics */}
+        <section className="space-y-4">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold text-high-emphasis">Performance Overview</h2>
+            <p className="text-medium-emphasis">Real-time metrics and key performance indicators</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {projectMetrics.map((metric, index) => {
+              const IconComponent = metric.icon;
+              return (
+                <Card
                   key={index}
-                  className={cn(
-                    "p-4 rounded-lg border-2 transition-all duration-300",
-                    isDark
-                      ? "border-white/30 hover:border-white/50"
-                      : "border-black/30 hover:border-black/50"
-                  )}
+                  className="group hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 border-0 bg-gradient-to-br from-card to-card/50 backdrop-blur-sm"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="text-2xl font-bold">{stat.value}</div>
-                    <div className={cn(
-                      "text-xs px-2 py-1 rounded",
-                      stat.trend === 'up' && "bg-green-500/20 text-green-500",
-                      stat.trend === 'down' && "bg-red-500/20 text-red-500",
-                      stat.trend === 'stable' && "bg-gray-500/20 text-gray-500"
-                    )}>
-                      {stat.trend === 'up' ? '↗' : stat.trend === 'down' ? '↘' : '→'}
-                    </div>
-                  </div>
-                  <div className="font-medium text-sm mt-1">{stat.label}</div>
-                  <div className="text-xs opacity-70">{stat.change}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Toolkit Modules */}
-          <motion.div
-            variants={itemVariants}
-            className={cn(
-              "p-6 rounded-lg border-2 transition-all duration-300",
-              isDark
-                ? "bg-black/5 border-white/30"
-                : "bg-white/5 border-black/30"
-            )}
-          >
-            <h2 className="text-xl font-bold tracking-wide uppercase mb-6">
-              Toolkit Modules
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {toolkitModules.map((module) => (
-                <a
-                  key={module.id}
-                  href={module.href}
-                  className={cn(
-                    "p-6 rounded-lg border-2 transition-all duration-300 block",
-                    "hover:scale-105",
-                    isDark
-                      ? "border-white/30 hover:border-white/50 hover:bg-white/10"
-                      : "border-black/30 hover:border-black/50 hover:bg-black/10"
-                  )}
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="text-3xl">{module.icon}</div>
-                    <div className="flex items-center space-x-2">
-                      <span className={cn(
-                        "px-2 py-1 rounded text-xs font-medium uppercase",
-                        module.status === 'active' && "bg-green-500/20 text-green-500",
-                        module.status === 'maintenance' && "bg-yellow-500/20 text-yellow-500",
-                        module.status === 'new' && "bg-blue-500/20 text-blue-500"
-                      )}>
-                        {module.status}
-                      </span>
-                    </div>
-                  </div>
-                  <h3 className="font-bold tracking-wide uppercase text-lg mb-2">
-                    {module.name}
-                  </h3>
-                  <p className="text-sm opacity-70 mb-4">
-                    {module.description}
-                  </p>
-                  <div className="flex justify-between items-center">
-                    <div className="text-xs opacity-70">
-                      Last used: {module.lastUsed}
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <div className="text-xs font-medium">{module.usage}%</div>
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-3 flex-1">
+                        <p className="text-xs font-semibold text-medium-emphasis uppercase tracking-wider">
+                          {metric.label}
+                        </p>
+                        <p className="text-3xl font-bold text-high-emphasis group-hover:scale-105 transition-transform duration-200">
+                          {metric.value}
+                        </p>
+                        {metric.trend && (
+                          <div className="flex items-center gap-1">
+                            <div className={cn(
+                              "w-2 h-2 rounded-full",
+                              metric.trend === 'up' ? "bg-green-500" :
+                              metric.trend === 'down' ? "bg-red-500" : "bg-gray-500"
+                            )} />
+                            <span className="text-xs text-medium-emphasis">
+                              {metric.trend === 'up' ? 'Trending up' :
+                               metric.trend === 'down' ? 'Trending down' : 'Stable'}
+                            </span>
+                          </div>
+                        )}
+                      </div>
                       <div className={cn(
-                        "w-16 h-2 rounded-full",
-                        isDark ? "bg-white/20" : "bg-black/20"
+                        "p-3 rounded-xl transition-all duration-300 group-hover:scale-110",
+                        metric.color.replace('text-', 'bg-'), "bg-opacity-10 group-hover:bg-opacity-20"
                       )}>
-                        <div
-                          className="h-full bg-blue-500 rounded-full transition-all duration-300"
-                          style={{ width: `${module.usage}%` }}
-                        />
+                        <IconComponent className={cn("w-6 h-6", metric.color)} />
                       </div>
                     </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </motion.div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
 
-          {/* Recent Activity */}
-          <motion.div
-            variants={itemVariants}
-            className={cn(
-              "p-6 rounded-lg border-2 transition-all duration-300",
-              isDark
-                ? "bg-black/5 border-white/30"
-                : "bg-white/5 border-black/30"
-            )}
-          >
-            <h2 className="text-xl font-bold tracking-wide uppercase mb-6">
-              Recent Activity
-            </h2>
-            <div className="space-y-4">
-              {[
-                { action: 'Template Created', client: 'Acme Corp', time: '15 min ago', type: 'success' },
-                { action: 'Form Submitted', client: 'TechStart Inc', time: '32 min ago', type: 'info' },
-                { action: 'Document Generated', client: 'Global Solutions', time: '1 hour ago', type: 'success' },
-                { action: 'Client Onboarded', client: 'Innovation Labs', time: '2 hours ago', type: 'success' },
-                { action: 'Theme Customized', client: 'Design Studio', time: '3 hours ago', type: 'info' }
-              ].map((activity, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "flex items-center justify-between p-4 rounded-lg border transition-all duration-300",
-                    isDark ? "border-white/20 hover:bg-white/5" : "border-black/20 hover:bg-black/5"
-                  )}
-                >
-                  <div className="flex items-center space-x-4">
-                    <div className={cn(
-                      "w-3 h-3 rounded-full",
-                      activity.type === 'success' ? "bg-green-500" : "bg-blue-500"
-                    )} />
-                    <div>
-                      <div className="font-medium">{activity.action}</div>
-                      <div className="text-sm opacity-70">{activity.client}</div>
-                    </div>
+        {/* Enhanced Workflow Tools */}
+        {Object.entries(workflowStages).map(([stageName, tools], stageIndex) => (
+          <section key={stageName} className="space-y-6">
+            <Card className="border-0 bg-gradient-to-r from-card/50 to-transparent backdrop-blur-sm">
+              <CardHeader className="pb-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 border border-primary/20">
+                    <span className="text-lg font-bold text-primary">{stageIndex + 1}</span>
                   </div>
-                  <div className="text-sm opacity-70">{activity.time}</div>
+                  <div>
+                    <CardTitle className="text-2xl text-high-emphasis">{stageName}</CardTitle>
+                    <p className="text-medium-emphasis mt-1">
+                      {stageName === 'Project Setup' && 'Initialize projects and establish client relationships'}
+                      {stageName === 'Development Tools' && 'Build, customize, and refine micro-applications'}
+                      {stageName === 'Operations & Management' && 'Deploy, monitor, and maintain production systems'}
+                    </p>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </motion.div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {tools.map((tool) => {
+                    const IconComponent = tool.icon;
+                    return (
+                      <Card
+                        key={tool.id}
+                        className="group cursor-pointer hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 border-0 bg-card/80 backdrop-blur-sm"
+                        onClick={() => window.location.href = tool.href}
+                      >
+                        <CardContent className="p-6 space-y-4">
+                          <div className="flex items-start justify-between">
+                            <div className="p-3 rounded-xl bg-primary/10 group-hover:bg-primary/15 transition-colors duration-200">
+                              <IconComponent className="w-6 h-6 text-primary" />
+                            </div>
+                            <Badge
+                              variant={
+                                tool.tier === 'core' ? 'default' :
+                                tool.tier === 'professional' ? 'secondary' :
+                                'outline'
+                              }
+                              className="text-xs font-medium"
+                            >
+                              {tool.tier}
+                            </Badge>
+                          </div>
+                          <div className="space-y-3 text-left">
+                            <h3 className="font-semibold text-lg text-high-emphasis group-hover:text-primary transition-colors duration-200">
+                              {tool.name}
+                            </h3>
+                            <p className="text-sm text-medium-emphasis leading-relaxed">
+                              {tool.description}
+                            </p>
+                            <div className="pt-2 border-t border-border/50">
+                              <p className="text-xs font-medium text-primary bg-primary/5 px-3 py-1 rounded-full inline-block">
+                                {tool.deliveryImpact}
+                              </p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+        ))}
 
-          {/* System Health */}
-          <motion.div
-            variants={itemVariants}
-            className={cn(
-              "p-6 rounded-lg border-2 transition-all duration-300",
-              isDark
-                ? "bg-black/5 border-white/30"
-                : "bg-white/5 border-black/30"
-            )}
-          >
-            <h2 className="text-xl font-bold tracking-wide uppercase mb-4">
-              System Health
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <div className="text-sm font-medium mb-2">Overall Health</div>
-                <div className="text-3xl font-bold text-green-500">{metrics.systemHealth.toFixed(1)}%</div>
-                <div className="text-xs opacity-70">All systems operational</div>
+        {/* Enhanced System Status */}
+        <section className="space-y-4">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-semibold text-high-emphasis">System Status</h2>
+            <p className="text-medium-emphasis">Real-time monitoring and health indicators</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="group hover:shadow-lg hover:shadow-green-500/5 transition-all duration-300 border-0 bg-gradient-to-br from-green-50/50 to-card dark:from-green-950/20">
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-14 h-14 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <CheckCircle className="w-7 h-7 text-green-600 dark:text-green-400" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-semibold text-medium-emphasis uppercase tracking-wider">System Health</p>
+                    <p className="text-3xl font-bold text-green-600 dark:text-green-400">{metrics.systemHealth.toFixed(1)}%</p>
+                    <p className="text-xs text-green-600/70 dark:text-green-400/70">All systems operational</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg hover:shadow-blue-500/5 transition-all duration-300 border-0 bg-gradient-to-br from-blue-50/50 to-card dark:from-blue-950/20">
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <Activity className="w-7 h-7 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-semibold text-medium-emphasis uppercase tracking-wider">Client Satisfaction</p>
+                    <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{metrics.clientSatisfaction.toFixed(1)}%</p>
+                    <p className="text-xs text-blue-600/70 dark:text-blue-400/70">Above industry average</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="group hover:shadow-lg hover:shadow-purple-500/5 transition-all duration-300 border-0 bg-gradient-to-br from-purple-50/50 to-card dark:from-purple-950/20">
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-4">
+                  <div className="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                    <Zap className="w-7 h-7 text-purple-600 dark:text-purple-400" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-semibold text-medium-emphasis uppercase tracking-wider">AI Productivity</p>
+                    <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{metrics.aiProductivity}%</p>
+                    <p className="text-xs text-purple-600/70 dark:text-purple-400/70">AI-enhanced workflows</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        {/* Enhanced Advanced Features */}
+        <section className="space-y-6">
+          <Card className="border-0 bg-gradient-to-r from-card/50 to-transparent backdrop-blur-sm">
+            <CardHeader>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 border border-primary/20">
+                  <Settings className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl text-high-emphasis">Advanced Features</CardTitle>
+                  <p className="text-medium-emphasis mt-1">
+                    Extended capabilities for enterprise-grade development workflows
+                  </p>
+                </div>
               </div>
-              <div>
-                <div className="text-sm font-medium mb-2">Performance</div>
-                <div className="text-3xl font-bold text-blue-500">Excellent</div>
-                <div className="text-xs opacity-70">Sub-2s page loads</div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <OrchestrationModuleCard />
+                <ModulesModuleCard />
+                <MarketplaceModuleCard />
+                <HandoverModuleCard />
               </div>
-              <div>
-                <div className="text-sm font-medium mb-2">Uptime</div>
-                <div className="text-3xl font-bold text-purple-500">99.9%</div>
-                <div className="text-xs opacity-70">Last 30 days</div>
-              </div>
-            </div>
-          </motion.div>
-        </motion.div>
+            </CardContent>
+          </Card>
+        </section>
       </div>
     </div>
   );

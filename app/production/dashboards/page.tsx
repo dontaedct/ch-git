@@ -27,6 +27,7 @@ interface ChartData {
   requests?: number;
   errors?: number;
   responseTime?: number;
+  color?: string;
 }
 
 interface SystemHealth {
@@ -89,12 +90,12 @@ export default function DashboardsPage() {
   ]);
 
   const [performanceData, setPerformanceData] = useState<ChartData[]>([
-    { name: '00:00', requests: 1200, errors: 12, responseTime: 250 },
-    { name: '04:00', requests: 890, errors: 8, responseTime: 230 },
-    { name: '08:00', requests: 2100, errors: 25, responseTime: 280 },
-    { name: '12:00', requests: 3200, errors: 45, responseTime: 320 },
-    { name: '16:00', requests: 2800, errors: 32, responseTime: 290 },
-    { name: '20:00', requests: 1900, errors: 18, responseTime: 260 }
+    { name: '00:00', value: 1200, requests: 1200, errors: 12, responseTime: 250 },
+    { name: '04:00', value: 890, requests: 890, errors: 8, responseTime: 230 },
+    { name: '08:00', value: 2100, requests: 2100, errors: 25, responseTime: 280 },
+    { name: '12:00', value: 3200, requests: 3200, errors: 45, responseTime: 320 },
+    { name: '16:00', value: 2800, requests: 2800, errors: 32, responseTime: 290 },
+    { name: '20:00', value: 1900, requests: 1900, errors: 18, responseTime: 260 }
   ]);
 
   const [errorDistribution, setErrorDistribution] = useState<ChartData[]>([
@@ -487,7 +488,7 @@ export default function DashboardsPage() {
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"

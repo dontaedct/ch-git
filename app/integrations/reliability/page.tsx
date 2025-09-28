@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useBrandStyling } from '@/lib/branding/use-brand-styling';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -77,6 +78,7 @@ interface HealthCheck {
 }
 
 export default function AutomationReliabilityPage() {
+  const { getBrandClasses } = useBrandStyling();
   const [activeTab, setActiveTab] = useState('overview');
 
   const reliabilityMetrics: ReliabilityMetric[] = [
@@ -621,8 +623,7 @@ export default function AutomationReliabilityPage() {
 
                     <div className="w-full bg-secondary rounded-full h-2">
                       <div
-                        className="bg-primary h-2 rounded-full"
-                        className={getBrandClasses()}
+                        className={`bg-primary h-2 rounded-full ${getBrandClasses()}`}
                       ></div>
                     </div>
                   </div>

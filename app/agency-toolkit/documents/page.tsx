@@ -1,712 +1,624 @@
-/**
- * @fileoverview Document Generation System
- * Document generation with 3+ templates and multi-format export
- */
-"use client";
+"use client"
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { cn } from "@/lib/utils";
+import React, { useState, useEffect, useCallback } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Textarea } from '@/components/ui/textarea'
+import { Badge } from '@/components/ui/badge'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog'
+import { 
+  FileText, 
+  Download, 
+  Mail, 
+  Plus, 
+  Search, 
+  Filter, 
+  Calendar,
+  User,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Eye,
+  Trash2,
+  Copy,
+  Send
+} from 'lucide-react'
 
-// Document Template Interface
 interface DocumentTemplate {
-  id: string;
-  name: string;
-  description: string;
-  category: 'contract' | 'proposal' | 'report' | 'invoice' | 'legal';
-  formats: ExportFormat[];
-  variables: DocumentVariable[];
-  generatedCount: number;
-  lastGenerated: string;
-  estimatedTime: string;
-  complexity: 'simple' | 'moderate' | 'complex';
+  id: string
+  name: string
+  description: string
+  version: string
+  placeholders: Array<{
+    id: string
+    name: string
+    type: string
+    required: boolean
+  }>
 }
 
-// Export Format Interface
-interface ExportFormat {
-  type: 'pdf' | 'docx' | 'html' | 'txt' | 'csv';
-  label: string;
-  icon: string;
-  size?: string;
+interface GeneratedDocument {
+  id: string
+  filename: string
+  fileSize: number
+  generationTime: number
+  template: {
+    id: string
+    name: string
+    version: string
+  }
+  version?: {
+    id: string
+    version: number
+    createdAt: string
+  }
+  email?: {
+    success: boolean
+    messageId: string
+    recipientCount: number
+  }
+  metadata: {
+    templateId: string
+    generatedAt: string
+    dataHash: string
+  }
 }
 
-// Document Variable Interface
-interface DocumentVariable {
-  key: string;
-  label: string;
-  type: 'text' | 'number' | 'date' | 'boolean' | 'list' | 'image';
-  required: boolean;
-  description?: string;
-  defaultValue?: any;
-}
-
-// Generation Statistics
-interface GenerationStats {
-  totalDocuments: number;
-  documentsToday: number;
-  templatesUsed: number;
-  avgGenerationTime: string;
-  popularFormat: string;
-  successRate: number;
-}
-
-export default function DocumentGenerationPage() {
-  const { theme, systemTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [activeTab, setActiveTab] = useState<'templates' | 'generator' | 'history'>('templates');
-  const [selectedTemplate, setSelectedTemplate] = useState<DocumentTemplate | null>(null);
-
-  const [stats] = useState<GenerationStats>({
-    totalDocuments: 1247,
-    documentsToday: 23,
-    templatesUsed: 8,
-    avgGenerationTime: '1.2s',
-    popularFormat: 'PDF',
-    successRate: 99.7
-  });
-
-  const [templates] = useState<DocumentTemplate[]>([
-    {
-      id: '1',
-      name: 'Service Agreement',
-      description: 'Professional service agreement with terms, conditions, and payment details',
-      category: 'contract',
-      formats: [
-        { type: 'pdf', label: 'PDF', icon: '📄', size: '~25KB' },
-        { type: 'docx', label: 'Word Doc', icon: '📝', size: '~18KB' },
-        { type: 'html', label: 'HTML', icon: '🌐', size: '~8KB' }
-      ],
-      variables: [
-        { key: 'client_name', label: 'Client Name', type: 'text', required: true },
-        { key: 'service_description', label: 'Service Description', type: 'text', required: true },
-        { key: 'start_date', label: 'Start Date', type: 'date', required: true },
-        { key: 'end_date', label: 'End Date', type: 'date', required: false },
-        { key: 'payment_amount', label: 'Payment Amount', type: 'number', required: true },
-        { key: 'payment_terms', label: 'Payment Terms', type: 'list', required: true },
-        { key: 'deliverables', label: 'Deliverables', type: 'list', required: true }
-      ],
-      generatedCount: 156,
-      lastGenerated: '2 hours ago',
-      estimatedTime: '1.5s',
-      complexity: 'moderate'
-    },
-    {
-      id: '2',
-      name: 'Project Proposal',
-      description: 'Comprehensive project proposal with scope, timeline, and budget breakdown',
-      category: 'proposal',
-      formats: [
-        { type: 'pdf', label: 'PDF', icon: '📄', size: '~35KB' },
-        { type: 'docx', label: 'Word Doc', icon: '📝', size: '~28KB' },
-        { type: 'html', label: 'HTML', icon: '🌐', size: '~12KB' }
-      ],
-      variables: [
-        { key: 'project_title', label: 'Project Title', type: 'text', required: true },
-        { key: 'client_company', label: 'Client Company', type: 'text', required: true },
-        { key: 'project_scope', label: 'Project Scope', type: 'text', required: true },
-        { key: 'timeline_weeks', label: 'Timeline (weeks)', type: 'number', required: true },
-        { key: 'total_budget', label: 'Total Budget', type: 'number', required: true },
-        { key: 'key_milestones', label: 'Key Milestones', type: 'list', required: true },
-        { key: 'team_members', label: 'Team Members', type: 'list', required: false },
-        { key: 'technologies', label: 'Technologies', type: 'list', required: false }
-      ],
-      generatedCount: 89,
-      lastGenerated: '1 day ago',
-      estimatedTime: '2.1s',
-      complexity: 'complex'
-    },
-    {
-      id: '3',
-      name: 'Monthly Report',
-      description: 'Monthly performance and analytics report with charts and insights',
-      category: 'report',
-      formats: [
-        { type: 'pdf', label: 'PDF', icon: '📄', size: '~45KB' },
-        { type: 'docx', label: 'Word Doc', icon: '📝', size: '~32KB' },
-        { type: 'html', label: 'HTML', icon: '🌐', size: '~15KB' },
-        { type: 'csv', label: 'CSV Data', icon: '📊', size: '~3KB' }
-      ],
-      variables: [
-        { key: 'report_month', label: 'Report Month', type: 'date', required: true },
-        { key: 'client_name', label: 'Client Name', type: 'text', required: true },
-        { key: 'total_visitors', label: 'Total Visitors', type: 'number', required: true },
-        { key: 'conversion_rate', label: 'Conversion Rate (%)', type: 'number', required: true },
-        { key: 'revenue_generated', label: 'Revenue Generated', type: 'number', required: true },
-        { key: 'key_achievements', label: 'Key Achievements', type: 'list', required: true },
-        { key: 'recommendations', label: 'Recommendations', type: 'list', required: false },
-        { key: 'include_charts', label: 'Include Charts', type: 'boolean', required: false }
-      ],
-      generatedCount: 234,
-      lastGenerated: '30 min ago',
-      estimatedTime: '1.8s',
-      complexity: 'moderate'
-    },
-    {
-      id: '4',
-      name: 'Invoice Template',
-      description: 'Professional invoice with itemized billing and payment information',
-      category: 'invoice',
-      formats: [
-        { type: 'pdf', label: 'PDF', icon: '📄', size: '~15KB' },
-        { type: 'docx', label: 'Word Doc', icon: '📝', size: '~12KB' },
-        { type: 'html', label: 'HTML', icon: '🌐', size: '~5KB' }
-      ],
-      variables: [
-        { key: 'invoice_number', label: 'Invoice Number', type: 'text', required: true },
-        { key: 'client_name', label: 'Client Name', type: 'text', required: true },
-        { key: 'client_address', label: 'Client Address', type: 'text', required: true },
-        { key: 'invoice_date', label: 'Invoice Date', type: 'date', required: true },
-        { key: 'due_date', label: 'Due Date', type: 'date', required: true },
-        { key: 'line_items', label: 'Line Items', type: 'list', required: true },
-        { key: 'tax_rate', label: 'Tax Rate (%)', type: 'number', required: false },
-        { key: 'payment_terms', label: 'Payment Terms', type: 'text', required: false }
-      ],
-      generatedCount: 367,
-      lastGenerated: '15 min ago',
-      estimatedTime: '0.8s',
-      complexity: 'simple'
-    },
-    {
-      id: '5',
-      name: 'NDA Agreement',
-      description: 'Non-disclosure agreement for protecting confidential information',
-      category: 'legal',
-      formats: [
-        { type: 'pdf', label: 'PDF', icon: '📄', size: '~20KB' },
-        { type: 'docx', label: 'Word Doc', icon: '📝', size: '~16KB' }
-      ],
-      variables: [
-        { key: 'disclosing_party', label: 'Disclosing Party', type: 'text', required: true },
-        { key: 'receiving_party', label: 'Receiving Party', type: 'text', required: true },
-        { key: 'effective_date', label: 'Effective Date', type: 'date', required: true },
-        { key: 'term_years', label: 'Term (years)', type: 'number', required: true },
-        { key: 'jurisdiction', label: 'Jurisdiction', type: 'text', required: true },
-        { key: 'purpose', label: 'Purpose of Disclosure', type: 'text', required: true }
-      ],
-      generatedCount: 67,
-      lastGenerated: '3 days ago',
-      estimatedTime: '1.1s',
-      complexity: 'moderate'
+interface DocumentGenerationForm {
+  templateId: string
+  data: Record<string, any>
+  options: {
+    filename?: string
+    format: 'A4' | 'Letter' | 'Legal'
+    orientation: 'portrait' | 'landscape'
+    quality: 'low' | 'medium' | 'high'
+    watermark?: {
+      text: string
+      opacity: number
+      position: 'center' | 'top' | 'bottom'
     }
-  ]);
+  }
+  email: {
+    enabled: boolean
+    recipients: string[]
+    cc?: string[]
+    bcc?: string[]
+    subject?: string
+  }
+  versioning: {
+    enabled: boolean
+    tags: string[]
+    notes: string
+  }
+}
 
-  const [generationHistory] = useState([
-    { id: '1', template: 'Service Agreement', client: 'Acme Corp', format: 'PDF', generated: '2 hours ago', status: 'completed' },
-    { id: '2', template: 'Monthly Report', client: 'TechStart Inc', format: 'HTML', generated: '30 min ago', status: 'completed' },
-    { id: '3', template: 'Invoice Template', client: 'Global Solutions', format: 'PDF', generated: '15 min ago', status: 'completed' },
-    { id: '4', template: 'Project Proposal', client: 'Innovation Labs', format: 'DOCX', generated: '1 day ago', status: 'completed' },
-    { id: '5', template: 'NDA Agreement', client: 'Design Studio', format: 'PDF', generated: '3 days ago', status: 'completed' }
-  ]);
+export default function DocumentsPage() {
+  const [templates, setTemplates] = useState<DocumentTemplate[]>([])
+  const [documents, setDocuments] = useState<GeneratedDocument[]>([])
+  const [selectedTemplate, setSelectedTemplate] = useState<DocumentTemplate | null>(null)
+  const [generationForm, setGenerationForm] = useState<DocumentGenerationForm>({
+    templateId: '',
+    data: {},
+    options: {
+      format: 'A4',
+      orientation: 'portrait',
+      quality: 'medium'
+    },
+    email: {
+      enabled: false,
+      recipients: []
+    },
+    versioning: {
+      enabled: true,
+      tags: [],
+      notes: ''
+    }
+  })
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterStatus, setFilterStatus] = useState<'all' | 'success' | 'failed'>('all')
+  const [activeTab, setActiveTab] = useState('generate')
 
+  // Load templates on component mount
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    loadTemplates()
+  }, [])
 
-  if (!mounted) return null;
-
-  const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark');
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
+  const loadTemplates = useCallback(async () => {
+    try {
+      const response = await fetch('/api/documents/generate?action=templates')
+      const result = await response.json()
+      
+      if (result.success) {
+        setTemplates(result.templates)
       }
+    } catch (error) {
+      console.error('Failed to load templates:', error)
     }
-  };
+  }, [])
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
+  const handleTemplateSelect = useCallback((templateId: string) => {
+    const template = templates.find(t => t.id === templateId)
+    setSelectedTemplate(template || null)
+    setGenerationForm(prev => ({
+      ...prev,
+      templateId,
+      data: {}
+    }))
+  }, [templates])
+
+  const handleDataChange = useCallback((fieldName: string, value: any) => {
+    setGenerationForm(prev => ({
+      ...prev,
+      data: {
+        ...prev.data,
+        [fieldName]: value
+      }
+    }))
+  }, [])
+
+  const handleEmailRecipientsChange = useCallback((value: string) => {
+    const recipients = value.split(',').map(email => email.trim()).filter(email => email)
+    setGenerationForm(prev => ({
+      ...prev,
+      email: {
+        ...prev.email,
+        recipients
+      }
+    }))
+  }, [])
+
+  const handleGenerateDocument = useCallback(async () => {
+    if (!selectedTemplate) return
+
+    setIsGenerating(true)
+    try {
+      const response = await fetch('/api/documents/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(generationForm)
+      })
+
+      const result = await response.json()
+      
+      if (result.success) {
+        setDocuments(prev => [result.document, ...prev])
+        setIsDialogOpen(false)
+        setGenerationForm(prev => ({
+          ...prev,
+          data: {},
+          email: {
+            ...prev.email,
+            recipients: []
+          },
+          versioning: {
+            ...prev.versioning,
+            tags: [],
+            notes: ''
+          }
+        }))
+      } else {
+        console.error('Document generation failed:', result.error)
+      }
+    } catch (error) {
+      console.error('Failed to generate document:', error)
+    } finally {
+      setIsGenerating(false)
+    }
+  }, [selectedTemplate, generationForm])
+
+  const handleDownloadDocument = useCallback(async (documentId: string, filename: string) => {
+    try {
+      const response = await fetch(`/api/documents/download/${documentId}?download=true`)
+      if (response.ok) {
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = filename
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+      }
+    } catch (error) {
+      console.error('Download failed:', error)
+    }
+  }, [])
+
+  const filteredDocuments = documents.filter(doc => {
+    const matchesSearch = doc.filename.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         doc.template.name.toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesFilter = filterStatus === 'all' || 
+                         (filterStatus === 'success' && doc.email?.success !== false) ||
+                         (filterStatus === 'failed' && doc.email?.success === false)
+    return matchesSearch && matchesFilter
+  })
+
+  const renderTemplateForm = () => {
+    if (!selectedTemplate) return null
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-lg font-medium mb-2">Template: {selectedTemplate.name}</h3>
+          <p className="text-sm text-muted-foreground mb-4">{selectedTemplate.description}</p>
+        </div>
+
+        {selectedTemplate.placeholders.map(placeholder => (
+          <div key={placeholder.id}>
+            <Label htmlFor={placeholder.id}>
+              {placeholder.name}
+              {placeholder.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+            {placeholder.type === 'textarea' ? (
+              <Textarea
+                id={placeholder.id}
+                value={generationForm.data[placeholder.name] || ''}
+                onChange={(e) => handleDataChange(placeholder.name, e.target.value)}
+                placeholder={`Enter ${placeholder.name.toLowerCase()}...`}
+                rows={3}
+              />
+            ) : (
+              <Input
+                id={placeholder.id}
+                type={placeholder.type === 'number' ? 'number' : placeholder.type === 'email' ? 'email' : 'text'}
+                value={generationForm.data[placeholder.name] || ''}
+                onChange={(e) => handleDataChange(placeholder.name, e.target.value)}
+                placeholder={`Enter ${placeholder.name.toLowerCase()}...`}
+              />
+            )}
+          </div>
+        ))}
+      </div>
+    )
+  }
 
   return (
-    <div className={cn(
-      "min-h-screen transition-all duration-300",
-      isDark ? "bg-black text-white" : "bg-white text-black"
-    )}>
-      {/* Header */}
-      <div className={cn(
-        "border-b-2 transition-all duration-300",
-        isDark ? "border-white/30" : "border-black/30"
-      )}>
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-4xl font-bold tracking-wide uppercase">
-                Document Generation System
-              </h1>
-              <p className={cn(
-                "mt-2 text-lg",
-                isDark ? "text-white/80" : "text-black/80"
-              )}>
-                Generate documents with 3+ templates and multi-format export
-              </p>
+    <div className="container mx-auto p-6 space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Document Generation</h1>
+          <p className="text-muted-foreground">Generate and manage PDF documents with templates</p>
+        </div>
+        <Button onClick={() => setIsDialogOpen(true)}>
+          <Plus className="w-4 h-4 mr-2" />
+          Generate Document
+        </Button>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList>
+          <TabsTrigger value="generate">Generate</TabsTrigger>
+          <TabsTrigger value="documents">Documents</TabsTrigger>
+          <TabsTrigger value="templates">Templates</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="generate" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Generation</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label>Select Template</Label>
+                  <Select onValueChange={handleTemplateSelect}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose a template..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {templates.map(template => (
+                        <SelectItem key={template.id} value={template.id}>
+                          {template.name} (v{template.version})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Output Format</Label>
+                  <Select 
+                    value={generationForm.options.format} 
+                    onValueChange={(value: 'A4' | 'Letter' | 'Legal') => 
+                      setGenerationForm(prev => ({
+                        ...prev,
+                        options: { ...prev.options, format: value }
+                      }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="A4">A4</SelectItem>
+                      <SelectItem value="Letter">Letter</SelectItem>
+                      <SelectItem value="Legal">Legal</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="documents" className="space-y-6">
+          <div className="flex items-center space-x-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search documents..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9"
+              />
             </div>
-            <div className="flex items-center space-x-4">
-              <a
-                href="/agency-toolkit"
-                className={cn(
-                  "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
-                  isDark
-                    ? "border-white/30 hover:border-white/50"
-                    : "border-black/30 hover:border-black/50"
-                )}
-              >
-                ← Back to Toolkit
-              </a>
-              <ThemeToggle />
+            <Select value={filterStatus} onValueChange={(value: any) => setFilterStatus(value)}>
+              <SelectTrigger className="w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Documents</SelectItem>
+                <SelectItem value="success">Successful</SelectItem>
+                <SelectItem value="failed">Failed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredDocuments.map(doc => (
+              <Card key={doc.id}>
+                <CardHeader className="pb-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <FileText className="w-5 h-5 text-blue-500" />
+                      <CardTitle className="text-sm">{doc.filename}</CardTitle>
+                    </div>
+                    <Badge variant={doc.email?.success !== false ? 'default' : 'destructive'}>
+                      {doc.email?.success !== false ? 'Success' : 'Failed'}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="text-sm text-muted-foreground">
+                    <div className="flex items-center space-x-2">
+                      <Calendar className="w-4 h-4" />
+                      <span>{new Date(doc.metadata.generatedAt).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Clock className="w-4 h-4" />
+                      <span>{doc.generationTime}ms</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <FileText className="w-4 h-4" />
+                      <span>{(doc.fileSize / 1024).toFixed(1)} KB</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex space-x-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleDownloadDocument(doc.id, doc.filename)}
+                    >
+                      <Download className="w-4 h-4 mr-1" />
+                      Download
+                    </Button>
+                    <Button size="sm" variant="outline">
+                      <Eye className="w-4 h-4 mr-1" />
+                      View
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="templates" className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {templates.map(template => (
+              <Card key={template.id}>
+                <CardHeader>
+                  <CardTitle className="text-lg">{template.name}</CardTitle>
+                  <Badge variant="outline">v{template.version}</Badge>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">{template.description}</p>
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">Required Fields:</h4>
+                    <div className="flex flex-wrap gap-1">
+                      {template.placeholders
+                        .filter(p => p.required)
+                        .map(placeholder => (
+                          <Badge key={placeholder.id} variant="secondary" className="text-xs">
+                            {placeholder.name}
+                          </Badge>
+                        ))}
+                    </div>
+                  </div>
+                  <Button 
+                    className="w-full mt-4" 
+                    onClick={() => {
+                      handleTemplateSelect(template.id)
+                      setIsDialogOpen(true)
+                    }}
+                  >
+                    Use Template
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {/* Generation Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Generate Document</DialogTitle>
+            <DialogDescription>
+              Fill in the template data and configure generation options
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-6">
+            {renderTemplateForm()}
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Generation Options</h3>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Orientation</Label>
+                  <Select 
+                    value={generationForm.options.orientation} 
+                    onValueChange={(value: 'portrait' | 'landscape') => 
+                      setGenerationForm(prev => ({
+                        ...prev,
+                        options: { ...prev.options, orientation: value }
+                      }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="portrait">Portrait</SelectItem>
+                      <SelectItem value="landscape">Landscape</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label>Quality</Label>
+                  <Select 
+                    value={generationForm.options.quality} 
+                    onValueChange={(value: 'low' | 'medium' | 'high') => 
+                      setGenerationForm(prev => ({
+                        ...prev,
+                        options: { ...prev.options, quality: value }
+                      }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="low">Low</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div>
+                <Label>Custom Filename (optional)</Label>
+                <Input
+                  value={generationForm.options.filename || ''}
+                  onChange={(e) => setGenerationForm(prev => ({
+                    ...prev,
+                    options: { ...prev.options, filename: e.target.value }
+                  }))}
+                  placeholder="Leave empty for auto-generated name"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="email-enabled"
+                  checked={generationForm.email.enabled}
+                  onChange={(e) => setGenerationForm(prev => ({
+                    ...prev,
+                    email: { ...prev.email, enabled: e.target.checked }
+                  }))}
+                />
+                <Label htmlFor="email-enabled">Send via Email</Label>
+              </div>
+
+              {generationForm.email.enabled && (
+                <div className="space-y-3 pl-6">
+                  <div>
+                    <Label>Recipients (comma-separated)</Label>
+                    <Input
+                      value={generationForm.email.recipients.join(', ')}
+                      onChange={(e) => handleEmailRecipientsChange(e.target.value)}
+                      placeholder="user@example.com, admin@example.com"
+                    />
+                  </div>
+                  <div>
+                    <Label>Subject (optional)</Label>
+                    <Input
+                      value={generationForm.email.subject || ''}
+                      onChange={(e) => setGenerationForm(prev => ({
+                        ...prev,
+                        email: { ...prev.email, subject: e.target.value }
+                      }))}
+                      placeholder="Leave empty for default subject"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="versioning-enabled"
+                  checked={generationForm.versioning.enabled}
+                  onChange={(e) => setGenerationForm(prev => ({
+                    ...prev,
+                    versioning: { ...prev.versioning, enabled: e.target.checked }
+                  }))}
+                />
+                <Label htmlFor="versioning-enabled">Enable Versioning</Label>
+              </div>
+
+              {generationForm.versioning.enabled && (
+                <div className="space-y-3 pl-6">
+                  <div>
+                    <Label>Notes (optional)</Label>
+                    <Textarea
+                      value={generationForm.versioning.notes}
+                      onChange={(e) => setGenerationForm(prev => ({
+                        ...prev,
+                        versioning: { ...prev.versioning, notes: e.target.value }
+                      }))}
+                      placeholder="Add notes about this document version..."
+                      rows={2}
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-8"
-        >
-          {/* Generation Statistics */}
-          <motion.div
-            variants={itemVariants}
-            className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4"
-          >
-            {[
-              { label: "Total Generated", value: stats.totalDocuments, color: "blue" },
-              { label: "Today", value: stats.documentsToday, color: "green" },
-              { label: "Templates", value: stats.templatesUsed, color: "yellow" },
-              { label: "Avg Time", value: stats.avgGenerationTime, color: "purple" },
-              { label: "Popular Format", value: stats.popularFormat, color: "emerald" },
-              { label: "Success Rate", value: `${stats.successRate}%`, color: "red" }
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className={cn(
-                  "p-6 rounded-lg border-2 transition-all duration-300",
-                  isDark
-                    ? "bg-black/5 border-white/30 hover:border-white/50"
-                    : "bg-white/5 border-black/30 hover:border-black/50"
-                )}
-              >
-                <div className="text-sm font-medium uppercase tracking-wide opacity-70">
-                  {stat.label}
-                </div>
-                <div className="text-2xl font-bold mt-2">{stat.value}</div>
-              </div>
-            ))}
-          </motion.div>
-
-          {/* Tab Navigation */}
-          <motion.div
-            variants={itemVariants}
-            className="flex space-x-4"
-          >
-            {[
-              { id: 'templates', label: 'Document Templates' },
-              { id: 'generator', label: 'Quick Generator' },
-              { id: 'history', label: 'Generation History' }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "px-6 py-3 rounded-lg border-2 font-bold transition-all duration-300",
-                  activeTab === tab.id
-                    ? isDark
-                      ? "bg-white/10 border-white/50"
-                      : "bg-black/10 border-black/50"
-                    : isDark
-                      ? "border-white/30 hover:border-white/50"
-                      : "border-black/30 hover:border-black/50"
-                )}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </motion.div>
-
-          {/* Document Templates Tab */}
-          {activeTab === 'templates' && (
-            <motion.div
-              variants={itemVariants}
-              className={cn(
-                "p-6 rounded-lg border-2 transition-all duration-300",
-                isDark
-                  ? "bg-black/5 border-white/30"
-                  : "bg-white/5 border-black/30"
-              )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleGenerateDocument} 
+              disabled={isGenerating || !selectedTemplate}
             >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold tracking-wide uppercase">
-                  Document Templates ({templates.length})
-                </h2>
-                <button
-                  className={cn(
-                    "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
-                    "hover:scale-105",
-                    isDark
-                      ? "border-white/30 hover:border-white/50"
-                      : "border-black/30 hover:border-black/50"
-                  )}
-                >
-                  Create Template
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {templates.map((template) => (
-                  <div
-                    key={template.id}
-                    className={cn(
-                      "p-6 rounded-lg border-2 transition-all duration-300 cursor-pointer",
-                      "hover:scale-105",
-                      isDark
-                        ? "border-white/30 hover:border-white/50 hover:bg-white/10"
-                        : "border-black/30 hover:border-black/50 hover:bg-black/10"
-                    )}
-                    onClick={() => setSelectedTemplate(template)}
-                  >
-                    {/* Template Header */}
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="font-bold tracking-wide uppercase text-lg">
-                          {template.name}
-                        </h3>
-                        <p className="text-sm opacity-70 mt-1">
-                          {template.description}
-                        </p>
-                      </div>
-                      <span className={cn(
-                        "px-2 py-1 rounded text-xs font-medium uppercase",
-                        template.complexity === 'simple' && "bg-green-500/20 text-green-500",
-                        template.complexity === 'moderate' && "bg-yellow-500/20 text-yellow-500",
-                        template.complexity === 'complex' && "bg-red-500/20 text-red-500"
-                      )}>
-                        {template.complexity}
-                      </span>
-                    </div>
-
-                    {/* Export Formats */}
-                    <div className="mb-4">
-                      <div className="text-sm font-medium mb-2">Export Formats:</div>
-                      <div className="flex flex-wrap gap-2">
-                        {template.formats.map((format) => (
-                          <span
-                            key={format.type}
-                            className={cn(
-                              "px-2 py-1 rounded text-xs font-medium",
-                              isDark ? "bg-white/10" : "bg-black/10"
-                            )}
-                          >
-                            {format.icon} {format.label}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Template Stats */}
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="opacity-70">Generated:</span> {template.generatedCount}
-                      </div>
-                      <div>
-                        <span className="opacity-70">Variables:</span> {template.variables.length}
-                      </div>
-                      <div>
-                        <span className="opacity-70">Last Used:</span> {template.lastGenerated}
-                      </div>
-                      <div>
-                        <span className="opacity-70">Est. Time:</span> {template.estimatedTime}
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex space-x-2">
-                      <button className="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-bold hover:bg-blue-600 transition-all">
-                        Generate
-                      </button>
-                      <button className={cn(
-                        "px-3 py-2 rounded-lg border-2 text-sm font-bold transition-all duration-300",
-                        isDark
-                          ? "border-white/30 hover:border-white/50"
-                          : "border-black/30 hover:border-black/50"
-                      )}>
-                        Preview
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* Quick Generator Tab */}
-          {activeTab === 'generator' && (
-            <motion.div
-              variants={itemVariants}
-              className={cn(
-                "p-6 rounded-lg border-2 transition-all duration-300",
-                isDark
-                  ? "bg-black/5 border-white/30"
-                  : "bg-white/5 border-black/30"
-              )}
-            >
-              <h2 className="text-xl font-bold tracking-wide uppercase mb-6">
-                Quick Document Generator
-              </h2>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="font-bold mb-4">Select Template</h3>
-                  <div className="space-y-3">
-                    {templates.slice(0, 3).map((template) => (
-                      <div
-                        key={template.id}
-                        className={cn(
-                          "p-4 rounded-lg border-2 cursor-pointer transition-all duration-300",
-                          isDark
-                            ? "border-white/30 hover:border-white/50"
-                            : "border-black/30 hover:border-black/50"
-                        )}
-                      >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <div className="font-medium">{template.name}</div>
-                            <div className="text-sm opacity-70">{template.variables.length} variables</div>
-                          </div>
-                          <div className="text-sm opacity-70">{template.estimatedTime}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-bold mb-4">Export Options</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    {[
-                      { type: 'pdf', label: 'PDF Document', icon: '📄' },
-                      { type: 'docx', label: 'Word Document', icon: '📝' },
-                      { type: 'html', label: 'HTML Page', icon: '🌐' },
-                      { type: 'txt', label: 'Text File', icon: '📄' }
-                    ].map((format) => (
-                      <div
-                        key={format.type}
-                        className={cn(
-                          "p-4 text-center rounded-lg border-2 cursor-pointer transition-all duration-300",
-                          isDark
-                            ? "border-white/30 hover:border-white/50"
-                            : "border-black/30 hover:border-black/50"
-                        )}
-                      >
-                        <div className="text-2xl mb-2">{format.icon}</div>
-                        <div className="text-sm font-medium">{format.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <button className="w-full mt-6 px-4 py-3 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition-all">
-                    Generate Document
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Generation History Tab */}
-          {activeTab === 'history' && (
-            <motion.div
-              variants={itemVariants}
-              className={cn(
-                "p-6 rounded-lg border-2 transition-all duration-300",
-                isDark
-                  ? "bg-black/5 border-white/30"
-                  : "bg-white/5 border-black/30"
-              )}
-            >
-              <h2 className="text-xl font-bold tracking-wide uppercase mb-6">
-                Generation History
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className={cn(
-                      "border-b-2",
-                      isDark ? "border-white/30" : "border-black/30"
-                    )}>
-                      <th className="text-left py-3 font-bold tracking-wide uppercase">Template</th>
-                      <th className="text-left py-3 font-bold tracking-wide uppercase">Client</th>
-                      <th className="text-left py-3 font-bold tracking-wide uppercase">Format</th>
-                      <th className="text-left py-3 font-bold tracking-wide uppercase">Generated</th>
-                      <th className="text-left py-3 font-bold tracking-wide uppercase">Status</th>
-                      <th className="text-left py-3 font-bold tracking-wide uppercase">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {generationHistory.map((item) => (
-                      <tr
-                        key={item.id}
-                        className={cn(
-                          "border-b transition-all duration-300",
-                          isDark ? "border-white/20 hover:bg-white/5" : "border-black/20 hover:bg-black/5"
-                        )}
-                      >
-                        <td className="py-3 font-medium">{item.template}</td>
-                        <td className="py-3">{item.client}</td>
-                        <td className="py-3">
-                          <span className={cn(
-                            "px-2 py-1 rounded text-xs font-medium uppercase",
-                            isDark ? "bg-white/10" : "bg-black/10"
-                          )}>
-                            {item.format}
-                          </span>
-                        </td>
-                        <td className="py-3 opacity-70">{item.generated}</td>
-                        <td className="py-3">
-                          <span className="px-2 py-1 rounded bg-green-500/20 text-green-500 text-xs font-medium uppercase">
-                            {item.status}
-                          </span>
-                        </td>
-                        <td className="py-3">
-                          <div className="flex space-x-2">
-                            <button className={cn(
-                              "text-xs px-2 py-1 rounded border transition-all duration-300",
-                              isDark
-                                ? "border-white/30 hover:border-white/50"
-                                : "border-black/30 hover:border-black/50"
-                            )}>
-                              Download
-                            </button>
-                            <button className={cn(
-                              "text-xs px-2 py-1 rounded border transition-all duration-300",
-                              isDark
-                                ? "border-white/30 hover:border-white/50"
-                                : "border-black/30 hover:border-black/50"
-                            )}>
-                              Regenerate
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Template Details Modal */}
-          {selectedTemplate && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-              onClick={() => setSelectedTemplate(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className={cn(
-                  "max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 rounded-lg border-2",
-                  isDark ? "bg-black border-white/30" : "bg-white border-black/30"
-                )}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-2xl font-bold tracking-wide uppercase">
-                    {selectedTemplate.name}
-                  </h3>
-                  <button
-                    onClick={() => setSelectedTemplate(null)}
-                    className={cn(
-                      "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
-                      isDark
-                        ? "border-white/30 hover:border-white/50"
-                        : "border-black/30 hover:border-black/50"
-                    )}
-                  >
-                    Close
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div>
-                    <h4 className="font-bold uppercase tracking-wide mb-4">Template Variables</h4>
-                    <div className="space-y-3 max-h-80 overflow-y-auto">
-                      {selectedTemplate.variables.map((variable) => (
-                        <div
-                          key={variable.key}
-                          className={cn(
-                            "p-3 rounded-lg border",
-                            isDark ? "border-white/20" : "border-black/20"
-                          )}
-                        >
-                          <div className="flex justify-between items-start mb-1">
-                            <div className="font-medium">{variable.label}</div>
-                            {variable.required && (
-                              <span className="text-red-500 text-xs">Required</span>
-                            )}
-                          </div>
-                          <div className="text-sm opacity-70">Type: {variable.type}</div>
-                          {variable.description && (
-                            <div className="text-xs opacity-60 mt-1">{variable.description}</div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold uppercase tracking-wide mb-4">Template Details</h4>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div><span className="font-medium">Category:</span> {selectedTemplate.category}</div>
-                        <div><span className="font-medium">Complexity:</span> {selectedTemplate.complexity}</div>
-                        <div><span className="font-medium">Variables:</span> {selectedTemplate.variables.length}</div>
-                        <div><span className="font-medium">Generated:</span> {selectedTemplate.generatedCount}</div>
-                      </div>
-
-                      <div>
-                        <h5 className="font-medium mb-2">Export Formats:</h5>
-                        <div className="grid grid-cols-2 gap-2">
-                          {selectedTemplate.formats.map((format) => (
-                            <div
-                              key={format.type}
-                              className={cn(
-                                "p-2 rounded border text-center",
-                                isDark ? "border-white/20" : "border-black/20"
-                              )}
-                            >
-                              <div>{format.icon} {format.label}</div>
-                              {format.size && <div className="text-xs opacity-70">{format.size}</div>}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="pt-4 space-y-2">
-                        <button className="w-full px-4 py-3 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition-all">
-                          Generate Document
-                        </button>
-                        <button className={cn(
-                          "w-full px-4 py-3 rounded-lg border-2 font-bold transition-all duration-300",
-                          isDark
-                            ? "border-white/30 hover:border-white/50"
-                            : "border-black/30 hover:border-black/50"
-                        )}>
-                          Customize Template
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </motion.div>
-      </div>
+              {isGenerating ? 'Generating...' : 'Generate Document'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
-  );
+  )
 }

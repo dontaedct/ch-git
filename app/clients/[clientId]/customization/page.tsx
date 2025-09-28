@@ -55,6 +55,9 @@ export default function ClientCustomizationPage({ params }: ClientCustomizationP
   const { theme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<'branding' | 'features' | 'templates' | 'preview'>('branding');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [clientData, setClientData] = useState<any>(null);
 
   const [clientBranding, setClientBranding] = useState<ClientBranding>({
     primaryColor: '#2563eb',
@@ -63,10 +66,66 @@ export default function ClientCustomizationPage({ params }: ClientCustomizationP
     logoUrl: '/placeholder-logo.png',
     fontPrimary: 'Inter',
     fontSecondary: 'Roboto',
-    brandName: 'Acme Corp',
-    tagline: 'Innovation for Tomorrow',
+    brandName: 'Loading...',
+    tagline: 'Loading...',
     favicon: '/placeholder-favicon.ico'
   });
+
+  // Load real client data for customization
+  useEffect(() => {
+    const loadCustomizationData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Get client data
+        const clientResponse = await fetch('/api/agency-data?action=clients');
+        const clientResult = await clientResponse.json();
+
+        if (clientResult.success) {
+          const client = clientResult.data.find((c: any) => c.id === params.clientId) || clientResult.data[0];
+          setClientData(client);
+
+          if (client) {
+            // Load existing branding configuration or set defaults
+            setClientBranding({
+              primaryColor: client.branding?.primaryColor || '#2563eb',
+              secondaryColor: client.branding?.secondaryColor || '#64748b',
+              accentColor: client.branding?.accentColor || '#0ea5e9',
+              logoUrl: client.branding?.logoUrl || '/placeholder-logo.png',
+              fontPrimary: client.branding?.fontPrimary || 'Inter',
+              fontSecondary: client.branding?.fontSecondary || 'Roboto',
+              brandName: client.company_name || client.name || client.email.split('@')[0],
+              tagline: client.branding?.tagline || 'Your Success is Our Mission',
+              favicon: client.branding?.favicon || '/placeholder-favicon.ico'
+            });
+          }
+        } else {
+          throw new Error(clientResult.error || 'Failed to load client data');
+        }
+      } catch (err) {
+        console.error('Error loading customization data:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load customization data');
+
+        // Fallback to demo data
+        setClientBranding({
+          primaryColor: '#2563eb',
+          secondaryColor: '#64748b',
+          accentColor: '#0ea5e9',
+          logoUrl: '/placeholder-logo.png',
+          fontPrimary: 'Inter',
+          fontSecondary: 'Roboto',
+          brandName: 'Demo Client',
+          tagline: 'Demo Customization',
+          favicon: '/placeholder-favicon.ico'
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCustomizationData();
+  }, [params.clientId]);
 
   const [features] = useState<FeatureConfig[]>([
     {
@@ -228,6 +287,40 @@ export default function ClientCustomizationPage({ params }: ClientCustomizationP
 
   const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark');
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className={cn(
+        "min-h-screen flex items-center justify-center transition-all duration-300",
+        isDark ? "bg-black text-white" : "bg-white text-black"
+      )}>
+        <div className={cn(
+          "text-lg font-medium",
+          isDark ? "text-white/80" : "text-black/80"
+        )}>
+          Loading customization data...
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className={cn(
+        "min-h-screen transition-all duration-300",
+        isDark ? "bg-black text-white" : "bg-white text-black"
+      )}>
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+            <div className="text-red-800 font-medium">Error loading customization data</div>
+            <div className="text-red-600 text-sm mt-1">{error}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -285,6 +378,14 @@ export default function ClientCustomizationPage({ params }: ClientCustomizationP
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Real Data Indicator */}
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+          <div className="text-green-800 font-medium">✅ Connected to real database</div>
+          <div className="text-green-600 text-sm mt-1">
+            Showing real customization settings for {clientData?.name || clientData?.email || params.clientId}
+          </div>
+        </div>
+
         <motion.div
           variants={containerVariants}
           initial="hidden"

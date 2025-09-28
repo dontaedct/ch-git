@@ -46,14 +46,14 @@ const errorNotificationVariants = cva(
       variant: {
         inline: 'border-l-4 bg-card',
         card: 'shadow-sm bg-card',
-        banner: 'border-x-0 border-t-0 border-b rounded-none bg-background/95 backdrop-blur-sm',
+        banner: 'border-x-0 border-t-0 border-b rounded-none bg-background/98 backdrop-blur-md',
         modal: 'shadow-lg bg-card border-2',
       },
       severity: {
-        low: 'border-blue-200 bg-blue-50/50 dark:border-blue-800 dark:bg-blue-950/20',
-        medium: 'border-amber-200 bg-amber-50/50 dark:border-amber-800 dark:bg-amber-950/20',
-        high: 'border-red-200 bg-red-50/50 dark:border-red-800 dark:bg-red-950/20',
-        critical: 'border-red-300 bg-red-100/50 dark:border-red-700 dark:bg-red-900/30 ring-1 ring-red-200 dark:ring-red-800',
+        low: 'border-blue-200 bg-blue-100/80 dark:border-blue-800 dark:bg-blue-950/60 backdrop-blur-sm',
+        medium: 'border-amber-200 bg-amber-100/80 dark:border-amber-800 dark:bg-amber-950/60 backdrop-blur-sm',
+        high: 'border-red-200 bg-red-100/80 dark:border-red-800 dark:bg-red-950/60 backdrop-blur-sm',
+        critical: 'border-red-300 bg-red-200/80 dark:border-red-700 dark:bg-red-900/70 ring-1 ring-red-200 dark:ring-red-800 backdrop-blur-sm',
       },
     },
     compoundVariants: [

@@ -1,229 +1,40 @@
 /**
- * @fileoverview Form Builder System
- * Advanced form builder with 4+ templates and 21 field types
+ * @fileoverview Form Builder - Step 6 of Client App Creation Guide
+ * PRD-compliant form builder for rapid micro-app delivery
+ * Focus: Essential form creation, professional appearance, minimal complexity
  */
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { cn } from "@/lib/utils";
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, FileText, Plus, Eye, Save, Clock, Zap, Settings, Activity } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-// Form Template Interface
-interface FormTemplate {
+// Simple interfaces for essential form building only
+interface SimpleFormTemplate {
   id: string;
   name: string;
   description: string;
-  category: 'contact' | 'survey' | 'application' | 'registration' | 'feedback';
-  fields: number;
-  submissions: number;
-  conversionRate: number;
-  lastUsed: string;
-  preview: FormField[];
+  fields: string[];
+  deliveryImpact: string;
+  complexity: 'low' | 'medium';
 }
 
-// Form Field Interface
-interface FormField {
+interface FormOption {
   id: string;
-  type: FieldType;
-  label: string;
-  placeholder?: string;
-  required: boolean;
-  options?: string[];
-  validation?: string;
+  name: string;
+  description: string;
+  icon: React.ComponentType<any>;
+  deliveryImpact: string;
+  complexity: 'low' | 'medium';
 }
 
-// Field Types (21 total)
-type FieldType =
-  | 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
-  | 'textarea' | 'select' | 'radio' | 'checkbox' | 'date' | 'time'
-  | 'datetime' | 'file' | 'range' | 'color' | 'search' | 'hidden'
-  | 'signature' | 'rating' | 'address';
-
-// Form Builder Statistics
-interface FormStats {
-  totalForms: number;
-  activeForms: number;
-  totalSubmissions: number;
-  avgConversionRate: number;
-  fieldTypesUsed: number;
-  templatesAvailable: number;
-}
-
-export default function FormBuilderPage() {
-  const { theme, systemTheme } = useTheme();
+export default function FormsPage() {
   const [mounted, setMounted] = useState(false);
-  const [activeTab, setActiveTab] = useState<'templates' | 'builder' | 'analytics'>('templates');
-  const [selectedTemplate, setSelectedTemplate] = useState<FormTemplate | null>(null);
-
-  const [stats] = useState<FormStats>({
-    totalForms: 45,
-    activeForms: 32,
-    totalSubmissions: 1847,
-    avgConversionRate: 67.8,
-    fieldTypesUsed: 21,
-    templatesAvailable: 6
-  });
-
-  const [fieldTypes] = useState<Array<{type: FieldType, label: string, category: string}>>([
-    // Basic Fields
-    { type: 'text', label: 'Text Input', category: 'Basic' },
-    { type: 'email', label: 'Email', category: 'Basic' },
-    { type: 'password', label: 'Password', category: 'Basic' },
-    { type: 'number', label: 'Number', category: 'Basic' },
-    { type: 'tel', label: 'Phone', category: 'Basic' },
-    { type: 'url', label: 'URL', category: 'Basic' },
-    { type: 'search', label: 'Search', category: 'Basic' },
-    { type: 'hidden', label: 'Hidden', category: 'Basic' },
-
-    // Selection Fields
-    { type: 'select', label: 'Dropdown', category: 'Selection' },
-    { type: 'radio', label: 'Radio Buttons', category: 'Selection' },
-    { type: 'checkbox', label: 'Checkboxes', category: 'Selection' },
-    { type: 'range', label: 'Range Slider', category: 'Selection' },
-    { type: 'rating', label: 'Star Rating', category: 'Selection' },
-
-    // Content Fields
-    { type: 'textarea', label: 'Text Area', category: 'Content' },
-    { type: 'file', label: 'File Upload', category: 'Content' },
-    { type: 'signature', label: 'Digital Signature', category: 'Content' },
-
-    // Date/Time Fields
-    { type: 'date', label: 'Date Picker', category: 'Date/Time' },
-    { type: 'time', label: 'Time Picker', category: 'Date/Time' },
-    { type: 'datetime', label: 'Date & Time', category: 'Date/Time' },
-
-    // Specialized Fields
-    { type: 'color', label: 'Color Picker', category: 'Specialized' },
-    { type: 'address', label: 'Address Input', category: 'Specialized' }
-  ]);
-
-  const [templates] = useState<FormTemplate[]>([
-    {
-      id: '1',
-      name: 'Contact Form',
-      description: 'Standard contact form with name, email, subject, and message fields',
-      category: 'contact',
-      fields: 5,
-      submissions: 342,
-      conversionRate: 78.5,
-      lastUsed: '2 hours ago',
-      preview: [
-        { id: '1', type: 'text', label: 'Full Name', required: true },
-        { id: '2', type: 'email', label: 'Email Address', required: true },
-        { id: '3', type: 'tel', label: 'Phone Number', required: false },
-        { id: '4', type: 'select', label: 'Subject', required: true, options: ['General Inquiry', 'Support', 'Sales'] },
-        { id: '5', type: 'textarea', label: 'Message', required: true }
-      ]
-    },
-    {
-      id: '2',
-      name: 'Customer Survey',
-      description: 'Comprehensive customer feedback survey with ratings and multiple choice',
-      category: 'survey',
-      fields: 8,
-      submissions: 186,
-      conversionRate: 65.2,
-      lastUsed: '1 day ago',
-      preview: [
-        { id: '1', type: 'text', label: 'Customer Name', required: true },
-        { id: '2', type: 'email', label: 'Email', required: true },
-        { id: '3', type: 'rating', label: 'Overall Satisfaction', required: true },
-        { id: '4', type: 'radio', label: 'Service Quality', required: true, options: ['Excellent', 'Good', 'Fair', 'Poor'] },
-        { id: '5', type: 'checkbox', label: 'Improvement Areas', required: false, options: ['Speed', 'Quality', 'Price', 'Support'] },
-        { id: '6', type: 'range', label: 'Likelihood to Recommend', required: true },
-        { id: '7', type: 'textarea', label: 'Additional Comments', required: false },
-        { id: '8', type: 'date', label: 'Last Purchase Date', required: false }
-      ]
-    },
-    {
-      id: '3',
-      name: 'Job Application',
-      description: 'Complete job application form with file upload and personal information',
-      category: 'application',
-      fields: 12,
-      submissions: 94,
-      conversionRate: 72.1,
-      lastUsed: '3 days ago',
-      preview: [
-        { id: '1', type: 'text', label: 'First Name', required: true },
-        { id: '2', type: 'text', label: 'Last Name', required: true },
-        { id: '3', type: 'email', label: 'Email Address', required: true },
-        { id: '4', type: 'tel', label: 'Phone Number', required: true },
-        { id: '5', type: 'address', label: 'Address', required: true },
-        { id: '6', type: 'date', label: 'Date of Birth', required: true },
-        { id: '7', type: 'select', label: 'Position Applied For', required: true },
-        { id: '8', type: 'number', label: 'Years of Experience', required: true },
-        { id: '9', type: 'file', label: 'Resume Upload', required: true },
-        { id: '10', type: 'file', label: 'Cover Letter', required: false },
-        { id: '11', type: 'textarea', label: 'Why do you want to work here?', required: true },
-        { id: '12', type: 'checkbox', label: 'Terms and Conditions', required: true }
-      ]
-    },
-    {
-      id: '4',
-      name: 'Event Registration',
-      description: 'Event registration with attendee details and preferences',
-      category: 'registration',
-      fields: 9,
-      submissions: 267,
-      conversionRate: 81.3,
-      lastUsed: '5 hours ago',
-      preview: [
-        { id: '1', type: 'text', label: 'Full Name', required: true },
-        { id: '2', type: 'email', label: 'Email Address', required: true },
-        { id: '3', type: 'tel', label: 'Phone Number', required: true },
-        { id: '4', type: 'select', label: 'Ticket Type', required: true },
-        { id: '5', type: 'number', label: 'Number of Attendees', required: true },
-        { id: '6', type: 'radio', label: 'Dietary Requirements', required: false },
-        { id: '7', type: 'checkbox', label: 'Workshop Preferences', required: false },
-        { id: '8', type: 'textarea', label: 'Special Requests', required: false },
-        { id: '9', type: 'checkbox', label: 'Marketing Consent', required: false }
-      ]
-    },
-    {
-      id: '5',
-      name: 'Product Feedback',
-      description: 'Product feedback form with ratings and feature requests',
-      category: 'feedback',
-      fields: 7,
-      submissions: 153,
-      conversionRate: 69.4,
-      lastUsed: '1 week ago',
-      preview: [
-        { id: '1', type: 'text', label: 'Product Name', required: true },
-        { id: '2', type: 'rating', label: 'Overall Rating', required: true },
-        { id: '3', type: 'rating', label: 'Ease of Use', required: true },
-        { id: '4', type: 'rating', label: 'Value for Money', required: true },
-        { id: '5', type: 'checkbox', label: 'Feature Requests', required: false },
-        { id: '6', type: 'textarea', label: 'What did you like most?', required: false },
-        { id: '7', type: 'textarea', label: 'Suggestions for improvement', required: false }
-      ]
-    },
-    {
-      id: '6',
-      name: 'Service Booking',
-      description: 'Service booking form with date/time selection and requirements',
-      category: 'application',
-      fields: 10,
-      submissions: 198,
-      conversionRate: 74.6,
-      lastUsed: '2 days ago',
-      preview: [
-        { id: '1', type: 'text', label: 'Client Name', required: true },
-        { id: '2', type: 'email', label: 'Email Address', required: true },
-        { id: '3', type: 'tel', label: 'Phone Number', required: true },
-        { id: '4', type: 'select', label: 'Service Type', required: true },
-        { id: '5', type: 'date', label: 'Preferred Date', required: true },
-        { id: '6', type: 'time', label: 'Preferred Time', required: true },
-        { id: '7', type: 'address', label: 'Service Address', required: true },
-        { id: '8', type: 'range', label: 'Budget Range', required: false },
-        { id: '9', type: 'textarea', label: 'Special Requirements', required: false },
-        { id: '10', type: 'checkbox', label: 'Terms of Service', required: true }
-      ]
-    }
-  ]);
+  const { theme, systemTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -233,450 +44,446 @@ export default function FormBuilderPage() {
 
   const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark');
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+  // Essential form options (5 only per PRD)
+  const formOptions: FormOption[] = [
+    {
+      id: 'contact',
+      name: 'Contact Form',
+      description: 'Simple contact form with name, email, and message',
+      icon: FileText,
+      deliveryImpact: 'Day 1 - Lead capture ready',
+      complexity: 'low'
+    },
+    {
+      id: 'newsletter',
+      name: 'Newsletter Signup',
+      description: 'Email collection form with optional preferences',
+      icon: Plus,
+      deliveryImpact: 'Day 1 - Email list building',
+      complexity: 'low'
+    },
+    {
+      id: 'booking',
+      name: 'Service Booking',
+      description: 'Appointment booking with date and time selection',
+      icon: Clock,
+      deliveryImpact: 'Day 2 - Booking system active',
+      complexity: 'medium'
+    },
+    {
+      id: 'feedback',
+      name: 'Feedback Form',
+      description: 'Customer feedback with rating and comments',
+      icon: Eye,
+      deliveryImpact: 'Day 1 - Customer insights',
+      complexity: 'low'
+    },
+    {
+      id: 'quote',
+      name: 'Quote Request',
+      description: 'Project details form for service quotes',
+      icon: Save,
+      deliveryImpact: 'Day 2 - Quote generation ready',
+      complexity: 'medium'
     }
-  };
+  ];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
-  const renderFieldPreview = (field: FormField) => {
-    const baseClasses = "w-full px-3 py-2 border-2 border-gray-300 rounded-lg text-sm";
-
-    switch (field.type) {
-      case 'textarea':
-        return <textarea className={cn(baseClasses, "h-20")} placeholder={field.placeholder} />;
-      case 'select':
-        return (
-          <select className={baseClasses}>
-            <option>Select {field.label}</option>
-            {field.options?.map(option => <option key={option}>{option}</option>)}
-          </select>
-        );
-      case 'radio':
-        return (
-          <div className="space-y-2">
-            {field.options?.map(option => (
-              <label key={option} className="flex items-center space-x-2">
-                <input type="radio" name={field.id} className="w-4 h-4" />
-                <span className="text-sm">{option}</span>
-              </label>
-            ))}
-          </div>
-        );
-      case 'checkbox':
-        return field.options ? (
-          <div className="space-y-2">
-            {field.options.map(option => (
-              <label key={option} className="flex items-center space-x-2">
-                <input type="checkbox" className="w-4 h-4" />
-                <span className="text-sm">{option}</span>
-              </label>
-            ))}
-          </div>
-        ) : (
-          <label className="flex items-center space-x-2">
-            <input type="checkbox" className="w-4 h-4" />
-            <span className="text-sm">{field.label}</span>
-          </label>
-        );
-      case 'range':
-        return (
-          <div>
-            <input type="range" className="w-full" min="0" max="10" />
-            <div className="flex justify-between text-xs opacity-70">
-              <span>0</span>
-              <span>10</span>
-            </div>
-          </div>
-        );
-      case 'rating':
-        return (
-          <div className="flex space-x-1">
-            {[1,2,3,4,5].map(star => (
-              <span key={star} className="text-yellow-500 text-lg cursor-pointer">★</span>
-            ))}
-          </div>
-        );
-      case 'file':
-        return (
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-            <span className="text-sm opacity-70">Click to upload or drag and drop</span>
-          </div>
-        );
-      case 'color':
-        return <input type="color" className="w-16 h-10 border-2 border-gray-300 rounded" />;
-      case 'date':
-      case 'time':
-      case 'datetime':
-        return <input type={field.type} className={baseClasses} />;
-      default:
-        return <input type={field.type} className={baseClasses} placeholder={field.placeholder} />;
+  // Simple form templates (3 essential ones)
+  const templates: SimpleFormTemplate[] = [
+    {
+      id: 'basic-contact',
+      name: 'Basic Contact',
+      description: 'Name, email, message - the essentials',
+      fields: ['Full Name', 'Email', 'Message'],
+      deliveryImpact: 'Day 1 - Ready for leads',
+      complexity: 'low'
+    },
+    {
+      id: 'service-inquiry',
+      name: 'Service Inquiry',
+      description: 'Contact form with service selection',
+      fields: ['Name', 'Email', 'Phone', 'Service Needed', 'Message'],
+      deliveryImpact: 'Day 1 - Service leads ready',
+      complexity: 'low'
+    },
+    {
+      id: 'appointment-booking',
+      name: 'Appointment Booking',
+      description: 'Scheduling form with date/time picker',
+      fields: ['Name', 'Email', 'Phone', 'Service Type', 'Preferred Date', 'Preferred Time'],
+      deliveryImpact: 'Day 2 - Booking system live',
+      complexity: 'medium'
     }
-  };
+  ];
 
   return (
-    <div className={cn(
-      "min-h-screen transition-all duration-300",
-      isDark ? "bg-black text-white" : "bg-white text-black"
-    )}>
-      {/* Header */}
-      <div className={cn(
-        "border-b-2 transition-all duration-300",
-        isDark ? "border-white/30" : "border-black/30"
-      )}>
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-4xl font-bold tracking-wide uppercase">
-                Form Builder System
-              </h1>
-              <p className={cn(
-                "mt-2 text-lg",
-                isDark ? "text-white/80" : "text-black/80"
+    <div className="min-h-screen bg-background relative overflow-hidden">
+      {/* Sophisticated Background System */}
+      <div className="absolute inset-0 -z-10">
+        {/* Subtle tech grid */}
+        <div
+          className="absolute inset-0 opacity-[0.02] text-foreground"
+          style={{
+            backgroundImage: `
+              linear-gradient(currentColor 1px, transparent 1px),
+              linear-gradient(90deg, currentColor 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px'
+          }}
+        />
+
+        {/* Tech accent lines */}
+        <div className="absolute top-20 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent" />
+        <div className="absolute top-0 bottom-0 right-1/4 w-px bg-gradient-to-b from-transparent via-primary/10 to-transparent" />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-8 relative">
+        {/* Enhanced Navigation */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
+        >
+          <Link
+            href="/agency-toolkit"
+            className={cn(
+              "group inline-flex items-center gap-3 px-6 py-3 border-2 font-bold text-sm tracking-wider uppercase transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl",
+              isDark
+                ? "border-white/30 text-white/80 hover:text-white hover:border-white/50 hover:bg-white/10"
+                : "border-black/30 text-black/80 hover:text-black hover:border-black/50 hover:bg-black/10"
+            )}
+            className=\"rounded-lg\"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
+            <span>Back to Agency Toolkit</span>
+
+          </Link>
+        </motion.div>
+
+        {/* Enhanced Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="mb-8"
+        >
+          <div className="flex items-start gap-6 mb-6">
+            {/* High-tech status indicator */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className={cn(
+                "flex items-center gap-3 px-6 py-3 rounded-none border-2 backdrop-blur-sm relative",
+                isDark
+                  ? "bg-black/80 border-white/30 shadow-2xl shadow-white/5"
+                  : "bg-white/80 border-black/30 shadow-2xl shadow-black/5"
+              )}
+              className=\"rounded-lg\"
+            >
+              <div className="flex items-center gap-2">
+                <div className={cn(
+                  "w-2 h-2 rounded-full animate-pulse",
+                  isDark ? "bg-green-400" : "bg-green-600"
+                )}
+                style={{ animationDuration: '1.5s' }} />
+                <Settings className="w-3 h-3 text-primary" />
+                <Zap className="w-3 h-3 text-primary" />
+              </div>
+
+              <span className={cn(
+                "text-sm font-mono font-bold tracking-wider uppercase",
+                isDark ? "text-white/95" : "text-black/95"
               )}>
-                Advanced form builder with 4+ templates and 21 field types
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <a
-                href="/agency-toolkit"
+                FORM_BUILDER_ACTIVE
+              </span>
+
+            </motion.div>
+
+            <div className="flex-1">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
                 className={cn(
-                  "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
-                  isDark
-                    ? "border-white/30 hover:border-white/50"
-                    : "border-black/30 hover:border-black/50"
+                  "inline-flex items-center justify-center w-16 h-16 rounded-xl border-2 mb-4 shadow-xl relative",
+                  "bg-primary text-primary-foreground border-primary/20 hover:scale-105 transition-transform duration-300"
                 )}
               >
-                ← Back to Toolkit
-              </a>
-              <ThemeToggle />
+                <FileText className="w-7 h-7" />
+
+                {/* Tech corner brackets */}
+                <div className={cn(
+                  "absolute -top-2 -left-2 w-4 h-4 border-l-2 border-t-2 opacity-30",
+                  isDark ? "border-white" : "border-black"
+                )} />
+                <div className={cn(
+                  "absolute -bottom-2 -right-2 w-4 h-4 border-r-2 border-b-2 opacity-30",
+                  isDark ? "border-white" : "border-black"
+                )} />
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="text-4xl lg:text-5xl font-black tracking-tight uppercase text-high-emphasis mb-3 relative"
+              >
+                Form Builder
+                {/* Scanning line effect */}
+                <div className={cn(
+                  "absolute inset-0 bg-gradient-to-r opacity-0 animate-pulse pointer-events-none",
+                  isDark
+                    ? "from-transparent via-white/20 to-transparent"
+                    : "from-transparent via-black/20 to-transparent"
+                )}
+                style={{
+                  animationDuration: '4s',
+                  animationDelay: '2s'
+                }} />
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.7 }}
+                className="text-lg text-medium-emphasis max-w-2xl"
+              >
+                Essential form creation for rapid micro-app delivery
+              </motion.p>
+            </div>
+
+            {/* Activity indicator */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex items-center gap-4"
+            >
+              <div className={cn(
+                "w-10 h-10 rounded-xl flex items-center justify-center border-2 transition-all duration-300",
+                "bg-primary/10 text-primary border-primary/20 shadow-lg hover:shadow-xl hover:scale-105"
+              )}>
+                <Activity className="w-5 h-5" />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* PRD Compliance Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+            <div className="p-4 border rounded-lg bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Clock className="w-5 h-5 text-blue-600" />
+                <span className="font-medium">≤7 Day Delivery</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Rapid form implementation for quick deployment
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <FileText className="w-5 h-5 text-green-600" />
+                <span className="font-medium">Essential Only</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                5 core form types for minimal complexity
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg bg-card">
+              <div className="flex items-center gap-2 mb-2">
+                <Save className="w-5 h-5 text-purple-600" />
+                <span className="font-medium">Professional</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Clean, responsive forms for $2k-5k projects
+              </p>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-8"
-        >
-          {/* Form Statistics */}
-          <motion.div
-            variants={itemVariants}
-            className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4"
-          >
-            {[
-              { label: "Total Forms", value: stats.totalForms, color: "blue" },
-              { label: "Active Forms", value: stats.activeForms, color: "green" },
-              { label: "Submissions", value: stats.totalSubmissions, color: "yellow" },
-              { label: "Conversion Rate", value: `${stats.avgConversionRate}%`, color: "purple" },
-              { label: "Field Types", value: stats.fieldTypesUsed, color: "emerald" },
-              { label: "Templates", value: stats.templatesAvailable, color: "red" }
-            ].map((stat) => (
+        {/* Essential Form Options */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+          {formOptions.map((option) => {
+            const IconComponent = option.icon;
+            return (
               <div
-                key={stat.label}
-                className={cn(
-                  "p-6 rounded-lg border-2 transition-all duration-300",
-                  isDark
-                    ? "bg-black/5 border-white/30 hover:border-white/50"
-                    : "bg-white/5 border-black/30 hover:border-black/50"
-                )}
+                key={option.id}
+                className="p-6 border rounded-lg hover:shadow-md transition-shadow cursor-pointer group"
               >
-                <div className="text-sm font-medium uppercase tracking-wide opacity-70">
-                  {stat.label}
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+                    <IconComponent className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold">{option.name}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        option.complexity === 'low'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-yellow-100 text-yellow-700'
+                      }`}>
+                        {option.complexity} complexity
+                      </span>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-2xl font-bold mt-2">{stat.value}</div>
+                <p className="text-sm text-muted-foreground mb-3">
+                  {option.description}
+                </p>
+                <div className="text-xs text-primary font-medium">
+                  {option.deliveryImpact}
+                </div>
               </div>
-            ))}
-          </motion.div>
+            );
+          })}
+        </div>
 
-          {/* Tab Navigation */}
-          <motion.div
-            variants={itemVariants}
-            className="flex space-x-4"
-          >
-            {[
-              { id: 'templates', label: 'Form Templates' },
-              { id: 'builder', label: 'Field Types' },
-              { id: 'analytics', label: 'Form Analytics' }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={cn(
-                  "px-6 py-3 rounded-lg border-2 font-bold transition-all duration-300",
-                  activeTab === tab.id
-                    ? isDark
-                      ? "bg-white/10 border-white/50"
-                      : "bg-black/10 border-black/50"
-                    : isDark
-                      ? "border-white/30 hover:border-white/50"
-                      : "border-black/30 hover:border-black/50"
-                )}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </motion.div>
+        {/* Simple Form Builder */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Form Templates */}
+          <div className="space-y-6">
+            <div className="p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-4">Quick Start Templates</h3>
 
-          {/* Form Templates Tab */}
-          {activeTab === 'templates' && (
-            <motion.div
-              variants={itemVariants}
-              className={cn(
-                "p-6 rounded-lg border-2 transition-all duration-300",
-                isDark
-                  ? "bg-black/5 border-white/30"
-                  : "bg-white/5 border-black/30"
-              )}
-            >
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold tracking-wide uppercase">
-                  Form Templates ({templates.length})
-                </h2>
-                <button
-                  className={cn(
-                    "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
-                    "hover:scale-105",
-                    isDark
-                      ? "border-white/30 hover:border-white/50"
-                      : "border-black/30 hover:border-black/50"
-                  )}
-                >
-                  Create New Form
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              <div className="space-y-4">
                 {templates.map((template) => (
                   <div
                     key={template.id}
-                    className={cn(
-                      "p-6 rounded-lg border-2 transition-all duration-300 cursor-pointer",
-                      "hover:scale-105",
-                      isDark
-                        ? "border-white/30 hover:border-white/50 hover:bg-white/10"
-                        : "border-black/30 hover:border-black/50 hover:bg-black/10"
-                    )}
-                    onClick={() => setSelectedTemplate(template)}
+                    className="p-4 border rounded-lg hover:shadow-md transition-shadow cursor-pointer group"
                   >
-                    <div className="flex justify-between items-start mb-4">
+                    <div className="flex items-start justify-between mb-3">
                       <div>
-                        <h3 className="font-bold tracking-wide uppercase text-lg">
-                          {template.name}
-                        </h3>
-                        <p className="text-sm opacity-70 mt-1">
-                          {template.description}
-                        </p>
+                        <h4 className="font-semibold">{template.name}</h4>
+                        <p className="text-sm text-muted-foreground">{template.description}</p>
                       </div>
-                      <span className={cn(
-                        "px-2 py-1 rounded text-xs font-medium uppercase",
-                        template.category === 'contact' && "bg-blue-500/20 text-blue-500",
-                        template.category === 'survey' && "bg-green-500/20 text-green-500",
-                        template.category === 'application' && "bg-purple-500/20 text-purple-500",
-                        template.category === 'registration' && "bg-yellow-500/20 text-yellow-500",
-                        template.category === 'feedback' && "bg-red-500/20 text-red-500"
-                      )}>
-                        {template.category}
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        template.complexity === 'low'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-yellow-100 text-yellow-700'
+                      }`}>
+                        {template.complexity}
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4 text-sm mb-4">
-                      <div>
-                        <span className="opacity-70">Fields:</span> {template.fields}
-                      </div>
-                      <div>
-                        <span className="opacity-70">Submissions:</span> {template.submissions}
-                      </div>
-                      <div>
-                        <span className="opacity-70">Conversion:</span> {template.conversionRate}%
-                      </div>
-                      <div>
-                        <span className="opacity-70">Last Used:</span> {template.lastUsed}
+                    <div className="mb-3">
+                      <div className="text-xs text-muted-foreground mb-2">Included Fields:</div>
+                      <div className="flex flex-wrap gap-1">
+                        {template.fields.map((field, index) => (
+                          <span key={index} className="text-xs px-2 py-1 bg-gray-100 rounded">
+                            {field}
+                          </span>
+                        ))}
                       </div>
                     </div>
 
-                    <div className="flex space-x-2">
-                      <button className="flex-1 px-3 py-2 bg-blue-500 text-white rounded-lg text-sm font-bold hover:bg-blue-600 transition-all">
-                        Use Template
-                      </button>
-                      <button className={cn(
-                        "px-3 py-2 rounded-lg border-2 text-sm font-bold transition-all duration-300",
-                        isDark
-                          ? "border-white/30 hover:border-white/50"
-                          : "border-black/30 hover:border-black/50"
-                      )}>
-                        Preview
-                      </button>
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-primary font-medium">
+                        {template.deliveryImpact}
+                      </span>
+                      <Button size="sm">Use Template</Button>
                     </div>
                   </div>
                 ))}
               </div>
-            </motion.div>
-          )}
+            </div>
 
-          {/* Field Types Tab */}
-          {activeTab === 'builder' && (
-            <motion.div
-              variants={itemVariants}
-              className={cn(
-                "p-6 rounded-lg border-2 transition-all duration-300",
-                isDark
-                  ? "bg-black/5 border-white/30"
-                  : "bg-white/5 border-black/30"
-              )}
-            >
-              <h2 className="text-xl font-bold tracking-wide uppercase mb-6">
-                Available Field Types (21 Types)
-              </h2>
+            {/* Form Actions */}
+            <div className="space-y-3">
+              <Button className="w-full" size="lg">
+                <Plus className="w-4 h-4 mr-2" />
+                Create Custom Form
+              </Button>
+              <Button variant="outline" className="w-full" size="lg">
+                Import Form Template
+              </Button>
+            </div>
+          </div>
 
-              {['Basic', 'Selection', 'Content', 'Date/Time', 'Specialized'].map(category => (
-                <div key={category} className="mb-8">
-                  <h3 className="text-lg font-bold mb-4">{category} Fields</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {fieldTypes.filter(field => field.category === category).map((fieldType) => (
-                      <div
-                        key={fieldType.type}
-                        className={cn(
-                          "p-4 rounded-lg border-2 transition-all duration-300",
-                          isDark
-                            ? "border-white/30 hover:border-white/50"
-                            : "border-black/30 hover:border-black/50"
-                        )}
-                      >
-                        <div className="font-medium text-sm mb-2">{fieldType.label}</div>
-                        <div className="text-xs opacity-70 mb-2">Type: {fieldType.type}</div>
-                        <button className="w-full px-3 py-1 bg-blue-500/20 text-blue-500 rounded text-xs font-medium hover:bg-blue-500/30 transition-all">
-                          Add to Form
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          )}
+          {/* Live Preview & Timeline */}
+          <div className="space-y-6">
+            <div className="p-6 border rounded-lg">
+              <h3 className="text-lg font-semibold mb-4">Form Preview</h3>
 
-          {/* Analytics Tab */}
-          {activeTab === 'analytics' && (
-            <motion.div
-              variants={itemVariants}
-              className={cn(
-                "p-6 rounded-lg border-2 transition-all duration-300",
-                isDark
-                  ? "bg-black/5 border-white/30"
-                  : "bg-white/5 border-black/30"
-              )}
-            >
-              <h2 className="text-xl font-bold tracking-wide uppercase mb-6">
-                Form Analytics
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-500">{stats.totalSubmissions}</div>
-                  <div className="text-sm opacity-70">Total Submissions</div>
+              {/* Sample form preview */}
+              <div className="space-y-4 p-4 border-2 border-dashed rounded-lg">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Full Name *</label>
+                  <input
+                    type="text"
+                    placeholder="Enter your full name"
+                    className="w-full px-3 py-2 border rounded-md"
+                    disabled
+                  />
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-500">{stats.avgConversionRate}%</div>
-                  <div className="text-sm opacity-70">Average Conversion Rate</div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Email Address *</label>
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    className="w-full px-3 py-2 border rounded-md"
+                    disabled
+                  />
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-500">{stats.activeForms}</div>
-                  <div className="text-sm opacity-70">Active Forms</div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Message *</label>
+                  <textarea
+                    placeholder="Tell us about your project..."
+                    className="w-full px-3 py-2 border rounded-md h-20"
+                    disabled
+                  />
+                </div>
+
+                <button className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium">
+                  Send Message
+                </button>
+              </div>
+
+              <p className="text-xs text-muted-foreground mt-2">
+                * Preview updates as you build your form
+              </p>
+            </div>
+
+            {/* Delivery Timeline */}
+            <div className="p-6 border rounded-lg bg-green-50">
+              <h3 className="text-lg font-semibold mb-3 text-green-800">
+                Delivery Timeline
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                  <span className="text-sm text-green-700">Day 1: Form creation & styling</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  <span className="text-sm text-green-700">Day 2: Integration & testing</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-300 rounded-full"></div>
+                  <span className="text-sm text-green-700">Day 3: Email notifications setup</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+                  <span className="text-sm text-green-700">Days 4-7: Form goes live</span>
                 </div>
               </div>
-            </motion.div>
-          )}
+            </div>
 
-          {/* Template Preview Modal */}
-          {selectedTemplate && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
-              onClick={() => setSelectedTemplate(null)}
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                className={cn(
-                  "max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 rounded-lg border-2",
-                  isDark ? "bg-black border-white/30" : "bg-white border-black/30"
-                )}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-2xl font-bold tracking-wide uppercase">
-                    {selectedTemplate.name} Preview
-                  </h3>
-                  <button
-                    onClick={() => setSelectedTemplate(null)}
-                    className={cn(
-                      "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
-                      isDark
-                        ? "border-white/30 hover:border-white/50"
-                        : "border-black/30 hover:border-black/50"
-                    )}
-                  >
-                    Close
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  <div>
-                    <h4 className="font-bold uppercase tracking-wide mb-4">Form Preview</h4>
-                    <div className="space-y-4 max-h-96 overflow-y-auto">
-                      {selectedTemplate.preview.map((field) => (
-                        <div key={field.id}>
-                          <label className="block text-sm font-medium mb-2">
-                            {field.label} {field.required && <span className="text-red-500">*</span>}
-                          </label>
-                          {renderFieldPreview(field)}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold uppercase tracking-wide mb-4">Template Details</h4>
-                    <div className="space-y-4">
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div><span className="font-medium">Category:</span> {selectedTemplate.category}</div>
-                        <div><span className="font-medium">Fields:</span> {selectedTemplate.fields}</div>
-                        <div><span className="font-medium">Submissions:</span> {selectedTemplate.submissions}</div>
-                        <div><span className="font-medium">Conversion:</span> {selectedTemplate.conversionRate}%</div>
-                      </div>
-                      <div className="pt-4 space-y-2">
-                        <button className="w-full px-4 py-3 bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition-all">
-                          Use This Template
-                        </button>
-                        <button className={cn(
-                          "w-full px-4 py-3 rounded-lg border-2 font-bold transition-all duration-300",
-                          isDark
-                            ? "border-white/30 hover:border-white/50"
-                            : "border-black/30 hover:border-black/50"
-                        )}>
-                          Customize Template
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </motion.div>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="p-4 border rounded-lg text-center">
+                <div className="text-2xl font-bold text-primary">3</div>
+                <div className="text-sm text-muted-foreground">Ready Templates</div>
+              </div>
+              <div className="p-4 border rounded-lg text-center">
+                <div className="text-2xl font-bold text-green-600">5</div>
+                <div className="text-sm text-muted-foreground">Form Types</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

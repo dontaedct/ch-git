@@ -231,22 +231,22 @@ export default function SecurityArchitecture() {
                         <div className="space-y-3">
                           <div className="flex justify-between">
                             <span className="text-gray-600">Security Level:</span>
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(clientSecurityProfiles[selectedClient].securityLevel)}`}>
-                              {clientSecurityProfiles[selectedClient].securityLevel}
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(clientSecurityProfiles[selectedClient as keyof typeof clientSecurityProfiles].securityLevel)}`}>
+                              {clientSecurityProfiles[selectedClient as keyof typeof clientSecurityProfiles].securityLevel}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">Isolation:</span>
-                            <span className="font-medium">{clientSecurityProfiles[selectedClient].isolation}</span>
+                            <span className="font-medium">{clientSecurityProfiles[selectedClient as keyof typeof clientSecurityProfiles].isolation}</span>
                           </div>
                           <div className="flex justify-between">
                             <span className="text-gray-600">Data Classification:</span>
-                            <span className="font-medium">{clientSecurityProfiles[selectedClient].dataClassification}</span>
+                            <span className="font-medium">{clientSecurityProfiles[selectedClient as keyof typeof clientSecurityProfiles].dataClassification}</span>
                           </div>
                           <div>
                             <span className="text-gray-600">Compliance Requirements:</span>
                             <div className="flex gap-2 mt-1">
-                              {clientSecurityProfiles[selectedClient].complianceRequirements.map((req, index) => (
+                              {clientSecurityProfiles[selectedClient as keyof typeof clientSecurityProfiles].complianceRequirements.map((req: string, index: number) => (
                                 <span key={index} className="px-2 py-1 bg-blue-100 text-blue-800 rounded text-xs">
                                   {req}
                                 </span>
@@ -260,7 +260,7 @@ export default function SecurityArchitecture() {
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">Access Controls</h3>
                         <div className="space-y-3">
-                          {Object.entries(clientSecurityProfiles[selectedClient].accessControls).map(([key, value]) => (
+                          {Object.entries(clientSecurityProfiles[selectedClient as keyof typeof clientSecurityProfiles].accessControls).map(([key, value]) => (
                             <div key={key} className="flex justify-between">
                               <span className="text-gray-600">
                                 {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}:

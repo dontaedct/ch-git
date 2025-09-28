@@ -1,14 +1,19 @@
 /**
  * @fileoverview Template Engine Interface
- * Template management system with 5+ custom micro-app templates
+ * Template management system with 8 custom micro-app templates
  */
 "use client";
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
+import { TemplateCreationWizard } from "@/components/template-builder/TemplateCreationWizard";
+import { TemplateMarketplace } from "@/components/template-builder/TemplateMarketplace";
+import { getTemplateStorage } from "@/lib/template-storage/TemplateStorage";
+import { TemplateManifest } from "@/types/componentContracts";
 
 // Template Interface
 interface Template {
@@ -42,6 +47,10 @@ export default function TemplateEnginePage() {
   const [mounted, setMounted] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
+  const [showCreationWizard, setShowCreationWizard] = useState(false);
+  const [showMarketplace, setShowMarketplace] = useState(false);
+  const [templates, setTemplates] = useState<Template[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [categories] = useState<TemplateCategory[]>([
     { id: 'all', name: 'All Templates', description: 'View all available templates', count: 8 },
@@ -52,7 +61,43 @@ export default function TemplateEnginePage() {
     { id: 'landing', name: 'Landing', description: 'Marketing and promotional pages', count: 1 }
   ]);
 
-  const [templates] = useState<Template[]>([
+  // Load templates from storage
+  const loadTemplates = async () => {
+    try {
+      setLoading(true);
+      const templateStorage = getTemplateStorage();
+      const templateVersions = await templateStorage.getAllTemplates();
+      
+      // Convert template versions to template interface
+      const convertedTemplates: Template[] = templateVersions.map(version => ({
+        id: version.manifest.id,
+        name: version.manifest.name,
+        description: version.manifest.description || '',
+        category: version.manifest.category as any,
+        preview: `/api/templates/${version.manifest.slug}/preview`,
+        features: version.manifest.components.map(comp => comp.type),
+        deploymentTime: '1-2 days',
+        usageCount: 0, // Would be tracked separately
+        lastUsed: version.createdAt,
+        status: version.isActive ? 'active' : 'draft',
+        customization: {
+          colors: 8,
+          layouts: 4,
+          components: version.manifest.components.length
+        }
+      }));
+
+      setTemplates(convertedTemplates);
+    } catch (error) {
+      console.error('Failed to load templates:', error);
+      // Fallback to mock data
+      setTemplates(mockTemplates);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const mockTemplates: Template[] = [
     {
       id: '1',
       name: 'CRM Dashboard',
@@ -157,7 +202,7 @@ export default function TemplateEnginePage() {
       status: 'active',
       customization: { colors: 8, layouts: 4, components: 26 }
     }
-  ]);
+  ];
 
   const filteredTemplates = activeCategory === 'all'
     ? templates
@@ -165,7 +210,64 @@ export default function TemplateEnginePage() {
 
   useEffect(() => {
     setMounted(true);
+    loadTemplates();
   }, []);
+
+  // Handle template creation
+  const handleTemplateCreated = (template: TemplateManifest) => {
+    // Reload templates to include the new one
+    loadTemplates();
+    setShowCreationWizard(false);
+    
+    // Optionally redirect to template builder
+    // router.push(`/agency-toolkit/templates/builder?id=${template.id}`);
+  };
+
+  // Handle template actions
+  const handleTemplateAction = async (templateId: string, action: string) => {
+    try {
+      const templateStorage = getTemplateStorage();
+      
+      switch (action) {
+        case 'duplicate':
+          const originalTemplate = await templateStorage.loadTemplate(templateId);
+          if (originalTemplate) {
+            const duplicated = await templateStorage.duplicateTemplate(
+              templateId,
+              `${originalTemplate.name} (Copy)`,
+              `${originalTemplate.slug}-copy`
+            );
+            if (duplicated) {
+              loadTemplates();
+              alert('Template duplicated successfully!');
+            }
+          }
+          break;
+        case 'delete':
+          if (confirm('Are you sure you want to delete this template?')) {
+            await templateStorage.deleteTemplate(templateId);
+            loadTemplates();
+            alert('Template deleted successfully!');
+          }
+          break;
+        case 'export':
+          const exported = await templateStorage.exportTemplate(templateId, 'json');
+          const blob = new Blob([exported], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `template-${templateId}.json`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          break;
+      }
+    } catch (error) {
+      console.error(`Failed to ${action} template:`, error);
+      alert(`Failed to ${action} template. Please try again.`);
+    }
+  };
 
   if (!mounted) return null;
 
@@ -206,11 +308,11 @@ export default function TemplateEnginePage() {
                 "mt-2 text-lg",
                 isDark ? "text-white/80" : "text-black/80"
               )}>
-                5+ custom micro-app templates for rapid deployment
+                8 custom micro-app templates for rapid deployment
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <a
+              <Link
                 href="/agency-toolkit"
                 className={cn(
                   "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
@@ -220,7 +322,7 @@ export default function TemplateEnginePage() {
                 )}
               >
                 ← Back to Toolkit
-              </a>
+              </Link>
               <ThemeToggle />
             </div>
           </div>
@@ -302,17 +404,32 @@ export default function TemplateEnginePage() {
                 {activeCategory === 'all' ? 'All Templates' : categories.find(c => c.id === activeCategory)?.name}
                 ({filteredTemplates.length})
               </h2>
-              <button
-                className={cn(
-                  "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
-                  "hover:scale-105",
-                  isDark
-                    ? "border-white/30 hover:border-white/50"
-                    : "border-black/30 hover:border-black/50"
-                )}
-              >
-                Create New Template
-              </button>
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={() => setShowMarketplace(true)}
+                  className={cn(
+                    "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
+                    "hover:scale-105",
+                    isDark
+                      ? "border-green-500/30 hover:border-green-500/50 text-green-400"
+                      : "border-green-500/30 hover:border-green-500/50 text-green-600"
+                  )}
+                >
+                  Browse Marketplace
+                </button>
+                <button
+                  onClick={() => setShowCreationWizard(true)}
+                  className={cn(
+                    "px-4 py-2 rounded-lg border-2 font-bold transition-all duration-300",
+                    "hover:scale-105",
+                    isDark
+                      ? "border-white/30 hover:border-white/50"
+                      : "border-black/30 hover:border-black/50"
+                  )}
+                >
+                  Create New Template
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -378,6 +495,53 @@ export default function TemplateEnginePage() {
                     <div className="flex justify-between items-center text-sm">
                       <span className="opacity-70">Last Used:</span>
                       <span className="font-medium">{template.lastUsed}</span>
+                    </div>
+                  </div>
+
+                  {/* Template Actions */}
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-200">
+                    <div className="flex items-center space-x-2">
+                      <Link
+                        href={`/agency-toolkit/templates/builder?id=${template.id}`}
+                        className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleTemplateAction(template.id, 'duplicate');
+                        }}
+                        className="px-3 py-1 text-xs bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+                      >
+                        Duplicate
+                      </button>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleTemplateAction(template.id, 'export');
+                        }}
+                        className="p-1 text-gray-400 hover:text-gray-600"
+                        title="Export"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleTemplateAction(template.id, 'delete');
+                        }}
+                        className="p-1 text-gray-400 hover:text-red-600"
+                        title="Delete"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
                     </div>
                   </div>
 
@@ -510,6 +674,27 @@ export default function TemplateEnginePage() {
           )}
         </motion.div>
       </div>
+
+      {/* Template Creation Wizard */}
+      {showCreationWizard && (
+        <TemplateCreationWizard
+          onTemplateCreated={handleTemplateCreated}
+          onClose={() => setShowCreationWizard(false)}
+        />
+      )}
+
+      {/* Template Marketplace */}
+      {showMarketplace && (
+        <TemplateMarketplace
+          onTemplateSelect={(template) => {
+            console.log('Template selected from marketplace:', template);
+            setShowMarketplace(false);
+            // Reload templates to include the new one
+            loadTemplates();
+          }}
+          onClose={() => setShowMarketplace(false)}
+        />
+      )}
     </div>
   );
 }

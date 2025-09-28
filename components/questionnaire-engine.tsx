@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { emitLeadStartedQuestionnaire, emitLeadCompletedQuestionnaire } from '@/lib/webhooks/emitter'
+import { emitLeadStartedQuestionnaire, emitLeadCompletedQuestionnaire } from '@/lib/webhooks/emitter-client'
 import { OptimizedMotion, OptimizedAnimatePresence, OptimizedStagger } from '@/lib/performance/optimized-motion'
 import { motion, AnimatePresence } from 'framer-motion'
 import { toast } from 'sonner'

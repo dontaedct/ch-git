@@ -169,7 +169,7 @@ export default function ComplianceMonitoring() {
     uptime: 99.9
   }
 
-  const getStatusIcon = (status) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
       case 'compliant':
       case 'completed':
@@ -190,7 +190,7 @@ export default function ComplianceMonitoring() {
     }
   }
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'compliant':
       case 'completed':
@@ -211,7 +211,7 @@ export default function ComplianceMonitoring() {
     }
   }
 
-  const getSeverityColor = (severity) => {
+  const getSeverityColor = (severity: string) => {
     switch (severity) {
       case 'critical':
         return 'bg-red-100 text-red-800 border-red-200'
@@ -232,7 +232,7 @@ export default function ComplianceMonitoring() {
     return 'text-red-600'
   }
 
-  const getTrendIcon = (trend) => {
+  const getTrendIcon = (trend: string) => {
     switch (trend) {
       case 'up':
         return <TrendingUp className="w-4 h-4 text-green-500" />

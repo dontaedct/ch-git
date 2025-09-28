@@ -5,8 +5,6 @@
  */
 
 import { retry } from '@/lib/ai/tools/retry';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 // Safety guard: only import OpenAI if available
 let OpenAI: any = null;
@@ -75,16 +73,11 @@ export class OpenAIProvider {
     });
   }
   
-  // Lazy load the universal header only when needed
+  // Get universal header with fallback (client-safe)
   private getUniversalHeader(): string {
     if (this.universalHeader === null) {
-      try {
-        const universalHeaderPath = join(process.cwd(), 'lib/ai/prompts/system/universal_header.md');
-        this.universalHeader = readFileSync(universalHeaderPath, 'utf-8');
-      } catch (_error) {
-        console.warn('Failed to load universal header, using fallback:', _error);
-        this.universalHeader = '# Universal Header Rules\n\nFollow project conventions and safety guidelines.';
-      }
+      // Use fallback header since we can't read files in client-side code
+      this.universalHeader = '# Universal Header Rules\n\nFollow project conventions and safety guidelines.';
     }
     return this.universalHeader;
   }

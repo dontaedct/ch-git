@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useBrandStyling } from '@/lib/branding/use-brand-styling';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -60,6 +61,7 @@ interface ConnectionPool {
 }
 
 export default function IntegrationPerformancePage() {
+  const { getBrandClasses } = useBrandStyling();
   const [activeTab, setActiveTab] = useState('overview');
 
   const performanceMetrics: PerformanceMetric[] = [
@@ -465,8 +467,7 @@ export default function IntegrationPerformancePage() {
 
                     <div className="w-full bg-secondary rounded-full h-2">
                       <div
-                        className="bg-primary h-2 rounded-full"
-                        className={getBrandClasses()}
+                        className={`bg-primary h-2 rounded-full ${getBrandClasses()}`}
                       ></div>
                     </div>
                   </div>
@@ -525,8 +526,7 @@ export default function IntegrationPerformancePage() {
                         className={`h-2 rounded-full ${
                           pool.utilization > 80 ? 'bg-red-500' :
                           pool.utilization > 60 ? 'bg-yellow-500' : 'bg-green-500'
-                        }`}
-                        className={getBrandClasses()}
+                        } ${getBrandClasses()}`}
                       ></div>
                     </div>
                   </div>

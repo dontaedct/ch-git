@@ -14,8 +14,8 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { moduleInstaller } from '../../../lib/marketplace/module-installer';
-import { installationTracker } from '../../../lib/marketplace/installation-tracker';
+import { moduleInstaller } from '@/lib/marketplace/module-installer';
+import { installationTracker } from '@/lib/marketplace/installation-tracker';
 
 // =============================================================================
 // SCHEMA DEFINITIONS

@@ -15,11 +15,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { moduleInstaller } from '../lib/marketplace/module-installer';
-import { dependencyResolver } from '../lib/marketplace/dependency-resolver';
-import { versionManager } from '../lib/marketplace/version-manager';
-import { installationValidator } from '../lib/marketplace/installation-validator';
-import { installationTracker } from '../lib/marketplace/installation-tracker';
+import { moduleInstaller } from '@/lib/marketplace/module-installer';
+import { dependencyResolver } from '@/lib/marketplace/dependency-resolver';
+import { versionManager } from '@/lib/marketplace/version-manager';
+import { installationValidator } from '@/lib/marketplace/installation-validator';
+import { installationTracker } from '@/lib/marketplace/installation-tracker';
 
 // =============================================================================
 // SCHEMA DEFINITIONS

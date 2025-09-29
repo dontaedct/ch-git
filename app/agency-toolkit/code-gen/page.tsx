@@ -43,9 +43,9 @@ import {
   Zap
 } from 'lucide-react';
 
-import { TemplateIntelligence } from '@lib/code-gen/template-intelligence';
-import { AutomatedScaffolding } from '@lib/code-gen/automated-scaffolding';
-import { IntelligentSuggestions } from '@components/code-gen/intelligent-suggestions';
+import { TemplateIntelligence } from '@/lib/code-gen/template-intelligence';
+import { AutomatedScaffolding } from '@/lib/code-gen/automated-scaffolding';
+import { IntelligentSuggestions } from '@/components/code-gen/intelligent-suggestions';
 
 interface GeneratedCode {
   id: string;

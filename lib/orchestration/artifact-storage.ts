@@ -781,11 +781,23 @@ export class ArtifactStorageEngine {
         const brotli = await import('zlib');
         return brotli.brotliCompressSync(data, { params: { [brotli.constants.BROTLI_PARAM_QUALITY]: level } });
       case 'lz4':
-        const lz4 = await import('lz4');
-        return lz4.encode(data);
+        try {
+          const lz4 = await import('lz4');
+          return lz4.encode(data);
+        } catch (error) {
+          console.warn('LZ4 compression not available, falling back to gzip');
+          const zlibFallback = await import('zlib');
+          return zlibFallback.gzipSync(data, { level });
+        }
       case 'zstd':
-        const zstd = await import('@mongodb-js/zstd');
-        return zstd.compress(data, level);
+        try {
+          const zstd = await import('@mongodb-js/zstd');
+          return zstd.compress(data, level);
+        } catch (error) {
+          console.warn('ZSTD compression not available, falling back to gzip');
+          const zlibFallback = await import('zlib');
+          return zlibFallback.gzipSync(data, { level });
+        }
       default:
         throw new OrchestrationError(`Unsupported compression algorithm: ${algorithm}`, 'UNSUPPORTED_COMPRESSION');
     }
@@ -803,11 +815,23 @@ export class ArtifactStorageEngine {
         const brotli = await import('zlib');
         return brotli.brotliDecompressSync(data);
       case 'lz4':
-        const lz4 = await import('lz4');
-        return lz4.decode(data);
+        try {
+          const lz4 = await import('lz4');
+          return lz4.decode(data);
+        } catch (error) {
+          console.warn('LZ4 decompression not available, trying gzip fallback');
+          const zlibFallback = await import('zlib');
+          return zlibFallback.gunzipSync(data);
+        }
       case 'zstd':
-        const zstd = await import('@mongodb-js/zstd');
-        return zstd.decompress(data);
+        try {
+          const zstd = await import('@mongodb-js/zstd');
+          return zstd.decompress(data);
+        } catch (error) {
+          console.warn('ZSTD decompression not available, trying gzip fallback');
+          const zlibFallback = await import('zlib');
+          return zlibFallback.gunzipSync(data);
+        }
       default:
         throw new OrchestrationError(`Unsupported decompression algorithm: ${algorithm}`, 'UNSUPPORTED_DECOMPRESSION');
     }

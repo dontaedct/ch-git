@@ -1,0 +1,215 @@
+{
+  "id": "consultation-questionnaire",
+  "name": "Business Consultation Questionnaire",
+  "version": "1.0.0",
+  "description": "Comprehensive business analysis questionnaire for consultation services",
+  "fields": [
+    {
+      "id": "business_name",
+      "type": "text",
+      "label": "Business Name",
+      "placeholder": "Enter your business name",
+      "required": true,
+      "validation": {
+        "minLength": 2,
+        "maxLength": 100
+      }
+    },
+    {
+      "id": "contact_name",
+      "type": "text",
+      "label": "Your Name",
+      "placeholder": "Enter your full name",
+      "required": true,
+      "validation": {
+        "minLength": 2,
+        "maxLength": 50
+      }
+    },
+    {
+      "id": "email",
+      "type": "email",
+      "label": "Email Address",
+      "placeholder": "Enter your email address",
+      "required": true,
+      "validation": {
+        "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"
+      }
+    },
+    {
+      "id": "phone",
+      "type": "tel",
+      "label": "Phone Number",
+      "placeholder": "Enter your phone number",
+      "required": false,
+      "validation": {
+        "pattern": "^[\\+]?[1-9][\\d]{0,15}$"
+      }
+    },
+    {
+      "id": "business_type",
+      "type": "select",
+      "label": "Business Type",
+      "required": true,
+      "options": [
+        { "label": "Technology/Software", "value": "technology" },
+        { "label": "E-commerce/Retail", "value": "ecommerce" },
+        { "label": "Professional Services", "value": "professional" },
+        { "label": "Healthcare", "value": "healthcare" },
+        { "label": "Education", "value": "education" },
+        { "label": "Manufacturing", "value": "manufacturing" },
+        { "label": "Real Estate", "value": "real_estate" },
+        { "label": "Finance", "value": "finance" },
+        { "label": "Other", "value": "other" }
+      ]
+    },
+    {
+      "id": "business_stage",
+      "type": "radio",
+      "label": "Business Stage",
+      "required": true,
+      "options": [
+        { "label": "Startup (0-2 years)", "value": "startup" },
+        { "label": "Early Stage (2-5 years)", "value": "early" },
+        { "label": "Growth Stage (5-10 years)", "value": "growth" },
+        { "label": "Established (10+ years)", "value": "established" }
+      ]
+    },
+    {
+      "id": "team_size",
+      "type": "select",
+      "label": "Team Size",
+      "required": true,
+      "options": [
+        { "label": "Solo (Just me)", "value": "solo" },
+        { "label": "2-5 employees", "value": "small" },
+        { "label": "6-20 employees", "value": "medium" },
+        { "label": "21-50 employees", "value": "large" },
+        { "label": "50+ employees", "value": "enterprise" }
+      ]
+    },
+    {
+      "id": "annual_revenue",
+      "type": "select",
+      "label": "Annual Revenue Range",
+      "required": true,
+      "options": [
+        { "label": "Under $50K", "value": "under_50k" },
+        { "label": "$50K - $100K", "value": "50k_100k" },
+        { "label": "$100K - $500K", "value": "100k_500k" },
+        { "label": "$500K - $1M", "value": "500k_1m" },
+        { "label": "$1M - $5M", "value": "1m_5m" },
+        { "label": "$5M+", "value": "5m_plus" }
+      ]
+    },
+    {
+      "id": "primary_challenges",
+      "type": "multiselect",
+      "label": "Primary Business Challenges",
+      "required": true,
+      "options": [
+        { "label": "Customer Acquisition", "value": "customer_acquisition" },
+        { "label": "Revenue Growth", "value": "revenue_growth" },
+        { "label": "Operational Efficiency", "value": "operational_efficiency" },
+        { "label": "Team Management", "value": "team_management" },
+        { "label": "Market Competition", "value": "market_competition" },
+        { "label": "Technology Integration", "value": "technology_integration" },
+        { "label": "Financial Management", "value": "financial_management" },
+        { "label": "Marketing Strategy", "value": "marketing_strategy" },
+        { "label": "Product Development", "value": "product_development" },
+        { "label": "Scaling Operations", "value": "scaling_operations" }
+      ]
+    },
+    {
+      "id": "business_goals",
+      "type": "multiselect",
+      "label": "Primary Business Goals",
+      "required": true,
+      "options": [
+        { "label": "Increase Revenue", "value": "increase_revenue" },
+        { "label": "Expand Market Share", "value": "expand_market" },
+        { "label": "Improve Efficiency", "value": "improve_efficiency" },
+        { "label": "Launch New Products", "value": "launch_products" },
+        { "label": "Enter New Markets", "value": "enter_markets" },
+        { "label": "Build Team", "value": "build_team" },
+        { "label": "Improve Customer Experience", "value": "improve_cx" },
+        { "label": "Digital Transformation", "value": "digital_transform" },
+        { "label": "Reduce Costs", "value": "reduce_costs" },
+        { "label": "Improve Profitability", "value": "improve_profitability" }
+      ]
+    },
+    {
+      "id": "current_marketing",
+      "type": "multiselect",
+      "label": "Current Marketing Channels",
+      "required": false,
+      "options": [
+        { "label": "Website", "value": "website" },
+        { "label": "Social Media", "value": "social_media" },
+        { "label": "Email Marketing", "value": "email_marketing" },
+        { "label": "Google Ads", "value": "google_ads" },
+        { "label": "Facebook Ads", "value": "facebook_ads" },
+        { "label": "Content Marketing", "value": "content_marketing" },
+        { "label": "SEO", "value": "seo" },
+        { "label": "Referrals", "value": "referrals" },
+        { "label": "Trade Shows", "value": "trade_shows" },
+        { "label": "Print Advertising", "value": "print_ads" }
+      ]
+    },
+    {
+      "id": "technology_stack",
+      "type": "textarea",
+      "label": "Current Technology Stack",
+      "placeholder": "Describe your current technology tools, software, and systems...",
+      "required": false,
+      "validation": {
+        "maxLength": 1000
+      }
+    },
+    {
+      "id": "budget_range",
+      "type": "select",
+      "label": "Consultation Budget Range",
+      "required": true,
+      "options": [
+        { "label": "Under $1,000", "value": "under_1k" },
+        { "label": "$1,000 - $5,000", "value": "1k_5k" },
+        { "label": "$5,000 - $10,000", "value": "5k_10k" },
+        { "label": "$10,000 - $25,000", "value": "10k_25k" },
+        { "label": "$25,000+", "value": "25k_plus" }
+      ]
+    },
+    {
+      "id": "timeline",
+      "type": "select",
+      "label": "Preferred Timeline",
+      "required": true,
+      "options": [
+        { "label": "ASAP (Within 1 month)", "value": "asap" },
+        { "label": "1-3 months", "value": "1_3_months" },
+        { "label": "3-6 months", "value": "3_6_months" },
+        { "label": "6+ months", "value": "6_plus_months" }
+      ]
+    },
+    {
+      "id": "additional_info",
+      "type": "textarea",
+      "label": "Additional Information",
+      "placeholder": "Tell us anything else that would help us provide better consultation...",
+      "required": false,
+      "validation": {
+        "maxLength": 2000
+      }
+    }
+  ],
+  "settings": {
+    "submitText": "Submit Consultation Request",
+    "successMessage": "Thank you! We'll analyze your responses and send you a comprehensive consultation report within 24 hours.",
+    "redirectUrl": "#results",
+    "emailNotifications": true,
+    "emailTemplate": "consultation-submission"
+  },
+  "validation": {
+    "required": ["business_name", "contact_name", "email", "business_type", "business_stage", "team_size", "annual_revenue", "primary_challenges", "business_goals", "budget_range", "timeline"]
+  }
+}

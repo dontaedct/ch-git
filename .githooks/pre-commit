@@ -1,0 +1,72 @@
+#!/bin/bash
+
+#
+# Pre-commit Hook - Template Validation
+#
+# Automatically validates any template-related changes before commit
+# Prevents broken templates from being committed to the repository
+#
+
+echo "🔍 Checking template changes..."
+
+# Check if any template files were modified
+TEMPLATE_FILES=$(git diff --cached --name-only | grep -E "(template|preset)" | grep "\.json$")
+
+if [ -z "$TEMPLATE_FILES" ]; then
+    echo "✅ No template changes detected"
+    exit 0
+fi
+
+echo "📁 Template files changed:"
+echo "$TEMPLATE_FILES"
+
+# Extract template IDs from changed files
+TEMPLATE_IDS=""
+for file in $TEMPLATE_FILES; do
+    if [[ $file == *"templates/"* ]]; then
+        # Extract template ID from filename
+        TEMPLATE_ID=$(basename "$file" .json)
+        TEMPLATE_IDS="$TEMPLATE_IDS $TEMPLATE_ID"
+    fi
+done
+
+# Remove duplicates
+TEMPLATE_IDS=$(echo "$TEMPLATE_IDS" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+
+if [ -z "$TEMPLATE_IDS" ]; then
+    echo "⚠️ Could not extract template IDs from changed files"
+    exit 0
+fi
+
+echo "🎯 Validating templates: $TEMPLATE_IDS"
+
+# Validate each template
+VALIDATION_FAILED=false
+
+for TEMPLATE_ID in $TEMPLATE_IDS; do
+    echo "🔍 Validating template: $TEMPLATE_ID"
+    
+    if node tools/template-validator.js validate "$TEMPLATE_ID"; then
+        echo "✅ Template $TEMPLATE_ID passed validation"
+    else
+        echo "❌ Template $TEMPLATE_ID failed validation"
+        VALIDATION_FAILED=true
+    fi
+done
+
+if [ "$VALIDATION_FAILED" = true ]; then
+    echo ""
+    echo "❌ Template validation failed!"
+    echo ""
+    echo "To fix automatically, run:"
+    for TEMPLATE_ID in $TEMPLATE_IDS; do
+        echo "  node tools/template-validator.js register $TEMPLATE_ID"
+    done
+    echo ""
+    echo "Or fix manually based on the validation errors above."
+    exit 1
+fi
+
+echo ""
+echo "✅ All template validations passed!"
+exit 0

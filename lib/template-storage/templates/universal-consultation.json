@@ -1,0 +1,608 @@
+{
+  "id": "universal-consultation",
+  "name": "Universal Consultation Template (HT-030)",
+  "slug": "universal-consultation",
+  "description": "Complete universal consultation micro-app with AI-powered generation, white-labeling, and multi-industry support. Features 3-page workflow, service recommendations, and automated delivery.",
+  "category": "consultation",
+  "version": "1.0.0",
+  "components": [
+    {
+      "id": "header-1",
+      "type": "header",
+      "version": "1.0.0",
+      "props": {
+        "logo": "Universal Consult",
+        "navigation": [
+          { "text": "Services", "url": "#services" },
+          { "text": "How It Works", "url": "#process" },
+          { "text": "About", "url": "#about" },
+          { "text": "Contact", "url": "#contact" }
+        ],
+        "ctaText": "Start Your Consultation",
+        "ctaUrl": "/questionnaire"
+      }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "version": "1.0.0",
+      "props": {
+        "title": "AI-Powered Consultation That Adapts to Your Industry",
+        "subtitle": "Get personalized business recommendations powered by AI. Our universal consultation system works across all industries with custom service packages tailored to your specific needs.",
+        "ctaText": "Begin Free Analysis",
+        "ctaUrl": "/questionnaire",
+        "secondaryCtaText": "See How It Works",
+        "secondaryCtaUrl": "#process",
+        "layout": "centered",
+        "height": "large",
+        "background": "gradient",
+        "features": [
+          "AI-powered recommendations",
+          "Industry-specific analysis",
+          "Instant PDF reports",
+          "Custom service packages"
+        ]
+      }
+    },
+    {
+      "id": "spacer-1",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "process-1",
+      "type": "process",
+      "version": "1.0.0",
+      "props": {
+        "title": "Simple 3-Step Process",
+        "description": "From questionnaire to customized consultation in minutes",
+        "steps": [
+          {
+            "step": "1",
+            "title": "Answer Questions",
+            "description": "Complete our intelligent questionnaire that adapts to your industry and business size",
+            "icon": "📝"
+          },
+          {
+            "step": "2",
+            "title": "AI Analysis",
+            "description": "Our AI processes your responses and generates personalized recommendations",
+            "icon": "🤖"
+          },
+          {
+            "step": "3",
+            "title": "Get Your Plan",
+            "description": "Receive a detailed consultation report with service recommendations and next steps",
+            "icon": "📊"
+          }
+        ],
+        "layout": "horizontal"
+      }
+    },
+    {
+      "id": "spacer-2",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "feature-grid-1",
+      "type": "feature_grid",
+      "version": "1.0.0",
+      "props": {
+        "title": "Universal Consultation Features",
+        "description": "Advanced capabilities that work across every industry",
+        "features": [
+          {
+            "title": "AI-Powered Analysis",
+            "description": "Machine learning algorithms analyze your responses to provide intelligent, data-driven recommendations",
+            "icon": "🧠"
+          },
+          {
+            "title": "Multi-Industry Support",
+            "description": "Pre-configured templates for technology, healthcare, finance, retail, manufacturing, and more",
+            "icon": "🏭"
+          },
+          {
+            "title": "White-Label Ready",
+            "description": "Complete customization with your branding, colors, and messaging for seamless client integration",
+            "icon": "🎨"
+          },
+          {
+            "title": "Service Package Management",
+            "description": "Dynamic service recommendations based on business needs with automated proposal generation",
+            "icon": "📦"
+          },
+          {
+            "title": "Instant PDF Reports",
+            "description": "Professional consultation reports generated instantly with your branding and recommendations",
+            "icon": "📄"
+          },
+          {
+            "title": "Email Automation",
+            "description": "Automated follow-up sequences with personalized content and service package details",
+            "icon": "✉️"
+          },
+          {
+            "title": "Admin Dashboard",
+            "description": "Complete client management with analytics, tracking, and consultation performance metrics",
+            "icon": "📈"
+          },
+          {
+            "title": "Multi-Tenant Support",
+            "description": "Deploy multiple client instances with isolated data and independent customization",
+            "icon": "🏢"
+          },
+          {
+            "title": "Production Ready",
+            "description": "Enterprise-grade deployment pipeline with monitoring, backups, and 99.9% uptime SLA",
+            "icon": "🚀"
+          }
+        ],
+        "columns": 3,
+        "layout": "cards"
+      }
+    },
+    {
+      "id": "spacer-3",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "industries-1",
+      "type": "industries",
+      "version": "1.0.0",
+      "props": {
+        "title": "Works Across All Industries",
+        "description": "Pre-configured templates and questionnaires for every business sector",
+        "industries": [
+          {
+            "name": "Technology & Software",
+            "description": "SaaS, development, IT consulting",
+            "icon": "💻"
+          },
+          {
+            "name": "Healthcare & Medical",
+            "description": "Clinics, practices, health services",
+            "icon": "🏥"
+          },
+          {
+            "name": "Financial Services",
+            "description": "Banking, insurance, fintech",
+            "icon": "💳"
+          },
+          {
+            "name": "Retail & E-commerce",
+            "description": "Online stores, marketplaces, retail",
+            "icon": "🛍️"
+          },
+          {
+            "name": "Manufacturing",
+            "description": "Production, supply chain, logistics",
+            "icon": "🏭"
+          },
+          {
+            "name": "Professional Services",
+            "description": "Consulting, legal, accounting",
+            "icon": "💼"
+          },
+          {
+            "name": "Education",
+            "description": "Schools, training, e-learning",
+            "icon": "🎓"
+          },
+          {
+            "name": "Non-Profit",
+            "description": "Charities, foundations, NGOs",
+            "icon": "🤝"
+          }
+        ],
+        "layout": "grid",
+        "columns": 4
+      }
+    },
+    {
+      "id": "spacer-4",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "testimonial-1",
+      "type": "testimonial",
+      "version": "1.0.0",
+      "props": {
+        "quote": "The Universal Consultation Template transformed our client onboarding process. We deployed 5 different industry-specific consultation apps in under a week. The AI recommendations are incredibly accurate and our conversion rate increased by 60%.",
+        "author": "Marcus Rodriguez",
+        "title": "Chief Technology Officer",
+        "company": "ConsultFlow Agency",
+        "rating": 5,
+        "image": "/testimonials/marcus.jpg"
+      }
+    },
+    {
+      "id": "spacer-5",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "version": "1.0.0",
+      "props": {
+        "title": "Universal Consultation Packages",
+        "description": "Flexible deployment options for agencies and enterprises",
+        "plans": [
+          {
+            "name": "Single Client",
+            "price": "2,500",
+            "period": "one-time",
+            "features": [
+              "1 consultation app deployment",
+              "Industry-specific customization",
+              "White-label branding",
+              "AI consultation engine",
+              "PDF report generation",
+              "Email automation",
+              "30-day support"
+            ],
+            "cta": "Deploy Now",
+            "popular": false
+          },
+          {
+            "name": "Agency License",
+            "price": "7,500",
+            "period": "one-time",
+            "features": [
+              "Up to 10 client deployments",
+              "Multi-industry templates",
+              "Advanced customization",
+              "Admin dashboard access",
+              "Client management tools",
+              "Performance analytics",
+              "Priority support",
+              "Training sessions"
+            ],
+            "cta": "Get Started",
+            "popular": true
+          },
+          {
+            "name": "Enterprise",
+            "price": "Custom",
+            "period": "contact sales",
+            "features": [
+              "Unlimited deployments",
+              "Custom industry templates",
+              "Advanced AI training",
+              "Dedicated support team",
+              "Custom integrations",
+              "SLA guarantees",
+              "On-premise deployment",
+              "Developer access"
+            ],
+            "cta": "Contact Sales",
+            "popular": false
+          }
+        ],
+        "layout": "cards",
+        "billing": "one-time"
+      }
+    },
+    {
+      "id": "spacer-6",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "cta-1",
+      "type": "cta",
+      "version": "1.0.0",
+      "props": {
+        "title": "Ready to Deploy Universal Consultations?",
+        "description": "Join leading agencies who have deployed hundreds of consultation apps across every industry. Get started with your first deployment in under 7 days.",
+        "buttons": [
+          {
+            "text": "Start Free Trial",
+            "url": "/questionnaire",
+            "style": "primary"
+          },
+          {
+            "text": "Schedule Demo",
+            "url": "#demo",
+            "style": "secondary"
+          }
+        ],
+        "background": "gradient",
+        "alignment": "center"
+      }
+    },
+    {
+      "id": "spacer-7",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "version": "1.0.0",
+      "props": {
+        "title": "Get Your Universal Consultation Template",
+        "description": "Ready to transform your consultation process? Contact our team to discuss deployment options and get started.",
+        "contactInfo": [
+          {
+            "label": "Sales Email",
+            "value": "sales@universalconsult.com"
+          },
+          {
+            "label": "Support Phone",
+            "value": "+1 (555) 789-0123"
+          },
+          {
+            "label": "Demo Booking",
+            "value": "calendly.com/universalconsult/demo"
+          },
+          {
+            "label": "Support Hours",
+            "value": "24/7 for Enterprise • Business hours for others"
+          }
+        ],
+        "layout": "split",
+        "showForm": true,
+        "formTitle": "Request Enterprise Demo"
+      }
+    },
+    {
+      "id": "spacer-8",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "version": "1.0.0",
+      "props": {
+        "logo": "Universal Consult",
+        "description": "The complete universal consultation template for agencies and enterprises. Deploy AI-powered consultation apps across any industry in days, not months.",
+        "links": [
+          {
+            "title": "Product",
+            "items": [
+              { "text": "Features", "url": "#features" },
+              { "text": "Industries", "url": "#industries" },
+              { "text": "Pricing", "url": "#pricing" },
+              { "text": "Demo", "url": "#demo" }
+            ]
+          },
+          {
+            "title": "Resources",
+            "items": [
+              { "text": "Documentation", "url": "/docs" },
+              { "text": "API Reference", "url": "/api-docs" },
+              { "text": "Templates", "url": "/templates" },
+              { "text": "Support", "url": "/support" }
+            ]
+          },
+          {
+            "title": "Company",
+            "items": [
+              { "text": "About", "url": "/about" },
+              { "text": "Blog", "url": "/blog" },
+              { "text": "Careers", "url": "/careers" },
+              { "text": "Contact", "url": "/contact" }
+            ]
+          }
+        ],
+        "social": [
+          { "platform": "linkedin", "url": "https://linkedin.com/company/universalconsult" },
+          { "platform": "twitter", "url": "https://twitter.com/universalconsult" },
+          { "platform": "github", "url": "https://github.com/universalconsult" }
+        ],
+        "copyright": "© 2025 Universal Consult. All rights reserved. | Privacy Policy | Terms of Service | Cookie Policy"
+      }
+    }
+  ],
+  "questionnaire": {
+    "id": "universal-consultation-intake",
+    "title": "Universal Business Analysis",
+    "description": "AI-powered questionnaire that adapts to your industry and business needs",
+    "steps": [
+      {
+        "id": "business-basics",
+        "title": "Business Profile",
+        "questions": [
+          {
+            "id": "company-name",
+            "text": "What's your company name?",
+            "type": "short-text",
+            "required": true,
+            "placeholder": "Your Company Name"
+          },
+          {
+            "id": "industry",
+            "text": "What industry are you in?",
+            "type": "chips",
+            "required": true,
+            "options": [
+              { "value": "technology", "label": "Technology/Software" },
+              { "value": "healthcare", "label": "Healthcare" },
+              { "value": "finance", "label": "Financial Services" },
+              { "value": "retail", "label": "Retail/E-commerce" },
+              { "value": "manufacturing", "label": "Manufacturing" },
+              { "value": "consulting", "label": "Consulting" },
+              { "value": "education", "label": "Education" },
+              { "value": "nonprofit", "label": "Non-profit" },
+              { "value": "other", "label": "Other" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "company-size",
+            "text": "How many employees do you have?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "solo", "label": "Just me (solo)" },
+              { "value": "small", "label": "2-10 employees" },
+              { "value": "medium", "label": "11-50 employees" },
+              { "value": "large", "label": "51-200 employees" },
+              { "value": "enterprise", "label": "200+ employees" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "challenges",
+        "title": "Current Challenges",
+        "questions": [
+          {
+            "id": "primary-challenges",
+            "text": "What are your biggest business challenges right now?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "growth", "label": "Scaling/Growth" },
+              { "value": "efficiency", "label": "Operational Efficiency" },
+              { "value": "technology", "label": "Technology/Digital Transformation" },
+              { "value": "team", "label": "Team Management" },
+              { "value": "marketing", "label": "Marketing/Customer Acquisition" },
+              { "value": "finance", "label": "Financial Management" },
+              { "value": "competition", "label": "Competitive Pressure" },
+              { "value": "compliance", "label": "Compliance/Regulatory" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "urgency",
+            "text": "How urgent is solving these challenges?",
+            "type": "select",
+            "required": true,
+            "options": [
+              { "value": "immediate", "label": "Immediate (within 30 days)" },
+              { "value": "short-term", "label": "Short-term (1-3 months)" },
+              { "value": "medium-term", "label": "Medium-term (3-6 months)" },
+              { "value": "long-term", "label": "Long-term (6+ months)" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "goals",
+        "title": "Goals & Objectives",
+        "questions": [
+          {
+            "id": "primary-goals",
+            "text": "What are your primary business goals?",
+            "type": "chips-multi",
+            "required": true,
+            "options": [
+              { "value": "revenue-growth", "label": "Revenue Growth" },
+              { "value": "cost-reduction", "label": "Cost Reduction" },
+              { "value": "market-expansion", "label": "Market Expansion" },
+              { "value": "product-development", "label": "Product Development" },
+              { "value": "team-building", "label": "Team Building" },
+              { "value": "automation", "label": "Process Automation" },
+              { "value": "customer-satisfaction", "label": "Customer Satisfaction" },
+              { "value": "digital-transformation", "label": "Digital Transformation" }
+            ],
+            "allowCustom": true
+          },
+          {
+            "id": "success-metrics",
+            "text": "How do you measure success?",
+            "type": "long-text",
+            "required": false,
+            "placeholder": "Describe your key performance indicators and success metrics..."
+          }
+        ]
+      }
+    ]
+  },
+  "servicePackages": [
+    {
+      "id": "strategy-assessment",
+      "name": "Strategic Assessment",
+      "description": "Comprehensive business analysis with strategic recommendations",
+      "price": "2,500",
+      "duration": "2-3 weeks",
+      "deliverables": [
+        "Business analysis report",
+        "Strategic recommendations",
+        "Implementation roadmap",
+        "30-day follow-up"
+      ],
+      "eligibleFor": ["small", "medium", "large"],
+      "industries": ["all"]
+    },
+    {
+      "id": "digital-transformation",
+      "name": "Digital Transformation Package",
+      "description": "Technology modernization and digital strategy development",
+      "price": "5,000",
+      "duration": "4-6 weeks",
+      "deliverables": [
+        "Technology audit",
+        "Digital strategy roadmap",
+        "Tool recommendations",
+        "Implementation support"
+      ],
+      "eligibleFor": ["medium", "large", "enterprise"],
+      "industries": ["technology", "finance", "healthcare", "retail"]
+    },
+    {
+      "id": "growth-accelerator",
+      "name": "Growth Accelerator",
+      "description": "Comprehensive growth strategy with implementation support",
+      "price": "7,500",
+      "duration": "6-8 weeks",
+      "deliverables": [
+        "Growth strategy document",
+        "Marketing plan",
+        "Sales process optimization",
+        "3-month implementation support"
+      ],
+      "eligibleFor": ["medium", "large", "enterprise"],
+      "industries": ["all"]
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "createdAt": "2025-09-19",
+    "updatedAt": "2025-09-19",
+    "tags": ["consultation", "universal", "ai-powered", "multi-industry", "ht-030"],
+    "ht030": {
+      "task": "HT-030",
+      "phase": "completed",
+      "features": [
+        "3-page workflow integration",
+        "AI consultation generation",
+        "Service package management",
+        "Universal template system",
+        "White-labeling capabilities",
+        "Multi-tenant support",
+        "Production deployment ready"
+      ]
+    }
+  }
+}

@@ -1,0 +1,548 @@
+{
+  "mainTask": {
+    "task_number": "HT-029",
+    "title": "HT-029: Dynamic Template Engine & Client App Generation MVP",
+    "description": "DYNAMIC TEMPLATE ENGINE MVP: Build foundational template engine system with dynamic client app generation, landing page + questionnaire + PDF consultation workflow for agency custom micro-app toolkit.\n\n**Mission:** Create a practical template engine that enables rapid generation of custom client micro-apps with landing page → questionnaire → free consultation document workflow for ≤7-day delivery capability using AI assistance.\n\n**Scope:** Template engine core infrastructure, dynamic page generation system, MVP template implementation (consultation workflow), component injection system, and template-to-app generation pipeline.\n\n**Methodology:** AUDIT → DECIDE → APPLY → VERIFY with 12+ template engine verification checkpoints, end-to-end client app generation testing, and template system validation.\n\n**Business Impact:**\n- Enable dynamic custom micro-app generation from templates\n- Reduce client app creation time from weeks to hours\n- Provide standardized consultation workflow template\n- Create scalable template system foundation for agency growth\n- Enable AI-assisted template customization and deployment",
+    "type": "template-engine-foundation",
+    "priority": "critical",
+    "status": "pending",
+    "created_at": "2025-09-24T01:36:21.651Z",
+    "updated_at": "2025-09-24T01:36:21.652Z",
+    "due_date": "2025-09-24T01:36:21.652Z",
+    "estimated_hours": 4,
+    "actual_hours": 0,
+    "blocking_issue": "None - Ready to start",
+    "dependency_status": "READY - All prerequisite systems completed",
+    "tags": [
+      "template-engine",
+      "dynamic-generation",
+      "client-app-creation",
+      "consultation-workflow",
+      "landing-page",
+      "questionnaire-system",
+      "pdf-generation",
+      "component-injection",
+      "template-to-app-pipeline",
+      "rapid-deployment"
+    ],
+    "workflow_phase": "audit",
+    "assignee": "template-engine-team",
+    "metadata": {
+      "phases": 4,
+      "total_subtasks": 4,
+      "estimated_total_hours": 4,
+      "target_completion": "2025-10-05",
+      "business_value": "critical",
+      "technical_complexity": "medium",
+      "risk_level": "medium",
+      "template_engine": "mvp",
+      "dynamic_generation": "basic",
+      "component_injection": "basic",
+      "template_system": "foundational",
+      "performance_targets": {
+        "template_compilation_time": "<30 seconds",
+        "app_generation_time": "<2 minutes",
+        "template_loading_time": "<5 seconds",
+        "component_injection_time": "<10 seconds"
+      },
+      "dependencies": [
+        "HT-021 foundation completion",
+        "HT-022 component system completion",
+        "HT-023 UI/UX system completion",
+        "HT-024 state management completion",
+        "HT-025 developer experience completion",
+        "HT-026 integration layer completion",
+        "HT-027 security compliance completion",
+        "HT-028 production deployment completion"
+      ],
+      "success_metrics": {
+        "template_engine_reliability": "95% template compilation success rate",
+        "app_generation_speed": "≤2 minutes client app generation time",
+        "template_flexibility": "Support for 3+ template variations",
+        "component_reusability": "80% component reuse across templates",
+        "deployment_integration": "Seamless integration with existing deployment pipeline",
+        "customization_capability": "Theme and content customization support"
+      }
+    }
+  },
+  "subtasks": [
+    {
+      "subtask_number": "HT-029.1",
+      "title": "Phase 1: Template Architecture & MVP Design",
+      "description": "AUDIT & DECIDE: Design template engine architecture with MVP template specification, dynamic generation strategy, and component mapping system.",
+      "status": "completed",
+      "priority": "critical",
+      "estimated_hours": 1.2,
+      "workflow_phase": "audit",
+      "tags": [
+        "template-architecture",
+        "mvp-design",
+        "dynamic-generation-strategy",
+        "component-mapping"
+      ],
+      "actions": [
+        {
+          "action_number": "HT-029.1.1",
+          "title": "Template System Architecture Analysis & Requirements",
+          "description": "Analyze template system requirements and design foundational architecture with template storage, compilation engine, and generation pipeline",
+          "estimated_hours": 0.3,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/page.tsx - Main template engine dashboard",
+            "app/template-engine/architecture/page.tsx - Template system architecture interface"
+          ],
+          "verification_checkpoints": [
+            "Template system requirements analyzed and documented",
+            "Template engine architecture designed and validated",
+            "Template storage strategy defined",
+            "Template compilation engine specifications created",
+            "Template generation pipeline designed",
+            "Template engine dashboard created and functional",
+            "Architecture interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.1.2",
+          "title": "MVP Template Specification Design (Landing + Questionnaire + PDF)",
+          "description": "Design MVP template specification for consultation workflow with landing page, questionnaire flow, and PDF consultation generation",
+          "estimated_hours": 0.3,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/templates/page.tsx - Template management interface",
+            "app/template-engine/templates/consultation-mvp/page.tsx - MVP template specification interface"
+          ],
+          "verification_checkpoints": [
+            "MVP template specification designed and documented",
+            "Landing page template structure defined",
+            "Questionnaire flow template created",
+            "PDF consultation template designed",
+            "Template data schema defined",
+            "Template workflow documented",
+            "Template management interface created and functional",
+            "MVP template specification interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.1.3",
+          "title": "Dynamic Page Generation Strategy & Component Mapping",
+          "description": "Design dynamic page generation strategy with component mapping system, route generation, and template-to-component injection",
+          "estimated_hours": 0.3,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/generation/page.tsx - Dynamic page generation interface",
+            "app/template-engine/components/page.tsx - Component mapping interface"
+          ],
+          "verification_checkpoints": [
+            "Dynamic page generation strategy designed",
+            "Component mapping system architecture created",
+            "Route generation strategy defined",
+            "Template-to-component injection system designed",
+            "Page generation workflow documented",
+            "Component mapping validated",
+            "Generation interface created and functional",
+            "Component mapping interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.1.4",
+          "title": "Template Configuration Schema & Data Flow Design",
+          "description": "Design template configuration schema with data flow architecture, template variables system, and customization framework",
+          "estimated_hours": 0.3,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/configuration/page.tsx - Template configuration interface",
+            "app/template-engine/data-flow/page.tsx - Template data flow interface"
+          ],
+          "verification_checkpoints": [
+            "Template configuration schema designed and validated",
+            "Data flow architecture created",
+            "Template variables system defined",
+            "Customization framework designed",
+            "Configuration validation system planned",
+            "Data flow documented",
+            "Configuration interface created and functional",
+            "Data flow interface operational"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-029.2",
+      "title": "Phase 2: Template Engine Core & Dynamic Generation",
+      "description": "APPLY: Implement template engine core infrastructure with dynamic route generation, component injection system, and template configuration loader.",
+      "status": "completed",
+      "priority": "critical",
+      "estimated_hours": 1.2,
+      "workflow_phase": "apply",
+      "tags": [
+        "template-engine-core",
+        "dynamic-route-generation",
+        "component-injection",
+        "configuration-loader"
+      ],
+      "actions": [
+        {
+          "action_number": "HT-029.2.1",
+          "title": "Template Engine Core Infrastructure Development",
+          "description": "Implement template engine core infrastructure with template compilation, generation pipeline, and template management system",
+          "estimated_hours": 0.4,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/core/page.tsx - Template engine core interface",
+            "app/template-engine/compiler/page.tsx - Template compiler interface"
+          ],
+          "verification_checkpoints": [
+            "Template engine core infrastructure implemented",
+            "Template compilation system working",
+            "Generation pipeline functional",
+            "Template management system operational",
+            "Core engine validated and tested",
+            "Template engine core interface created and functional",
+            "Compiler interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.2.2",
+          "title": "Dynamic Route Generation System Implementation",
+          "description": "Implement dynamic route generation system with template-based routing, URL generation, and navigation system",
+          "estimated_hours": 0.3,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/routing/page.tsx - Dynamic routing interface",
+            "app/template-engine/routes/page.tsx - Route management interface"
+          ],
+          "verification_checkpoints": [
+            "Dynamic route generation system implemented",
+            "Template-based routing working",
+            "URL generation system functional",
+            "Navigation system operational",
+            "Route generation validated",
+            "Routing interface created and functional",
+            "Route management interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.2.3",
+          "title": "Component Injection & Template Renderer Development",
+          "description": "Implement component injection system and template renderer with dynamic component loading, template rendering, and component mapping",
+          "estimated_hours": 0.3,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/renderer/page.tsx - Template renderer interface",
+            "app/template-engine/injection/page.tsx - Component injection interface"
+          ],
+          "verification_checkpoints": [
+            "Component injection system implemented",
+            "Template renderer working",
+            "Dynamic component loading functional",
+            "Template rendering system operational",
+            "Component mapping validated",
+            "Renderer interface created and functional",
+            "Injection interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.2.4",
+          "title": "Template Configuration Loader & Parser Implementation",
+          "description": "Implement template configuration loader and parser with JSON configuration processing, validation, and template instantiation",
+          "estimated_hours": 0.2,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/loader/page.tsx - Configuration loader interface",
+            "app/template-engine/parser/page.tsx - Template parser interface"
+          ],
+          "verification_checkpoints": [
+            "Template configuration loader implemented",
+            "JSON configuration parser working",
+            "Configuration validation functional",
+            "Template instantiation system operational",
+            "Configuration loader validated",
+            "Loader interface created and functional",
+            "Parser interface operational"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-029.3",
+      "title": "Phase 3: MVP Template Implementation & Integration",
+      "description": "APPLY: Implement MVP template with landing page, questionnaire system, PDF generation, and template customization interface.",
+      "status": "completed",
+      "priority": "critical",
+      "estimated_hours": 1.0,
+      "workflow_phase": "apply",
+      "tags": [
+        "mvp-template-implementation",
+        "landing-page",
+        "questionnaire-system",
+        "pdf-generation",
+        "template-customization"
+      ],
+      "actions": [
+        {
+          "action_number": "HT-029.3.1",
+          "title": "MVP Template Pages Creation (Landing, Questionnaire, Results)",
+          "description": "Create MVP template pages with landing page template, questionnaire flow, and consultation results page",
+          "estimated_hours": 0.3,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/mvp/landing/page.tsx - MVP landing page template",
+            "app/template-engine/mvp/questionnaire/page.tsx - Questionnaire flow template",
+            "app/template-engine/mvp/results/page.tsx - Consultation results template"
+          ],
+          "verification_checkpoints": [
+            "MVP landing page template created and functional",
+            "Questionnaire flow template implemented",
+            "Consultation results page working",
+            "Template page navigation functional",
+            "MVP template pages validated",
+            "Landing page template operational",
+            "Questionnaire template operational",
+            "Results template operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.3.2",
+          "title": "Questionnaire Builder Integration & PDF Generation",
+          "description": "Integrate questionnaire builder with template system and implement PDF consultation generation with document templates",
+          "estimated_hours": 0.3,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/questionnaire/page.tsx - Questionnaire builder integration",
+            "app/template-engine/pdf/page.tsx - PDF generation interface"
+          ],
+          "verification_checkpoints": [
+            "Questionnaire builder integrated with template system",
+            "PDF consultation generation working",
+            "Document templates functional",
+            "Questionnaire-to-PDF pipeline operational",
+            "PDF generation validated",
+            "Questionnaire integration interface created and functional",
+            "PDF generation interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.3.3",
+          "title": "Template Customization Interface & Theme Application",
+          "description": "Implement template customization interface with theme application, content editing, and template personalization",
+          "estimated_hours": 0.2,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/customization/page.tsx - Template customization interface",
+            "app/template-engine/themes/page.tsx - Theme application interface"
+          ],
+          "verification_checkpoints": [
+            "Template customization interface implemented",
+            "Theme application system working",
+            "Content editing functionality functional",
+            "Template personalization operational",
+            "Customization system validated",
+            "Customization interface created and functional",
+            "Theme application interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.3.4",
+          "title": "Client App Generation Pipeline & Deployment Integration",
+          "description": "Implement client app generation pipeline with deployment integration, app packaging, and automated deployment",
+          "estimated_hours": 0.2,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/generation-pipeline/page.tsx - App generation pipeline interface",
+            "app/template-engine/deployment/page.tsx - Deployment integration interface"
+          ],
+          "verification_checkpoints": [
+            "Client app generation pipeline implemented",
+            "Deployment integration working",
+            "App packaging system functional",
+            "Automated deployment operational",
+            "Generation pipeline validated",
+            "Generation pipeline interface created and functional",
+            "Deployment integration interface operational"
+          ]
+        }
+      ]
+    },
+    {
+      "subtask_number": "HT-029.4",
+      "title": "Phase 4: Template System Testing & Validation",
+      "description": "VERIFY: Implement comprehensive template system testing with end-to-end workflow validation, performance optimization, and system documentation.",
+      "status": "completed",
+      "priority": "critical",
+      "estimated_hours": 0.6,
+      "workflow_phase": "verify",
+      "tags": [
+        "template-system-testing",
+        "workflow-validation",
+        "performance-optimization",
+        "system-documentation"
+      ],
+      "actions": [
+        {
+          "action_number": "HT-029.4.1",
+          "title": "Template Engine Testing & Component Validation",
+          "description": "Implement comprehensive template engine testing with component validation, template compilation testing, and generation pipeline validation",
+          "estimated_hours": 0.2,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/testing/page.tsx - Template engine testing interface",
+            "app/template-engine/validation/page.tsx - Component validation interface"
+          ],
+          "verification_checkpoints": [
+            "Template engine testing suite implemented",
+            "Component validation system working",
+            "Template compilation testing functional",
+            "Generation pipeline testing operational",
+            "Template engine testing validated",
+            "Testing interface created and functional",
+            "Validation interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.4.2",
+          "title": "End-to-End Client App Generation Workflow Testing",
+          "description": "Implement end-to-end workflow testing with complete client app generation, deployment testing, and workflow validation",
+          "estimated_hours": 0.2,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/workflow-testing/page.tsx - End-to-end workflow testing interface",
+            "app/template-engine/app-testing/page.tsx - Client app testing interface"
+          ],
+          "verification_checkpoints": [
+            "End-to-end workflow testing implemented",
+            "Complete client app generation testing working",
+            "Deployment testing functional",
+            "Workflow validation operational",
+            "End-to-end testing validated",
+            "Workflow testing interface created and functional",
+            "App testing interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.4.3",
+          "title": "Performance Optimization & Template Loading Speed",
+          "description": "Implement performance optimization with template loading speed optimization, compilation performance, and generation speed improvements",
+          "estimated_hours": 0.1,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/performance/page.tsx - Performance optimization interface",
+            "app/template-engine/metrics/page.tsx - Performance metrics interface"
+          ],
+          "verification_checkpoints": [
+            "Performance optimization implemented",
+            "Template loading speed optimized",
+            "Compilation performance improved",
+            "Generation speed enhanced",
+            "Performance optimization validated",
+            "Performance interface created and functional",
+            "Metrics interface operational"
+          ]
+        },
+        {
+          "action_number": "HT-029.4.4",
+          "title": "Template System Documentation & Completion Verification",
+          "description": "Complete template system documentation with usage guides, API documentation, and template creation guides",
+          "estimated_hours": 0.1,
+          "status": "completed",
+          "priority": "critical",
+          "pages_to_create": [
+            "app/template-engine/documentation/page.tsx - Template system documentation interface",
+            "app/template-engine/guides/page.tsx - Template creation guides interface"
+          ],
+          "verification_checkpoints": [
+            "Template system documentation completed",
+            "Usage guides created",
+            "API documentation available",
+            "Template creation guides functional",
+            "Documentation validation completed",
+            "Documentation interface created and functional",
+            "Guides interface operational"
+          ]
+        }
+      ]
+    }
+  ],
+  "implementation_timeline": {
+    "phase_1": {
+      "duration": "1 day",
+      "start_date": "2025-09-19",
+      "end_date": "2025-09-19",
+      "focus": "Template engine architecture and MVP design",
+      "critical_checkpoints": [
+        "Template system architecture designed",
+        "MVP template specification created",
+        "Dynamic generation strategy defined"
+      ]
+    },
+    "phase_2": {
+      "duration": "1 day",
+      "start_date": "2025-09-20",
+      "end_date": "2025-09-20",
+      "focus": "Template engine core and dynamic generation implementation",
+      "critical_checkpoints": [
+        "Template engine core infrastructure implemented",
+        "Dynamic route generation system working",
+        "Component injection system operational"
+      ]
+    },
+    "phase_3": {
+      "duration": "1 day",
+      "start_date": "2025-09-21",
+      "end_date": "2025-09-21",
+      "focus": "MVP template implementation and integration",
+      "critical_checkpoints": [
+        "MVP template pages created and functional",
+        "Questionnaire builder integrated",
+        "Client app generation pipeline operational"
+      ]
+    },
+    "phase_4": {
+      "duration": "1 day",
+      "start_date": "2025-09-22",
+      "end_date": "2025-09-22",
+      "focus": "Template system testing and validation",
+      "critical_checkpoints": [
+        "Comprehensive testing suite implemented",
+        "End-to-end workflow validation complete",
+        "Template system documentation finalized"
+      ]
+    }
+  },
+  "success_criteria": {
+    "template_engine_reliability": "95% template compilation success rate with automated error handling",
+    "app_generation_speed": "≤2 minutes complete client app generation time",
+    "template_flexibility": "Support for 3+ template variations with customization",
+    "component_reusability": "80% component reuse across different templates",
+    "deployment_integration": "Seamless integration with existing deployment pipeline",
+    "customization_capability": "Complete theme and content customization support"
+  },
+  "risk_assessment": {
+    "technical_risks": [
+      "Dynamic component injection complexity may introduce rendering issues",
+      "Template compilation performance may impact user experience",
+      "Component mapping system may be fragile with complex templates",
+      "Integration with existing systems may require significant refactoring"
+    ],
+    "mitigation_strategies": [
+      "Comprehensive component testing with fallback rendering",
+      "Performance optimization with caching and lazy loading",
+      "Robust component mapping with error handling and validation",
+      "Gradual integration approach with backwards compatibility"
+    ]
+  }
+}

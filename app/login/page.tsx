@@ -148,12 +148,11 @@ export default function LoginPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className={cn(
-              "inline-flex items-center gap-3 px-6 py-3 rounded-none border-2 backdrop-blur-sm mb-6 relative",
+              "inline-flex items-center gap-3 px-6 py-3 rounded-lg border-2 backdrop-blur-sm mb-6 relative",
               isDark
                 ? "bg-black/80 border-white/30 shadow-2xl shadow-white/5"
                 : "bg-white/80 border-black/30 shadow-2xl shadow-black/5"
             )}
-            className=\"rounded-lg\"
           >
             {/* Security indicators */}
             <div className="flex items-center gap-2">
@@ -234,12 +233,11 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.8 }}
           className={cn(
-            "relative p-8 border-2 backdrop-blur-sm shadow-2xl",
+            "relative p-8 border-2 backdrop-blur-sm shadow-2xl rounded-lg",
             isDark
               ? "bg-black/80 border-white/30"
               : "bg-white/80 border-black/30"
           )}
-          className=\"rounded-lg\"
         >
           {/* Tech corner accent */}
           <div className={cn(
@@ -273,7 +271,7 @@ export default function LoginPage() {
                   onFocus={() => setEmailFocused(true)}
                   onBlur={() => setEmailFocused(false)}
                   className={cn(
-                    "w-full px-6 py-4 border-2 transition-all duration-300 outline-none font-medium",
+                    "w-full px-6 py-4 border-2 transition-all duration-300 outline-none font-medium rounded-lg",
                     "focus:scale-105 hover:scale-[1.02]",
                     emailFocused || email
                       ? isDark
@@ -283,7 +281,6 @@ export default function LoginPage() {
                         ? "bg-black/40 border-white/30 text-white placeholder-white/40 hover:border-white/50"
                         : "bg-white/40 border-black/30 text-black placeholder-black/40 hover:border-black/50"
                   )}
-                  className=\"rounded-lg\"
                   required
                   autoFocus
                   autoComplete="email"
@@ -311,10 +308,9 @@ export default function LoginPage() {
                 role="alert"
                 aria-live="polite"
                 className={cn(
-                  "flex items-start gap-3 p-4 border-2 backdrop-blur-sm",
+                  "flex items-start gap-3 p-4 border-2 backdrop-blur-sm rounded-lg",
                   "bg-red-500/10 border-red-500/30 text-red-400"
                 )}
-                className=\"rounded-lg\"
               >
                 <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <p className="text-sm font-medium leading-relaxed">
@@ -336,7 +332,6 @@ export default function LoginPage() {
                   "flex items-start gap-3 p-4 border-2 backdrop-blur-sm",
                   "bg-green-500/10 border-green-500/30 text-green-400"
                 )}
-                className=\"rounded-lg\"
               >
                 <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                 <p className="text-sm font-medium leading-relaxed">
@@ -395,12 +390,11 @@ export default function LoginPage() {
               type="submit"
               disabled={loading || !email.trim() || !consentAccepted}
               className={cn(
-                "group relative w-full py-4 px-8 border-2 font-black text-lg tracking-wider uppercase transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg hover:shadow-xl",
+                "group relative w-full py-4 px-8 border-2 font-black text-lg tracking-wider uppercase transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg hover:shadow-xl rounded-lg",
                 isDark
                   ? "bg-white text-black hover:bg-white/90 border-white/50 disabled:bg-white/50"
                   : "bg-black text-white hover:bg-black/90 border-black/50 disabled:bg-black/50"
               )}
-              className=\"rounded-lg\"
               aria-describedby="submit-help"
             >
               <span className="relative flex items-center justify-center">
@@ -443,12 +437,11 @@ export default function LoginPage() {
             className="mt-8"
           >
             <div className={cn(
-              "p-6 border-2 backdrop-blur-sm",
+              "p-6 border-2 backdrop-blur-sm rounded-lg",
               isDark
                 ? "bg-black/60 border-white/25"
                 : "bg-white/60 border-black/25"
-            )}
-            className=\"rounded-lg\">
+            )}>
               <PrivacyPolicy showFullPolicy={true} />
             </div>
           </motion.div>

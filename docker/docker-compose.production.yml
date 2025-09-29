@@ -1,0 +1,192 @@
+# Production Docker Compose for Consultation Micro-App
+# HT-030.4.3: Production Deployment Pipeline & Infrastructure
+
+version: '3.8'
+
+services:
+  consultation-app:
+    image: ${DOCKER_IMAGE:-ghcr.io/consultation-micro-app:latest}
+    container_name: consultation-app
+    restart: unless-stopped
+
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+
+      # Database Configuration
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+
+      # AI Configuration
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+      # Email Configuration
+      - RESEND_API_KEY=${RESEND_API_KEY}
+
+      # Consultation-specific Configuration
+      - CONSULTATION_CACHE_TTL=3600
+      - CONSULTATION_MAX_FILE_SIZE=10485760
+      - CONSULTATION_PDF_TIMEOUT=30000
+      - CONSULTATION_EMAIL_TIMEOUT=10000
+
+      # Security Configuration
+      - FORCE_HTTPS=1
+      - HSTS_MAX_AGE=31536000
+      - CSP_ENABLED=1
+
+      # Performance Configuration
+      - NODE_OPTIONS=--max-old-space-size=1024 --optimize-for-size
+      - CONSULTATION_PERFORMANCE_MONITORING=true
+      - CONSULTATION_CACHE_ENABLED=true
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - uploads:/app/uploads
+      - cache:/app/cache
+      - logs:/app/logs
+      - ./consultation-config:/app/config:ro
+
+    networks:
+      - consultation-network
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/performance/consultation/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  redis:
+    image: redis:7-alpine
+    container_name: consultation-redis
+    restart: unless-stopped
+
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+    volumes:
+      - redis-data:/data
+
+    networks:
+      - consultation-network
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  nginx:
+    image: nginx:alpine
+    container_name: consultation-nginx
+    restart: unless-stopped
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/consultation.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - logs:/var/log/nginx
+
+    networks:
+      - consultation-network
+
+    depends_on:
+      - consultation-app
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  monitoring:
+    image: prom/prometheus:latest
+    container_name: consultation-monitoring
+    restart: unless-stopped
+
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+
+    networks:
+      - consultation-network
+
+    ports:
+      - "9090:9090"
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: consultation-alertmanager
+    restart: unless-stopped
+
+    volumes:
+      - ./monitoring/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager-data:/alertmanager
+
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+      - '--web.external-url=http://localhost:9093'
+
+    networks:
+      - consultation-network
+
+    ports:
+      - "9093:9093"
+
+volumes:
+  uploads:
+    driver: local
+  cache:
+    driver: local
+  logs:
+    driver: local
+  redis-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  alertmanager-data:
+    driver: local
+
+networks:
+  consultation-network:
+    driver: bridge
+    name: consultation-network

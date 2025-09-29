@@ -148,12 +148,11 @@ export default function FormsPage() {
           <Link
             href="/agency-toolkit"
             className={cn(
-              "group inline-flex items-center gap-3 px-6 py-3 border-2 font-bold text-sm tracking-wider uppercase transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl",
+              "group inline-flex items-center gap-3 px-6 py-3 border-2 font-bold text-sm tracking-wider uppercase transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl rounded-lg",
               isDark
                 ? "border-white/30 text-white/80 hover:text-white hover:border-white/50 hover:bg-white/10"
                 : "border-black/30 text-black/80 hover:text-black hover:border-black/50 hover:bg-black/10"
             )}
-            className=\"rounded-lg\"
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
             <span>Back to Agency Toolkit</span>
@@ -175,12 +174,11 @@ export default function FormsPage() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className={cn(
-                "flex items-center gap-3 px-6 py-3 rounded-none border-2 backdrop-blur-sm relative",
+                "flex items-center gap-3 px-6 py-3 rounded-lg border-2 backdrop-blur-sm relative",
                 isDark
                   ? "bg-black/80 border-white/30 shadow-2xl shadow-white/5"
                   : "bg-white/80 border-black/30 shadow-2xl shadow-black/5"
               )}
-              className=\"rounded-lg\"
             >
               <div className="flex items-center gap-2">
                 <div className={cn(
@@ -300,7 +298,7 @@ export default function FormsPage() {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Essential Form Options */}
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">

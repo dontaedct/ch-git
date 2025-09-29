@@ -1,0 +1,329 @@
+{
+  "id": "consultation-mvp",
+  "name": "Professional Consultation Platform",
+  "slug": "consultation-mvp",
+  "description": "Premium consultation landing page with modern design, compelling content, and professional presentation",
+  "category": "landing-page",
+  "version": "2.0.0",
+  "components": [
+    {
+      "id": "header-1",
+      "type": "header",
+      "version": "1.0.0",
+      "props": {
+        "logo": "ConsultPro",
+        "navigation": [
+          { "text": "Services", "url": "#services" },
+          { "text": "About", "url": "#about" },
+          { "text": "Contact", "url": "#contact" }
+        ],
+        "ctaText": "Get Started",
+        "ctaUrl": "#contact"
+      }
+    },
+    {
+      "id": "hero-1",
+      "type": "hero",
+      "version": "1.0.0",
+      "props": {
+        "title": "Transform Your Business with Expert Consultation",
+        "subtitle": "Strategic guidance that drives real results. Our proven methodology has helped 500+ businesses achieve breakthrough growth and operational excellence.",
+        "ctaText": "Schedule Free Consultation",
+        "ctaUrl": "#contact",
+        "layout": "centered",
+        "height": "large",
+        "background": "gradient"
+      }
+    },
+    {
+      "id": "spacer-1",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "feature-grid-1",
+      "type": "feature_grid",
+      "version": "1.0.0",
+      "props": {
+        "title": "Why Choose Our Consultation Services",
+        "description": "We combine deep industry expertise with proven methodologies to deliver exceptional results",
+        "features": [
+          {
+            "title": "Strategic Planning",
+            "description": "Comprehensive business strategy development with actionable roadmaps for sustainable growth",
+            "icon": "🎯"
+          },
+          {
+            "title": "Operational Excellence",
+            "description": "Streamline processes, reduce costs, and improve efficiency across all business functions",
+            "icon": "⚡"
+          },
+          {
+            "title": "Digital Transformation",
+            "description": "Modernize your technology stack and implement cutting-edge solutions for competitive advantage",
+            "icon": "🚀"
+          },
+          {
+            "title": "Performance Analytics",
+            "description": "Data-driven insights and KPIs to measure success and optimize performance continuously",
+            "icon": "📊"
+          },
+          {
+            "title": "Team Development",
+            "description": "Build high-performing teams through leadership development and organizational design",
+            "icon": "👥"
+          },
+          {
+            "title": "Market Expansion",
+            "description": "Identify new opportunities and develop strategies for successful market entry and growth",
+            "icon": "🌍"
+          }
+        ],
+        "columns": 3,
+        "layout": "cards"
+      }
+    },
+    {
+      "id": "spacer-2",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "text-1",
+      "type": "text",
+      "version": "1.0.0",
+      "props": {
+        "content": "<h2 class='text-3xl font-bold text-center mb-8'>Proven Results Across Industries</h2><p class='text-lg text-gray-600 text-center max-w-4xl mx-auto'>Our consultation services have delivered measurable results for businesses ranging from startups to Fortune 500 companies. We specialize in creating sustainable competitive advantages through strategic thinking and operational excellence.</p>",
+        "alignment": "center",
+        "fontSize": "large"
+      }
+    },
+    {
+      "id": "spacer-3",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "md"
+      }
+    },
+    {
+      "id": "testimonial-1",
+      "type": "testimonial",
+      "version": "1.0.0",
+      "props": {
+        "quote": "The consultation process was transformative for our business. We saw a 40% increase in operational efficiency and a 25% boost in revenue within the first quarter. The strategic insights and implementation support were exceptional.",
+        "author": "Sarah Chen",
+        "title": "CEO",
+        "company": "TechFlow Solutions",
+        "rating": 5
+      }
+    },
+    {
+      "id": "spacer-4",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "pricing-1",
+      "type": "pricing",
+      "version": "1.0.0",
+      "props": {
+        "title": "Flexible Consultation Packages",
+        "description": "Choose the package that best fits your business needs and growth stage",
+        "plans": [
+          {
+            "name": "Strategic Assessment",
+            "price": "2,500",
+            "features": [
+              "Comprehensive business analysis",
+              "Strategic recommendations report",
+              "Implementation roadmap",
+              "30-day follow-up support"
+            ],
+            "cta": "Get Started"
+          },
+          {
+            "name": "Growth Accelerator",
+            "price": "7,500",
+            "features": [
+              "Everything in Strategic Assessment",
+              "3-month implementation support",
+              "Monthly progress reviews",
+              "Team training sessions",
+              "Performance tracking dashboard"
+            ],
+            "cta": "Most Popular"
+          },
+          {
+            "name": "Enterprise Transformation",
+            "price": "15,000",
+            "features": [
+              "Everything in Growth Accelerator",
+              "6-month comprehensive support",
+              "Dedicated consultant",
+              "Custom tool development",
+              "Quarterly strategy reviews",
+              "Priority support"
+            ],
+            "cta": "Contact Sales"
+          }
+        ],
+        "layout": "cards",
+        "billing": "one-time"
+      }
+    },
+    {
+      "id": "spacer-5",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "cta-1",
+      "type": "cta",
+      "version": "1.0.0",
+      "props": {
+        "title": "Ready to Transform Your Business?",
+        "description": "Join hundreds of successful companies who have achieved breakthrough results with our consultation services. Schedule your free discovery call today.",
+        "buttons": [
+          {
+            "text": "Schedule Free Call",
+            "url": "#contact",
+            "style": "primary"
+          },
+          {
+            "text": "Download Case Study",
+            "url": "#download",
+            "style": "secondary"
+          }
+        ],
+        "background": "gradient",
+        "alignment": "center"
+      }
+    },
+    {
+      "id": "spacer-6",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "form-1",
+      "type": "form",
+      "version": "1.0.0",
+      "props": {
+        "formId": "consultation-request",
+        "title": "Request Your Free Consultation",
+        "showTitle": true,
+        "layout": "vertical"
+      }
+    },
+    {
+      "id": "spacer-7",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "contact-1",
+      "type": "contact",
+      "version": "1.0.0",
+      "props": {
+        "title": "Get In Touch",
+        "description": "Ready to discuss your business challenges? We're here to help you achieve your goals.",
+        "contactInfo": [
+          {
+            "label": "Email",
+            "value": "hello@consultpro.com"
+          },
+          {
+            "label": "Phone",
+            "value": "+1 (555) 123-4567"
+          },
+          {
+            "label": "Office",
+            "value": "123 Business Ave, Suite 100, New York, NY 10001"
+          },
+          {
+            "label": "Hours",
+            "value": "Monday - Friday: 9:00 AM - 6:00 PM EST"
+          }
+        ],
+        "layout": "split"
+      }
+    },
+    {
+      "id": "spacer-8",
+      "type": "spacer",
+      "version": "1.0.0",
+      "props": {
+        "height": "lg"
+      }
+    },
+    {
+      "id": "footer-1",
+      "type": "footer",
+      "version": "1.0.0",
+      "props": {
+        "logo": "ConsultPro",
+        "description": "Transforming businesses through strategic consultation and operational excellence.",
+        "links": [
+          {
+            "title": "Services",
+            "items": [
+              { "text": "Strategic Planning", "url": "#strategic" },
+              { "text": "Operational Excellence", "url": "#operational" },
+              { "text": "Digital Transformation", "url": "#digital" },
+              { "text": "Team Development", "url": "#team" }
+            ]
+          },
+          {
+            "title": "Company",
+            "items": [
+              { "text": "About Us", "url": "#about" },
+              { "text": "Our Team", "url": "#team" },
+              { "text": "Case Studies", "url": "#cases" },
+              { "text": "Careers", "url": "#careers" }
+            ]
+          },
+          {
+            "title": "Resources",
+            "items": [
+              { "text": "Blog", "url": "#blog" },
+              { "text": "Whitepapers", "url": "#whitepapers" },
+              { "text": "Webinars", "url": "#webinars" },
+              { "text": "Newsletter", "url": "#newsletter" }
+            ]
+          }
+        ],
+        "social": [
+          { "platform": "linkedin", "url": "https://linkedin.com/company/consultpro" },
+          { "platform": "twitter", "url": "https://twitter.com/consultpro" },
+          { "platform": "facebook", "url": "https://facebook.com/consultpro" }
+        ],
+        "copyright": "© 2025 ConsultPro. All rights reserved. | Privacy Policy | Terms of Service"
+      }
+    }
+  ],
+  "metadata": {
+    "version": "2.0.0",
+    "createdAt": "2025-09-19",
+    "updatedAt": "2025-09-19",
+    "tags": ["consultation", "landing-page", "professional", "business", "strategy"]
+  }
+}

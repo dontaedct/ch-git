@@ -1,0 +1,283 @@
+{
+  "id": "form_contact_simple_001",
+  "name": "Simple Contact Form",
+  "slug": "simple-contact",
+  "description": "Clean, minimal contact form for general inquiries",
+  "category": "contact",
+  "settings": {
+    "title": "Get in Touch",
+    "description": "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+    "submitButtonText": "Send Message",
+    "resetButtonText": "Clear",
+    "showReset": true,
+    "layout": "vertical",
+    "progressBar": false
+  },
+  "theme": {
+    "useSiteDefaults": true,
+    "overrides": {
+      "palette": {
+        "primary": "#000000",
+        "secondary": "#6b7280",
+        "accent": "#3b82f6",
+        "error": "#ef4444",
+        "success": "#10b981"
+      },
+      "spacing": {
+        "fieldSpacing": "normal",
+        "sectionSpacing": "md"
+      },
+      "typography": {
+        "labelSize": "md",
+        "inputSize": "md"
+      }
+    }
+  },
+  "fields": [
+    {
+      "id": "f1",
+      "name": "name",
+      "type": "text",
+      "label": "Full Name",
+      "placeholder": "Your full name",
+      "required": true,
+      "validation": {
+        "minLength": 2,
+        "maxLength": 100,
+        "pattern": "^[a-zA-Z\\s'-]+$",
+        "patternMessage": "Please enter a valid name"
+      },
+      "order": 1,
+      "accessibility": {
+        "ariaLabel": "Enter your full name"
+      }
+    },
+    {
+      "id": "f2",
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "placeholder": "your.email@example.com",
+      "description": "We'll never share your email address",
+      "required": true,
+      "validation": {
+        "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+        "patternMessage": "Please enter a valid email address"
+      },
+      "order": 2
+    },
+    {
+      "id": "f3",
+      "name": "phone",
+      "type": "tel",
+      "label": "Phone Number",
+      "placeholder": "(555) 123-4567",
+      "description": "Optional - for urgent inquiries",
+      "required": false,
+      "validation": {
+        "pattern": "^[\\+]?[1-9][\\d]{0,15}$",
+        "patternMessage": "Please enter a valid phone number"
+      },
+      "order": 3
+    },
+    {
+      "id": "f4",
+      "name": "subject",
+      "type": "select",
+      "label": "What can we help you with?",
+      "required": true,
+      "options": [
+        {
+          "label": "General Question",
+          "value": "general"
+        },
+        {
+          "label": "Product Information",
+          "value": "product"
+        },
+        {
+          "label": "Technical Support",
+          "value": "support"
+        },
+        {
+          "label": "Partnership Opportunity",
+          "value": "partnership"
+        },
+        {
+          "label": "Media Inquiry",
+          "value": "media"
+        },
+        {
+          "label": "Other",
+          "value": "other"
+        }
+      ],
+      "order": 4
+    },
+    {
+      "id": "f5",
+      "name": "company",
+      "type": "text",
+      "label": "Company Name",
+      "placeholder": "Your company (optional)",
+      "required": false,
+      "validation": {
+        "maxLength": 100
+      },
+      "conditional": {
+        "field": "f4",
+        "operator": "equals",
+        "value": "partnership",
+        "action": "require"
+      },
+      "order": 5
+    },
+    {
+      "id": "f6",
+      "name": "message",
+      "type": "textarea",
+      "label": "Message",
+      "placeholder": "Tell us more about your inquiry...",
+      "description": "Please provide as much detail as possible so we can assist you better",
+      "required": true,
+      "validation": {
+        "minLength": 10,
+        "maxLength": 2000
+      },
+      "order": 6
+    },
+    {
+      "id": "f7",
+      "name": "urgency",
+      "type": "radio",
+      "label": "How urgent is your inquiry?",
+      "required": false,
+      "defaultValue": "normal",
+      "options": [
+        {
+          "label": "Low - Response within 3-5 business days is fine",
+          "value": "low"
+        },
+        {
+          "label": "Normal - Response within 1-2 business days",
+          "value": "normal",
+          "selected": true
+        },
+        {
+          "label": "High - Need response within 24 hours",
+          "value": "high"
+        },
+        {
+          "label": "Urgent - Please call me today",
+          "value": "urgent"
+        }
+      ],
+      "conditional": {
+        "field": "f3",
+        "operator": "isNotEmpty",
+        "value": "",
+        "action": "show"
+      },
+      "order": 7
+    },
+    {
+      "id": "f8",
+      "name": "newsletter",
+      "type": "checkbox",
+      "label": "Subscribe to our newsletter",
+      "description": "Get updates about new features and company news (optional)",
+      "required": false,
+      "defaultValue": false,
+      "order": 8
+    }
+  ],
+  "validation": {
+    "enabled": true,
+    "realtime": true,
+    "showErrorSummary": false,
+    "customRules": [
+      {
+        "id": "phone_required_for_urgent",
+        "function": "validatePhoneForUrgent",
+        "message": "Phone number is required for urgent inquiries",
+        "fields": ["f3", "f7"]
+      }
+    ]
+  },
+  "submission": {
+    "type": "email",
+    "target": "contact@example.com",
+    "method": "POST",
+    "transform": {
+      "mapping": {
+        "contact_name": "name",
+        "contact_email": "email",
+        "contact_phone": "phone",
+        "inquiry_subject": "subject",
+        "company_name": "company",
+        "message_content": "message",
+        "urgency_level": "urgency",
+        "newsletter_signup": "newsletter"
+      }
+    },
+    "successAction": {
+      "type": "message",
+      "message": "Thank you for your message! We'll get back to you within 1-2 business days."
+    },
+    "errorAction": {
+      "message": "Sorry, there was a problem sending your message. Please try again or email us directly at contact@example.com",
+      "retryButton": true
+    }
+  },
+  "notifications": {
+    "admin": {
+      "enabled": true,
+      "email": "contact@example.com",
+      "template": "new_contact_inquiry"
+    },
+    "user": {
+      "enabled": true,
+      "emailField": "f2",
+      "template": "contact_confirmation"
+    }
+  },
+  "security": {
+    "honeypot": true,
+    "captcha": {
+      "enabled": false
+    },
+    "rateLimit": {
+      "enabled": true,
+      "maxSubmissions": 5,
+      "windowMinutes": 60
+    },
+    "dataRetention": {
+      "enabled": true,
+      "retentionDays": 90
+    },
+    "requireConsent": false
+  },
+  "analytics": {
+    "enabled": true,
+    "trackViews": true,
+    "trackStarted": true,
+    "trackCompleted": true,
+    "trackFieldInteractions": false,
+    "trackErrors": true,
+    "customEvents": [
+      {
+        "name": "urgent_inquiry_submitted",
+        "trigger": "field_change",
+        "fields": ["f7"]
+      }
+    ]
+  },
+  "meta": {
+    "version": "1.0.0",
+    "createdBy": "team_dct",
+    "createdAt": "2025-09-17",
+    "tags": ["contact", "simple", "general", "inquiries"],
+    "previewUrl": "https://preview.automationdct.com/form_contact_simple_001",
+    "schemaVersion": "1.0.0"
+  }
+}

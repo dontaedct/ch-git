@@ -1,0 +1,292 @@
+{
+  "id": "tpl_saas_001",
+  "name": "CloudSync - SaaS Product Landing",
+  "slug": "cloudsync-landing",
+  "industry": "saas",
+  "description": "Modern SaaS product landing page with feature showcase and pricing",
+  "theme": {
+    "useSiteDefaults": true,
+    "overrides": {
+      "palette": {
+        "primary": "#3b82f6",
+        "secondary": "#1e40af",
+        "accent": "#8b5cf6"
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "c_header_1",
+      "type": "header",
+      "version": "1.0.0",
+      "props": {
+        "logo": {
+          "type": "text",
+          "content": "CloudSync",
+          "size": "md"
+        },
+        "navigation": [
+          {
+            "label": "Features",
+            "href": "#features"
+          },
+          {
+            "label": "Pricing",
+            "href": "#pricing"
+          },
+          {
+            "label": "Docs",
+            "href": "/docs",
+            "external": true
+          },
+          {
+            "label": "Login",
+            "href": "/login"
+          }
+        ],
+        "showThemeToggle": true,
+        "sticky": true,
+        "background": "glass"
+      }
+    },
+    {
+      "id": "c_hero_1",
+      "type": "hero",
+      "version": "1.0.0",
+      "props": {
+        "title": "Sync your data. Everywhere.",
+        "subtitle": "The cloud storage solution that works",
+        "description": "Seamlessly sync, share, and collaborate on files across all your devices. Enterprise-grade security with consumer-friendly simplicity.",
+        "cta": {
+          "label": "Start Free Trial",
+          "action": {
+            "type": "open_form",
+            "target": "form_signup_1"
+          },
+          "style": "primary",
+          "size": "lg"
+        },
+        "secondaryCTA": {
+          "label": "Watch Demo",
+          "action": {
+            "type": "external",
+            "target": "https://demo.cloudsync.com"
+          },
+          "style": "outline",
+          "size": "lg"
+        },
+        "background": "mesh",
+        "layout": "centered",
+        "animation": true
+      }
+    },
+    {
+      "id": "c_feature_grid_1",
+      "type": "feature_grid",
+      "version": "1.0.0",
+      "props": {
+        "title": "Everything you need",
+        "description": "Powerful features designed for modern teams",
+        "features": [
+          {
+            "icon": "Cloud",
+            "title": "Instant Sync",
+            "description": "Real-time synchronization across all your devices"
+          },
+          {
+            "icon": "Shield",
+            "title": "Enterprise Security",
+            "description": "End-to-end encryption and advanced security controls"
+          },
+          {
+            "icon": "Users",
+            "title": "Team Collaboration",
+            "description": "Share, comment, and collaborate seamlessly"
+          },
+          {
+            "icon": "Smartphone",
+            "title": "Mobile Apps",
+            "description": "Native apps for iOS and Android"
+          },
+          {
+            "icon": "Zap",
+            "title": "Fast Performance",
+            "description": "Lightning-fast uploads and downloads"
+          },
+          {
+            "icon": "History",
+            "title": "Version History",
+            "description": "Complete file history and version control"
+          }
+        ],
+        "columns": 3,
+        "layout": "cards",
+        "spacing": "normal",
+        "animation": {
+          "enabled": true,
+          "stagger": true
+        }
+      }
+    },
+    {
+      "id": "c_pricing_1",
+      "type": "pricing",
+      "version": "1.0.0",
+      "props": {
+        "title": "Simple, transparent pricing",
+        "description": "Choose the plan that works for you",
+        "plans": [
+          {
+            "id": "starter",
+            "name": "Starter",
+            "description": "Perfect for individuals",
+            "price": {
+              "amount": 0,
+              "currency": "USD",
+              "period": "month"
+            },
+            "features": [
+              "5GB storage",
+              "Basic sync",
+              "Mobile apps",
+              "Email support"
+            ],
+            "cta": {
+              "label": "Get Started",
+              "action": {
+                "type": "open_form",
+                "target": "form_signup_1"
+              },
+              "style": "outline"
+            }
+          },
+          {
+            "id": "pro",
+            "name": "Pro",
+            "description": "For growing teams",
+            "price": {
+              "amount": 12,
+              "currency": "USD",
+              "period": "month"
+            },
+            "features": [
+              "1TB storage",
+              "Advanced sync",
+              "Team collaboration",
+              "Priority support",
+              "Version history"
+            ],
+            "cta": {
+              "label": "Start Trial",
+              "action": {
+                "type": "open_form",
+                "target": "form_signup_1"
+              },
+              "style": "primary"
+            },
+            "popular": true
+          },
+          {
+            "id": "enterprise",
+            "name": "Enterprise",
+            "description": "For large organizations",
+            "price": {
+              "amount": 25,
+              "currency": "USD",
+              "period": "month"
+            },
+            "features": [
+              "Unlimited storage",
+              "Advanced security",
+              "SSO integration",
+              "Dedicated support",
+              "Custom branding"
+            ],
+            "cta": {
+              "label": "Contact Sales",
+              "action": {
+                "type": "external",
+                "target": "mailto:sales@cloudsync.com"
+              },
+              "style": "outline"
+            }
+          }
+        ],
+        "layout": "cards",
+        "billing": "toggle",
+        "featured": "pro"
+      }
+    },
+    {
+      "id": "form_signup_1",
+      "type": "form",
+      "version": "1.0.0",
+      "props": {
+        "title": "Start your free trial",
+        "description": "No credit card required. Cancel anytime.",
+        "fields": [
+          {
+            "id": "f1",
+            "name": "email",
+            "type": "email",
+            "label": "Work Email",
+            "placeholder": "you@company.com",
+            "required": true
+          },
+          {
+            "id": "f2",
+            "name": "company",
+            "type": "text",
+            "label": "Company Name",
+            "placeholder": "Acme Corp",
+            "required": true
+          },
+          {
+            "id": "f3",
+            "name": "plan",
+            "type": "select",
+            "label": "Plan",
+            "required": true,
+            "defaultValue": "pro",
+            "options": [
+              {
+                "label": "Starter (Free)",
+                "value": "starter"
+              },
+              {
+                "label": "Pro ($12/month)",
+                "value": "pro",
+                "selected": true
+              },
+              {
+                "label": "Enterprise ($25/month)",
+                "value": "enterprise"
+              }
+            ]
+          }
+        ],
+        "submission": {
+          "type": "webhook",
+          "target": "https://api.cloudsync.com/signup",
+          "method": "POST",
+          "successAction": {
+            "type": "redirect",
+            "redirectUrl": "https://app.cloudsync.com/onboarding"
+          }
+        },
+        "layout": "vertical",
+        "options": {
+          "spamProtection": true,
+          "requireConsent": true
+        }
+      }
+    }
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "createdBy": "team_dct",
+    "createdAt": "2025-09-17",
+    "tags": ["saas", "landing", "pricing", "trial"],
+    "previewUrl": "https://preview.automationdct.com/tpl_saas_001"
+  }
+}

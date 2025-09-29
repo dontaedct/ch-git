@@ -1,0 +1,420 @@
+# Production Alerting Rules - Integrated Agency Toolkit
+# Comprehensive alerting configuration for all HT-035 integrated systems
+
+# Alert Groups Configuration
+groups:
+  # Critical System Alerts
+  - name: critical_system_alerts
+    rules:
+      # Application Availability
+      - alert: ApplicationDown
+        expr: up{job="agency-toolkit"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          team: devops
+          service: agency-toolkit
+        annotations:
+          summary: "Agency Toolkit application is down"
+          description: "The main application has been down for more than 1 minute"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/application-down"
+          dashboard_url: "https://monitoring.agency-toolkit.com/d/system-health"
+
+      # Database Connectivity
+      - alert: DatabaseConnectionFailure
+        expr: increase(db_connection_errors_total[1m]) > 0
+        for: 30s
+        labels:
+          severity: critical
+          team: devops
+          service: database
+        annotations:
+          summary: "Database connection failures detected"
+          description: "{{ $value }} database connection errors in the last minute"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/database-connectivity"
+
+      # High Error Rate
+      - alert: CriticalErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+          team: development
+          service: api
+        annotations:
+          summary: "Critical error rate detected"
+          description: "Error rate is {{ $value | humanizePercentage }} over the last 5 minutes"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/high-error-rate"
+
+  # Performance Alerts
+  - name: performance_alerts
+    rules:
+      # Dashboard Performance
+      - alert: SlowDashboardLoading
+        expr: histogram_quantile(0.95, rate(dashboard_load_time_seconds_bucket[5m])) > 3
+        for: 5m
+        labels:
+          severity: warning
+          team: frontend
+          service: dashboard
+        annotations:
+          summary: "Dashboard loading slowly"
+          description: "95th percentile dashboard load time is {{ $value }}s (threshold: 3s)"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/slow-dashboard"
+
+      # API Response Time
+      - alert: SlowAPIResponses
+        expr: histogram_quantile(0.95, rate(api_response_time_seconds_bucket[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+          service: api
+        annotations:
+          summary: "API responses are slow"
+          description: "95th percentile API response time is {{ $value }}s (threshold: 2s)"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/slow-api"
+
+      # Database Query Performance
+      - alert: SlowDatabaseQueries
+        expr: increase(slow_queries_total[5m]) > 10
+        for: 5m
+        labels:
+          severity: warning
+          team: backend
+          service: database
+        annotations:
+          summary: "Multiple slow database queries detected"
+          description: "{{ $value }} slow queries (>1s) detected in the last 5 minutes"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/slow-queries"
+
+  # Resource Alerts
+  - name: resource_alerts
+    rules:
+      # Memory Usage
+      - alert: HighMemoryUsage
+        expr: (memory_usage_bytes / (1024*1024*1024)) > 3
+        for: 10m
+        labels:
+          severity: warning
+          team: devops
+          service: system
+        annotations:
+          summary: "High memory usage detected"
+          description: "Memory usage is {{ $value }}GB (threshold: 3GB)"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/high-memory"
+
+      # CPU Usage
+      - alert: HighCPUUsage
+        expr: cpu_usage_percent > 80
+        for: 15m
+        labels:
+          severity: warning
+          team: devops
+          service: system
+        annotations:
+          summary: "High CPU usage detected"
+          description: "CPU usage is {{ $value }}% (threshold: 80%)"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/high-cpu"
+
+      # Disk Usage
+      - alert: LowDiskSpace
+        expr: disk_usage_percent > 85
+        for: 5m
+        labels:
+          severity: warning
+          team: devops
+          service: system
+        annotations:
+          summary: "Low disk space"
+          description: "Disk usage is {{ $value }}% on {{ $labels.mount_point }}"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/low-disk-space"
+
+  # Integrated Systems Alerts
+  - name: integrated_systems_alerts
+    rules:
+      # Orchestration System
+      - alert: OrchestrationWorkflowFailures
+        expr: increase(workflow_executions_total{status="failed"}[10m]) > 3
+        for: 5m
+        labels:
+          severity: warning
+          team: integration
+          service: orchestration
+        annotations:
+          summary: "Multiple orchestration workflow failures"
+          description: "{{ $value }} workflow failures in the last 10 minutes"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/orchestration-failures"
+
+      - alert: OrchestrationSystemDown
+        expr: active_workflows == 0 and up{service="orchestration"} == 1
+        for: 15m
+        labels:
+          severity: warning
+          team: integration
+          service: orchestration
+        annotations:
+          summary: "No active workflows for extended period"
+          description: "Orchestration system appears inactive - no workflows for 15 minutes"
+
+      # Module Management System
+      - alert: ModuleActivationFailures
+        expr: increase(module_activations_total{status="failed"}[15m]) > 2
+        for: 5m
+        labels:
+          severity: warning
+          team: integration
+          service: modules
+        annotations:
+          summary: "Module activation failures detected"
+          description: "{{ $value }} module activation failures in the last 15 minutes"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/module-activation-failures"
+
+      - alert: UnhealthyModules
+        expr: count by () (module_health_status == 0) > 1
+        for: 10m
+        labels:
+          severity: warning
+          team: integration
+          service: modules
+        annotations:
+          summary: "Multiple unhealthy modules detected"
+          description: "{{ $value }} modules are currently unhealthy"
+
+      # Marketplace System
+      - alert: MarketplaceInstallationFailures
+        expr: increase(template_installations_total{status="failed"}[20m]) > 3
+        for: 5m
+        labels:
+          severity: warning
+          team: marketplace
+          service: marketplace
+        annotations:
+          summary: "Template installation failures in marketplace"
+          description: "{{ $value }} template installation failures in the last 20 minutes"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/marketplace-installation-failures"
+
+      - alert: SlowMarketplaceBrowsing
+        expr: histogram_quantile(0.95, rate(marketplace_browse_duration_seconds_bucket[5m])) > 3
+        for: 10m
+        labels:
+          severity: warning
+          team: marketplace
+          service: marketplace
+        annotations:
+          summary: "Marketplace browsing is slow"
+          description: "95th percentile marketplace browse time is {{ $value }}s"
+
+      # Handover Automation System
+      - alert: HandoverProcessFailures
+        expr: increase(handover_processes_total{status="failed"}[30m]) > 2
+        for: 5m
+        labels:
+          severity: warning
+          team: automation
+          service: handover
+        annotations:
+          summary: "Handover process failures detected"
+          description: "{{ $value }} handover process failures in the last 30 minutes"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/handover-failures"
+
+      - alert: LowAutomationSuccessRate
+        expr: automation_success_rate < 0.85
+        for: 30m
+        labels:
+          severity: warning
+          team: automation
+          service: handover
+        annotations:
+          summary: "Low handover automation success rate"
+          description: "Automation success rate is {{ $value | humanizePercentage }} (threshold: 85%)"
+
+  # Authentication & Security Alerts
+  - name: security_alerts
+    rules:
+      # Authentication Issues
+      - alert: HighFailedAuthAttempts
+        expr: increase(failed_auth_attempts_total[5m]) > 10
+        for: 2m
+        labels:
+          severity: warning
+          team: security
+          service: auth
+        annotations:
+          summary: "High number of failed authentication attempts"
+          description: "{{ $value }} failed authentication attempts in the last 5 minutes"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/failed-auth-attempts"
+
+      # Rate Limiting
+      - alert: RateLimitHits
+        expr: increase(api_rate_limit_hits_total[10m]) > 50
+        for: 5m
+        labels:
+          severity: info
+          team: api
+          service: rate-limiting
+        annotations:
+          summary: "High number of rate limit hits"
+          description: "{{ $value }} rate limit hits in the last 10 minutes"
+
+  # Business Metrics Alerts
+  - name: business_alerts
+    rules:
+      # User Engagement
+      - alert: LowDailyActiveUsers
+        expr: daily_active_users < 50
+        for: 2h
+        labels:
+          severity: info
+          team: product
+          service: analytics
+        annotations:
+          summary: "Low daily active user count"
+          description: "Only {{ $value }} daily active users (expected: >50)"
+
+      # User Satisfaction
+      - alert: LowUserSatisfaction
+        expr: user_satisfaction_score < 7
+        for: 1h
+        labels:
+          severity: warning
+          team: product
+          service: ux
+        annotations:
+          summary: "Low user satisfaction score"
+          description: "User satisfaction score is {{ $value }} (threshold: 7.0)"
+
+  # Integration Health Alerts
+  - name: integration_health_alerts
+    rules:
+      # Data Consistency
+      - alert: DataConsistencyErrors
+        expr: increase(data_consistency_checks_total{status="failed"}[30m]) > 0
+        for: 1m
+        labels:
+          severity: critical
+          team: data
+          service: integration
+        annotations:
+          summary: "Data consistency errors detected"
+          description: "{{ $value }} data consistency check failures in the last 30 minutes"
+          runbook_url: "https://docs.agency-toolkit.com/runbooks/data-consistency"
+
+      # Schema Validation
+      - alert: SchemaValidationErrors
+        expr: increase(schema_validation_errors_total[15m]) > 0
+        for: 1m
+        labels:
+          severity: warning
+          team: data
+          service: validation
+        annotations:
+          summary: "Schema validation errors detected"
+          description: "{{ $value }} schema validation errors in the last 15 minutes"
+
+# Notification Routing
+route:
+  group_by: ['alertname', 'service', 'severity']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: 'default-receiver'
+  routes:
+    # Critical alerts - immediate notification
+    - match:
+        severity: critical
+      receiver: 'critical-alerts'
+      group_wait: 10s
+      repeat_interval: 1h
+
+    # Warning alerts - standard notification
+    - match:
+        severity: warning
+      receiver: 'warning-alerts'
+      group_wait: 2m
+      repeat_interval: 6h
+
+    # Info alerts - low priority
+    - match:
+        severity: info
+      receiver: 'info-alerts'
+      group_wait: 10m
+      repeat_interval: 24h
+
+# Notification Receivers
+receivers:
+  - name: 'default-receiver'
+    email_configs:
+      - to: 'admin@agency-toolkit.com'
+        subject: 'Agency Toolkit Alert: {{ .GroupLabels.alertname }}'
+        body: |
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Severity: {{ .Labels.severity }}
+          Service: {{ .Labels.service }}
+          {{ if .Annotations.runbook_url }}
+          Runbook: {{ .Annotations.runbook_url }}
+          {{ end }}
+          {{ end }}
+
+  - name: 'critical-alerts'
+    email_configs:
+      - to: 'alerts-critical@agency-toolkit.com'
+        subject: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
+        body: |
+          CRITICAL ALERT - Immediate Action Required
+
+          {{ range .Alerts }}
+          Alert: {{ .Annotations.summary }}
+          Description: {{ .Annotations.description }}
+          Service: {{ .Labels.service }}
+          {{ if .Annotations.runbook_url }}
+          Runbook: {{ .Annotations.runbook_url }}
+          {{ end }}
+          {{ if .Annotations.dashboard_url }}
+          Dashboard: {{ .Annotations.dashboard_url }}
+          {{ end }}
+          {{ end }}
+    slack_configs:
+      - api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+        channel: '#alerts-critical'
+        title: '🚨 Critical Alert: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *{{ .Annotations.summary }}*
+          {{ .Annotations.description }}
+          Service: {{ .Labels.service }}
+          {{ end }}
+
+  - name: 'warning-alerts'
+    email_configs:
+      - to: 'alerts-warning@agency-toolkit.com'
+        subject: '⚠️ WARNING: {{ .GroupLabels.alertname }}'
+
+  - name: 'info-alerts'
+    email_configs:
+      - to: 'alerts-info@agency-toolkit.com'
+        subject: 'ℹ️ INFO: {{ .GroupLabels.alertname }}'
+
+# Inhibition Rules
+inhibit_rules:
+  # Inhibit warning alerts when critical alert is firing
+  - source_match:
+      severity: critical
+    target_match:
+      severity: warning
+    equal: ['service', 'alertname']
+
+  # Inhibit API alerts when application is down
+  - source_match:
+      alertname: ApplicationDown
+    target_match_re:
+      alertname: (SlowAPIResponses|CriticalErrorRate)
+
+# Global Settings
+global:
+  smtp_smarthost: 'localhost:587'
+  smtp_from: 'alerts@agency-toolkit.com'
+  smtp_auth_username: 'alerts@agency-toolkit.com'
+  smtp_auth_password: 'your-smtp-password'

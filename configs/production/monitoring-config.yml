@@ -1,0 +1,411 @@
+# Production Monitoring Configuration - Integrated Agency Toolkit
+# Comprehensive monitoring setup for all HT-035 integrated systems
+
+# Global Configuration
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    environment: production
+    service: agency-toolkit-integrated
+
+# Application Monitoring
+application:
+  # Core Application Metrics
+  core_metrics:
+    - name: http_requests_total
+      type: counter
+      help: Total HTTP requests
+      labels:
+        - method
+        - status
+        - endpoint
+
+    - name: http_request_duration_seconds
+      type: histogram
+      help: HTTP request latency
+      buckets: [0.1, 0.25, 0.5, 1, 2.5, 5, 10]
+
+    - name: active_users
+      type: gauge
+      help: Currently active users
+
+    - name: memory_usage_bytes
+      type: gauge
+      help: Memory usage in bytes
+
+    - name: cpu_usage_percent
+      type: gauge
+      help: CPU usage percentage
+
+  # Dashboard Monitoring
+  dashboard:
+    - name: dashboard_load_time_seconds
+      type: histogram
+      help: Dashboard load time
+      buckets: [0.5, 1, 2, 3, 5]
+      target: <2s
+
+    - name: dashboard_errors_total
+      type: counter
+      help: Dashboard loading errors
+
+    - name: module_card_renders_total
+      type: counter
+      help: Module card render count
+      labels:
+        - module_type
+
+# Integrated Systems Monitoring
+integrated_systems:
+  # Orchestration System
+  orchestration:
+    - name: workflow_executions_total
+      type: counter
+      help: Total workflow executions
+      labels:
+        - status
+        - workflow_type
+
+    - name: workflow_execution_duration_seconds
+      type: histogram
+      help: Workflow execution time
+      buckets: [1, 5, 10, 30, 60, 300]
+
+    - name: active_workflows
+      type: gauge
+      help: Currently active workflows
+
+    - name: orchestration_errors_total
+      type: counter
+      help: Orchestration system errors
+      labels:
+        - error_type
+
+  # Module Management System
+  modules:
+    - name: module_activations_total
+      type: counter
+      help: Module activation attempts
+      labels:
+        - module_name
+        - status
+
+    - name: active_modules_count
+      type: gauge
+      help: Number of active modules
+
+    - name: module_health_status
+      type: gauge
+      help: Module health status (1=healthy, 0=unhealthy)
+      labels:
+        - module_name
+
+    - name: module_registry_sync_duration_seconds
+      type: histogram
+      help: Module registry synchronization time
+
+  # Marketplace System
+  marketplace:
+    - name: template_installations_total
+      type: counter
+      help: Template installation attempts
+      labels:
+        - template_id
+        - status
+
+    - name: marketplace_browse_duration_seconds
+      type: histogram
+      help: Marketplace browsing response time
+      buckets: [0.1, 0.5, 1, 2, 5]
+
+    - name: revenue_tracking_total
+      type: counter
+      help: Revenue tracking events
+      labels:
+        - template_id
+        - pricing_tier
+
+    - name: marketplace_errors_total
+      type: counter
+      help: Marketplace system errors
+
+  # Handover Automation System
+  handover:
+    - name: handover_processes_total
+      type: counter
+      help: Handover process executions
+      labels:
+        - client_id
+        - status
+
+    - name: handover_completion_time_seconds
+      type: histogram
+      help: Time to complete handover process
+      buckets: [60, 300, 900, 1800, 3600]
+
+    - name: automation_success_rate
+      type: gauge
+      help: Handover automation success rate
+
+    - name: client_onboarding_duration_seconds
+      type: histogram
+      help: Client onboarding time
+
+# Database Monitoring
+database:
+  # Connection Pool
+  connection_pool:
+    - name: db_connections_active
+      type: gauge
+      help: Active database connections
+
+    - name: db_connections_idle
+      type: gauge
+      help: Idle database connections
+
+    - name: db_connection_errors_total
+      type: counter
+      help: Database connection errors
+
+  # Query Performance
+  queries:
+    - name: db_query_duration_seconds
+      type: histogram
+      help: Database query execution time
+      buckets: [0.01, 0.05, 0.1, 0.5, 1, 5]
+
+    - name: slow_queries_total
+      type: counter
+      help: Slow database queries (>1s)
+
+    - name: db_locks_total
+      type: counter
+      help: Database lock events
+
+  # Data Integrity
+  data_integrity:
+    - name: schema_validation_errors_total
+      type: counter
+      help: Schema validation errors
+
+    - name: data_consistency_checks_total
+      type: counter
+      help: Data consistency check results
+      labels:
+        - status
+
+# API Monitoring
+api:
+  # Endpoint Performance
+  endpoints:
+    - name: api_response_time_seconds
+      type: histogram
+      help: API endpoint response time
+      buckets: [0.1, 0.25, 0.5, 1, 2.5, 5]
+      labels:
+        - endpoint
+        - method
+
+    - name: api_requests_total
+      type: counter
+      help: Total API requests
+      labels:
+        - endpoint
+        - method
+        - status
+
+    - name: api_rate_limit_hits_total
+      type: counter
+      help: API rate limit hits
+      labels:
+        - endpoint
+        - client_id
+
+  # Authentication
+  auth:
+    - name: auth_requests_total
+      type: counter
+      help: Authentication requests
+      labels:
+        - provider
+        - status
+
+    - name: session_duration_seconds
+      type: histogram
+      help: User session duration
+
+    - name: failed_auth_attempts_total
+      type: counter
+      help: Failed authentication attempts
+      labels:
+        - reason
+
+# Infrastructure Monitoring
+infrastructure:
+  # System Resources
+  system:
+    - name: system_load_average
+      type: gauge
+      help: System load average
+
+    - name: disk_usage_percent
+      type: gauge
+      help: Disk usage percentage
+      labels:
+        - mount_point
+
+    - name: network_io_bytes
+      type: counter
+      help: Network I/O bytes
+      labels:
+        - direction
+
+  # Cache Performance
+  cache:
+    - name: cache_hits_total
+      type: counter
+      help: Cache hit count
+      labels:
+        - cache_type
+
+    - name: cache_misses_total
+      type: counter
+      help: Cache miss count
+      labels:
+        - cache_type
+
+    - name: cache_evictions_total
+      type: counter
+      help: Cache eviction count
+
+# Business Metrics
+business:
+  # User Engagement
+  engagement:
+    - name: daily_active_users
+      type: gauge
+      help: Daily active users
+
+    - name: feature_usage_total
+      type: counter
+      help: Feature usage count
+      labels:
+        - feature_name
+
+    - name: user_satisfaction_score
+      type: gauge
+      help: User satisfaction score (1-10)
+
+  # Revenue Tracking
+  revenue:
+    - name: subscription_revenue_total
+      type: counter
+      help: Total subscription revenue
+
+    - name: template_sales_total
+      type: counter
+      help: Template sales count
+      labels:
+        - template_category
+
+    - name: client_lifetime_value
+      type: gauge
+      help: Average client lifetime value
+
+# Alerting Configuration
+alerting:
+  # Critical Alerts
+  critical:
+    - alert: ApplicationDown
+      expr: up == 0
+      for: 1m
+      severity: critical
+      description: "Application is down"
+
+    - alert: DatabaseConnectionFailure
+      expr: db_connection_errors_total > 0
+      for: 30s
+      severity: critical
+      description: "Database connection failures detected"
+
+    - alert: HighErrorRate
+      expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.05
+      for: 2m
+      severity: critical
+      description: "High error rate detected"
+
+  # Warning Alerts
+  warning:
+    - alert: SlowDashboard
+      expr: histogram_quantile(0.95, dashboard_load_time_seconds) > 3
+      for: 5m
+      severity: warning
+      description: "Dashboard loading slowly"
+
+    - alert: HighMemoryUsage
+      expr: memory_usage_bytes / (1024*1024*1024) > 2
+      for: 10m
+      severity: warning
+      description: "High memory usage detected"
+
+    - alert: SlowQueries
+      expr: slow_queries_total > 10
+      for: 5m
+      severity: warning
+      description: "Multiple slow database queries"
+
+# Data Retention
+retention:
+  # Short-term metrics (high frequency)
+  short_term:
+    duration: 7d
+    metrics:
+      - http_request_duration_seconds
+      - api_response_time_seconds
+      - dashboard_load_time_seconds
+
+  # Medium-term metrics
+  medium_term:
+    duration: 30d
+    metrics:
+      - daily_active_users
+      - feature_usage_total
+      - workflow_executions_total
+
+  # Long-term metrics (business intelligence)
+  long_term:
+    duration: 365d
+    metrics:
+      - subscription_revenue_total
+      - client_lifetime_value
+      - user_satisfaction_score
+
+# Dashboards
+dashboards:
+  # Main Operations Dashboard
+  operations:
+    refresh: 30s
+    panels:
+      - system_health
+      - application_performance
+      - error_rates
+      - active_users
+
+  # Integrated Systems Dashboard
+  integrated_systems:
+    refresh: 1m
+    panels:
+      - orchestration_metrics
+      - module_health
+      - marketplace_performance
+      - handover_automation
+
+  # Business Intelligence Dashboard
+  business:
+    refresh: 5m
+    panels:
+      - revenue_metrics
+      - user_engagement
+      - feature_adoption
+      - client_satisfaction

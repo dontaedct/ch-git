@@ -1,0 +1,629 @@
+{
+  "id": "form_lead_advanced_001",
+  "name": "Advanced Lead Capture Form",
+  "slug": "advanced-lead-capture",
+  "description": "Comprehensive lead capture form with qualification scoring and progressive disclosure",
+  "category": "lead-capture",
+  "settings": {
+    "title": "Get Your Free Strategy Session",
+    "description": "Complete this form to receive a personalized business growth strategy session worth $500, absolutely free.",
+    "submitButtonText": "Claim My Session",
+    "resetButtonText": "Clear Form",
+    "showReset": false,
+    "layout": "wizard",
+    "progressBar": true
+  },
+  "theme": {
+    "useSiteDefaults": true,
+    "overrides": {
+      "palette": {
+        "primary": "#3b82f6",
+        "accent": "#10b981",
+        "error": "#ef4444",
+        "success": "#22c55e"
+      },
+      "spacing": {
+        "fieldSpacing": "normal",
+        "sectionSpacing": "lg"
+      }
+    }
+  },
+  "fields": [
+    {
+      "id": "f1",
+      "name": "firstName",
+      "type": "text",
+      "label": "First Name",
+      "placeholder": "John",
+      "required": true,
+      "validation": {
+        "minLength": 2,
+        "maxLength": 50,
+        "pattern": "^[a-zA-Z\\s]+$",
+        "patternMessage": "Please enter a valid first name"
+      },
+      "fieldGroup": "group_personal",
+      "order": 1,
+      "styling": {
+        "width": "half"
+      },
+      "accessibility": {
+        "ariaLabel": "Enter your first name"
+      }
+    },
+    {
+      "id": "f2",
+      "name": "lastName",
+      "type": "text",
+      "label": "Last Name",
+      "placeholder": "Smith",
+      "required": true,
+      "validation": {
+        "minLength": 2,
+        "maxLength": 50,
+        "pattern": "^[a-zA-Z\\s]+$",
+        "patternMessage": "Please enter a valid last name"
+      },
+      "fieldGroup": "group_personal",
+      "order": 2,
+      "styling": {
+        "width": "half"
+      }
+    },
+    {
+      "id": "f3",
+      "name": "email",
+      "type": "email",
+      "label": "Work Email Address",
+      "placeholder": "john@company.com",
+      "description": "We'll use this to send you your strategy session details",
+      "required": true,
+      "validation": {
+        "custom": "validateBusinessEmail",
+        "customMessage": "Please use a business email address"
+      },
+      "fieldGroup": "group_personal",
+      "order": 3
+    },
+    {
+      "id": "f4",
+      "name": "phone",
+      "type": "tel",
+      "label": "Phone Number",
+      "placeholder": "(555) 123-4567",
+      "description": "For scheduling your strategy session",
+      "required": true,
+      "validation": {
+        "pattern": "^\\+?[1-9]\\d{1,14}$",
+        "patternMessage": "Please enter a valid phone number"
+      },
+      "fieldGroup": "group_personal",
+      "order": 4
+    },
+    {
+      "id": "f5",
+      "name": "company",
+      "type": "text",
+      "label": "Company Name",
+      "placeholder": "Acme Corporation",
+      "required": true,
+      "validation": {
+        "minLength": 2,
+        "maxLength": 100
+      },
+      "fieldGroup": "group_business",
+      "order": 5
+    },
+    {
+      "id": "f6",
+      "name": "title",
+      "type": "text",
+      "label": "Job Title",
+      "placeholder": "CEO, Marketing Director, etc.",
+      "required": true,
+      "fieldGroup": "group_business",
+      "order": 6
+    },
+    {
+      "id": "f7",
+      "name": "industry",
+      "type": "select",
+      "label": "Industry",
+      "required": true,
+      "options": [
+        {
+          "label": "Technology",
+          "value": "technology"
+        },
+        {
+          "label": "Healthcare",
+          "value": "healthcare"
+        },
+        {
+          "label": "Financial Services",
+          "value": "financial"
+        },
+        {
+          "label": "Manufacturing",
+          "value": "manufacturing"
+        },
+        {
+          "label": "Retail/E-commerce",
+          "value": "retail"
+        },
+        {
+          "label": "Professional Services",
+          "value": "professional"
+        },
+        {
+          "label": "Education",
+          "value": "education"
+        },
+        {
+          "label": "Non-profit",
+          "value": "nonprofit"
+        },
+        {
+          "label": "Other",
+          "value": "other"
+        }
+      ],
+      "fieldGroup": "group_business",
+      "order": 7
+    },
+    {
+      "id": "f8",
+      "name": "companySize",
+      "type": "select",
+      "label": "Company Size",
+      "required": true,
+      "options": [
+        {
+          "label": "Just me (Solo entrepreneur)",
+          "value": "1"
+        },
+        {
+          "label": "2-10 employees",
+          "value": "2-10"
+        },
+        {
+          "label": "11-50 employees",
+          "value": "11-50"
+        },
+        {
+          "label": "51-200 employees",
+          "value": "51-200"
+        },
+        {
+          "label": "201-1000 employees",
+          "value": "201-1000"
+        },
+        {
+          "label": "1000+ employees",
+          "value": "1000+"
+        }
+      ],
+      "fieldGroup": "group_business",
+      "order": 8
+    },
+    {
+      "id": "f9",
+      "name": "revenue",
+      "type": "select",
+      "label": "Annual Revenue",
+      "description": "This helps us tailor our strategy recommendations",
+      "required": false,
+      "options": [
+        {
+          "label": "Pre-revenue",
+          "value": "pre-revenue"
+        },
+        {
+          "label": "Under $100K",
+          "value": "under-100k"
+        },
+        {
+          "label": "$100K - $500K",
+          "value": "100k-500k"
+        },
+        {
+          "label": "$500K - $1M",
+          "value": "500k-1m"
+        },
+        {
+          "label": "$1M - $5M",
+          "value": "1m-5m"
+        },
+        {
+          "label": "$5M - $10M",
+          "value": "5m-10m"
+        },
+        {
+          "label": "Over $10M",
+          "value": "over-10m"
+        },
+        {
+          "label": "Prefer not to say",
+          "value": "no-answer"
+        }
+      ],
+      "fieldGroup": "group_business",
+      "order": 9
+    },
+    {
+      "id": "f10",
+      "name": "challenges",
+      "type": "multiselect",
+      "label": "What are your biggest business challenges?",
+      "description": "Select all that apply",
+      "required": true,
+      "options": [
+        {
+          "label": "Generating qualified leads",
+          "value": "lead-generation"
+        },
+        {
+          "label": "Converting leads to customers",
+          "value": "conversion"
+        },
+        {
+          "label": "Scaling operations",
+          "value": "scaling"
+        },
+        {
+          "label": "Team management",
+          "value": "team-management"
+        },
+        {
+          "label": "Financial planning",
+          "value": "financial"
+        },
+        {
+          "label": "Marketing strategy",
+          "value": "marketing"
+        },
+        {
+          "label": "Competition",
+          "value": "competition"
+        },
+        {
+          "label": "Technology/Digital transformation",
+          "value": "technology"
+        },
+        {
+          "label": "Customer retention",
+          "value": "retention"
+        },
+        {
+          "label": "Operational efficiency",
+          "value": "efficiency"
+        }
+      ],
+      "fieldGroup": "group_needs",
+      "order": 10
+    },
+    {
+      "id": "f11",
+      "name": "goals",
+      "type": "textarea",
+      "label": "What are your primary business goals for the next 12 months?",
+      "placeholder": "e.g., Increase revenue by 50%, expand to new markets, improve team productivity...",
+      "required": true,
+      "validation": {
+        "minLength": 20,
+        "maxLength": 1000
+      },
+      "fieldGroup": "group_needs",
+      "order": 11
+    },
+    {
+      "id": "f12",
+      "name": "budget",
+      "type": "select",
+      "label": "What's your budget for business growth initiatives?",
+      "description": "This helps us recommend appropriate solutions",
+      "required": true,
+      "options": [
+        {
+          "label": "Under $5,000",
+          "value": "under-5k"
+        },
+        {
+          "label": "$5,000 - $15,000",
+          "value": "5k-15k"
+        },
+        {
+          "label": "$15,000 - $50,000",
+          "value": "15k-50k"
+        },
+        {
+          "label": "$50,000 - $100,000",
+          "value": "50k-100k"
+        },
+        {
+          "label": "Over $100,000",
+          "value": "over-100k"
+        },
+        {
+          "label": "Not sure yet",
+          "value": "unsure"
+        }
+      ],
+      "fieldGroup": "group_needs",
+      "order": 12
+    },
+    {
+      "id": "f13",
+      "name": "timeline",
+      "type": "select",
+      "label": "When do you want to start implementing growth strategies?",
+      "required": true,
+      "options": [
+        {
+          "label": "Immediately",
+          "value": "immediate"
+        },
+        {
+          "label": "Within 1 month",
+          "value": "1month"
+        },
+        {
+          "label": "Within 3 months",
+          "value": "3months"
+        },
+        {
+          "label": "Within 6 months",
+          "value": "6months"
+        },
+        {
+          "label": "Just exploring options",
+          "value": "exploring"
+        }
+      ],
+      "fieldGroup": "group_needs",
+      "order": 13
+    },
+    {
+      "id": "f14",
+      "name": "previousConsulting",
+      "type": "radio",
+      "label": "Have you worked with business consultants before?",
+      "required": true,
+      "options": [
+        {
+          "label": "Yes, with great results",
+          "value": "yes-great"
+        },
+        {
+          "label": "Yes, but results were disappointing",
+          "value": "yes-poor"
+        },
+        {
+          "label": "No, this would be my first time",
+          "value": "no-first"
+        }
+      ],
+      "fieldGroup": "group_experience",
+      "order": 14
+    },
+    {
+      "id": "f15",
+      "name": "consultingDetails",
+      "type": "textarea",
+      "label": "Tell us about your consulting experience",
+      "placeholder": "What worked well? What didn't? What are you hoping will be different this time?",
+      "required": false,
+      "validation": {
+        "maxLength": 500
+      },
+      "conditional": {
+        "field": "f14",
+        "operator": "contains",
+        "value": "yes",
+        "action": "show"
+      },
+      "fieldGroup": "group_experience",
+      "order": 15
+    },
+    {
+      "id": "f16",
+      "name": "referralSource",
+      "type": "select",
+      "label": "How did you hear about us?",
+      "required": false,
+      "options": [
+        {
+          "label": "Google Search",
+          "value": "google"
+        },
+        {
+          "label": "Social Media",
+          "value": "social"
+        },
+        {
+          "label": "Referral from a friend/colleague",
+          "value": "referral"
+        },
+        {
+          "label": "Industry publication/blog",
+          "value": "publication"
+        },
+        {
+          "label": "Conference/Event",
+          "value": "event"
+        },
+        {
+          "label": "Podcast",
+          "value": "podcast"
+        },
+        {
+          "label": "Other",
+          "value": "other"
+        }
+      ],
+      "fieldGroup": "group_experience",
+      "order": 16
+    },
+    {
+      "id": "f17",
+      "name": "additionalInfo",
+      "type": "textarea",
+      "label": "Anything else you'd like us to know?",
+      "placeholder": "Any specific questions, concerns, or additional context that would help us prepare for your strategy session...",
+      "required": false,
+      "validation": {
+        "maxLength": 500
+      },
+      "fieldGroup": "group_experience",
+      "order": 17
+    }
+  ],
+  "fieldGroups": [
+    {
+      "id": "group_personal",
+      "title": "Personal Information",
+      "description": "Let's start with your contact details",
+      "fields": ["f1", "f2", "f3", "f4"],
+      "collapsible": false
+    },
+    {
+      "id": "group_business",
+      "title": "Business Information",
+      "description": "Tell us about your company",
+      "fields": ["f5", "f6", "f7", "f8", "f9"],
+      "collapsible": false
+    },
+    {
+      "id": "group_needs",
+      "title": "Your Needs & Goals",
+      "description": "Help us understand what you're looking to achieve",
+      "fields": ["f10", "f11", "f12", "f13"],
+      "collapsible": false
+    },
+    {
+      "id": "group_experience",
+      "title": "Additional Details",
+      "description": "A few final questions to personalize your experience",
+      "fields": ["f14", "f15", "f16", "f17"],
+      "collapsible": false
+    }
+  ],
+  "validation": {
+    "enabled": true,
+    "realtime": true,
+    "showErrorSummary": true,
+    "customRules": [
+      {
+        "id": "business_email_validation",
+        "function": "validateBusinessEmail",
+        "message": "Please use a business email address (not Gmail, Yahoo, etc.)",
+        "fields": ["f3"]
+      },
+      {
+        "id": "lead_qualification",
+        "function": "calculateLeadScore",
+        "message": "Lead scoring calculation",
+        "fields": ["f7", "f8", "f9", "f12", "f13"]
+      }
+    ]
+  },
+  "submission": {
+    "type": "webhook",
+    "target": "https://api.example.com/leads/capture",
+    "method": "POST",
+    "headers": {
+      "X-API-Key": "{{API_KEY}}",
+      "Content-Type": "application/json"
+    },
+    "transform": {
+      "function": "transformLeadData",
+      "mapping": {
+        "first_name": "firstName",
+        "last_name": "lastName",
+        "email_address": "email",
+        "phone_number": "phone",
+        "company_name": "company",
+        "job_title": "title",
+        "industry_type": "industry",
+        "company_size_range": "companySize",
+        "annual_revenue_range": "revenue",
+        "business_challenges": "challenges",
+        "business_goals": "goals",
+        "budget_range": "budget",
+        "implementation_timeline": "timeline",
+        "consulting_experience": "previousConsulting",
+        "consulting_details": "consultingDetails",
+        "referral_source": "referralSource",
+        "additional_notes": "additionalInfo"
+      }
+    },
+    "successAction": {
+      "type": "redirect",
+      "redirectUrl": "https://example.com/thank-you?session=strategy"
+    },
+    "errorAction": {
+      "message": "We're sorry, there was an issue submitting your form. Please try again or contact us directly at hello@example.com",
+      "retryButton": true
+    }
+  },
+  "notifications": {
+    "admin": {
+      "enabled": true,
+      "email": "leads@example.com",
+      "template": "new_qualified_lead"
+    },
+    "user": {
+      "enabled": true,
+      "emailField": "f3",
+      "template": "strategy_session_confirmation"
+    }
+  },
+  "security": {
+    "honeypot": true,
+    "captcha": {
+      "enabled": true,
+      "provider": "recaptcha",
+      "siteKey": "6LdyC2cTAAAAAGO_HIsNlwS-8-PJ_5cHpIrDkY-V"
+    },
+    "rateLimit": {
+      "enabled": true,
+      "maxSubmissions": 3,
+      "windowMinutes": 60
+    },
+    "dataRetention": {
+      "enabled": true,
+      "retentionDays": 365,
+      "anonymizeAfterDays": 30
+    },
+    "requireConsent": true,
+    "consentText": "I agree to receive communications about business strategy and growth opportunities. I understand I can unsubscribe at any time."
+  },
+  "analytics": {
+    "enabled": true,
+    "trackViews": true,
+    "trackStarted": true,
+    "trackCompleted": true,
+    "trackFieldInteractions": true,
+    "trackErrors": true,
+    "customEvents": [
+      {
+        "name": "high_value_lead",
+        "trigger": "field_change",
+        "fields": ["f9", "f12"]
+      },
+      {
+        "name": "wizard_step_completed",
+        "trigger": "section_complete",
+        "fields": []
+      }
+    ]
+  },
+  "meta": {
+    "version": "1.0.0",
+    "createdBy": "team_dct",
+    "createdAt": "2025-09-17",
+    "tags": ["lead-capture", "qualified", "wizard", "progressive"],
+    "previewUrl": "https://preview.automationdct.com/form_lead_advanced_001",
+    "schemaVersion": "1.0.0"
+  }
+}

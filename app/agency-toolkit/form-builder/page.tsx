@@ -20,7 +20,7 @@ import { Switch } from '@/components/ui/switch'
 import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { SmartFormBuilder } from '@/components/forms/smart-builder'
-import { createFormTableCsvSchema, FormTableCsvBlock, type FormTableCsvSchema } from '@dct/form-table-csv'
+import { createFormTableCsvSchema, FormTableCsvBlock, type FormTableCsvSchema } from '@/packages/form-table-csv/src'
 import { 
   Wand2, 
   Plus, 

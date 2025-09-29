@@ -14,13 +14,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@ui/components/ui/card';
-import { Button } from '@ui/components/ui/button';
-import { Badge } from '@ui/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ui/components/ui/tabs';
-import { Alert, AlertDescription } from '@ui/components/ui/alert';
-import { Progress } from '@ui/components/ui/progress';
-import { Separator } from '@ui/components/ui/separator';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Progress } from '@/components/ui/progress';
+import { Separator } from '@/components/ui/separator';
 import { 
   CheckCircle, 
   XCircle, 

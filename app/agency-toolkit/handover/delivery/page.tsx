@@ -34,7 +34,7 @@ import {
   Server,
   Webhook,
   Eye,
-  Refresh,
+  RefreshCw,
   Filter,
   Search,
   BarChart3
@@ -331,7 +331,7 @@ export default function HandoverDeliveryDashboard() {
         </div>
         <div className="flex items-center space-x-2">
           <Button onClick={loadDeliveries} variant="outline" size="sm">
-            <Refresh className="h-4 w-4 mr-2" />
+            <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
         </div>
@@ -800,7 +800,7 @@ export default function HandoverDeliveryDashboard() {
                     onClick={() => retryDelivery(selectedDelivery.id)}
                     size="sm"
                   >
-                    <Refresh className="h-4 w-4 mr-2" />
+                    <RefreshCw className="h-4 w-4 mr-2" />
                     Retry Delivery
                   </Button>
                 )}

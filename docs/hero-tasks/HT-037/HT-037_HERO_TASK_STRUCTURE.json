@@ -8,8 +8,8 @@
     "status": "pending",
     "created_at": "2025-01-27T12:00:00.000Z",
     "updated_at": "2025-01-27T12:00:00.000Z",
-    "due_date": "2025-02-10T23:59:59.000Z",
-    "estimated_hours": 240,
+    "due_date": "2025-02-17T23:59:59.000Z",
+    "estimated_hours": 274,
     "tags": [
       "design-excellence",
       "visual-quality",
@@ -36,13 +36,13 @@
     "assignee": "design-team",
     "metadata": {
       "phases": 5,
-      "total_subtasks": 30,
-      "estimated_total_hours": 240,
-      "target_completion": "2025-02-10",
+      "total_subtasks": 32,
+      "estimated_total_hours": 274,
+      "target_completion": "2025-02-17",
       "business_value": "critical",
       "technical_complexity": "high",
       "risk_level": "medium",
-      "verification_checkpoints": 280,
+      "verification_checkpoints": 340,
       "design_quality_targets": {
         "visual_appeal": "Industry-leading (95/100)",
         "typography_quality": "Premium (98/100)",
@@ -259,7 +259,7 @@
       "description": "IMPLEMENT PHASE: Create sophisticated color palettes with advanced color theory, implement semantic color systems, establish premium brand identity, and create visual consistency that elevates the entire design system.",
       "status": "pending",
       "priority": "critical",
-      "estimated_hours": 50,
+      "estimated_hours": 84,
       "workflow_phase": "implement",
       "tags": ["color-systems", "brand-identity", "color-theory", "visual-consistency"],
       "actions": [
@@ -341,6 +341,66 @@
             "Visual regression testing for brand consistency using automated testing tools and manual quality assurance",
             "Color system documentation with usage guidelines, accessibility notes, and implementation examples",
             "Brand system performance testing with user experience analysis and brand impact measurement"
+          ]
+        },
+        {
+          "action_number": "HT-037.3.5",
+          "title": "Client-Scoped Core Pages Design Enhancement",
+          "description": "Apply enhanced design system to the core client-scoped pages that are essential for the DCT Micro-Apps platform functionality. Focus on the main client workflow pages that directly impact the ≤7-day delivery process.",
+          "estimated_hours": 8,
+          "status": "pending",
+          "priority": "critical",
+          "verification_checkpoints": [
+            "Client selection page (/clients) premium design with clear client workspace access and professional appearance",
+            "Client workspace dashboard (/clients/[clientId]) main control center with enhanced visual hierarchy and status overview",
+            "Client intake page (/intake) professional onboarding experience with clear form design and branding",
+            "Client form customization (/clients/[clientId]/customize/forms) enhanced form builder interface with client-specific branding",
+            "Client brand customization (/clients/[clientId]/customize/theming) premium theming interface with live preview capabilities",
+            "Client workflow automation (/clients/[clientId]/customize/workflows) professional automation setup with clear workflow visualization",
+            "Client testing page (/clients/[clientId]/testing) comprehensive testing interface with clear status indicators and progress tracking",
+            "Client deployment page (/clients/[clientId]/deploy) professional deployment interface with staging and production management",
+            "Client handover page (/clients/[clientId]/handover) complete handover interface with documentation and training materials",
+            "Admin dashboard (/admin) agency-level management with professional monitoring and oversight interface",
+            "System monitoring (/operability/health-monitoring) enterprise-grade health dashboard with clear metrics visualization",
+            "Feature flags (/operability/flags) professional feature management interface with clear toggle controls",
+            "Mobile responsiveness validation across all client-scoped pages with consistent design patterns",
+            "Cross-browser compatibility testing for design consistency across Chrome, Firefox, Safari, Edge",
+            "Performance optimization for all client-scoped pages to maintain Core Web Vitals with enhanced design",
+            "Accessibility compliance validation across all client-scoped pages with WCAG 2.1 AAA standards",
+            "Visual regression testing for all client-scoped pages to ensure design consistency and prevent regressions",
+            "Client workflow testing with real client data to validate design system application",
+            "Complete client-scoped design system documentation with page-specific implementation guidelines",
+            "Client experience validation with user testing to ensure enhanced design improves workflow efficiency"
+          ]
+        },
+        {
+          "action_number": "HT-037.3.6",
+          "title": "Supporting Pages Design System Application",
+          "description": "Apply enhanced design system to supporting pages that complement the core client-scoped workflow. These pages provide essential functionality and must maintain visual consistency with the main client workflow.",
+          "estimated_hours": 6,
+          "status": "pending",
+          "priority": "high",
+          "verification_checkpoints": [
+            "Homepage design enhancement with premium typography, color system, and layout patterns that showcase client capabilities",
+            "Login and authentication pages visual enhancement with secure, professional appearance and client branding",
+            "Agency toolkit pages (/agency-toolkit/*) design system application for legacy support and agency management",
+            "Template engine pages (/template-engine/*) visual consistency with enhanced design patterns for template management",
+            "Security pages (/security/*) professional design with trust-building visual elements and compliance indicators",
+            "Production pages (/production/*) enterprise-grade design with monitoring dashboard aesthetics and performance metrics",
+            "Developer tools pages (/developer-tools/*) technical design with clear information hierarchy and development workflow",
+            "Marketplace pages (/marketplace/*) commercial design with conversion-optimized layouts and client showcase",
+            "Consultation pages (/consultation/*) client-facing design with premium consultation experience and professional presentation",
+            "Integration pages (/integrations/*) technical design with clear integration visualization and connection management",
+            "All dynamic route pages ([slug]/*) consistent design application across generated client content",
+            "Mobile responsiveness validation across all supporting pages with consistent design patterns",
+            "Cross-browser compatibility testing for design consistency across Chrome, Firefox, Safari, Edge",
+            "Performance optimization for all supporting pages to maintain Core Web Vitals with enhanced design",
+            "Accessibility compliance validation across all supporting pages with WCAG 2.1 AAA standards",
+            "Visual regression testing for all supporting pages to ensure design consistency and prevent regressions",
+            "Supporting page integration testing with core client workflow to ensure seamless user experience",
+            "Complete supporting pages design system documentation with implementation guidelines",
+            "Supporting pages user experience validation with workflow testing and user feedback collection",
+            "Design system consistency validation across all supporting pages to ensure cohesive visual experience"
           ]
         }
       ]
@@ -580,33 +640,38 @@
       ]
     },
     "phase_3": {
-      "duration": "6 days",
+      "duration": "8 days",
       "start_date": "2025-02-05",
-      "end_date": "2025-02-10",
+      "end_date": "2025-02-12",
       "focus": "Sophisticated color systems and brand identity",
       "resource_allocation": {
         "color_specialist": "30 hours",
         "brand_designer": "25 hours",
         "component_developer": "20 hours",
-        "accessibility_tester": "10 hours"
+        "accessibility_tester": "10 hours",
+        "page_developer": "20 hours"
       },
       "critical_checkpoints": [
         "Advanced color palette and color theory implementation with accessibility compliance",
         "Premium brand identity and visual consistency with brand guideline creation",
         "Component visual enhancement and refinement with design system integration",
-        "Color and brand system integration testing with cross-device validation"
+        "Color and brand system integration testing with cross-device validation",
+        "Client-scoped core pages design enhancement across essential workflow pages",
+        "Supporting pages design system application for complementary functionality"
       ],
       "deliverables": [
         "Color System Documentation",
         "Brand Identity Guidelines",
         "Component Enhancement Report",
-        "Brand System Testing Results"
+        "Brand System Testing Results",
+        "Client-Scoped Core Pages Design Enhancement Report",
+        "Supporting Pages Design System Application Report"
       ]
     },
     "phase_4": {
       "duration": "7 days",
-      "start_date": "2025-02-08",
-      "end_date": "2025-02-14",
+      "start_date": "2025-02-10",
+      "end_date": "2025-02-16",
       "focus": "Premium micro-interactions and animation system",
       "resource_allocation": {
         "interaction_designer": "35 hours",
@@ -629,8 +694,8 @@
     },
     "phase_5": {
       "duration": "4 days",
-      "start_date": "2025-02-12",
-      "end_date": "2025-02-15",
+      "start_date": "2025-02-14",
+      "end_date": "2025-02-17",
       "focus": "Comprehensive validation and quality assurance",
       "resource_allocation": {
         "qa_lead": "25 hours",

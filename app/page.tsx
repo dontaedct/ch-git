@@ -101,6 +101,18 @@ export default function HomePage() {
                 Process
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </a>
+              <a href="/framer-test" className="text-sm font-semibold transition-all duration-300 text-medium-emphasis hover:text-high-emphasis hover:scale-105 relative group">
+                Framer Test
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="/automation-dct" className="text-sm font-semibold transition-all duration-300 text-medium-emphasis hover:text-high-emphasis hover:scale-105 relative group">
+                Agency Homepage
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </a>
+              <a href="/agency-toolkit-test" className="text-sm font-semibold transition-all duration-300 text-medium-emphasis hover:text-high-emphasis hover:scale-105 relative group">
+                Toolkit Test
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </a>
               <a href="#contact" className="text-sm font-semibold transition-all duration-300 text-medium-emphasis hover:text-high-emphasis hover:scale-105 relative group">
                 Contact
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
@@ -186,6 +198,9 @@ export default function HomePage() {
                 {[
                   { href: "#solutions", text: "Solutions", icon: "🎯" },
                   { href: "#how-it-works", text: "Process", icon: "⚙️" },
+                  { href: "/framer-test", text: "Framer Test", icon: "🎨" },
+                  { href: "/automation-dct", text: "Agency Homepage", icon: "🏢" },
+                  { href: "/agency-toolkit-test", text: "Toolkit Test", icon: "🛠️" },
                   { href: "#contact", text: "Contact", icon: "📞" }
                 ].map((item) => (
                   <a

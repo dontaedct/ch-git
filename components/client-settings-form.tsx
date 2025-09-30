@@ -22,7 +22,7 @@ import {
   Mail,
   Calendar,
   Palette,
-  Modules,
+  Package,
   Shield,
   Eye,
   Zap,
@@ -209,7 +209,7 @@ export function ClientSettingsForm() {
             Branding
           </TabsTrigger>
           <TabsTrigger value="modules" className="flex items-center gap-2">
-            <Modules className="w-4 h-4" />
+            <Package className="w-4 h-4" />
             Features
           </TabsTrigger>
           <TabsTrigger value="security" className="flex items-center gap-2">

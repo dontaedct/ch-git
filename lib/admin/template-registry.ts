@@ -9,10 +9,11 @@
  */
 
 import { z } from 'zod';
-import { 
-  TemplateRegistration, 
-  TemplateInstance, 
-  TemplateStatus, 
+import {
+  TemplateRegistration,
+  TemplateRegistrationSchema,
+  TemplateInstance,
+  TemplateStatus,
   TemplateManager,
   TemplateEvent,
   TemplateValidationResult,
@@ -634,7 +635,7 @@ export class TemplateRegistryManager implements TemplateManager {
 
     try {
       // Validate using Zod schema
-      TemplateRegistration.parse(registration);
+      TemplateRegistrationSchema.parse(registration);
     } catch (error) {
       if (error instanceof z.ZodError) {
         errors.push(...error.errors.map(e => `${e.path.join('.')}: ${e.message}`));

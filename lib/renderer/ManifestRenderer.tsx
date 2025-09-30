@@ -6,7 +6,8 @@
  * with full theme customization, conditional logic, and error boundaries.
  */
 
-import React, { Suspense, ErrorBoundary, useMemo } from 'react';
+import React, { Suspense, useMemo } from 'react';
+import { ErrorBoundary } from '@/components/ui/error-boundary';
 import { TemplateManifest, FormManifest, BaseComponent, FormField } from '../../types/componentContracts';
 import { getComponentRegistry } from './ComponentRegistry';
 import { ThemeProvider } from './ThemeProvider';

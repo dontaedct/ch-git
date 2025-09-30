@@ -8,7 +8,15 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Performance optimizations for development
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
   experimental: {
+    // Enable faster builds
+    optimizeCss: true,
+    // Enable Turbopack for faster development builds
     turbo: {
       rules: {
         '*.svg': {

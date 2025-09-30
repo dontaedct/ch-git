@@ -13,6 +13,8 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".next/tsbuildinfo",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
@@ -35,7 +37,6 @@
     "typeRoots": ["types", "node_modules/@types"],
     "types": ["node"],
     "allowJs": false,
-    "incremental": true,
     "plugins": [
       {
         "name": "next"

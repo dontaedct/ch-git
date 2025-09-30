@@ -1316,11 +1316,4 @@ export function createConfigNamespaceManager(
   return new ConfigNamespaceManagerImpl(sandbox, configManager);
 }
 
-// =============================================================================
-// EXPORTS
-// =============================================================================
-
-export {
-  ConfigNamespaceManagerImpl,
-};
 

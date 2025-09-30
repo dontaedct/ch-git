@@ -1072,11 +1072,4 @@ export function createTenantConfigManager(sandbox: ModuleSandbox): TenantConfigM
   return new TenantConfigManagerImpl(sandbox);
 }
 
-// =============================================================================
-// EXPORTS
-// =============================================================================
-
-export {
-  TenantConfigManagerImpl,
-};
 

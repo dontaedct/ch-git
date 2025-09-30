@@ -8,8 +8,8 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Performance optimizations for development
-  swcMinify: true,
+  // Reduce memory usage during build
+  swcMinify: false,
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },

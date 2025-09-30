@@ -8,7 +8,7 @@ import { requireClient } from '@/lib/auth/guard';
 import { getPublicEnv } from '@/lib/env';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Modules2, Zap, Package, Settings } from 'lucide-react';
+import { ArrowLeft, Package2, Zap, Package, Settings } from 'lucide-react';
 import { MicroAppModulesManager } from '@/components/microapp-modules-manager';
 
 export default async function ModulesPage() {
@@ -39,7 +39,7 @@ export default async function ModulesPage() {
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 rounded-lg bg-primary/10">
-              <Modules2 className="w-6 h-6 text-primary" />
+              <Package2 className="w-6 h-6 text-primary" />
             </div>
             <div>
               <h1 className="text-3xl font-bold">Module Management</h1>

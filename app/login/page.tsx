@@ -28,10 +28,6 @@ export default function LoginPage() {
     setMounted(true)
   }, [])
 
-  if (!mounted) return null
-
-  const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
-
   useEffect(() => {
     const error = searchParams.get('error')
     if (error === 'auth_callback_error') {
@@ -50,6 +46,10 @@ export default function LoginPage() {
     
     checkAuth()
   }, [searchParams])
+
+  if (!mounted) return null
+
+  const isDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark')
 
   const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault()

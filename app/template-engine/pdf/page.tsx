@@ -41,7 +41,8 @@ import {
   Zap,
   Shield,
   Globe,
-  Code2
+  Code2,
+  Copy
 } from "lucide-react";
 
 interface PDFTemplate {

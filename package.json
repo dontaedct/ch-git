@@ -18,7 +18,7 @@
     "tokens:build:comprehensive": "style-dictionary build --config style-dictionary.config.cjs",
     "tokens:watch": "style-dictionary build --config style-dictionary.config.js --watch",
     "tokens:validate": "node scripts/validate-tokens.js",
-    "dev": "next dev",
+    "dev": "node scripts/smart-server.js",
     "dev:fast": "node scripts/fast-dev.js",
     "dev:clean": "node scripts/clean-dev.js && npm run dev:fast",
     "dev:smart": "node scripts/smart-server.js",

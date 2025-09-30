@@ -39,7 +39,8 @@ import {
   Workflow,
   CheckCircle2,
   AlertCircle,
-  Info
+  Info,
+  Clock
 } from "lucide-react";
 
 interface QuestionOption {

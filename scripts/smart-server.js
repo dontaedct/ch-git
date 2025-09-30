@@ -7,6 +7,8 @@
 
 import { exec, spawn } from 'child_process';
 import { promisify } from 'util';
+import fs from 'fs';
+import path from 'path';
 const execAsync = promisify(exec);
 
 class SmartServerManager {
@@ -14,6 +16,10 @@ class SmartServerManager {
     this.defaultPort = 3000;
     this.backupPorts = [3001, 3002, 3003, 3004, 3005];
     this.isWindows = process.platform === 'win32';
+    
+    // Development optimizations
+    process.env.NEXT_TELEMETRY_DISABLED = '1';
+    process.env.FAST_REFRESH = 'true';
   }
 
   async findProcessOnPort(port) {
@@ -39,8 +45,7 @@ class SmartServerManager {
   async killProcessOnPort(port) {
     const pid = await this.findProcessOnPort(port);
     if (!pid) {
-      console.log(`✅ Port ${port} is already free`);
-      return true;
+      return true; // Port is free, no need to log
     }
 
     console.log(`🔫 Killing process ${pid} on port ${port}...`);
@@ -52,18 +57,17 @@ class SmartServerManager {
         await execAsync(`kill -9 ${pid}`);
       }
 
-      // Wait a moment for process to die
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Reduced wait time for faster startup
+      await new Promise(resolve => setTimeout(resolve, 500));
 
-      // Verify it's dead
+      // Quick verification
       const stillRunning = await this.findProcessOnPort(port);
       if (stillRunning) {
-        console.log(`⚠️ Process still running on port ${port}, trying again...`);
+        console.log(`⚠️ Process still running on port ${port}, trying nuclear option...`);
         if (this.isWindows) {
-          // Nuclear option for Windows
           await execAsync(`wmic process where "CommandLine like '%node%' and CommandLine like '%${port}%'" delete`);
         }
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
       console.log(`✅ Successfully freed port ${port}`);
@@ -104,19 +108,20 @@ class SmartServerManager {
   }
 
   async killAllDevServers() {
-    console.log('🧹 Cleaning up all development servers...');
+    console.log('🧹 Cleaning up development servers...');
 
-    const ports = [this.defaultPort, ...this.backupPorts];
-    const killPromises = ports.map(port => this.killProcessOnPort(port));
+    // Only kill processes on the default port first, then check others if needed
+    await this.killProcessOnPort(this.defaultPort);
+    
+    // Quick check if we need to clean other ports
+    const otherPorts = this.backupPorts.slice(0, 2); // Only check first 2 backup ports
+    const killPromises = otherPorts.map(port => this.killProcessOnPort(port));
     await Promise.all(killPromises);
 
-    // Also kill any processes that might be lingering
+    // Light cleanup of lingering processes (reduced commands)
     if (this.isWindows) {
       const commands = [
-        'wmic process where "name=\'node.exe\' and CommandLine like \'%next%\'" delete',
-        'wmic process where "name=\'node.exe\' and CommandLine like \'%dev%\'" delete',
-        'for /f "tokens=5" %a in (\'netstat -aon ^| findstr :3000\') do taskkill /f /pid %a',
-        'for /f "tokens=5" %a in (\'netstat -aon ^| findstr :3001\') do taskkill /f /pid %a'
+        'wmic process where "name=\'node.exe\' and CommandLine like \'%next%\'" delete'
       ];
 
       for (const cmd of commands) {
@@ -128,21 +133,83 @@ class SmartServerManager {
       }
     } else {
       await execAsync('pkill -f "next.*dev"').catch(() => {});
-      await execAsync('pkill -f "node.*dev"').catch(() => {});
     }
 
-    console.log('✅ All development servers cleaned up');
+    console.log('✅ Development servers cleaned up');
+  }
+
+  shouldRebuildTokens(sourceDir, outputDir) {
+    try {
+      // If output directory doesn't exist, we need to build
+      if (!fs.existsSync(outputDir)) {
+        return true;
+      }
+
+      // Get the most recent modification time of source files
+      const getLatestSourceTime = (dir) => {
+        let latestTime = 0;
+        if (fs.existsSync(dir)) {
+          const files = fs.readdirSync(dir, { withFileTypes: true });
+          for (const file of files) {
+            const fullPath = path.join(dir, file.name);
+            if (file.isDirectory()) {
+              latestTime = Math.max(latestTime, getLatestSourceTime(fullPath));
+            } else if (file.name.endsWith('.json')) {
+              const stat = fs.statSync(fullPath);
+              latestTime = Math.max(latestTime, stat.mtime.getTime());
+            }
+          }
+        }
+        return latestTime;
+      };
+
+      // Get the oldest modification time of output files
+      const getOldestOutputTime = (dir) => {
+        let oldestTime = Infinity;
+        if (fs.existsSync(dir)) {
+          const files = fs.readdirSync(dir, { withFileTypes: true });
+          for (const file of files) {
+            const fullPath = path.join(dir, file.name);
+            if (file.isDirectory()) {
+              oldestTime = Math.min(oldestTime, getOldestOutputTime(fullPath));
+            } else {
+              const stat = fs.statSync(fullPath);
+              oldestTime = Math.min(oldestTime, stat.mtime.getTime());
+            }
+          }
+        }
+        return oldestTime === Infinity ? 0 : oldestTime;
+      };
+
+      const sourceTime = getLatestSourceTime(sourceDir);
+      const outputTime = getOldestOutputTime(outputDir);
+
+      // Rebuild if source files are newer than output files
+      return sourceTime > outputTime;
+    } catch (error) {
+      // If we can't check, err on the side of caution and rebuild
+      return true;
+    }
   }
 
   async startServer(command = 'npm run dev', port = null) {
     // Kill existing servers first
     await this.killAllDevServers();
 
-    // Build design tokens first
+    // Build design tokens with caching
     console.log('🔧 Building design tokens...');
     try {
-      await execAsync('npm run tokens:build');
-      console.log('✅ Design tokens built successfully');
+      // Check if tokens need rebuilding (only if source files changed)
+      const tokenSourceDir = 'tokens';
+      const tokenOutputDir = 'dist/tokens';
+      
+      if (this.shouldRebuildTokens(tokenSourceDir, tokenOutputDir)) {
+        // Use parallel processing for faster token building
+        await execAsync('npm run tokens:build -- --parallel');
+        console.log('✅ Design tokens built successfully');
+      } else {
+        console.log('✅ Design tokens are up to date, skipping build');
+      }
     } catch (error) {
       console.log('⚠️ Token build failed, continuing anyway:', error.message);
     }

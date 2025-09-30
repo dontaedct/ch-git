@@ -8,7 +8,7 @@ import { requireClient } from '@/lib/auth/guard';
 import { getPublicEnv } from '@/lib/env';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Settings2, Palette, Mail, Calendar, Modules, Shield } from 'lucide-react';
+import { ArrowLeft, Settings2, Palette, Mail, Calendar, Package, Shield } from 'lucide-react';
 import { ClientSettingsForm } from '@/components/client-settings-form';
 
 export default async function SettingsPage() {
@@ -70,7 +70,7 @@ export default async function SettingsPage() {
               color: 'text-purple-600 bg-purple-100'
             },
             {
-              icon: Modules,
+              icon: Package,
               title: 'Feature Modules',
               description: 'Enable/disable functionality',
               color: 'text-orange-600 bg-orange-100'

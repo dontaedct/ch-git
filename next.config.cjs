@@ -9,25 +9,23 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Reduce memory usage during build
+  // Aggressive memory reduction for Vercel 8GB limit
   swcMinify: false,
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: false, // Disable to save memory
   },
   experimental: {
-    // Enable faster builds
-    optimizeCss: true,
-    // Enable Turbopack for faster development builds
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
+    // Disable memory-intensive features
+    optimizeCss: false,
+    // Disable Turbopack to reduce memory usage
   },
   webpack: (config, { isServer }) => {
+    // Reduce memory usage
+    config.optimization = {
+      ...config.optimization,
+      minimize: false, // Disable minification to save memory
+    };
+
     // Exclude Node.js-specific modules from client bundle
     if (!isServer) {
       config.resolve.fallback = {

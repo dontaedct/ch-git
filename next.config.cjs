@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+// Build trigger
 const nextConfig = {
   // Production-safe configuration - removed dangerous build ignores
   eslint: {

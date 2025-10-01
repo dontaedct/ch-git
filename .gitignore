@@ -26,3 +26,12 @@ nul
 
 # TypeScript build cache
 tsconfig.tsbuildinfo
+
+# Test directories and temporary pages
+**/*-test/
+app/test-pages/
+components/dashboard/
+styles/dashboard-shared.css
+
+# Backup files
+untracked-backup-*.tar.gz

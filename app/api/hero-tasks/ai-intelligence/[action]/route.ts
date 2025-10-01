@@ -5,15 +5,26 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createRealSupabaseClient } from '@/lib/supabase/server';
-import { 
-  TaskIntelligenceEngine,
-  generateTaskSuggestions,
-  detectTaskDependencies,
-  suggestTaskPriority,
-  learnFromTaskCompletion,
-  TaskIntelligenceConfig
-} from '@/lib/ai/task-intelligence';
+// TODO: Re-enable when AI task intelligence is implemented
+// import {
+//   TaskIntelligenceEngine,
+//   generateTaskSuggestions,
+//   detectTaskDependencies,
+//   suggestTaskPriority,
+//   learnFromTaskCompletion,
+//   TaskIntelligenceConfig
+// } from '@/lib/ai/task-intelligence';
 import { createRouteLogger } from '@/lib/logging/route-logger';
+
+// Temporary stubs for MVP
+type TaskIntelligenceConfig = any;
+class TaskIntelligenceEngine {
+  async analyze() { return { success: true, data: null }; }
+}
+const generateTaskSuggestions = async () => ({ suggestions: [] });
+const detectTaskDependencies = async () => ({ dependencies: [] });
+const suggestTaskPriority = async () => ({ priority: 'medium' });
+const learnFromTaskCompletion = async () => ({ success: true });
 
 const routeLogger = createRouteLogger('POST', '/api/hero-tasks/ai-intelligence');
 

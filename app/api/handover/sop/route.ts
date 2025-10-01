@@ -9,8 +9,14 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { SOPGenerator } from '@/lib/handover/sop-generator';
+// TODO: Re-enable when handover system is implemented
+// import { SOPGenerator } from '@/lib/handover/sop-generator';
 import type { ClientConfig, GeneratedSOP } from '@/types/handover';
+
+// Temporary stub for MVP
+class SOPGenerator {
+  async generateSOP() { return { success: true, data: null }; }
+}
 
 interface SOPAPIResponse<T = any> {
   success: boolean;

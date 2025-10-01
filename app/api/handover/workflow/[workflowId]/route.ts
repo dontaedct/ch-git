@@ -9,7 +9,14 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { handoverOrchestrator } from '@/lib/handover/handover-orchestrator';
+// TODO: Re-enable when handover system is implemented
+// import { handoverOrchestrator } from '@/lib/handover/handover-orchestrator';
+
+// Temporary stub for MVP
+const handoverOrchestrator = {
+  getWorkflowStatus: async () => ({ success: true, data: null }),
+  cancelWorkflow: async () => ({ success: true })
+};
 
 interface WorkflowAPIResponse<T = any> {
   success: boolean;

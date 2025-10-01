@@ -6,8 +6,17 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { TenantBrandingService } from '@/lib/branding/tenant-service';
+// TODO: Re-enable when branding system is implemented
+// import { TenantBrandingService } from '@/lib/branding/tenant-service';
 import { getClientEnv } from '@/lib/env-client';
+
+// Temporary stub for MVP
+class TenantBrandingService {
+  constructor(_url: string, _key: string) {}
+  async getBranding() { return { data: null }; }
+  async updateBranding() { return { data: null }; }
+  async deleteBranding() { return { data: null }; }
+}
 
 const brandingService = new TenantBrandingService(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

@@ -1,32 +1,40 @@
 /** @type {import('next').NextConfig} */
-// Build trigger
 const nextConfig = {
-  // Production-safe configuration - removed dangerous build ignores
+  // MVP Production Configuration
+  // Gradual re-enabling of safety checks as we fix issues
+
   eslint: {
     dirs: ['app', 'lib', 'components', 'hooks', 'types'],
+    // Keep disabled during MVP development, will re-enable after fixing errors
     ignoreDuringBuilds: true,
   },
+
   typescript: {
+    // Keep disabled during MVP development, will re-enable after fixing errors
     ignoreBuildErrors: true,
   },
-  // Aggressive memory reduction for Vercel 8GB limit
-  swcMinify: false,
-  compiler: {
-    removeConsole: false, // Disable to save memory
-  },
-  experimental: {
-    // Disable memory-intensive features
-    optimizeCss: false,
-    // Disable Turbopack to reduce memory usage
-  },
-  webpack: (config, { isServer }) => {
-    // Reduce memory usage
-    config.optimization = {
-      ...config.optimization,
-      minimize: false, // Disable minification to save memory
-    };
 
-    // Exclude Node.js-specific modules from client bundle
+  // Experimental features
+  experimental: {
+    skipTrailingSlashRedirect: true,
+    skipMiddlewareUrlNormalize: true,
+  },
+
+  // Production optimizations (re-enabled for MVP)
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+
+  // Image optimization
+  images: {
+    domains: ['localhost', 'arczonwbczqbouwstmbs.supabase.co'],
+    formats: ['image/avif', 'image/webp'],
+  },
+
+  // Webpack configuration
+  webpack: (config, { isServer }) => {
+    // Client-side fallbacks for Node.js modules
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -34,19 +42,54 @@ const nextConfig = {
         path: false,
         os: false,
         crypto: false,
+        stream: false,
+        buffer: false,
       };
     }
 
-    // Exclude server-only AI runners from client bundle
-    config.externals = config.externals || [];
-    if (!isServer) {
-      config.externals.push({
-        'lib/ai/runners/runEval': 'commonjs lib/ai/runners/runEval',
-        'lib/ai/runners/runEvalCI': 'commonjs lib/ai/runners/runEvalCI',
-      });
-    }
+    // Optimize bundle splitting
+    config.optimization = {
+      ...config.optimization,
+      moduleIds: 'deterministic',
+      runtimeChunk: 'single',
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          default: false,
+          vendors: false,
+          // Vendor chunk
+          vendor: {
+            name: 'vendor',
+            chunks: 'all',
+            test: /node_modules/,
+            priority: 20,
+          },
+          // Common chunk
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 10,
+            reuseExistingChunk: true,
+            enforce: true,
+          },
+          // UI components chunk
+          ui: {
+            name: 'ui',
+            test: /[\\/]components[\\/]ui[\\/]/,
+            chunks: 'all',
+            priority: 30,
+          },
+        },
+      },
+    };
 
     return config;
+  },
+
+  // Production URL (update with your domain)
+  env: {
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   },
 };
 

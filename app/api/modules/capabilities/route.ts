@@ -14,9 +14,26 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { capabilityRegistry, CapabilityRegistryEntry, CapabilityDiscoveryQuery, CapabilityComposition } from '@/lib/modules/capability-registry'
-import { moduleRegistry } from '@/lib/modules/module-registry'
-import { lifecycleManager } from '@/lib/modules/module-lifecycle'
+// TODO: Re-enable when modules system is implemented
+// import { capabilityRegistry, CapabilityRegistryEntry, CapabilityDiscoveryQuery, CapabilityComposition } from '@/lib/modules/capability-registry'
+// import { moduleRegistry } from '@/lib/modules/module-registry'
+// import { lifecycleManager } from '@/lib/modules/module-lifecycle'
+
+// Temporary stubs for MVP
+type CapabilityRegistryEntry = any;
+type CapabilityDiscoveryQuery = any;
+type CapabilityComposition = any;
+const capabilityRegistry = {
+  get: () => null,
+  register: () => {},
+  discover: () => []
+};
+const moduleRegistry = {
+  get: () => null
+};
+const lifecycleManager = {
+  getStatus: () => 'inactive'
+};
 
 // =============================================================================
 // REQUEST/RESPONSE SCHEMAS

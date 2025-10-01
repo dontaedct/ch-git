@@ -5,14 +5,24 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createRealSupabaseClient } from '@/lib/supabase/server';
-import { 
-  NaturalLanguageProcessor,
-  parseNaturalLanguageTask,
-  extractTaskEntities,
-  recognizeTaskIntent,
-  NLPConfig
-} from '@/lib/ai/natural-language-processing';
+// TODO: Re-enable when NLP system is implemented
+// import {
+//   NaturalLanguageProcessor,
+//   parseNaturalLanguageTask,
+//   extractTaskEntities,
+//   recognizeTaskIntent,
+//   NLPConfig
+// } from '@/lib/ai/natural-language-processing';
 import { createRouteLogger } from '@/lib/logging/route-logger';
+
+// Temporary stubs for MVP
+type NLPConfig = any;
+class NaturalLanguageProcessor {
+  async process() { return { success: true, data: null }; }
+}
+const parseNaturalLanguageTask = async () => ({ task: null });
+const extractTaskEntities = async () => ({ entities: [] });
+const recognizeTaskIntent = async () => ({ intent: 'unknown' });
 
 const routeLogger = createRouteLogger('POST', '/api/hero-tasks/nlp');
 

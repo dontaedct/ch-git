@@ -15,19 +15,38 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { 
-  zeroDowntimeActivator, 
-  ZeroDowntimeActivationConfig,
-  ActivationResult,
-  ActivationProgress
-} from '@/lib/modules/zero-downtime-activator'
-import { 
-  activationValidator,
-  ActivationConfiguration,
-  ValidationConfiguration 
-} from '@/lib/modules/activation-validator'
-import { moduleRegistry, ModuleRegistryEntry } from '@/lib/modules/module-registry'
+// TODO: Re-enable when modules system is implemented
+// import {
+//   zeroDowntimeActivator,
+//   ZeroDowntimeActivationConfig,
+//   ActivationResult,
+//   ActivationProgress
+// } from '@/lib/modules/zero-downtime-activator'
+// import {
+//   activationValidator,
+//   ActivationConfiguration,
+//   ValidationConfiguration
+// } from '@/lib/modules/activation-validator'
+// import { moduleRegistry, ModuleRegistryEntry } from '@/lib/modules/module-registry'
 import { createClient } from '@/lib/supabase/server'
+
+// Temporary stubs for MVP
+type ZeroDowntimeActivationConfig = any;
+type ActivationResult = any;
+type ActivationProgress = any;
+type ActivationConfiguration = any;
+type ValidationConfiguration = any;
+type ModuleRegistryEntry = any;
+const zeroDowntimeActivator = {
+  activate: async () => ({ success: true, data: null })
+};
+const activationValidator = {
+  validate: async () => ({ valid: true })
+};
+const moduleRegistry = {
+  get: () => null,
+  register: () => {}
+};
 
 // =============================================================================
 // REQUEST/RESPONSE SCHEMAS

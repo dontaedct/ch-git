@@ -1,7 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { useBrandStyling } from '@/lib/branding/use-brand-styling';
+// TODO: Re-enable when branding system is implemented
+// import { useBrandStyling } from '@/lib/branding/use-brand-styling';
+
+// Temporary stub hook for MVP
+const useBrandStyling = () => ({
+  getBrandClasses: () => 'w-[99%]'
+});
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

@@ -12,7 +12,19 @@ import { AlertCircle, RefreshCw, Save, Undo2 } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { useToast } from '@/hooks/use-toast'
 import { getBaseConfigClient } from '@/lib/config/modules-client'
-import { getCatalogOverrides, saveCatalogOverrides, resetCatalogOverrides, CatalogOverrides } from '@/lib/modules/catalog-actions'
+// TODO: Re-enable when modules system is implemented
+// import { getCatalogOverrides, saveCatalogOverrides, resetCatalogOverrides, CatalogOverrides } from '@/lib/modules/catalog-actions'
+
+// Temporary stub types and functions for MVP
+type CatalogOverrides = Record<string, {
+  title?: string;
+  includes?: string[];
+  priceBand?: string;
+}>;
+
+const getCatalogOverrides = async (clientId: string): Promise<CatalogOverrides> => ({ });
+const saveCatalogOverrides = async (clientId: string, overrides: CatalogOverrides) => ({ success: true });
+const resetCatalogOverrides = async (clientId: string) => ({ success: true });
 import { Plan, PlanCatalog } from '@/types/config'
 
 // Use the CatalogOverrides type from actions

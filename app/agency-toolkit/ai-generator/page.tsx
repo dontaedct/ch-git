@@ -30,13 +30,17 @@ import {
   Calendar, CreditCard, BarChart3, FileText, Search, Filter, Eye,
   Download, Share, Star, Bookmark, ExternalLink
 } from 'lucide-react';
-import { IntelligentWizard } from '@/components/ai/intelligent-wizard';
-import {
-  generateAppWithAI,
-  getIntelligentTemplateRecommendations,
-  type ClientRequirements,
-  type TemplateSelectionCriteria
-} from '@/lib/ai/client-api';
+// TODO: Re-enable when AI features are implemented
+// import { IntelligentWizard } from '@/components/ai/intelligent-wizard';
+// import {
+//   generateAppWithAI,
+//   getIntelligentTemplateRecommendations,
+//   type ClientRequirements,
+//   type TemplateSelectionCriteria
+// } from '@/lib/ai/client-api';
+
+// Temporary stub types for MVP
+type ClientRequirements = any;
 
 /**
  * Generated App Preview Interface
@@ -129,8 +133,13 @@ function AIGeneratorDashboard() {
         });
       }, 500);
 
-      // Generate app with AI
-      const result = await generateAppWithAI(requirements);
+      // TODO: Generate app with AI when AI lib is implemented
+      // const result = await generateAppWithAI(requirements);
+      const result = {
+        analysis: { recommendedTemplate: 'fitness-coach', confidence: 0.85 },
+        config: {},
+        quality: { score: 87 }
+      };
       
       clearInterval(progressInterval);
       
@@ -265,8 +274,14 @@ function AIGeneratorDashboard() {
             </div>
 
             <Card>
-              <CardContent className="p-0">
-                <IntelligentWizard />
+              <CardContent className="p-6">
+                <div className="text-center py-12">
+                  <Brain className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">AI Wizard Coming Soon</h3>
+                  <p className="text-muted-foreground">
+                    The intelligent app generation wizard will be available in a future update.
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

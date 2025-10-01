@@ -11,21 +11,41 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { 
-  walkthroughRecorder,
-  createRecordingConfiguration,
-  type RecordingConfiguration,
-  type ScenarioType,
-  SCENARIO_TEMPLATES
-} from '../../../../lib/handover/walkthrough-recorder';
-import { 
-  screenCapture,
-  createCaptureConfiguration
-} from '../../../../lib/handover/screen-capture';
-import { 
-  videoEditor,
-  createVideoEditingConfiguration
-} from '../../../../lib/handover/video-editor';
+// TODO: Re-enable when handover system is implemented
+// import {
+//   walkthroughRecorder,
+//   createRecordingConfiguration,
+//   type RecordingConfiguration,
+//   type ScenarioType,
+//   SCENARIO_TEMPLATES
+// } from '../../../../lib/handover/walkthrough-recorder';
+// import {
+//   screenCapture,
+//   createCaptureConfiguration
+// } from '../../../../lib/handover/screen-capture';
+
+// Temporary stubs for MVP
+type RecordingConfiguration = any;
+type ScenarioType = any;
+const SCENARIO_TEMPLATES: any = {};
+const walkthroughRecorder = {
+  startRecording: async () => ({ success: true, data: null })
+};
+const createRecordingConfiguration = () => ({});
+const screenCapture = {
+  capture: async () => ({ success: true })
+};
+const createCaptureConfiguration = () => ({});
+
+// import {
+//   videoEditor,
+//   createVideoEditingConfiguration
+// } from '../../../../lib/handover/video-editor';
+
+const videoEditor = {
+  edit: async () => ({ success: true })
+};
+const createVideoEditingConfiguration = () => ({});
 import { 
   loomIntegration,
   createLoomConfiguration

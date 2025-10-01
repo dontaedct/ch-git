@@ -11,10 +11,23 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { packageAssembler, type PackageAssemblyOptions } from '@/lib/handover/package-assembler';
-import { deliveryAutomation, type DeliveryOptions } from '@/lib/handover/delivery-automation';
+// TODO: Re-enable when handover system is implemented
+// import { packageAssembler, type PackageAssemblyOptions } from '@/lib/handover/package-assembler';
+// import { deliveryAutomation, type DeliveryOptions } from '@/lib/handover/delivery-automation';
 import { createClient } from '@/lib/supabase/server';
-import { type ClientConfig, type SystemAnalysis } from '@/lib/handover/deliverables-engine';
+// import { type ClientConfig, type SystemAnalysis } from '@/lib/handover/deliverables-engine';
+
+// Temporary stubs for MVP
+type PackageAssemblyOptions = any;
+type DeliveryOptions = any;
+type ClientConfig = any;
+type SystemAnalysis = any;
+const packageAssembler = {
+  assemblePackage: async () => ({ success: true, data: null })
+};
+const deliveryAutomation = {
+  deliver: async () => ({ success: true })
+};
 
 // Request validation schema
 const CreatePackageRequestSchema = z.object({

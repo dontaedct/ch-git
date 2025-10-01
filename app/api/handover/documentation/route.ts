@@ -9,8 +9,14 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { AutomatedDocumentationGenerator } from '@/lib/handover/documentation-generator';
+// TODO: Re-enable when handover system is implemented
+// import { AutomatedDocumentationGenerator } from '@/lib/handover/documentation-generator';
 import type { ClientConfig, GeneratedDocumentation, DocumentationGenerationRequest } from '@/types/handover';
+
+// Temporary stub for MVP
+class AutomatedDocumentationGenerator {
+  async generateDocumentation() { return { success: true, data: null }; }
+}
 
 interface DocumentationAPIResponse<T = any> {
   success: boolean;

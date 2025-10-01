@@ -6,7 +6,13 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { analyticsService } from '@/lib/analytics/service';
+// TODO: Re-enable when analytics system is implemented
+// import { analyticsService } from '@/lib/analytics/service';
+
+// Temporary stub for MVP
+const analyticsService = {
+  getInsights: async () => ({ insights: [] })
+};
 import { AnalyticsTimeRange } from '@/lib/analytics/types';
 
 export const runtime = 'nodejs';

@@ -6,7 +6,13 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { analyticsService } from '@/lib/analytics/service';
+// TODO: Re-enable when analytics system is implemented
+// import { analyticsService } from '@/lib/analytics/service';
+
+// Temporary stub for MVP
+const analyticsService = {
+  getBurndownData: async () => ({ data: [] })
+};
 
 export const runtime = 'nodejs';
 

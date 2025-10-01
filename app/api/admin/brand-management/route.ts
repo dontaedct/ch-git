@@ -7,8 +7,18 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { requirePermission } from '@/lib/auth/guard';
-import { logoManager, BRAND_PRESETS } from '@/lib/branding/logo-manager';
-import { DynamicBrandConfig } from '@/lib/branding/logo-manager';
+// TODO: Re-enable when branding system is implemented
+// import { logoManager, BRAND_PRESETS } from '@/lib/branding/logo-manager';
+// import { DynamicBrandConfig } from '@/lib/branding/logo-manager';
+
+// Temporary stubs for MVP
+const logoManager = {
+  getCurrentConfig: () => ({ brand: 'default' }),
+  setConfig: () => {},
+  switchPreset: () => {}
+};
+const BRAND_PRESETS: any = {};
+type DynamicBrandConfig = any;
 
 /**
  * GET /api/admin/brand-management

@@ -6,9 +6,19 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { brandAnalytics, BrandAnalyticsEvent } from '@/lib/analytics/brand-aware-analytics';
-import { logoManager } from '@/lib/branding/logo-manager';
+// TODO: Re-enable when analytics and branding systems are implemented
+// import { brandAnalytics, BrandAnalyticsEvent } from '@/lib/analytics/brand-aware-analytics';
+// import { logoManager } from '@/lib/branding/logo-manager';
 import { Observing } from '@/lib/observability';
+
+// Temporary stubs for MVP
+type BrandAnalyticsEvent = any;
+const brandAnalytics = {
+  getMetrics: async () => ({})
+};
+const logoManager = {
+  getCurrentConfig: () => ({ brand: 'default' })
+};
 
 /**
  * GET /api/analytics/brand-aware

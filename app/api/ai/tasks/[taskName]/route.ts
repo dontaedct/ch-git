@@ -7,9 +7,14 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createRealSupabaseClient } from "@/lib/supabase/server";
-import { run as aiRun } from "@/lib/ai";
+// TODO: Re-enable when AI system is implemented
+// import { run as aiRun } from "@/lib/ai";
 import { createRouteLogger } from "@/lib/logger";
-import { isAIEnabled } from "@/lib/ai/flags";
+// import { isAIEnabled } from "@/lib/ai/flags";
+
+// Temporary stubs for MVP
+const aiRun = async () => ({ success: false, error: 'AI not implemented' });
+const isAIEnabled = () => false;
 
 // Force Node.js runtime for AI operations (never Edge)
 export const runtime = "nodejs";

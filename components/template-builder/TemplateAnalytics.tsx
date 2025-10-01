@@ -6,9 +6,18 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { getRouteGenerator } from '../../lib/template-engine/route-generator';
-import { getTemplateStorage } from '../../lib/template-storage/TemplateStorage';
+// TODO: Re-enable when template-engine is implemented
+// import { getRouteGenerator } from '../../lib/template-engine/route-generator';
+// import { getTemplateStorage } from '../../lib/template-storage/TemplateStorage';
 import { TemplateManifest } from '../../types/componentContracts';
+
+// Temporary stubs for MVP
+const getRouteGenerator = () => ({
+  getTemplateRoutes: () => []
+});
+const getTemplateStorage = () => ({
+  getTemplate: () => null
+});
 
 interface TemplateAnalyticsProps {
   template: TemplateManifest;

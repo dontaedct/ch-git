@@ -1,5 +1,12 @@
 import { ModuleRegistry } from '@/types/config'
-import { getRuntimeConfigWithOverrides } from '@/lib/modules/runtime-config-actions'
+// TODO: Re-enable when modules system is implemented
+// import { getRuntimeConfigWithOverrides } from '@/lib/modules/runtime-config-actions'
+
+// Temporary stub function for MVP
+const getRuntimeConfigWithOverrides = async () => ({
+  modules: { modules: [] },
+  catalog: { plans: [] }
+});
 
 // Client-safe module configuration
 // This version doesn't use Node.js APIs like fs/promises

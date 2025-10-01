@@ -6,8 +6,21 @@
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { getRouteGenerator, RouteConfig, SEOConfig } from '../../lib/template-engine/route-generator';
+// TODO: Re-enable when template-engine is implemented
+// import { getRouteGenerator, RouteConfig, SEOConfig } from '../../lib/template-engine/route-generator';
 import { TemplateManifest } from '../../types/componentContracts';
+
+// Temporary stub types for MVP
+type RouteConfig = any;
+type SEOConfig = any;
+const getRouteGenerator = () => ({
+  getTemplateRoutes: () => [],
+  updateRoute: () => ({}),
+  generateRoute: () => ({}),
+  deleteRoute: () => {},
+  generateSitemap: () => '',
+  generateRobotsTxt: () => ''
+});
 
 interface RouteManagerProps {
   template: TemplateManifest;

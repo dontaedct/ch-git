@@ -42,8 +42,16 @@ import {
   ArrowRight,
   Info
 } from 'lucide-react'
-import { BrandIntelligence, type BrandProfile, type BrandAnalysis, type BrandRecommendation } from '@/lib/ai/brand-intelligence'
-import { ThemeGenerator, type ThemeGenerationRequest, type GeneratedTheme } from '@/lib/ai/theme-generator'
+// TODO: Re-enable when AI features are implemented
+// import { BrandIntelligence, type BrandProfile, type BrandAnalysis, type BrandRecommendation } from '@/lib/ai/brand-intelligence'
+// import { ThemeGenerator, type ThemeGenerationRequest, type GeneratedTheme } from '@/lib/ai/theme-generator'
+
+// Temporary stub types for MVP
+type BrandProfile = any;
+type BrandAnalysis = any;
+type BrandRecommendation = any;
+type ThemeGenerationRequest = any;
+type GeneratedTheme = any;
 
 interface CustomizationAssistantProps {
   brandProfile: BrandProfile
@@ -100,8 +108,16 @@ export function CustomizationAssistant({
 
     setIsAnalyzing(true)
     try {
-      const brandIntelligence = new BrandIntelligence(brandProfile)
-      const analysis = await brandIntelligence.analyzeBrand()
+      // TODO: Use real BrandIntelligence when implemented
+      // const brandIntelligence = new BrandIntelligence(brandProfile)
+      // const analysis = await brandIntelligence.analyzeBrand()
+      const analysis = {
+        brandStrength: 75,
+        marketPosition: 'growing',
+        opportunities: ['Leverage modern design trends'],
+        recommendations: [],
+        weaknesses: []
+      };
       setBrandAnalysis(analysis)
 
       // Generate suggestions based on analysis
@@ -121,17 +137,18 @@ export function CustomizationAssistant({
   const generateThemeVariations = useCallback(async () => {
     setIsGenerating(true)
     try {
-      const themeRequest: ThemeGenerationRequest = {
-        brandProfile,
-        customizationRequest,
-        constraints: {
-          accessibility: true,
-          industryStandards: true
-        }
-      }
-
-      const themeGenerator = new ThemeGenerator(themeRequest)
-      const variations = await themeGenerator.generateThemeVariations(3)
+      // TODO: Use real ThemeGenerator when implemented
+      // const themeRequest: ThemeGenerationRequest = {
+      //   brandProfile,
+      //   customizationRequest,
+      //   constraints: {
+      //     accessibility: true,
+      //     industryStandards: true
+      //   }
+      // }
+      // const themeGenerator = new ThemeGenerator(themeRequest)
+      // const variations = await themeGenerator.generateThemeVariations(3)
+      const variations: any[] = [];
       setGeneratedThemes(variations)
     } catch (error) {
       console.error('Error generating themes:', error)

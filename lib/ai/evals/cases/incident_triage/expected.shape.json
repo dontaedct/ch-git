@@ -1,7 +1,0 @@
-{
-  "severity": "string",
-  "category": "string", 
-  "summary": "string",
-  "recommendations": ["string"],
-  "nextSteps": "string"
-}

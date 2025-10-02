@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { getComponentRegistry } from '@/lib/renderer/ComponentRegistry';
 import { getTemplateStorage } from '@/lib/template-storage/TemplateStorage';
+import type { TemplateManifest } from '@/types/componentContracts';
 
 // Static component definitions to avoid async/await issues
 const HeroComponent: React.FC<any> = ({ title, subtitle, ctaText, ctaUrl, layout = 'centered', height = 'large', background = 'solid' }) => (
@@ -475,28 +476,6 @@ const TabsComponent: React.FC<any> = ({ tabs = [], defaultTab, style = 'default'
     </div>
   </div>
 );
-
-// Template manifest interface
-interface TemplateManifest {
-  id: string;
-  name: string;
-  slug: string;
-  description?: string;
-  category: string;
-  components: Array<{
-    id: string;
-    type: string;
-    version?: string;
-    props: Record<string, any>;
-  }>;
-  metadata?: {
-    version: string;
-    createdAt: string;
-    updatedAt: string;
-    tags?: string[];
-  };
-}
-
 export default function PublicAppPage() {
   const params = useParams();
   const [templateManifest, setTemplateManifest] = useState<TemplateManifest | null>(null);
@@ -543,7 +522,7 @@ export default function PublicAppPage() {
           const manifest = await templateStorage.loadTemplate(templateId);
           if (manifest) {
             console.log('✅ Template System: Loaded template manifest:', manifest.name);
-            setTemplateManifest(manifest as any);
+            setTemplateManifest(manifest);
             await renderTemplateComponents(manifest, componentRegistry);
           } else {
             console.log('⚠️ Template System: No template manifest found, using static fallback');

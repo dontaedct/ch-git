@@ -543,7 +543,7 @@ export default function PublicAppPage() {
           const manifest = await templateStorage.loadTemplate(templateId);
           if (manifest) {
             console.log('✅ Template System: Loaded template manifest:', manifest.name);
-            setTemplateManifest(manifest);
+            setTemplateManifest(manifest as any);
             await renderTemplateComponents(manifest, componentRegistry);
           } else {
             console.log('⚠️ Template System: No template manifest found, using static fallback');

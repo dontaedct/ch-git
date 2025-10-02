@@ -1,5 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PerformanceMonitor, startPerformanceMonitoring } from '@/lib/monitoring/performance-metrics';
+// TODO: Re-enable when monitoring system is implemented
+// import { PerformanceMonitor, startPerformanceMonitoring } from '@/lib/monitoring/performance-metrics';
+
+// Temporary stubs for MVP
+type PerformanceMonitor = any;
+const startPerformanceMonitoring = async () => ({
+  getPerformanceAnalytics: async () => ({}),
+  recordAPIMetric: () => {},
+  recordDatabaseMetric: () => {},
+  recordUXMetric: () => {},
+  start: async () => {},
+  stop: () => {}
+});
 
 let performanceMonitor: PerformanceMonitor | null = null;
 

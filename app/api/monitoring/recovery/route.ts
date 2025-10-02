@@ -12,12 +12,37 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { 
-  errorRecoverySystem, 
-  FallbackService, 
-  ServiceHealth,
-  CircuitBreakerState 
-} from '@/lib/monitoring/error-recovery';
+// TODO: Re-enable when monitoring system is implemented
+// import {
+//   errorRecoverySystem,
+//   FallbackService,
+//   ServiceHealth,
+//   CircuitBreakerState
+// } from '@/lib/monitoring/error-recovery';
+
+// Temporary stubs for MVP
+type FallbackService = any;
+type ServiceHealth = any;
+type CircuitBreakerState = any;
+
+const errorRecoverySystem = {
+  executeWithRecovery: async () => ({
+    success: true,
+    attempts: 1,
+    totalDuration: 0,
+    finalState: 'success'
+  }),
+  getServiceHealth: () => ({ healthy: true }),
+  getCircuitBreakerState: () => 'closed',
+  getAllServiceHealth: () => [],
+  getRecoveryStatistics: () => ({
+    totalActions: 0,
+    circuitBreakers: {},
+    serviceHealth: {}
+  }),
+  registerFallbackServices: () => {}
+};
+
 import { Logger } from '@/lib/logger';
 import { withSentry } from '@/lib/sentry-wrapper';
 import { z } from 'zod';

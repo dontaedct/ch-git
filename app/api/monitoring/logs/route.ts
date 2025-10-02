@@ -12,13 +12,32 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { 
-  comprehensiveLogger, 
-  LogEntry, 
-  LogMetrics, 
-  LogAnalysis,
-  LogRetentionPolicy 
-} from '@/lib/monitoring/comprehensive-logger';
+// TODO: Re-enable when monitoring system is implemented
+// import {
+//   comprehensiveLogger,
+//   LogEntry,
+//   LogMetrics,
+//   LogAnalysis,
+//   LogRetentionPolicy
+// } from '@/lib/monitoring/comprehensive-logger';
+
+// Temporary stubs for MVP
+type LogEntry = any;
+type LogMetrics = any;
+type LogAnalysis = any;
+type LogRetentionPolicy = any;
+
+const comprehensiveLogger = {
+  log: () => {},
+  getLogAnalytics: () => ({ totalLogs: 0, errorRate: 0 }),
+  getLogStatistics: () => ({}),
+  getLogAnalysis: () => null,
+  searchLogs: () => [],
+  exportLogs: () => '',
+  setRetentionPolicy: () => {},
+  addLogFilter: () => {}
+};
+
 import { Logger } from '@/lib/logger';
 import { withSentry } from '@/lib/sentry-wrapper';
 import { z } from 'zod';

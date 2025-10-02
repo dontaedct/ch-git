@@ -3,9 +3,15 @@
  * API endpoint for retrieving performance metrics
  */
 
-import { NextRequest } from 'next/server';
-import { handlePerformanceMetrics } from '@/lib/monitoring/api-middleware';
+import { NextRequest, NextResponse } from 'next/server';
+// TODO: Re-enable when monitoring system is implemented
+// import { handlePerformanceMetrics } from '@/lib/monitoring/api-middleware';
+
+// Temporary stub for MVP
+const handlePerformanceMetrics = async () => {
+  return NextResponse.json({ metrics: [] });
+};
 
 export async function GET(req: NextRequest) {
-  return handlePerformanceMetrics(req);
+  return handlePerformanceMetrics();
 }

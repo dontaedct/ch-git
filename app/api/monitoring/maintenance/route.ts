@@ -1,5 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { maintenanceManager } from '@/lib/monitoring/maintenance-mode';
+// TODO: Re-enable when monitoring system is implemented
+// import { maintenanceManager } from '@/lib/monitoring/maintenance-mode';
+
+// Temporary stub for MVP
+const maintenanceManager = {
+  isMaintenanceActive: () => false,
+  getCurrentMaintenance: () => null,
+  getMaintenancePageHTML: () => '<html><body>Maintenance Mode</body></html>',
+  enableMaintenance: async () => ({ id: 'maintenance-1' }),
+  disableMaintenance: async () => {},
+  scheduleMaintenance: async () => ({ id: 'schedule-1' }),
+  cancelScheduledMaintenance: async () => {},
+  shouldAllowRequest: () => true
+};
 
 export async function GET(request: NextRequest) {
   try {

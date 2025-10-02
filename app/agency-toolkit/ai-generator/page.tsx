@@ -111,7 +111,7 @@ function AIGeneratorDashboard() {
       createdAt: new Date(),
     };
 
-    setGeneratedApps(prev => {
+    setGeneratedApps((prev: any) => {
       const updated = [newApp, ...prev];
       saveGeneratedApps(updated);
       return updated;
@@ -122,8 +122,8 @@ function AIGeneratorDashboard() {
     try {
       // Simulate generation progress
       const progressInterval = setInterval(() => {
-        setGeneratedApps(prev => {
-          const updated = prev.map(app => 
+        setGeneratedApps((prev: any) => {
+          const updated = prev.map((app: any) => 
             app.id === newApp.id 
               ? { ...app, progress: Math.min(app.progress + 10, 90) }
               : app
@@ -144,8 +144,8 @@ function AIGeneratorDashboard() {
       clearInterval(progressInterval);
       
       // Update app with results
-      setGeneratedApps(prev => {
-        const updated = prev.map(app => 
+      setGeneratedApps((prev: any) => {
+        const updated = prev.map((app: any) =>
           app.id === newApp.id 
             ? { 
                 ...app, 
@@ -167,7 +167,7 @@ function AIGeneratorDashboard() {
     } catch (error) {
       console.error('Error generating app:', error);
       
-      setGeneratedApps(prev => {
+      setGeneratedApps((prev: any) => {
         const updated = prev.map(app => 
           app.id === newApp.id 
             ? { ...app, status: 'error', progress: 0 }
@@ -183,8 +183,8 @@ function AIGeneratorDashboard() {
 
   // Delete generated app
   const deleteGeneratedApp = (appId: string) => {
-    setGeneratedApps(prev => {
-      const updated = prev.filter(app => app.id !== appId);
+    setGeneratedApps((prev: any) => {
+      const updated = prev.filter((app: any) => app.id !== appId);
       saveGeneratedApps(updated);
       return updated;
     });
@@ -192,7 +192,7 @@ function AIGeneratorDashboard() {
 
   // Retry generation
   const retryGeneration = (appId: string) => {
-    setGeneratedApps(prev => {
+    setGeneratedApps((prev: any) => {
       const updated = prev.map(app => 
         app.id === appId 
           ? { ...app, status: 'generating', progress: 0 }

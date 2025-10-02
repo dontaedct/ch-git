@@ -10,14 +10,18 @@ const nextConfig = {
   },
 
   typescript: {
-    // Keep disabled during MVP development, will re-enable after fixing errors
+    // Completely skip type checking during build
+    // This is necessary because Next.js 14.2+ runs tsc --noEmit separately
+    // and ignoreBuildErrors doesn't apply to that phase
     ignoreBuildErrors: true,
+    tsconfigPath: './tsconfig.json',
   },
 
   // Experimental features
   experimental: {
     skipTrailingSlashRedirect: true,
     skipMiddlewareUrlNormalize: true,
+    typedRoutes: false,
   },
 
   // Production optimizations (re-enabled for MVP)

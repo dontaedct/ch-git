@@ -5,20 +5,20 @@
  */
 
 // Export stub types
-export type TemplateManifest.schema = any;
-export type TemplateManifest.schemaConfig = any;
-export type TemplateManifest.schemaOptions = any;
+export type TemplateManifestSchema = any;
+export type TemplateManifestSchemaConfig = any;
+export type TemplateManifestSchemaOptions = any;
 
 // Export stub objects/functions
-export const templatemanifest.schema = {} as any;
-export const createTemplateManifest.schema = () => ({} as any);
-export const getTemplateManifest.schema = () => ({} as any);
+export const templateManifestSchema = {} as any;
+export const createTemplateManifestSchema = () => ({} as any);
+export const getTemplateManifestSchema = () => ({} as any);
 
 // Export default
 const stub = {
-  templatemanifest.schema,
-  createTemplateManifest.schema,
-  getTemplateManifest.schema,
+  templateManifestSchema,
+  createTemplateManifestSchema,
+  getTemplateManifestSchema,
 };
 
 export default stub;

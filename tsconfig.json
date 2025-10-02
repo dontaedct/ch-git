@@ -62,6 +62,7 @@
     "**/*.backup.*",
     "docs/**/*",
     "lib/design-tokens/performance-monitor.ts",
-    "hooks/use-form-validation.ts"
+    "hooks/use-form-validation.ts",
+    "ADMIN_BACKUP_BEFORE_CLEANUP/**/*"
   ]
 }

@@ -7,9 +7,24 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createTenantConfigManager } from '@/lib/modules/tenant-config';
-import { createConfigNamespaceManager } from '@/lib/modules/config-namespace';
-import { ModuleSandboxFactory } from '@/lib/modules/module-sandbox';
+// TODO: Re-enable when modules system is implemented
+// import { createTenantConfigManager } from '@/lib/modules/tenant-config';
+// import { createConfigNamespaceManager } from '@/lib/modules/config-namespace';
+// import { ModuleSandboxFactory } from '@/lib/modules/module-sandbox';
+
+// Temporary stubs for MVP
+const createTenantConfigManager = () => ({
+  get: async () => null,
+  set: async () => ({ success: true }),
+  delete: async () => ({ success: true })
+});
+const createConfigNamespaceManager = () => ({
+  create: async () => ({ success: true }),
+  list: async () => []
+});
+const ModuleSandboxFactory = {
+  create: () => ({})
+};
 
 // =============================================================================
 // REQUEST/RESPONSE SCHEMAS

@@ -14,11 +14,32 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-import { moduleRegistry, ModuleRegistrationResult } from '@/lib/modules/module-registry'
-import { declarativeRegistration, ModuleManifest, RegistrationResult } from '@/lib/modules/declarative-registration'
-import { autoIntegration } from '@/lib/modules/auto-integration'
-import { dependencyResolver } from '@/lib/modules/dependency-resolver'
-import { lifecycleManager } from '@/lib/modules/module-lifecycle'
+// TODO: Re-enable when modules system is implemented
+// import { moduleRegistry, ModuleRegistrationResult } from '@/lib/modules/module-registry'
+// import { declarativeRegistration, ModuleManifest, RegistrationResult } from '@/lib/modules/declarative-registration'
+// import { autoIntegration } from '@/lib/modules/auto-integration'
+// import { dependencyResolver } from '@/lib/modules/dependency-resolver'
+// import { lifecycleManager } from '@/lib/modules/module-lifecycle'
+
+// Temporary stubs for MVP
+type ModuleRegistrationResult = any;
+type ModuleManifest = any;
+type RegistrationResult = any;
+const moduleRegistry = {
+  register: async () => ({ success: true, data: null })
+};
+const declarativeRegistration = {
+  register: async () => ({ success: true, data: null })
+};
+const autoIntegration = {
+  integrate: async () => ({ success: true })
+};
+const dependencyResolver = {
+  resolve: async () => ({ dependencies: [] })
+};
+const lifecycleManager = {
+  initialize: async () => ({ success: true })
+};
 
 // =============================================================================
 // REQUEST/RESPONSE SCHEMAS

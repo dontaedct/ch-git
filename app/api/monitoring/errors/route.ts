@@ -1,5 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ErrorTracker, startErrorTracking } from '@/lib/monitoring/error-tracking';
+// TODO: Re-enable when monitoring system is implemented
+// import { ErrorTracker, startErrorTracking } from '@/lib/monitoring/error-tracking';
+
+// Temporary stubs for MVP
+type ErrorTracker = any;
+const startErrorTracking = async () => ({
+  getErrors: async () => ({ errors: [] }),
+  getErrorDetails: async () => null,
+  resolveError: async () => ({ success: true })
+});
 
 let errorTracker: ErrorTracker | null = null;
 
